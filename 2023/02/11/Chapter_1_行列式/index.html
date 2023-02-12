@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="链接、装载与库对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧。">
+  <meta name="description" content="第一章 行列式1.1 行列式的定义看过 Linear_algebra\README.md就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
 <meta property="og:type" content="article">
-<meta property="og:title" content="链接、装载与库">
-<meta property="og:url" content="https://feipiao594.github.io/2023/02/10/%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/index.html">
+<meta property="og:title" content="Chapter_1_行列式">
+<meta property="og:url" content="https://feipiao594.github.io/2023/02/11/Chapter_1_%E8%A1%8C%E5%88%97%E5%BC%8F/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="链接、装载与库对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧。">
+<meta property="og:description" content="第一章 行列式1.1 行列式的定义看过 Linear_algebra\README.md就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-10T15:53:21.104Z">
-<meta property="article:modified_time" content="2023-02-11T13:55:42.685Z">
+<meta property="article:published_time" content="2023-02-11T13:48:49.280Z">
+<meta property="article:modified_time" content="2023-02-12T14:14:56.379Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/02/10/%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/02/11/Chapter_1_%E8%A1%8C%E5%88%97%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>链接、装载与库 | 594飞飘的个人博客</title>
+  <title>Chapter_1_行列式 | 594飞飘的个人博客</title>
   
 
 
@@ -151,7 +151,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/02/10/%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/02/11/Chapter_1_%E8%A1%8C%E5%88%97%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -164,7 +164,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          链接、装载与库
+          Chapter_1_行列式
         </h1>
 
         <div class="post-meta">
@@ -174,14 +174,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-02-10 23:53:21" itemprop="dateCreated datePublished" datetime="2023-02-10T23:53:21+08:00">2023-02-10</time>
+              <time title="创建时间：2023-02-11 21:48:49" itemprop="dateCreated datePublished" datetime="2023-02-11T21:48:49+08:00">2023-02-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-11 21:55:42" itemprop="dateModified" datetime="2023-02-11T21:55:42+08:00">2023-02-11</time>
+                <time title="修改时间：2023-02-12 22:14:56" itemprop="dateModified" datetime="2023-02-12T22:14:56+08:00">2023-02-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -189,11 +189,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cpp/%E5%BA%95%E5%B1%82/" itemprop="url" rel="index"><span itemprop="name">底层</span></a>
+                  <a href="/categories/Mathematic/Linear-algebra/" itemprop="url" rel="index"><span itemprop="name">Linear_algebra</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Linear-algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
                 </span>
             </span>
 
@@ -208,16 +212,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧。</p>
-<span id="more"></span>
-<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
-<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
-<ul>
-<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
-<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
-<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</li>
-</ul>
-
+        <h1 id="第一章-行列式"><a href="#第一章-行列式" class="headerlink" title="第一章 行列式"></a>第一章 行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>看过 <code>Linear_algebra\README.md</code>就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
+<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
+<script type="math/tex; mode=display">
+\begin{vmatrix}  
+  a_{11}& a_{12}& \cdots  & a_{1n} \\  
+  a_{21}& a_{22}& \cdots  & a_{2n} \\  
+  \vdots & \vdots & \ddots & \vdots \\  
+  a_{m1}& a_{m2}& \cdots  & a_{mn}  
+\end{vmatrix}  
+=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
+<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序重，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，，这边我找到了一种很好的方法</p>
+<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a target="_blank" rel="noopener" href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
+<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>89</u> 5→(-1)→奇排列<br>(3)513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
+<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
+<h3 id="to-be-continue…"><a href="#to-be-continue…" class="headerlink" title="to be continue…"></a>to be continue…</h3>
     </div>
 
     
@@ -232,13 +241,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/02/10/C%E4%B8%8EC++%E7%9A%84%E5%A4%8D%E6%9D%82%E5%A3%B0%E6%98%8E/" rel="prev" title="C/C++的特别复杂的类型">
-      <i class="fa fa-chevron-left"></i> C/C++的特别复杂的类型
+    <a href="/2023/02/11/%E5%88%9D%E8%A7%81agent2d/" rel="prev" title="初见Agent2D">
+      <i class="fa fa-chevron-left"></i> 初见Agent2D
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/02/10/%E5%88%9D%E8%A7%81%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E5%BE%AE%E7%A7%AF%E5%88%86/" rel="next" title="初见流形上的微积分">
-      初见流形上的微积分 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -297,7 +303,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">链接、装载与库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%B3%E4%BA%8EExtern"><span class="nav-number">1.1.</span> <span class="nav-text">一、关于Extern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%BA%E5%BC%B1%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.2.</span> <span class="nav-text">二、神奇的强弱符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81argc%E5%92%8Cargv"><span class="nav-number">1.3.</span> <span class="nav-text">三、argc和argv[ ]</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">第一章 行列式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 行列式的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%88%A4%E5%AE%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%87%E5%81%B6%E6%80%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">快速判定排序的奇偶性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#to-be-continue%E2%80%A6"><span class="nav-number">1.1.2.</span> <span class="nav-text">to be continue…</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
