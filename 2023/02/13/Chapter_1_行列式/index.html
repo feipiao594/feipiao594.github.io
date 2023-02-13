@@ -28,7 +28,7 @@
 <meta property="og:description" content="第一章 行列式1.1 行列式的定义看过 Linear_algebra\README.md就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-02-13T07:28:42.692Z">
-<meta property="article:modified_time" content="2023-02-13T07:52:37.208Z">
+<meta property="article:modified_time" content="2023-02-13T12:34:46.275Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-02-13 15:28:42 / 修改时间：15:52:37" itemprop="dateCreated datePublished" datetime="2023-02-13T15:28:42+08:00">2023-02-13</time>
+              <time title="创建时间：2023-02-13 15:28:42 / 修改时间：20:34:46" itemprop="dateCreated datePublished" datetime="2023-02-13T15:28:42+08:00">2023-02-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -222,11 +222,22 @@
   a_{m1}& a_{m2}& \cdots  & a_{mn}  
 \end{vmatrix}  
 =\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
-<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，，这边我找到了一种很好的方法</p>
+<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
 <h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a target="_blank" rel="noopener" href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
 <p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
 <p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
-<h3 id="to-be-continue…"><a href="#to-be-continue…" class="headerlink" title="to be continue…"></a>to be continue…</h3>
+<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
+<ul>
+<li>转置最后结果不变</li>
+<li>行列交换一次，加一个负号</li>
+<li>数乘只算在一行(列)上</li>
+<li>如果有两行(列)整体成比例，则值为0</li>
+<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
+</ul>
+<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
+<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
+<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来</p>
+
     </div>
 
     
@@ -306,7 +317,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">第一章 行列式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 行列式的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%88%A4%E5%AE%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%87%E5%81%B6%E6%80%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">快速判定排序的奇偶性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#to-be-continue%E2%80%A6"><span class="nav-number">1.1.2.</span> <span class="nav-text">to be continue…</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">第一章 行列式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 行列式的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%88%A4%E5%AE%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%87%E5%81%B6%E6%80%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">快速判定排序的奇偶性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 行列式的性质</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
