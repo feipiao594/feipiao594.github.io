@@ -28,7 +28,7 @@
 <meta property="og:description" content="曼德勃罗集介绍曼德勃罗集是一个经典的分形图样，其由迭代产生，而迭代就是不断重复某个过程。曼德勃罗集被迭代的是一些最简单的函数">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-03-15T05:30:30.317Z">
-<meta property="article:modified_time" content="2023-03-18T04:03:07.862Z">
+<meta property="article:modified_time" content="2023-03-18T04:16:03.860Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -187,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-18 12:03:07" itemprop="dateModified" datetime="2023-03-18T12:03:07+08:00">2023-03-18</time>
+                <time title="修改时间：2023-03-18 12:16:03" itemprop="dateModified" datetime="2023-03-18T12:16:03+08:00">2023-03-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -321,6 +321,48 @@
             // 阻止默认滚动事件
             event.preventDefault();
         });
+        canvas.addEventListener('touchstart', handleTouchStart, false);
+        canvas.addEventListener('touchmove', handleTouchMove, false);
+        canvas.addEventListener('touchend', handleTouchEnd, false);
+        var xDown = null;
+        var yDown = null;
+        function handleTouchStart(evt) {
+            xDown = evt.touches[0].clientX;
+            yDown = evt.touches[0].clientY;
+        };
+        function handleTouchMove(evt) {
+            if (!xDown || !yDown) {
+            return;
+            }
+            var xUp = evt.touches[0].clientX;
+            var yUp = evt.touches[0].clientY;
+            var xDiff = xDown - xUp;
+            var yDiff = yDown - yUp;
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {/*most significant*/
+                if (xDiff > 0) {
+                    /* left swipe */
+                    moveCenter(-0.1*xDiff/canvas.width, 0);
+                } else {
+                    /* right swipe */
+                    moveCenter(0.1*xDiff/canvas.width, 0);
+                }
+            } else {
+                if (yDiff > 0) {
+                    /* up swipe */
+                    moveCenter(0, -0.1*yDiff/canvas.height);
+                } else {
+                    /* down swipe */
+                    moveCenter(0, 0.1*yDiff/canvas.height);
+                }
+            }
+            /* reset values */
+            xDown = null;
+            yDown = null;
+        };
+        function handleTouchEnd(evt) {
+            xDown = null;
+            yDown = null;
+        };
     </script>
 </body>
 </html>
