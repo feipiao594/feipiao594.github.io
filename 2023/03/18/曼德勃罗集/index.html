@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="贝塞尔曲线平滑的曲线，计算机图形学的天堂，线性代数的产物同时这篇文章也是关于嵌入html与js的测试">
+  <meta name="description" content="曼德勃罗集介绍曼德勃罗集是一个经典的分形图样，其由迭代产生，而迭代就是不断重复某个过程。曼德勃罗集被迭代的是一些最简单的函数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="贝塞尔曲线">
-<meta property="og:url" content="https://feipiao594.github.io/2023/02/24/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/index.html">
+<meta property="og:title" content="曼德勃罗集">
+<meta property="og:url" content="https://feipiao594.github.io/2023/03/18/%E6%9B%BC%E5%BE%B7%E5%8B%83%E7%BD%97%E9%9B%86/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="贝塞尔曲线平滑的曲线，计算机图形学的天堂，线性代数的产物同时这篇文章也是关于嵌入html与js的测试">
+<meta property="og:description" content="曼德勃罗集介绍曼德勃罗集是一个经典的分形图样，其由迭代产生，而迭代就是不断重复某个过程。曼德勃罗集被迭代的是一些最简单的函数">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-24T06:37:36.139Z">
-<meta property="article:modified_time" content="2023-02-27T06:55:42.870Z">
+<meta property="article:published_time" content="2023-03-18T06:09:13.784Z">
+<meta property="article:modified_time" content="2023-03-18T04:39:31.431Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/02/24/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/03/18/%E6%9B%BC%E5%BE%B7%E5%8B%83%E7%BD%97%E9%9B%86/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>贝塞尔曲线 | 594飞飘的个人博客</title>
+  <title>曼德勃罗集 | 594飞飘的个人博客</title>
   
 
 
@@ -157,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/02/24/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/03/18/%E6%9B%BC%E5%BE%B7%E5%8B%83%E7%BD%97%E9%9B%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -170,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          贝塞尔曲线
+          曼德勃罗集
         </h1>
 
         <div class="post-meta">
@@ -179,16 +179,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-02-24 14:37:36" itemprop="dateCreated datePublished" datetime="2023-02-24T14:37:36+08:00">2023-02-24</time>
+              <time title="创建时间：2023-03-18 14:09:13 / 修改时间：12:39:31" itemprop="dateCreated datePublished" datetime="2023-03-18T14:09:13+08:00">2023-03-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-27 14:55:42" itemprop="dateModified" datetime="2023-02-27T14:55:42+08:00">2023-02-27</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -199,11 +193,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mathematic/Linear-algebra/" itemprop="url" rel="index"><span itemprop="name">Linear_algebra</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mathematic/Linear-algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
+                  <a href="/categories/Mathematic/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/" itemprop="url" rel="index"><span itemprop="name">数学建模</span></a>
                 </span>
             </span>
 
@@ -218,131 +208,123 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h1><p>平滑的曲线，计算机图形学的天堂，线性代数的产物<br>同时这篇文章也是关于嵌入html与js的测试</p>
+        <h1 id="曼德勃罗集"><a href="#曼德勃罗集" class="headerlink" title="曼德勃罗集"></a>曼德勃罗集</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>曼德勃罗集是一个经典的分形图样，其由迭代产生，而迭代就是不断重复某个过程。曼德勃罗集被迭代的是一些最简单的函数</p>
 <span id="more"></span>
-<p><strong>贝塞尔曲线方程</strong></p>
-<p>$ P(t)= {\textstyle \sum_{i=0}^{n}} P_iB_{i,n}(t),t\in [0,1] $</p>
-<p>对于$ i\in N^* $</p>
-<p>$ B_{i,n}(t)=C_n^it^i(1-t)^{n-i}=\frac{n!}{i!(n-i)!}t^i(1-t)^{n-i} $</p>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p>To be continue</p>
-<h2 id="演示程序"><a href="#演示程序" class="headerlink" title="演示程序"></a>演示程序</h2><p>搬运自知乎id 何方<br>原地址<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/180508343">https://zhuanlan.zhihu.com/p/180508343</a><br>侵权删，等博主学习了一些前端后，会自己重写</p>
+<script type="math/tex; mode=display">f(x) = x^2 + c</script><p>其中$ c $为常量。迭代前会给常量$ c $赋值。<br>迭代由初值即$ x_0 $开始，将$ x_0 $  代入$ x_0^2 + c $得到一个新数，前次计算结果作为下次迭代的输入。<br>如此类推，迭代生成的数值序列$ x0, x1, x2,…$是$ x0 $通过$ x^2 + c $迭代而产生的轨迹。</p>
+<h2 id="图样"><a href="#图样" class="headerlink" title="图样"></a>图样</h2><p>如下是一个<strong>可交互</strong>的图样，支持鼠标拖动和滚轮放大<br>注意手机版<strong>暂不支持</strong>哦，只能当个图片咯</p>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Mandelbrot Set</title>
+</head>
 <body>
-    <canvas id="canvas" style="border: 1px solid" width="500%" height="500%"></canvas>
-    <div class="buttonContainer">
-        <div>
-            <button id="draw">画图</button>
-            <button id="reDraw">重画</button>
-            <button id="clear">清空</button>
-            <button id="radom">随机</button>
-        </div>
-    </div>
-    <script>
-        const cv = document.getElementById("canvas");
-        const draw = document.getElementById("draw");
-        const clear = document.getElementById("clear");
-        const reDraw = document.getElementById("reDraw");
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript">
+        // 获取画布和上下文
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        // 设置画布尺寸
+        canvas.width = 400;
+        canvas.height = 400;
         if (/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
-            cv.height = 290;
-            cv.width = 290;
+            canvas.height = 290;
+            canvas.width = 290;
         }
-        let points = [];
-        const ctx = cv.getContext("2d");
-        let offset = 0;
-        let timer;
-        function calcMiddlePoint(p1, p2) {
-            return { x: (p2.x - p1.x) * offset + p1.x, y: (p2.y - p1.y) * offset + p1.y };
+        // 设置缩放参数
+        let zoomFactor = 2.2;
+        let centerX = -0.5;
+        let centerY = 0;
+        // 计算像素点对应的复数值
+        function calculatePoint(x, y) {
+            const real = centerX + (x - canvas.width / 2) / (canvas.width / 4) / zoomFactor;
+            const imag = centerY + (y - canvas.height / 2) / (canvas.height / 4) / zoomFactor;
+            return { real, imag };
         }
-        let finalPoints = [];
-        function drawLine() {
-            let last = {}
-            ctx.strokeStyle = "red";
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            finalPoints.forEach(({ x, y }, index) => {
-                if (index === 0) {
-                    ctx.moveTo(x, y)
-                } else {
-                    ctx.lineTo(x, y)
+        // 绘制曼德勃罗集
+        function drawMandelbrotSet() {
+            // 创建图像数据
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            // 遍历每个像素点
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    // 计算像素点对应的复数值
+                    const { real, imag } = calculatePoint(x, y);
+                    // 计算曼德勃罗集的迭代次数
+                    let zReal = 0;
+                    let zImag = 0;
+                    let i = 0;
+                    for (; i < 300; i++) {
+                        const zRealNew = zReal * zReal - zImag * zImag + real;
+                        const zImagNew = 2 * zReal * zImag + imag;
+                        if (zRealNew * zRealNew + zImagNew * zImagNew > 4) {
+                            break;
+                        }
+                        zReal = zRealNew;
+                        zImag = zImagNew;
+                    }
+                    // 将迭代次数映射到颜色值
+                    const index = (y * canvas.width + x) * 4;
+                    imageData.data[index] = i;
+                    imageData.data[index + 1] = i;
+                    imageData.data[index + 2] = i;
+                    imageData.data[index + 3] = 255;
                 }
-            });
-            ctx.stroke();
+            }
+            // 绘制图像数据到画布上
+            ctx.putImageData(imageData, 0, 0);
         }
-        function drawLines(ps, color) {
-            if (ps.length < 2) {
-                const { x, y } = ps[0];
-                finalPoints.push({ x, y });
-                drawLine();
-                return;
-            }
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = color || "green";
-            ctx.beginPath();
-            for (let i = 0; i < ps.length; i++) {
-                const { x, y } = ps[i];
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            }
-            ctx.stroke();
-            const pps = [];
-            for (let i = 0; i < ps.length - 1; i++) {
-                pps.push(calcMiddlePoint(ps[i], ps[i + 1], .5));
-            }
-            drawLines(pps)
-        }
-        function doDraw() {
-            if (points.length < 2) {
-                alert(`无法画图，请至少指定2个点`);
-                return;
-            }
-            timer && clearInterval(timer);
-            drawLines(points, 'blue');
-            timer = setInterval(() => {
-                offset += 0.001;
-                window.requestAnimationFrame(() => {
-                    ctx.clearRect(0, 0, cv.width, cv.height);
-                    drawLines(points, 'blue');
-                });
-                if (offset >= 1) {
-                    clearInterval(timer);
-                }
-            }, 1);
-        }
-        reDraw.addEventListener("click", function () {
-            finalPoints = [];
-            offset = 0;
-            ctx.clearRect(0, 0, cv.width, cv.height);
-            doDraw();
+        // 绘制初始曼德勃罗集
+        drawMandelbrotSet();
+        // 记录当前的鼠标状态
+        let isDragging = false;
+        let lastX, lastY;
+                // 监听鼠标按下事件
+        canvas.addEventListener('mousedown', event => {
+            isDragging = true;
+            lastX = event.clientX;
+            lastY = event.clientY;
         });
-        draw.addEventListener("click", doDraw);
-        clear.addEventListener("click", () => {
-            points = [];
-            finalPoints = [];
-            offset = 0;
-            ctx.clearRect(0, 0, cv.width, cv.height);
-        });
-        cv.addEventListener("click", function (e) {
-            points.push({ x: e.offsetX, y: e.offsetY });
-            console.log("point:", { x: e.offsetX, y: e.offsetY });
-            ctx.fillStyle = "black";
-            ctx.beginPath();
-            ctx.arc(e.offsetX, e.offsetY, 2, 0, Math.PI * 2);
-            ctx.fill();
-        });
-        radom.addEventListener("click", () => {
-            points = [];
-            finalPoints = [];
-            offset = 0;
-            ctx.clearRect(0, 0, cv.width, cv.height);
-            for (let i = 0; i < 10; i++) {
-                points.push({ x: Math.random() * cv.width, y: Math.random() * cv.height })
+        function moveCenter(deltaX, deltaY){
+            centerX -= deltaX / (canvas.width / 4) / zoomFactor;
+            centerY -= deltaY / (canvas.height / 4) / zoomFactor;
+        };
+        // 监听鼠标移动事件
+        canvas.addEventListener('mousemove', event => {
+            if (isDragging) {
+                const deltaX = event.clientX - lastX;
+                const deltaY = event.clientY - lastY;
+                lastX = event.clientX;
+                lastY = event.clientY;
+                // 更新中心点坐标
+                centerX -= deltaX / (canvas.width / 4) / zoomFactor;
+                centerY -= deltaY / (canvas.height / 4) / zoomFactor;
+                // 重新绘制曼德勃罗集
+                drawMandelbrotSet();
             }
-            doDraw();
+        });
+        // 监听鼠标释放事件
+        canvas.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        // 监听鼠标滚轮事件
+        canvas.addEventListener('wheel', event => {
+            const delta = event.deltaY > 0 ? -0.1 : 0.1;
+            zoomFactor *= 1 + delta;
+            // 计算缩放中心点的复数值
+            const { real, imag } = calculatePoint(canvas.width / 2, canvas.height / 2);
+            centerX = real;
+            centerY = imag;
+            // 重新绘制曼德勃罗集
+            drawMandelbrotSet();
+            // 阻止默认滚动事件
+            event.preventDefault();
         });
     </script>
 </body>
+</html>
+
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>数学实验的这些天，我非常惊喜，数学实验课里居然有分形的存在，我直接来劲了。<br>看看这些分形图样，只能感叹数学的世界真是美丽，我们的路还有很长呢。我作为个体的能力有限，很难想象居然有人能在无计算机的前提下找到这些惊为天人的图样。<br>我还没有见识到真正的数学，我又怎么会被区区生活所击溃，忘掉我的真心呢？哪怕只能在门口探个头，也好过无知吧。</p>
+
     </div>
 
     
@@ -357,12 +339,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/02/14/%E8%A1%8C%E5%88%97%E5%BC%8F/" rel="prev" title="行列式">
-      <i class="fa fa-chevron-left"></i> 行列式
+    <a href="/2023/03/18/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/" rel="prev" title="贝塞尔曲线">
+      <i class="fa fa-chevron-left"></i> 贝塞尔曲线
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/02/27/IO%E6%B5%81/" rel="next" title="IO流">
-      IO流 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/03/18/%E5%90%AB%E6%B0%B4%E6%BB%9A%E7%AD%92%E7%9A%84%E6%B0%B4%E5%B9%B3%E9%9D%A2/" rel="next" title="含水滚筒的水平面">
+      含水滚筒的水平面 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -423,7 +405,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF"><span class="nav-number">1.</span> <span class="nav-text">贝塞尔曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A8%E5%AF%BC%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">推导过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%94%E7%A4%BA%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.2.</span> <span class="nav-text">演示程序</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%BC%E5%BE%B7%E5%8B%83%E7%BD%97%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">曼德勃罗集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E6%A0%B7"><span class="nav-number">1.2.</span> <span class="nav-text">图样</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AF%9D"><span class="nav-number">1.3.</span> <span class="nav-text">后话</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -612,7 +594,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '3f88e4e0c8e674025992920e7cfe6314',
+      id          : 'ad0322a3482e317ff610fa7b0624eee4',
         language: 'zh-CN',
       distractionFreeMode: true
     });

@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="初见Agent2D见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧">
+  <meta name="description" content="行列式1.1 行列式的定义看过 Linear_algebra\README.md就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初见Agent2D">
-<meta property="og:url" content="https://feipiao594.github.io/2023/02/13/%E5%88%9D%E8%A7%81agent2d/index.html">
+<meta property="og:title" content="行列式">
+<meta property="og:url" content="https://feipiao594.github.io/2023/03/18/%E8%A1%8C%E5%88%97%E5%BC%8F/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="初见Agent2D见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧">
+<meta property="og:description" content="行列式1.1 行列式的定义看过 Linear_algebra\README.md就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-02-13T07:28:42.539Z">
-<meta property="article:modified_time" content="2023-02-27T07:01:30.890Z">
+<meta property="article:published_time" content="2023-03-18T06:09:13.756Z">
+<meta property="article:modified_time" content="2023-02-16T13:47:58.255Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/02/13/%E5%88%9D%E8%A7%81agent2d/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/03/18/%E8%A1%8C%E5%88%97%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>初见Agent2D | 594飞飘的个人博客</title>
+  <title>行列式 | 594飞飘的个人博客</title>
   
 
 
@@ -157,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/02/13/%E5%88%9D%E8%A7%81agent2d/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/03/18/%E8%A1%8C%E5%88%97%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -170,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          初见Agent2D
+          行列式
         </h1>
 
         <div class="post-meta">
@@ -180,14 +180,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-02-13 15:28:42" itemprop="dateCreated datePublished" datetime="2023-02-13T15:28:42+08:00">2023-02-13</time>
+              <time title="创建时间：2023-03-18 14:09:13" itemprop="dateCreated datePublished" datetime="2023-03-18T14:09:13+08:00">2023-03-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-02-27 15:01:30" itemprop="dateModified" datetime="2023-02-27T15:01:30+08:00">2023-02-27</time>
+                <time title="修改时间：2023-02-16 21:47:58" itemprop="dateModified" datetime="2023-02-16T21:47:58+08:00">2023-02-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -195,11 +195,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cpp/" itemprop="url" rel="index"><span itemprop="name">Cpp</span></a>
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cpp/Apollo2D/" itemprop="url" rel="index"><span itemprop="name">Apollo2D</span></a>
+                  <a href="/categories/Mathematic/Linear-algebra/" itemprop="url" rel="index"><span itemprop="name">Linear_algebra</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Linear-algebra/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/" itemprop="url" rel="index"><span itemprop="name">线性代数</span></a>
                 </span>
             </span>
 
@@ -214,15 +218,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="初见Agent2D"><a href="#初见Agent2D" class="headerlink" title="初见Agent2D"></a>初见Agent2D</h1><p>见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧</p>
-<span id="more"></span>
-<h2 id="项目内容"><a href="#项目内容" class="headerlink" title="项目内容"></a>项目内容</h2><p>这次的项目其实全部都在<code>*/NJUPT2023Apollo2D/your-team/src/bhv_penalty_kick.cpp</code>当中，要修改的东西也很清楚，目的就是利用已经完成的rcsc内的各种API，在<strong>整体框架结构</strong>不变的前提下，优化点球大战中我方<code>taker</code>和<code>keeper</code>的行为逻辑，以提高其在面对<code>helios</code>球队时候的胜率。</p>
-<hr>
-<h2 id="整理一下逻辑"><a href="#整理一下逻辑" class="headerlink" title="整理一下逻辑"></a>整理一下逻辑</h2><p>我们直接从<code>Bhv_PenaltyKick::execute</code>这个入口的函数开始分析起，它根据服务器反馈的当前点球大战的情况来<code>switch</code>选择是给<code>Agent</code>运行什么代码。<br>我们先来看看<code>taker</code>，在这里，主要的带球和踢球动作是由如下函数<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Bhv_PenaltyKick::doKicker</span><span class="params">(PlayerAgent *agent)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// server does NOT allow multiple kicks</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!ServerParam::<span class="built_in">i</span>().<span class="built_in">penAllowMultKicks</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">doOneKickShoot</span>(agent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// server allows multiple kicks</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> WorldModel &amp;wm = agent-&gt;<span class="built_in">world</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// get ball</span></span><br><span class="line">    <span class="keyword">if</span> (!wm.<span class="built_in">self</span>().<span class="built_in">isKickable</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// kick decision</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">doShoot</span>(agent))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">doDribble</span>(agent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在这段代码中可以看到它首先会根据服务器是否允许多次踢球来决定是不是调用<code>doOneKickShoot</code>，然后是<code>if (doShoot(agent))</code>这里如果可以踢球并且踢球踢球成功就会返回true，这里的<strong>判断和执行是一体</strong>的<br>而如果返回false，则会调用<code>doDribble</code><br>阅读<code>doShoot()</code>里面的内容，我们可以看到，它其中的内容首先是，时间不够就执行<code>doOneKickShoot</code>来实现紧急情况下的踢球，如果时间足够将会计算<code>if (getShootTarget(agent, &amp;shot_point, &amp;shot_speed))</code>，如果返回true则说明可以开踢，这边选择的策略是构造函数创建<code>Body_SmartKick</code>临时对象并且<code>execute</code>传入<code>agent</code>执行踢球操作，至于<code>Body_SmartKick</code>有多<strong>smart</strong>，我也不知道(笑)<br>那么承担判定的责任就从<code>doShoot()</code>转移到了<code>getShootTarget()</code>这个函数身上，观察这样一个函数的内容，会发现豁然开朗，因为在这个函数内部有很多if，写了一堆情况，比如球过远，对方没有守门员等等情况，并且开始<strong>具体计算</strong>了，只要开始回到数学问题，<del>一般的问题也就变得简单多了</del>(划掉)<br>同理，<code>doDribble</code>也和<code>doShoot()</code>一样的重计算，这很舒服，终于找到了主要核心判断的源头了</p>
-<hr>
-<h2 id="对于后面项目的工作"><a href="#对于后面项目的工作" class="headerlink" title="对于后面项目的工作"></a>对于后面项目的工作</h2><p>我们要完成一些记录<br>首先大部分的数据获取都来自于当前<code>agent</code>的<code>worldmodel</code>，而动作的执行往往都是调用<code>rcsc/action</code>下的行为类，构造完临时变量后直接<code>execute</code>执行兵传入<code>agent</code>指针<br>需要一种记录log的手段，在文件当中可以经常看见以下代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dlog.<span class="built_in">addText</span>(Logger::TEAM,</span><br><span class="line">                 __FILE__ <span class="string">&quot;this is a sample&quot;</span>);</span><br></pre></td></tr></table></figure><br>其中<code>__FILE__</code>是C语言的宏，其意义就是当前的文件<br>关于这个log到底输出到哪还需要查找</p>
-<hr>
-<h3 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE"></a>TO BE CONTINUE</h3>
+        <h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>看过 <code>Linear_algebra\README.md</code>就会知道我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
+<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
+<script type="math/tex; mode=display">
+\begin{vmatrix}  
+  a_{11}& a_{12}& \cdots  & a_{1n} \\  
+  a_{21}& a_{22}& \cdots  & a_{2n} \\  
+  \vdots & \vdots & \ddots & \vdots \\  
+  a_{m1}& a_{m2}& \cdots  & a_{mn}  
+\end{vmatrix}  
+=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
+<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
+<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a target="_blank" rel="noopener" href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
+<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
+<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
+<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
+<ul>
+<li>转置最后结果不变</li>
+<li>行列交换一次，加一个负号</li>
+<li>数乘只算在一行(列)上</li>
+<li>如果有两行(列)整体成比例，则值为0</li>
+<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
+</ul>
+<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
+<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
+<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
+<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
+<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
+<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
+
     </div>
 
     
@@ -236,10 +260,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2023/02/13/C++%E5%BC%95%E7%94%A8/" rel="next" title="C++引用">
-      C++引用 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/03/18/%E5%88%9D%E8%A7%81%E6%B5%81%E5%BD%A2%E4%B8%8A%E7%9A%84%E5%BE%AE%E7%A7%AF%E5%88%86/" rel="prev" title="初见流形上的微积分">
+      <i class="fa fa-chevron-left"></i> 初见流形上的微积分
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/18/%E8%B4%9D%E5%A1%9E%E5%B0%94%E6%9B%B2%E7%BA%BF/" rel="next" title="贝塞尔曲线">
+      贝塞尔曲线 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -300,7 +327,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9D%E8%A7%81Agent2D"><span class="nav-number">1.</span> <span class="nav-text">初见Agent2D</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%86%85%E5%AE%B9"><span class="nav-number">1.1.</span> <span class="nav-text">项目内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E7%90%86%E4%B8%80%E4%B8%8B%E9%80%BB%E8%BE%91"><span class="nav-number">1.2.</span> <span class="nav-text">整理一下逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%90%8E%E9%9D%A2%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">对于后面项目的工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TO-BE-CONTINUE"><span class="nav-number">1.3.1.</span> <span class="nav-text">TO BE CONTINUE</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">行列式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 行列式的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%88%A4%E5%AE%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%87%E5%81%B6%E6%80%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">快速判定排序的奇偶性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 行列式的性质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%A1%8C%E5%88%97%E5%BC%8F%E4%BE%9D%E8%A1%8C-%E5%88%97-%E5%B1%95%E5%BC%80"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 行列式依行(列)展开</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -422,6 +449,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
@@ -436,7 +516,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : 'c018963595e6690d2e73e241e842a688',
+      id          : '28235ee09f5606ca15022f017a005988',
         language: 'zh-CN',
       distractionFreeMode: true
     });
