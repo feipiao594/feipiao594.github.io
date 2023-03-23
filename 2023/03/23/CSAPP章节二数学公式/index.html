@@ -20,19 +20,21 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="初见Agent2D见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧">
+  <meta name="description" content="CSAPP章节二中的数学公式整理由于这一章偏向理论，有时候能利用编码知识大大简化计算之类的，所以归为DSA一类中 关于这一章的符号说明:注意：当反函数难以直观写出时，将直接省略 整数部分: 1.二进制转反码 B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i&#x3D;0}^{w-2} x_{i} 2^{i}\right)2.二进制转原码 B">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初见Agent2D">
-<meta property="og:url" content="https://feipiao594.github.io/2023/03/18/%E5%88%9D%E8%A7%81agent2d/index.html">
+<meta property="og:title" content="CSAPP章节二中的数学公式整理">
+<meta property="og:url" content="https://feipiao594.github.io/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="初见Agent2D见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧">
+<meta property="og:description" content="CSAPP章节二中的数学公式整理由于这一章偏向理论，有时候能利用编码知识大大简化计算之类的，所以归为DSA一类中 关于这一章的符号说明:注意：当反函数难以直观写出时，将直接省略 整数部分: 1.二进制转反码 B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i&#x3D;0}^{w-2} x_{i} 2^{i}\right)2.二进制转原码 B">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-18T06:09:13.599Z">
-<meta property="article:modified_time" content="2023-03-20T14:19:57.203Z">
+<meta property="og:image" content="https://feipiao594.github.io/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/images/2022-09-06-20-57-10.png">
+<meta property="article:published_time" content="2023-03-23T15:40:28.170Z">
+<meta property="article:modified_time" content="2023-03-23T15:38:17.510Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://feipiao594.github.io/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/images/2022-09-06-20-57-10.png">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/03/18/%E5%88%9D%E8%A7%81agent2d/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -45,7 +47,7 @@
   };
 </script>
 
-  <title>初见Agent2D | 594飞飘的个人博客</title>
+  <title>CSAPP章节二中的数学公式整理 | 594飞飘的个人博客</title>
   
 
 
@@ -157,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/03/18/%E5%88%9D%E8%A7%81agent2d/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -170,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          初见Agent2D
+          CSAPP章节二中的数学公式整理
         </h1>
 
         <div class="post-meta">
@@ -179,16 +181,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-03-18 14:09:13" itemprop="dateCreated datePublished" datetime="2023-03-18T14:09:13+08:00">2023-03-18</time>
+              <time title="创建时间：2023-03-23 23:40:28 / 修改时间：23:38:17" itemprop="dateCreated datePublished" datetime="2023-03-23T23:40:28+08:00">2023-03-23</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-20 22:19:57" itemprop="dateModified" datetime="2023-03-20T22:19:57+08:00">2023-03-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -199,7 +195,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ComputerScience/Project/" itemprop="url" rel="index"><span itemprop="name">Project</span></a>
+                  <a href="/categories/ComputerScience/DSA/" itemprop="url" rel="index"><span itemprop="name">DSA</span></a>
                 </span>
             </span>
 
@@ -214,15 +210,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="初见Agent2D"><a href="#初见Agent2D" class="headerlink" title="初见Agent2D"></a>初见Agent2D</h1><p>见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧</p>
-<span id="more"></span>
-<h2 id="项目内容"><a href="#项目内容" class="headerlink" title="项目内容"></a>项目内容</h2><p>这次的项目其实全部都在<code>*/NJUPT2023Apollo2D/your-team/src/bhv_penalty_kick.cpp</code>当中，要修改的东西也很清楚，目的就是利用已经完成的rcsc内的各种API，在<strong>整体框架结构</strong>不变的前提下，优化点球大战中我方<code>taker</code>和<code>keeper</code>的行为逻辑，以提高其在面对<code>helios</code>球队时候的胜率。</p>
-<hr>
-<h2 id="整理一下逻辑"><a href="#整理一下逻辑" class="headerlink" title="整理一下逻辑"></a>整理一下逻辑</h2><p>我们直接从<code>Bhv_PenaltyKick::execute</code>这个入口的函数开始分析起，它根据服务器反馈的当前点球大战的情况来<code>switch</code>选择是给<code>Agent</code>运行什么代码。<br>我们先来看看<code>taker</code>，在这里，主要的带球和踢球动作是由如下函数<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Bhv_PenaltyKick::doKicker</span><span class="params">(PlayerAgent *agent)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// server does NOT allow multiple kicks</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!ServerParam::<span class="built_in">i</span>().<span class="built_in">penAllowMultKicks</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">doOneKickShoot</span>(agent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// server allows multiple kicks</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> WorldModel &amp;wm = agent-&gt;<span class="built_in">world</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// get ball</span></span><br><span class="line">    <span class="keyword">if</span> (!wm.<span class="built_in">self</span>().<span class="built_in">isKickable</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// kick decision</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">doShoot</span>(agent))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">doDribble</span>(agent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在这段代码中可以看到它首先会根据服务器是否允许多次踢球来决定是不是调用<code>doOneKickShoot</code>，然后是<code>if (doShoot(agent))</code>这里如果可以踢球并且踢球踢球成功就会返回true，这里的<strong>判断和执行是一体</strong>的<br>而如果返回false，则会调用<code>doDribble</code><br>阅读<code>doShoot()</code>里面的内容，我们可以看到，它其中的内容首先是，时间不够就执行<code>doOneKickShoot</code>来实现紧急情况下的踢球，如果时间足够将会计算<code>if (getShootTarget(agent, &amp;shot_point, &amp;shot_speed))</code>，如果返回true则说明可以开踢，这边选择的策略是构造函数创建<code>Body_SmartKick</code>临时对象并且<code>execute</code>传入<code>agent</code>执行踢球操作，至于<code>Body_SmartKick</code>有多<strong>smart</strong>，我也不知道(笑)<br>那么承担判定的责任就从<code>doShoot()</code>转移到了<code>getShootTarget()</code>这个函数身上，观察这样一个函数的内容，会发现豁然开朗，因为在这个函数内部有很多if，写了一堆情况，比如球过远，对方没有守门员等等情况，并且开始<strong>具体计算</strong>了，只要开始回到数学问题，<del>一般的问题也就变得简单多了</del>(划掉)<br>同理，<code>doDribble</code>也和<code>doShoot()</code>一样的重计算，这很舒服，终于找到了主要核心判断的源头了</p>
-<hr>
-<h2 id="对于后面项目的工作"><a href="#对于后面项目的工作" class="headerlink" title="对于后面项目的工作"></a>对于后面项目的工作</h2><p>我们要完成一些记录<br>首先大部分的数据获取都来自于当前<code>agent</code>的<code>worldmodel</code>，而动作的执行往往都是调用<code>rcsc/action</code>下的行为类，构造完临时变量后直接<code>execute</code>执行兵传入<code>agent</code>指针<br>需要一种记录log的手段，在文件当中可以经常看见以下代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dlog.<span class="built_in">addText</span>(Logger::TEAM,</span><br><span class="line">                 __FILE__ <span class="string">&quot;this is a sample&quot;</span>);</span><br></pre></td></tr></table></figure><br>其中<code>__FILE__</code>是C语言的宏，其意义就是当前的文件<br>关于这个log到底输出到哪还需要查找</p>
-<hr>
-<h3 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE"></a>TO BE CONTINUE</h3>
+        <h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>由于这一章偏向理论，有时候能利用编码知识大大简化计算之类的，所以归为DSA一类中</p>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="images/2022-09-06-20-57-10.png" alt="符号说明"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+
     </div>
 
     
@@ -236,10 +255,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2023/03/18/C++%E5%BC%95%E7%94%A8/" rel="next" title="C++引用">
-      C++引用 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/03/23/%E6%97%A5%E5%B8%B8%E5%9B%B0%E6%83%91%E4%B9%8B%E6%A2%AF%E5%BA%A6%E7%9A%84%E6%8D%A2%E5%85%83/" rel="prev" title="日常困惑之梯度的换元">
+      <i class="fa fa-chevron-left"></i> 日常困惑之梯度的换元
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/23/%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%84%E4%BD%93%E5%BA%95%E5%B1%82/" rel="next" title="函数返回结构体底层">
+      函数返回结构体底层 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -300,7 +322,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9D%E8%A7%81Agent2D"><span class="nav-number">1.</span> <span class="nav-text">初见Agent2D</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%86%85%E5%AE%B9"><span class="nav-number">1.1.</span> <span class="nav-text">项目内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E7%90%86%E4%B8%80%E4%B8%8B%E9%80%BB%E8%BE%91"><span class="nav-number">1.2.</span> <span class="nav-text">整理一下逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%90%8E%E9%9D%A2%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">对于后面项目的工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TO-BE-CONTINUE"><span class="nav-number">1.3.1.</span> <span class="nav-text">TO BE CONTINUE</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">CSAPP章节二中的数学公式整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%BF%99%E4%B8%80%E7%AB%A0%E7%9A%84%E7%AC%A6%E5%8F%B7%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">关于这一章的符号说明:</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -436,7 +458,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '367d38183b1ba41c4830c0b649662b5f',
+      id          : 'dcbc3d0ef62169c09705c3a0f8340d16',
         language: 'zh-CN',
       distractionFreeMode: true
     });
