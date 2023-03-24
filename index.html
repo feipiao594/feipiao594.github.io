@@ -177,10 +177,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-23 23:40:28 / 修改时间：23:38:17" itemprop="dateCreated datePublished" datetime="2023-03-23T23:40:28+08:00">2023-03-23</time>
+              <time title="创建时间：2023-03-23 23:40:28" itemprop="dateCreated datePublished" datetime="2023-03-23T23:40:28+08:00">2023-03-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-24 17:42:14" itemprop="dateModified" datetime="2023-03-24T17:42:14+08:00">2023-03-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -207,37 +213,14 @@
 
       
           <h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>由于这一章偏向理论，有时候能利用编码知识大大简化计算之类的，所以归为DSA一类中</p>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="images/2022-09-06-20-57-10.png" alt="符号说明"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -279,10 +262,16 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-23 23:19:33 / 修改时间：23:19:12" itemprop="dateCreated datePublished" datetime="2023-03-23T23:19:33+08:00">2023-03-23</time>
+              <time title="创建时间：2023-03-23 23:19:33" itemprop="dateCreated datePublished" datetime="2023-03-23T23:19:33+08:00">2023-03-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-24 17:42:32" itemprop="dateModified" datetime="2023-03-24T17:42:32+08:00">2023-03-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -362,10 +351,16 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-03-23 23:19:33 / 修改时间：22:43:18" itemprop="dateCreated datePublished" datetime="2023-03-23T23:19:33+08:00">2023-03-23</time>
+              <time title="创建时间：2023-03-23 23:19:33" itemprop="dateCreated datePublished" datetime="2023-03-23T23:19:33+08:00">2023-03-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-03-24 17:42:27" itemprop="dateModified" datetime="2023-03-24T17:42:27+08:00">2023-03-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
