@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="初见Agent2D见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧">
+  <meta name="description" content="n重积分转n次积分问题我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初见Agent2D">
-<meta property="og:url" content="https://feipiao594.github.io/2023/03/18/%E5%88%9D%E8%A7%81agent2d/index.html">
+<meta property="og:title" content="n重积分转n次积分问题">
+<meta property="og:url" content="https://feipiao594.github.io/2023/04/07/n%E9%87%8D%E7%A7%AF%E5%88%86%E8%BD%ACn%E6%AC%A1%E7%A7%AF%E5%88%86%E7%9A%84%E7%A7%AF%E5%88%86%E4%B8%8A%E4%B8%8B%E9%99%90%E8%BD%AC%E5%8C%96%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="初见Agent2D见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧">
+<meta property="og:description" content="n重积分转n次积分问题我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-18T06:09:13.599Z">
-<meta property="article:modified_time" content="2023-03-20T14:19:57.203Z">
+<meta property="article:published_time" content="2023-04-07T14:09:00.455Z">
+<meta property="article:modified_time" content="2023-04-07T14:06:18.366Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/03/18/%E5%88%9D%E8%A7%81agent2d/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/04/07/n%E9%87%8D%E7%A7%AF%E5%88%86%E8%BD%ACn%E6%AC%A1%E7%A7%AF%E5%88%86%E7%9A%84%E7%A7%AF%E5%88%86%E4%B8%8A%E4%B8%8B%E9%99%90%E8%BD%AC%E5%8C%96%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>初见Agent2D | 594飞飘的个人博客</title>
+  <title>n重积分转n次积分问题 | 594飞飘的个人博客</title>
   
 
 
@@ -157,7 +157,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/03/18/%E5%88%9D%E8%A7%81agent2d/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/04/07/n%E9%87%8D%E7%A7%AF%E5%88%86%E8%BD%ACn%E6%AC%A1%E7%A7%AF%E5%88%86%E7%9A%84%E7%A7%AF%E5%88%86%E4%B8%8A%E4%B8%8B%E9%99%90%E8%BD%AC%E5%8C%96%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -170,7 +170,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          初见Agent2D
+          n重积分转n次积分问题
         </h1>
 
         <div class="post-meta">
@@ -179,27 +179,25 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-03-18 14:09:13" itemprop="dateCreated datePublished" datetime="2023-03-18T14:09:13+08:00">2023-03-18</time>
+              <time title="创建时间：2023-04-07 22:09:00 / 修改时间：22:06:18" itemprop="dateCreated datePublished" datetime="2023-04-07T22:09:00+08:00">2023-04-07</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-20 22:19:57" itemprop="dateModified" datetime="2023-03-20T22:19:57+08:00">2023-03-20</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ComputerScience/" itemprop="url" rel="index"><span itemprop="name">ComputerScience</span></a>
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ComputerScience/Project/" itemprop="url" rel="index"><span itemprop="name">Project</span></a>
+                  <a href="/categories/Mathematic/Analysis/" itemprop="url" rel="index"><span itemprop="name">Analysis</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Analysis/Math-Analysis/" itemprop="url" rel="index"><span itemprop="name">Math_Analysis</span></a>
                 </span>
             </span>
 
@@ -214,15 +212,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="初见Agent2D"><a href="#初见Agent2D" class="headerlink" title="初见Agent2D"></a>初见Agent2D</h1><p>见到这个项目本身就是异常意外，我对足球的兴趣并不大。这两天看代码也看的有一点晕，随手写下一些探索的过程吧</p>
-<span id="more"></span>
-<h2 id="项目内容"><a href="#项目内容" class="headerlink" title="项目内容"></a>项目内容</h2><p>这次的项目其实全部都在<code>*/NJUPT2023Apollo2D/your-team/src/bhv_penalty_kick.cpp</code>当中，要修改的东西也很清楚，目的就是利用已经完成的rcsc内的各种API，在<strong>整体框架结构</strong>不变的前提下，优化点球大战中我方<code>taker</code>和<code>keeper</code>的行为逻辑，以提高其在面对<code>helios</code>球队时候的胜率。</p>
+        <h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
 <hr>
-<h2 id="整理一下逻辑"><a href="#整理一下逻辑" class="headerlink" title="整理一下逻辑"></a>整理一下逻辑</h2><p>我们直接从<code>Bhv_PenaltyKick::execute</code>这个入口的函数开始分析起，它根据服务器反馈的当前点球大战的情况来<code>switch</code>选择是给<code>Agent</code>运行什么代码。<br>我们先来看看<code>taker</code>，在这里，主要的带球和踢球动作是由如下函数<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Bhv_PenaltyKick::doKicker</span><span class="params">(PlayerAgent *agent)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// server does NOT allow multiple kicks</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!ServerParam::<span class="built_in">i</span>().<span class="built_in">penAllowMultKicks</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">doOneKickShoot</span>(agent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// server allows multiple kicks</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    <span class="type">const</span> WorldModel &amp;wm = agent-&gt;<span class="built_in">world</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// get ball</span></span><br><span class="line">    <span class="keyword">if</span> (!wm.<span class="built_in">self</span>().<span class="built_in">isKickable</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// kick decision</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">doShoot</span>(agent))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">doDribble</span>(agent);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在这段代码中可以看到它首先会根据服务器是否允许多次踢球来决定是不是调用<code>doOneKickShoot</code>，然后是<code>if (doShoot(agent))</code>这里如果可以踢球并且踢球踢球成功就会返回true，这里的<strong>判断和执行是一体</strong>的<br>而如果返回false，则会调用<code>doDribble</code><br>阅读<code>doShoot()</code>里面的内容，我们可以看到，它其中的内容首先是，时间不够就执行<code>doOneKickShoot</code>来实现紧急情况下的踢球，如果时间足够将会计算<code>if (getShootTarget(agent, &amp;shot_point, &amp;shot_speed))</code>，如果返回true则说明可以开踢，这边选择的策略是构造函数创建<code>Body_SmartKick</code>临时对象并且<code>execute</code>传入<code>agent</code>执行踢球操作，至于<code>Body_SmartKick</code>有多<strong>smart</strong>，我也不知道(笑)<br>那么承担判定的责任就从<code>doShoot()</code>转移到了<code>getShootTarget()</code>这个函数身上，观察这样一个函数的内容，会发现豁然开朗，因为在这个函数内部有很多if，写了一堆情况，比如球过远，对方没有守门员等等情况，并且开始<strong>具体计算</strong>了，只要开始回到数学问题，<del>一般的问题也就变得简单多了</del>(划掉)<br>同理，<code>doDribble</code>也和<code>doShoot()</code>一样的重计算，这很舒服，终于找到了主要核心判断的源头了</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
 <hr>
-<h2 id="对于后面项目的工作"><a href="#对于后面项目的工作" class="headerlink" title="对于后面项目的工作"></a>对于后面项目的工作</h2><p>我们要完成一些记录<br>首先大部分的数据获取都来自于当前<code>agent</code>的<code>worldmodel</code>，而动作的执行往往都是调用<code>rcsc/action</code>下的行为类，构造完临时变量后直接<code>execute</code>执行兵传入<code>agent</code>指针<br>需要一种记录log的手段，在文件当中可以经常看见以下代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dlog.<span class="built_in">addText</span>(Logger::TEAM,</span><br><span class="line">                 __FILE__ <span class="string">&quot;this is a sample&quot;</span>);</span><br></pre></td></tr></table></figure><br>其中<code>__FILE__</code>是C语言的宏，其意义就是当前的文件<br>关于这个log到底输出到哪还需要查找</p>
+<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
+<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
 <hr>
-<h3 id="TO-BE-CONTINUE"><a href="#TO-BE-CONTINUE" class="headerlink" title="TO BE CONTINUE"></a>TO BE CONTINUE</h3>
+<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
+<hr>
+<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
+
     </div>
 
     
@@ -236,11 +236,11 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2023/03/18/C++%E5%BC%95%E7%94%A8/" rel="next" title="C++引用">
-      C++引用 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/03/23/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F/" rel="prev" title="CSAPP章节二中的数学公式整理">
+      <i class="fa fa-chevron-left"></i> CSAPP章节二中的数学公式整理
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -300,7 +300,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9D%E8%A7%81Agent2D"><span class="nav-number">1.</span> <span class="nav-text">初见Agent2D</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%86%85%E5%AE%B9"><span class="nav-number">1.1.</span> <span class="nav-text">项目内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E7%90%86%E4%B8%80%E4%B8%8B%E9%80%BB%E8%BE%91"><span class="nav-number">1.2.</span> <span class="nav-text">整理一下逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%90%8E%E9%9D%A2%E9%A1%B9%E7%9B%AE%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">对于后面项目的工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TO-BE-CONTINUE"><span class="nav-number">1.3.1.</span> <span class="nav-text">TO BE CONTINUE</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#n%E9%87%8D%E7%A7%AF%E5%88%86%E8%BD%ACn%E6%AC%A1%E7%A7%AF%E5%88%86%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">n重积分转n次积分问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%AC%A1%E7%A7%AF%E5%88%86%E7%9A%84%E4%B8%8A%E4%B8%8B%E9%99%90"><span class="nav-number">1.2.</span> <span class="nav-text">一次积分的上下限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%95%E5%BD%B1%E4%B8%8A%E7%9A%84%E7%A7%AF%E5%88%86%E5%8C%BA%E5%9F%9F"><span class="nav-number">1.3.</span> <span class="nav-text">投影上的积分区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.4.</span> <span class="nav-text">任意坐标系</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -422,6 +422,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
@@ -436,7 +489,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '367d38183b1ba41c4830c0b649662b5f',
+      id          : 'be451850a396a103cb07b954a1b864d6',
         language: 'zh-CN',
       distractionFreeMode: true
     });
