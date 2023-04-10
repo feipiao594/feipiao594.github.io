@@ -28,7 +28,7 @@
 <meta property="og:description" content="微分流形公式整理其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了大一统的美丽。在这里记录下一些重要定义，重要公式吧。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-10T08:45:46.898Z">
-<meta property="article:modified_time" content="2023-04-10T14:18:09.592Z">
+<meta property="article:modified_time" content="2023-04-10T14:19:51.791Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-04-10 16:45:46 / 修改时间：22:18:09" itemprop="dateCreated datePublished" datetime="2023-04-10T16:45:46+08:00">2023-04-10</time>
+              <time title="创建时间：2023-04-10 16:45:46 / 修改时间：22:19:51" itemprop="dateCreated datePublished" datetime="2023-04-10T16:45:46+08:00">2023-04-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,7 +233,7 @@
 <script type="math/tex; mode=display">\frac{\partial}{\partial y^{i}}=\left(i d\right)_*\left(\frac{\partial}{\partial y^{i}}\right)\\=\sum_{j=1}^{m}A^j_i \frac{\partial}{\partial x^j}</script><p>其中</p>
 <script type="math/tex; mode=display">A_{i}^{j}=\frac{\partial x^{j}\left(y^{i}\cdot\cdots\cdot y^{m}\right)}{\partial y^{i}}|_{\psi(x_0)}</script><p>(《微分流形初步》p77)</p>
 <h2 id="Christoffel符号"><a href="#Christoffel符号" class="headerlink" title="Christoffel符号"></a>Christoffel符号</h2><p>定义式如下</p>
-<script type="math/tex; mode=display">\Gamma_{i j}^{k}=\frac{1}{2}g^{k l}\left(\frac{\partial g_{l j}}{\partial x^{i}}+\frac{\partial g_{i l}}{\partial x^{j}}-\frac{\partial g_{i j}}{\partial x^{l}}\right),</script><h2 id="度量张量场"><a href="#度量张量场" class="headerlink" title="度量张量场"></a>度量张量场</h2><p>光滑流形$M$上任意一个对称、正定的光滑2阶协变张量称为$M$上的一个黎曼结构，若在$M$上指定一个黎曼结构，及则称$(M,g)$为一个黎曼流形，此时称$g$为黎曼流形$M$上的基本张量场，或度规张量场</p>
+<script type="math/tex; mode=display">\Gamma_{i j}^{k}=\frac{1}{2}g^{k l}\left(\frac{\partial g_{l j}}{\partial x^{i}}+\frac{\partial g_{i l}}{\partial x^{j}}-\frac{\partial g_{i j}}{\partial x^{l}}\right)</script><h2 id="度量张量场"><a href="#度量张量场" class="headerlink" title="度量张量场"></a>度量张量场</h2><p>光滑流形$M$上任意一个对称、正定的光滑2阶协变张量称为$M$上的一个黎曼结构，若在$M$上指定一个黎曼结构，及则称$(M,g)$为一个黎曼流形，此时称$g$为黎曼流形$M$上的基本张量场，或度规张量场</p>
 <script type="math/tex; mode=display">
 g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p>欧式空间自带一个自然的度规张量场，为一个单位矩阵，并且$g$为欧式内积</p>
 <h2 id="积分的定义"><a href="#积分的定义" class="headerlink" title="积分的定义"></a>积分的定义</h2><p>设$M$是满足第二可数公理$m$维有向光滑流形，则对于任意的有紧致支撑集的$m$次外微分式$\omega$，取$M$的定向相符的坐标卡集$\{(U_a,\varphi_a)\}$使得$\{U_a\}$构成$M$的局部有限开覆盖，因此在$M$上有从属于$\{U_a\}$的单位分解$\{h_a\}$，故$Supph_{a}\subset U_{a}$，$h_{a}\in C\left(M\right)$，$h_{a}\geq0$，$\sum h_{a}=1$，在$M$上的积分定义如下</p>
