@@ -28,7 +28,7 @@
 <meta property="og:description" content="微分流形公式整理其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了大一统的美丽。在这里记录下一些重要定义，重要公式吧。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-04-10T08:45:46.898Z">
-<meta property="article:modified_time" content="2023-04-10T09:29:58.032Z">
+<meta property="article:modified_time" content="2023-04-10T14:11:37.271Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-04-10 16:45:46 / 修改时间：17:29:58" itemprop="dateCreated datePublished" datetime="2023-04-10T16:45:46+08:00">2023-04-10</time>
+              <time title="创建时间：2023-04-10 16:45:46 / 修改时间：22:11:37" itemprop="dateCreated datePublished" datetime="2023-04-10T16:45:46+08:00">2023-04-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,13 +209,13 @@
 
       
         <h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义，重要公式吧。<br><span id="more"></span></p>
-<h2 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h2><p>张量积的结合律：$(U\otimes V)\otimes W \cong U\otimes (V\otimes W)$。</p>
-<p>张量积的分配律：$U\otimes (V\oplus W)\cong (U\otimes V)\oplus (U\otimes W)$。</p>
-<p>张量积的交换律：$U\otimes V\cong V\otimes U$。</p>
-<p>向量与张量积的结合：$U\otimes (V\otimes W)\cong (U\otimes V)\otimes W \cong U\otimes V\otimes W$。</p>
+<h2 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h2><p>张量积的结合律：<script type="math/tex">(U\otimes V)\otimes W \cong U\otimes (V\otimes W)</script></p>
+<p>张量积的分配律：<script type="math/tex">U\otimes (V\oplus W)\cong (U\otimes V)\oplus (U\otimes W)</script></p>
+<p>张量积的交换律：<script type="math/tex">U\otimes V\cong V\otimes U</script></p>
+<p>向量与张量积的结合：<script type="math/tex">U\otimes (V\otimes W)\cong (U\otimes V)\otimes W \cong U\otimes V\otimes W</script></p>
 <p>张量积的对偶：设$U$和$V$是有限维向量空间，${u_i}$和${v_j}$分别是$U$和$V$的一组基，则$u_i\otimes v_j$构成了$U\otimes V$的一组基，同时也可以证明$\mathrm{Hom}(U\otimes V, \mathbb{R})\cong \mathrm{Bil}(U,V)$，即$U\otimes V$的对偶空间和$U$和$V$的双线性函数空间同构。</p>
-<p>由定义可得<br>$C\otimes V=CV$($C$为常数，<strong>0-tenser</strong>，等号右边的运算符是乘积)</p>
-<h2 id="楔积"><a href="#楔积" class="headerlink" title="楔积"></a>楔积</h2><p>对于任意$f\in A_k(V)$，$g\in A_l(V)$，定义楔积如下</p>
+<p>由定义可得($C$为常数，<strong>0-tenser</strong>，等号右边的运算符是乘积)</p>
+<script type="math/tex; mode=display">C\otimes V=CV</script><h2 id="楔积"><a href="#楔积" class="headerlink" title="楔积"></a>楔积</h2><p>对于任意$f\in A_k(V)$，$g\in A_l(V)$，定义楔积如下</p>
 <script type="math/tex; mode=display">
 \alpha\wedge\beta:= \frac{1}{k!l!}A(\alpha\otimes\beta)</script><p>楔积有如下的<strong>运算性质</strong><br>设$f\in A_k(V)$，$g\in A_l(V)$，$h\in A_m(V)$</p>
 <ul>
@@ -239,12 +239,18 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
 <h2 id="积分的定义"><a href="#积分的定义" class="headerlink" title="积分的定义"></a>积分的定义</h2><p>设$M$是满足第二可数公理$m$维有向光滑流形，则对于任意的有紧致支撑集的$m$次外微分式$\omega$，取$M$的定向相符的坐标卡集$\{(U_a,\varphi_a)\}$使得$\{U_a\}$构成$M$的局部有限开覆盖，因此在$M$上有从属于$\{U_a\}$的单位分解$\{h_a\}$，故$Supph_{a}\subset U_{a}$，$h_{a}\in C\left(M\right)$，$h_{a}\geq0$，$\sum h_{a}=1$，在$M$上的积分定义如下</p>
 <script type="math/tex; mode=display">
 \int_{a_{1}}\omega=\int_{a_{1}}h_{a}\cdot\omega=\sum_{a_{1}}\int_{a_{1}}^{}h_{a}\cdot\omega=\sum_{a_{1}}\int_{a_{2}}^{i}\left(\left(h_{a}\cdot a_{a}\right)\cdot\varphi_{a}^{-1}\right)d x_{a}^{1}\cdots d x_{a}^{n}</script><p>这里单位分解既是用一种巧妙的方法把函数分割到每个开集中，让他们在各自的局部坐标系里进行运算，最终得到结果的方法。</p>
+<h2 id="长度元素"><a href="#长度元素" class="headerlink" title="长度元素"></a>长度元素</h2><p>在实际计算时，可以使用给定的局部坐标系下的度量分量来计算 $ds$，即</p>
+<script type="math/tex; mode=display">ds=\sqrt{g_{ij}dx^i dx^j}</script><p>其中 $i, j = 1, 2, …, n$，$n$ 是流形的维度。具体地，可以将坐标差分向量 $dx^i$ 视为一个 $n$ 维向量 $(dx^1, dx^2, …, dx^n)$，而度量张量的分量 $g_{ij}$ 可以表示为一个 $n\times n$ 的矩阵。然后，可以使用矩阵乘法和求和运算来计算根号里的表达式，从而得到 $ds$ 的值。</p>
+<h2 id="面积元素"><a href="#面积元素" class="headerlink" title="面积元素"></a>面积元素</h2><p>设$(M,g)$是$n$维有向的黎曼流形，$(U;x^i)$是$M$的定向相符的局部坐标系，记</p>
+<script type="math/tex; mode=display">g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p>则</p>
+<script type="math/tex; mode=display">\Omega=\sqrt{G}dx^1\wedge\cdots\wedge dx^n</script><p>是在$M$上大范围定义的$n$次外微分式，其中$G=det(g_{ij})$。很明显，$\Omega$处处不为零，称为黎曼流形$(M,g)$的<strong>体积元素</strong></p>
 <h2 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h2><p>设$f\in C^{\infty}\left(M\right)$，则$df$是$M$上的1次微分式,下面这个式子称为光滑函数$f$的<strong>梯度场</strong></p>
 <script type="math/tex; mode=display">\nabla f = \frac{\partial f}{\partial x^i} \frac{\partial}{\partial x^i}</script><h2 id="Stokes公式"><a href="#Stokes公式" class="headerlink" title="Stokes公式"></a>Stokes公式</h2><p>对于 $n$ 维微分流形 $M$ ，$\Omega\subset M$ ，$\partial\Omega$ 是一个 $n-1$ 维微分流形，为 $M$ 的<strong>边界</strong>，其定向是$M$诱导的stokes定向，$\omega$ 为 $(n-1)$ -形式，$d\omega$ 为 $n$ -形式，可得</p>
 <script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="协变微分"><a href="#协变微分" class="headerlink" title="协变微分"></a>协变微分</h2><p>设$(M,g)$是一个$m$维黎曼流形，$v\in\mathscr{X}\left(M\right)$。在局部坐标系$(U;x^i)$下，设$v|_{v}=v^{i}\frac{\partial}{\partial x^{i}}$，命</p>
 <script type="math/tex; mode=display">D v|_{U}=D v^{i}\otimes\frac{\partial}{\partial x^{i}}=\left(\frac{\partial v^{i}}{\partial x^{k}}+v^{i}\Gamma_{i k}^{i}\right)d x^{k}\otimes\frac{\partial}{\partial x^{i}},</script><p>则$D v$是在光滑流形$M$上大范围定义的$(1,1)$型光滑张量场，称为光滑切向量场$v$的<strong>协变微分</strong>。映射$D:\mathscr{X}\left(M\right)\rightarrow \mathscr{X}\left(M\right)$称为<strong>协变微分算子</strong><br>这个是欧式空间中全微分在流形上的版本，也就是说欧氏空间中的全微分是流形上的协变微分的特例。</p>
 <h2 id="协变导数"><a href="#协变导数" class="headerlink" title="协变导数"></a>协变导数</h2><p>设$(M,g)$是一个$m$维黎曼流形，$v\in\mathscr{X}\left(M\right)$，$X\in T_pM$，则下式所定义的$D_Xv\in T_pM$称为光滑切向量场$v$关于切向量$X\in T_pM$的<strong>协变导数</strong></p>
 <script type="math/tex; mode=display">D_{X}v=X^{k}\left(\frac{\partial v^{i}}{\partial x^{k}}+v^{j}\Gamma_{j k}^{i}\right)\frac{\partial}{\partial x^{i}}</script><p>这个是欧式空间中方向导数在流形上的版本，也就是说欧氏空间中的方向导数(偏导数)是流形上的协变微分的特例。</p>
+<p>在 $ds = g_{ij} dx^i dx^j$ 中，$dx^i$ 和 $dx^j$ 之间的运算符是乘号 $\times$，表示 $dx^i$ 与 $dx^j$ 的乘积。这个乘法是指张量积，也就是向量的张量积。这个式子相当于对两个一阶协变张量 $dx^i$ 和 $dx^j$ 进行张量积得到一个二阶张量 $dx^i \otimes dx^j$，然后与度量张量 $g_{ij}$ 进行收缩。</p>
 
     </div>
 
@@ -323,7 +329,7 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">微分流形公式整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E7%A7%AF"><span class="nav-number">1.1.</span> <span class="nav-text">张量积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A5%94%E7%A7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">楔积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%98%A0%E5%B0%84"><span class="nav-number">1.3.</span> <span class="nav-text">切映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Christoffel%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.4.</span> <span class="nav-text">Christoffel符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E5%BC%A0%E9%87%8F%E5%9C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">度量张量场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.6.</span> <span class="nav-text">积分的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6"><span class="nav-number">1.7.</span> <span class="nav-text">梯度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stokes%E5%85%AC%E5%BC%8F"><span class="nav-number">1.8.</span> <span class="nav-text">Stokes公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%BE%AE%E5%88%86"><span class="nav-number">1.9.</span> <span class="nav-text">协变微分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%AF%BC%E6%95%B0"><span class="nav-number">1.10.</span> <span class="nav-text">协变导数</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">微分流形公式整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E7%A7%AF"><span class="nav-number">1.1.</span> <span class="nav-text">张量积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A5%94%E7%A7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">楔积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%98%A0%E5%B0%84"><span class="nav-number">1.3.</span> <span class="nav-text">切映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Christoffel%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.4.</span> <span class="nav-text">Christoffel符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E5%BC%A0%E9%87%8F%E5%9C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">度量张量场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.6.</span> <span class="nav-text">积分的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E5%BA%A6%E5%85%83%E7%B4%A0"><span class="nav-number">1.7.</span> <span class="nav-text">长度元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E7%A7%AF%E5%85%83%E7%B4%A0"><span class="nav-number">1.8.</span> <span class="nav-text">面积元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6"><span class="nav-number">1.9.</span> <span class="nav-text">梯度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stokes%E5%85%AC%E5%BC%8F"><span class="nav-number">1.10.</span> <span class="nav-text">Stokes公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%BE%AE%E5%88%86"><span class="nav-number">1.11.</span> <span class="nav-text">协变微分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%AF%BC%E6%95%B0"><span class="nav-number">1.12.</span> <span class="nav-text">协变导数</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
