@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE2.jpg">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE3.png">
 <meta property="article:published_time" content="2023-04-14T06:48:33.976Z">
-<meta property="article:modified_time" content="2023-04-14T07:00:38.087Z">
+<meta property="article:modified_time" content="2023-04-16T14:07:00.959Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE1.jpg">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-04-14 14:48:33 / 修改时间：15:00:38" itemprop="dateCreated datePublished" datetime="2023-04-14T14:48:33+08:00">2023-04-14</time>
+              <time title="创建时间：2023-04-14 14:48:33" itemprop="dateCreated datePublished" datetime="2023-04-14T14:48:33+08:00">2023-04-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-16 22:07:00" itemprop="dateModified" datetime="2023-04-16T22:07:00+08:00">2023-04-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,22 +220,37 @@
       
         <h1 id="stokes公式的错误使用"><a href="#stokes公式的错误使用" class="headerlink" title="stokes公式的错误使用"></a>stokes公式的错误使用</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
 <span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
+<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+</blockquote>
 <hr>
 <h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程需要求解PDE，如果PDE求解失败，自然也就不存在对应关系，stokes公式的PDE是个加强的限制，但是一下子看不出来，在PDE还没解出来之前，我们不能说他们相等，因为其中暗藏了把它变成0的悖论，其实这种情况要么原本非0，但PDE根本解不出来不成立，要么本身就是0，这种情况根本不值得我们降级计算，这点是在计算中发现的。</p>
 <p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
 <p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
 <p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
+<hr>
 <h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
 <li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
 <li>一个曲面积分若$d\omega$不为00，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
 </ul>
 <p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
+<hr>
 <h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
 <p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
 <p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
+<blockquote>
 <p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="/images/微分流形公式整理_图3.png"></p>
+</blockquote>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
+<ul>
+<li>恰当形式<strong>一定是</strong>闭形式</li>
+<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
+<p>展开来说，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就不(一定？)是了，当然，我们也无需考虑这一种情况了，相关内容 陈维恒《微分流形初步》P195</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>如下图，注意$d\omega=0$只是能求得上阶外微分的<strong>必要条件</strong>，而stokes的逆向思维中PDE约束在三维欧式空间中的三个实例可以证明可解，但<strong>不保证</strong>在任意流形下可解(条件见上方补充)，如下表格应该都是正确的了</p>
+<p><img src="/images/微分流形公式整理_图3.png"></p>
 
     </div>
 
@@ -308,7 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#stokes%E5%85%AC%E5%BC%8F%E7%9A%84%E9%94%99%E8%AF%AF%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">stokes公式的错误使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E4%B8%80%E4%B8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">分析一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E7%90%86%E4%B8%80%E4%B8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">整理一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5"><span class="nav-number">1.4.</span> <span class="nav-text">进一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#stokes%E5%85%AC%E5%BC%8F%E7%9A%84%E9%94%99%E8%AF%AF%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">stokes公式的错误使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E4%B8%80%E4%B8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">分析一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E7%90%86%E4%B8%80%E4%B8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">整理一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5"><span class="nav-number">1.4.</span> <span class="nav-text">进一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">1.5.</span> <span class="nav-text">补充</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
