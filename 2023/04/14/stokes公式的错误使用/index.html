@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE2.jpg">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE3.png">
 <meta property="article:published_time" content="2023-04-14T06:48:33.976Z">
-<meta property="article:modified_time" content="2023-04-18T23:29:08.898Z">
+<meta property="article:modified_time" content="2023-04-19T09:38:24.049Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE1.jpg">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-04-19 07:29:08" itemprop="dateModified" datetime="2023-04-19T07:29:08+08:00">2023-04-19</time>
+                <time title="修改时间：2023-04-19 17:38:24" itemprop="dateModified" datetime="2023-04-19T17:38:24+08:00">2023-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,8 +220,8 @@
       
         <h1 id="stokes公式的错误使用"><a href="#stokes公式的错误使用" class="headerlink" title="stokes公式的错误使用"></a>stokes公式的错误使用</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
 <span id="more"></span>
-<h2 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h2><p>设$n$维定向流形$M$的<strong>紧致</strong>子集$D$是一个$n$维带边区域，$w$是$M$上的$C^\infty n-1$形式场(重点：光滑、$n-1$)，则<script type="math/tex">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><br>其中$\partial \Omega$具有$\Omega$诱导的定向</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
+<h2 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
 <p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
 </blockquote>
 <hr>
@@ -232,7 +232,7 @@
 <hr>
 <h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
 <li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
-<li>一个曲面积分若$d\omega$不为00，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
+<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
 </ul>
 <p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
 <hr>
@@ -250,14 +250,16 @@
 </blockquote>
 </li>
 </ul>
-<p>如果要用到stokes公式降级区域几乎都是单连通的，或者可以化成单连通之和的复联通区域，大大方方的解即可</p>
-<p>根据<strong>DeRhamd定理</strong>，在紧致光滑流形$M$上的任意一个$r$次闭微分式是恰当微分式的充分必要条件是流形$M$的第$r$个$Betti$数$\beta_r=0$<br>书上那个$\mathbb{R}^2-\{0,0\}$，这玩意根本就不是紧致流形。</p>
 <p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
 <p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
 <p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
 <p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
-<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在无界的流形上不一定适用，因为它需要<strong>紧致集</strong>。</p>
-<p>考虑一个$\mathbb{R}^2$空间中，嵌入三个流形，一个是$\mathbb{R}^2$整体，一个是$\mathbb{R}^2$去掉坐标原点，一个是$\mathbb{R}^2$去掉以坐标原点为圆心，1为半径的圆形区域，然后积分区域是半径为2的圆形区域，利用stokes公式，边界将会与流形本身有关，第一个流形只有圆形边界，第二个还有一个坐标原点的间断点(但是有限间断点不影响积分)，第三个是1为半径的圆形区域也要算上，所以边界与流形本身也有关系<br>再考虑一个删去一条线段的流形，对于这种情况间断点是无穷的，所以化归到第三种情况<br>而欧式空间，是默认的单连通区域，不存在这些问题<br>当然不只是间断点，只要其积分是0就可以忽略影响，例如把转化来的三重积分中有区域是一条线段，没有体积，其对式子也没有影响</p>
+<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
+<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
+<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，由于微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用</p>
+<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0</p>
+<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
+<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>注意微分流形是光滑张量场，给它降级就需要<strong>结果</strong>也是在M上的<strong>光滑</strong>张量场，如果间断必然是不成立的，这就是上一级微分流形的要求，覆盖全部，且需要光滑，因而上一级微分形式有可能不存在，而下一级微分形式就必然存在。这就是下面叙述中所谓的<strong>有意义</strong><br>如下图，注意$d\omega=0$只是有恰当形式的<strong>必要条件</strong>，Stokes公式中$\omega$与$d\omega$必须都必须在大的整体的流形上<strong>有意义</strong>(给它降级就需要<strong>结果</strong>也是在M上也是的<strong>光滑</strong>张量场，如果间断必然是不成立的，此处”光滑”指”在任意坐标图中场系数是光滑函数”)。因而方法就是，解PDE，所得到结果需要判断是否能够在整个整体上有意义有意义，像什么无穷大肯定是不行的，由于微分形式是光滑张量场，其实也就是没有间断点了，整有意义才能使用stokes公式成立降级，但有部分无意义<strong>未必</strong>stokes式子不成立，这就不是stokes定理考虑的情况了</p>
 <p><img src="/images/微分流形公式整理_图3.png"></p>
 
