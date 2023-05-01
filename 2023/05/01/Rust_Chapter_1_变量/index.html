@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Rust_Chapter_1_变量这一章节内容主要是Rust的变量">
+  <meta name="description" content="Rust_Chapter_1_变量这一章节内容主要是Rust的变量 前言从现在开始，我正式开始学习Rust。Rust相对于C++在出于安全的规范优势不必多说，我发现Rust也能用于嵌入式开发。因而我受够了，快用Rust重写(乐)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust_Chapter_1_变量">
 <meta property="og:url" content="https://feipiao594.github.io/2023/05/01/Rust_Chapter_1_%E5%8F%98%E9%87%8F/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="Rust_Chapter_1_变量这一章节内容主要是Rust的变量">
+<meta property="og:description" content="Rust_Chapter_1_变量这一章节内容主要是Rust的变量 前言从现在开始，我正式开始学习Rust。Rust相对于C++在出于安全的规范优势不必多说，我发现Rust也能用于嵌入式开发。因而我受够了，快用Rust重写(乐)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-01T07:45:27.822Z">
-<meta property="article:modified_time" content="2023-05-01T08:07:17.386Z">
+<meta property="article:modified_time" content="2023-05-01T08:14:33.077Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-05-01 15:45:27 / 修改时间：16:07:17" itemprop="dateCreated datePublished" datetime="2023-05-01T15:45:27+08:00">2023-05-01</time>
+              <time title="创建时间：2023-05-01 15:45:27 / 修改时间：16:14:33" itemprop="dateCreated datePublished" datetime="2023-05-01T15:45:27+08:00">2023-05-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,8 +209,8 @@
 
       
         <h1 id="Rust-Chapter-1-变量"><a href="#Rust-Chapter-1-变量" class="headerlink" title="Rust_Chapter_1_变量"></a>Rust_Chapter_1_变量</h1><p>这一章节内容主要是Rust的变量</p>
-<span id="more"></span>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从现在开始，我正式开始学习Rust。Rust相对于C++在出于安全的<strong>规范优势</strong>不必多说，我发现Rust也能用于嵌入式开发。<br>因而我受够了，<strong>快用Rust重写</strong>(乐)</p>
+<span id="more"></span>
 <blockquote>
 <p>在写这一章的时候，我手头看的这一本书是《Rust权威指南》，虽说序论中说并不适合新手，但是就我读了前三章似乎也没有遇见特别难懂的概念。</p>
 </blockquote>
@@ -221,11 +221,83 @@
 <h3 id="可变变量"><a href="#可变变量" class="headerlink" title="可变变量"></a>可变变量</h3><p>像可变变量就很类似C/C++了，其在第一次声明的时候类型就已经被确定了<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">x</span> = <span class="number">666</span>;</span><br><span class="line">    x = <span class="number">233</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这里声明了x是一个可变变量，第二句就修改了它的值，但<strong>x的类型</strong>在第一句的时候就已经被<strong>确认</strong>是一个整型了(下面会讲到，这里是<strong>自动类型推导</strong>)，如果在这个时候把第二句改成<code>x = 233.2</code>就会报错</p>
 <h3 id="let即隐藏-amp-可变与不可变的底层内涵"><a href="#let即隐藏-amp-可变与不可变的底层内涵" class="headerlink" title="let即隐藏&amp;可变与不可变的底层内涵"></a>let即隐藏&amp;可变与不可变的底层内涵</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = <span class="number">233</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, a);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">a</span> = <span class="number">233</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, a);</span><br><span class="line">    a = <span class="number">666</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//正确编译，结果如下</span></span><br><span class="line"><span class="comment">//233</span></span><br><span class="line"><span class="comment">//233</span></span><br><span class="line"><span class="comment">//666</span></span><br></pre></td></tr></table></figure>
 <p>注意<code>let</code>代表的就是shadow的含义，既然是隐藏，那么意味着类型可以被更改，也就是说第二个<code>let mut a = 233;</code>时a就变成了一个可变变量了，但原来上面第一个的<code>let a = 233</code>中233还存在于栈上，并<strong>没有被改变</strong>，只是a不再能访问到它了而已。第三句由于a已经是一个可变变量了，自然也是成立的</p>
-<p>可以看看如下<strong>缩减的汇编码</strong>，本篇文档记录时使用的环境为<code>rustc 1.69.0 (84c898d65 2023-04-16)</code><br>上述代码经过<code>rustc -O --emit asm=main.s .\main.rs</code>生成的完整的汇编文件<a target="_blank" rel="noopener" href="https://github.com/feipiao594/Self-study-notes/blob/main/CS_%E8%AE%A1%E7%AE%97%E6%9C%BA/Rust/Rust_Chapter_1_%E5%8F%98%E9%87%8F_%E7%A4%BA%E4%BE%8B%E6%96%87%E4%BB%B6.s">github仓库链接</a><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_ZN4main4main17hd0d97daef3a32cf2E:</span><br><span class="line">...</span><br><span class="line">movl	$233, 36(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E</span><br><span class="line">...</span><br><span class="line">movl	$233, 32(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E、</span><br><span class="line">...</span><br><span class="line">movl	$666, 32(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E</span><br></pre></td></tr></table></figure><br>可以清晰的看到Rust所承诺的<strong>不可变变量的不可被修改性</strong>，也可以看到<strong>可变变量在原位被更改</strong>，而let就是生成一个崭新的变量，在地址上区别于原对象，这不像C++，因为C++是不允许局部静态变量重复被初始化的</p>
+<p>可以看看如下<strong>缩减的汇编码</strong>，本篇文档记录时使用的环境为<code>rustc 1.69.0 (84c898d65 2023-04-16)</code><br>上述代码经过<code>rustc -O --emit asm=main.s .\main.rs</code>生成的<a target="_blank" rel="noopener" href="https://github.com/feipiao594/Self-study-notes/blob/main/CS_%E8%AE%A1%E7%AE%97%E6%9C%BA/Rust/Rust_Chapter_1_%E5%8F%98%E9%87%8F_%E7%A4%BA%E4%BE%8B%E6%96%87%E4%BB%B6.s">完整的汇编文件github仓库链接</a><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_ZN4main4main17hd0d97daef3a32cf2E:</span><br><span class="line">...</span><br><span class="line">movl	$233, 36(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E</span><br><span class="line">...</span><br><span class="line">movl	$233, 32(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E、</span><br><span class="line">...</span><br><span class="line">movl	$666, 32(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E</span><br></pre></td></tr></table></figure><br>可以清晰的看到Rust所承诺的<strong>不可变变量的不可被修改性</strong>，也可以看到<strong>可变变量在原位被更改</strong>，而let就是生成一个崭新的变量，在地址上区别于原对象，这不像C++，因为C++是不允许局部静态变量重复被初始化的</p>
 <h3 id="变量的类型"><a href="#变量的类型" class="headerlink" title="变量的类型"></a>变量的类型</h3><p>Rust是一个<strong>强类型</strong>的语言，但从上面的例子好像看不出来，因为它存在有<strong>自动的类型推导</strong>，当然我们也<strong>可以显式</strong>的给它声明变量是什么类型，如下<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">test</span>: <span class="type">u32</span> = <span class="number">42</span>;</span><br></pre></td></tr></table></figure><br>有时候Rust无法推导出变量的类型，我们就不能去掉这个显式声明的过程，如下段代码，就不能去除<code>: u32</code>，否则就会愉快的报错<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">guess</span>: <span class="type">u32</span> = <span class="string">&quot;42&quot;</span>.<span class="title function_ invoke__">parse</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Not a number!&quot;</span>);</span><br></pre></td></tr></table></figure><br>Rust中内建了4种基础的标量类型：整型、浮点数、布尔值与字符，2种内置的基础的复合类型：元组(tuple)和数组(array)</p>
-<h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p>没啥好说的，直接上表格<br><strong>Rust中的整数类型</strong><br>|长度|有符号|无符号|<br>|—-|—-|—-|<br>|8-bit|i8|u8|<br>|16-bit|i16|u16|<br>|32-bit|i32|u32|<br>|64-bit|i64|u64|<br>|arch|isize|usize|</p>
+<h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p>没啥好说的，直接上表格</p>
+<p><strong>Rust中的整数类型</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>有符号</th>
+<th>无符号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8-bit</td>
+<td>i8</td>
+<td>u8</td>
+</tr>
+<tr>
+<td>16-bit</td>
+<td>i16</td>
+<td>u16</td>
+</tr>
+<tr>
+<td>32-bit</td>
+<td>i32</td>
+<td>u32</td>
+</tr>
+<tr>
+<td>64-bit</td>
+<td>i64</td>
+<td>u64</td>
+</tr>
+<tr>
+<td>arch</td>
+<td>isize</td>
+<td>usize</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>最后一行的<code>isize</code>和<code>usize</code>的长度取决于程序运行的目标平台，在64位上就64位，32位上就32位</p>
-<p>你可以使用如下表的方式书写整型字面量，注意，除了Byte，其余所有的字面量都可以使用<strong>整型后缀</strong>，比如<code>57u8</code>，代表一个使用了u8类型的整数57。同时你可以使用<code>_</code>作为<strong>分隔符</strong>方便读数，比如<code>1_000</code><br><strong>Rust中的整型字面量</strong><br>|整型字面量|示例|<br>|—-|—-|<br>|Decimal|98_222|<br>|Hex|0xff|<br>|Octal|0o77|<br>|Binary|0b1111_0000|<br>|Byte(u8 only)|b’A’|</p>
+<p>你可以使用如下表的方式书写整型字面量，注意，除了Byte，其余所有的字面量都可以使用<strong>整型后缀</strong>，比如<code>57u8</code>，代表一个使用了u8类型的整数57。同时你可以使用<code>_</code>作为<strong>分隔符</strong>方便读数，比如<code>1_000</code></p>
+<p><strong>Rust中的整型字面量</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>整型字面量</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decimal</td>
+<td>98_222</td>
+</tr>
+<tr>
+<td>Hex</td>
+<td>0xff</td>
+</tr>
+<tr>
+<td>Octal</td>
+<td>0o77</td>
+</tr>
+<tr>
+<td>Binary</td>
+<td>0b1111_0000</td>
+</tr>
+<tr>
+<td>Byte(u8 only)</td>
+<td>b’A’</td>
+</tr>
+</tbody>
+</table>
+</div>
 <p>关于整型的类型溢出，在debug版本下会直接被Rust检测到，<strong>弹出panic并结束程序</strong>，在release版本下会形成经典的C/C++中的overflowing，这本书中称为<strong>二进制补码环绕</strong>，如果希望显示使用环绕，可以使用标准库中的类型<code>Wrapping</code></p>
 <h3 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h3><p>基本的两个类型<code>f32</code>与<code>f64</code>，依照遵循IEEE-754，Rust中浮点数字面量默认推导为<code>f64</code></p>
 <h3 id="Bool类型"><a href="#Bool类型" class="headerlink" title="Bool类型"></a>Bool类型</h3><p>没啥好说的，和其它编程语言一致，都是<code>True</code>和<code>False</code>，类型名就是<code>Bool</code></p>
