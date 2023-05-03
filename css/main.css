@@ -1193,7 +1193,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a6c9ff;
+  background: #e81391;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2625,6 +2625,7 @@ mjx-container + br {
   font-size: 20px;
 }
 .category-all-page .category-list-child {
+  padding-left: 45px;
   list-style: none;
 }
 /* sidebar social icon */
