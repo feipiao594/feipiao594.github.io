@@ -20,17 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="594飞飘的个人博客">
-<meta property="og:url" content="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/C-grammar/index.html">
+  <meta name="description" content="Rust_Chapter_3_所有权未完待续">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust_Chapter_3_所有权">
+<meta property="og:url" content="https://feipiao594.github.io/2023/05/03/Rust_Chapter_3_%E6%89%80%E6%9C%89%E6%9D%83/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+<meta property="og:description" content="Rust_Chapter_3_所有权未完待续">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-05-03T07:22:36.610Z">
+<meta property="article:modified_time" content="2023-05-03T06:25:40.343Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/C-grammar/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/05/03/Rust_Chapter_3_%E6%89%80%E6%9C%89%E6%9D%83/">
 
 
 <script id="page-configurations">
@@ -38,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>分类: C++grammar | 594飞飘的个人博客</title>
+  <title>Rust_Chapter_3_所有权 | 594飞飘的个人博客</title>
   
 
 
@@ -148,77 +150,101 @@
         <div class="content-wrap">
           
 
-          <div class="content category">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">C++grammar
-          <small>分类</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/05/03/Rust_Chapter_3_%E6%89%80%E6%9C%89%E6%9D%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust_Chapter_3_所有权
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-05-03 15:22:36 / 修改时间：14:25:40" itemprop="dateCreated datePublished" datetime="2023-05-03T15:22:36+08:00">2023-05-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Rust/" itemprop="url" rel="index"><span itemprop="name">Rust</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
+        <h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>未完待续</p>
+<span id="more"></span>
+<h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-03-18T14:09:13+08:00"
-              content="2023-03-18">
-          03-18
-        </time>
-      </div>
+      <footer class="post-footer">
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/03/18/C%E4%B8%8EC++%E7%9A%84%E5%A4%8D%E6%9D%82%E5%A3%B0%E6%98%8E/" itemprop="url">
-            <span itemprop="name">C/C++的特别复杂的类型</span>
-          </a>
-      </div>
+        
 
-    </header>
-  </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-03-18T14:09:13+08:00"
-              content="2023-03-18">
-          03-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/03/18/C++%E5%BC%95%E7%94%A8/" itemprop="url">
-            <span itemprop="name">C++引用</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/05/03/Rust_Chapter_2_%E9%80%9A%E7%94%A8%E7%BC%96%E7%A8%8B%E6%A6%82%E5%BF%B5%20copy/" rel="prev" title="Rust_Chapter_2_通用编程概念">
+      <i class="fa fa-chevron-left"></i> Rust_Chapter_2_通用编程概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/05/03/%E5%9C%86%E7%9B%98%E6%91%A9%E6%93%A6%E5%8A%9B%E7%9F%A9/" rel="next" title="圆盘摩擦力矩">
+      圆盘摩擦力矩 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-  </div>
+      </footer>
+    
+  </article>
   
   
-  
-
   
 
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -265,6 +291,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust-Chapter-3-%E6%89%80%E6%9C%89%E6%9D%83"><span class="nav-number">1.</span> <span class="nav-text">Rust_Chapter_3_所有权</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AA%E5%AE%8C%E5%BE%85%E7%BB%AD"><span class="nav-number">1.1.</span> <span class="nav-text">未完待续</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -280,14 +307,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
@@ -348,6 +375,8 @@
     </footer>
   </div>
 
+  <script type="text/javascript" src="/js/category.js"></script>
+
   
   <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
   <script src="/lib/anime.min.js"></script>
@@ -389,6 +418,25 @@
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : '83205ccfe6d458b4a50cd1ff8d332dfb',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
 </html>
