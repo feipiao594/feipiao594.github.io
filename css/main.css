@@ -1193,7 +1193,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff63ff;
+  background: #a6c9ff;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2619,6 +2619,14 @@ mjx-container + br {
   color: #202020;
   background: rgba(255,255,255,0.95) none repeat scroll !important;
 }
+.category-all-page .category-list-item {
+  margin: 15px 10px 10px 10px;
+  list-style: none;
+  font-size: 20px;
+}
+.category-all-page .category-list-child {
+  list-style: none;
+}
 /* sidebar social icon */
 .bilibili {
   background-image: url("/images/bilibili.svg");
@@ -2640,12 +2648,4 @@ body {
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
-}
-.category-all-page .category-list-item {
-  margin: 15px 10px 10px 10px;
-  list-style: none;
-  font-size: 20px;
-}
-.category-all-page .category-list-child {
-  list-style: none;
 }
