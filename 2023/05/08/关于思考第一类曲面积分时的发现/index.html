@@ -28,7 +28,7 @@
 <meta property="og:description" content="关于思考第一类曲面积分时的发现声明:本文是对知乎答主@李治林的回答的个人总结，原链接如下，侵权删https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;48421749&#x2F;answer&#x2F;134203246">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-05-08T07:22:35.518Z">
-<meta property="article:modified_time" content="2023-05-08T07:22:17.120Z">
+<meta property="article:modified_time" content="2023-05-08T08:51:13.604Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -181,7 +181,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-05-08 15:22:35 / 修改时间：15:22:17" itemprop="dateCreated datePublished" datetime="2023-05-08T15:22:35+08:00">2023-05-08</time>
+              <time title="创建时间：2023-05-08 15:22:35 / 修改时间：16:51:13" itemprop="dateCreated datePublished" datetime="2023-05-08T15:22:35+08:00">2023-05-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -211,7 +211,7 @@
         <h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
 <h2 id="从线元到面元"><a href="#从线元到面元" class="headerlink" title="从线元到面元"></a>从线元到面元</h2><p>首先我们知道在弧微分里的线元是长成这样的，我们在当时微分流形公式里也有写到</p>
 <script type="math/tex; mode=display">ds^2=g_{ij}dx^i dx^j</script><p>其实它可以是由下面这个式子经过坐标变换得到</p>
-<script type="math/tex; mode=display">ds^2=(dx^i)^2</script><p>这个式子其实就是二维空间里经典的勾股定理，那么要想把它推广到三维，从第一类曲线积分推广到第一类曲面积分，那么我们需要找到所谓三维的勾股定理</p>
+<script type="math/tex; mode=display">ds^2=(dx^i)^2</script><p>这个式子其实就是二维空间里经典的勾股定理，那么要想把它推广到三维，从第一类曲线积分推广到第一类曲面积分，那么我们需要找到所谓三维的勾股定理<br>注意，对于第一类积分，只要保证开根号的结果与原坐标系同向即可保证符号相同，即在子流形上诱导的顺序(而不是stokes的顺序)，在形式上就是顺序是和原坐标系轮换顺序一致</p>
 <h2 id="三维的勾股定理"><a href="#三维的勾股定理" class="headerlink" title="三维的勾股定理"></a>三维的勾股定理</h2><p>这个只给出，但我不做证明，其实还是挺简单的，当然在链接里，李老师还是给出了证明</p>
 <script type="math/tex; mode=display">S_4^2=S_1^2+S_2^2+S_3^2</script><h2 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h2><p>由上面这个<strong>三维勾股定理</strong>就可以导出这个</p>
 <script type="math/tex; mode=display">ds^2=(dydz)^2+(dzdx)^2+(dxdy)^2</script><p>首先注意，两个对偶矢量之间的符号是楔积，但平方代表的是张量积<br>这点和弧微分是对应的，如果说这个平方代表的是楔积的话，$ds$直接就是0了，那显然不对<br>提出因子$dxdy$就可以得到</p>
