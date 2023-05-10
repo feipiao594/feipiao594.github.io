@@ -20,19 +20,21 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="排序算法排序算法是最经典的算法知识。其实现代码短，应用广如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序">
+  <meta name="description" content="关于51单片机移植u8g2失败经历前言因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了  前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下">
 <meta property="og:type" content="article">
-<meta property="og:title" content="排序">
-<meta property="og:url" content="https://feipiao594.github.io/2023/03/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:title" content="关于51单片机移植u8g2失败经历">
+<meta property="og:url" content="https://feipiao594.github.io/2023/05/10/%E5%85%B3%E4%BA%8E51%E5%8D%95%E7%89%87%E6%9C%BA%E7%A7%BB%E6%A4%8Du8g2%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="排序算法排序算法是最经典的算法知识。其实现代码短，应用广如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序">
+<meta property="og:description" content="关于51单片机移植u8g2失败经历前言因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了  前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-20T14:39:09.474Z">
-<meta property="article:modified_time" content="2023-05-03T10:12:49.472Z">
+<meta property="og:image" content="https://feipiao594.github.io/images/%E5%85%B3%E4%BA%8E51%E5%8D%95%E7%89%87%E6%9C%BA%E7%A7%BB%E6%A4%8Du8g2%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86_%E5%9B%BE1.jpg">
+<meta property="article:published_time" content="2023-05-10T15:13:04.861Z">
+<meta property="article:modified_time" content="2023-05-10T15:13:37.268Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://feipiao594.github.io/images/%E5%85%B3%E4%BA%8E51%E5%8D%95%E7%89%87%E6%9C%BA%E7%A7%BB%E6%A4%8Du8g2%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86_%E5%9B%BE1.jpg">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/03/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/05/10/%E5%85%B3%E4%BA%8E51%E5%8D%95%E7%89%87%E6%9C%BA%E7%A7%BB%E6%A4%8Du8g2%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">
 
 
 <script id="page-configurations">
@@ -45,7 +47,7 @@
   };
 </script>
 
-  <title>排序 | 594飞飘的个人博客</title>
+  <title>关于51单片机移植u8g2失败经历 | 594飞飘的个人博客</title>
   
 
 
@@ -157,7 +159,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/03/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/05/10/%E5%85%B3%E4%BA%8E51%E5%8D%95%E7%89%87%E6%9C%BA%E7%A7%BB%E6%A4%8Du8g2%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -170,7 +172,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          排序
+          关于51单片机移植u8g2失败经历
         </h1>
 
         <div class="post-meta">
@@ -179,31 +181,21 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-03-20 22:39:09" itemprop="dateCreated datePublished" datetime="2023-03-20T22:39:09+08:00">2023-03-20</time>
+              <time title="创建时间：2023-05-10 23:13:04 / 修改时间：23:13:37" itemprop="dateCreated datePublished" datetime="2023-05-10T23:13:04+08:00">2023-05-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-05-03 18:12:49" itemprop="dateModified" datetime="2023-05-03T18:12:49+08:00">2023-05-03</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                  <a href="/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">EE_电子工程</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/" itemprop="url" rel="index"><span itemprop="name">Basic_principles</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/" itemprop="url" rel="index"><span itemprop="name">DSA</span></a>
+                  <a href="/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">单片机</span></a>
                 </span>
             </span>
 
@@ -218,9 +210,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
+        <h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
+<blockquote>
+<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
+</blockquote>
 <span id="more"></span>
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
+<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
+<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
+<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
+</blockquote>
+<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
+
     </div>
 
     
@@ -235,13 +237,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/03/19/%E5%85%B3%E4%BA%8E%E5%A4%9A%E5%85%83%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%B0%E6%83%91%E4%B8%8E%E6%80%9D%E8%80%83/" rel="prev" title="关于多元复合函数的困惑与思考">
-      <i class="fa fa-chevron-left"></i> 关于多元复合函数的困惑与思考
+    <a href="/2023/05/08/%E5%85%B3%E4%BA%8E%E6%80%9D%E8%80%83%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%9B%B2%E9%9D%A2%E7%A7%AF%E5%88%86%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0/" rel="prev" title="关于思考第一类曲面积分时的发现">
+      <i class="fa fa-chevron-left"></i> 关于思考第一类曲面积分时的发现
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/03/20/%E9%AB%98%E7%B2%BE%E5%BA%A6/" rel="next" title="高精度">
-      高精度 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -301,7 +300,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">快速排序</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E51%E5%8D%95%E7%89%87%E6%9C%BA%E7%A7%BB%E6%A4%8Du8g2%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86"><span class="nav-number">1.</span> <span class="nav-text">关于51单片机移植u8g2失败经历</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EC51%E7%9A%84%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">1.2.</span> <span class="nav-text">关于C51的关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%95%B0%E7%BB%84%E8%B6%85%E9%99%90%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">关于数组超限的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E8051%E5%AF%B9%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88not-well-suit"><span class="nav-number">1.4.</span> <span class="nav-text">关于8051对函数指针not well suit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">1.5.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -437,7 +436,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '8b96c882b03ec7695ec101e313af6a5c',
+      id          : '8925e57bb705440172b3551dd5ec0983',
         language: 'zh-CN',
       distractionFreeMode: true
     });
