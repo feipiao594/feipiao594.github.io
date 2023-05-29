@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-05-10T15:20:26.308Z</updated>
+  <updated>2023-05-29T02:44:02.345Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>日常碎碎念_3</title>
+    <link href="https://feipiao594.github.io/2023/05/29/%E6%97%A5%E5%B8%B8%E7%A2%8E%E7%A2%8E%E5%BF%B5_3/"/>
+    <id>https://feipiao594.github.io/2023/05/29/%E6%97%A5%E5%B8%B8%E7%A2%8E%E7%A2%8E%E5%BF%B5_3/</id>
+    <published>2023-05-29T02:44:12.581Z</published>
+    <updated>2023-05-29T02:44:02.345Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;日常碎碎念-3&quot;&gt;&lt;a href=&quot;#日常碎碎念-3&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_3&quot;&gt;&lt;/a&gt;日常碎碎念_3&lt;/h1&gt;&lt;p&gt;日常碎碎念_3，日常碎碎念，生人勿进&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>关于51单片机移植u8g2失败经历</title>
@@ -387,23 +404,6 @@
     <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
     
     <category term="Analysis" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>含水滚筒的水平面</title>
-    <link href="https://feipiao594.github.io/2023/03/18/%E5%90%AB%E6%B0%B4%E6%BB%9A%E7%AD%92%E7%9A%84%E6%B0%B4%E5%B9%B3%E9%9D%A2/"/>
-    <id>https://feipiao594.github.io/2023/03/18/%E5%90%AB%E6%B0%B4%E6%BB%9A%E7%AD%92%E7%9A%84%E6%B0%B4%E5%B9%B3%E9%9D%A2/</id>
-    <published>2023-03-18T06:09:13.799Z</published>
-    <updated>2023-05-03T08:31:29.511Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;含水滚筒的水平面&quot;&gt;&lt;a href=&quot;#含水滚筒的水平面&quot; class=&quot;headerlink&quot; title=&quot;含水滚筒的水平面&quot;&gt;&lt;/a&gt;含水滚筒的水平面&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Physics" scheme="https://feipiao594.github.io/categories/Physics/"/>
     
     
   </entry>
