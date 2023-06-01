@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-05-29T04:27:07.850Z</updated>
+  <updated>2023-06-01T04:54:47.050Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,18 +17,39 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>文章加密Test</title>
-    <link href="https://feipiao594.github.io/2023/05/29/%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86Test/"/>
-    <id>https://feipiao594.github.io/2023/05/29/%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86Test/</id>
-    <published>2023-05-29T04:16:40.315Z</published>
-    <updated>2023-05-29T04:27:07.850Z</updated>
+    <title>关于三维流形上一般旋度公式</title>
+    <link href="https://feipiao594.github.io/2023/06/01/%E5%85%B3%E4%BA%8E%E4%B8%89%E7%BB%B4%E6%B5%81%E5%BD%A2%E4%B8%8A%E4%B8%80%E8%88%AC%E6%97%8B%E5%BA%A6%E5%85%AC%E5%BC%8F/"/>
+    <id>https://feipiao594.github.io/2023/06/01/%E5%85%B3%E4%BA%8E%E4%B8%89%E7%BB%B4%E6%B5%81%E5%BD%A2%E4%B8%8A%E4%B8%80%E8%88%AC%E6%97%8B%E5%BA%A6%E5%85%AC%E5%BC%8F/</id>
+    <published>2023-06-01T04:49:56.716Z</published>
+    <updated>2023-06-01T04:54:47.050Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;关于三维流形上一般旋度公式&quot;&gt;&lt;a href=&quot;#关于三维流形上一般旋度公式&quot; class=&quot;headerlink&quot; title=&quot;关于三维流形上一般旋度公式&quot;&gt;&lt;/a&gt;关于三维流形上一般旋度公式&lt;/h1&gt;&lt;p&gt;本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的&lt;strong&gt;等价性&lt;/strong&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
+    
+    <category term="Analysis" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo文章加密(密码123456)</title>
+    <link href="https://feipiao594.github.io/2023/06/01/Hexo%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86/"/>
+    <id>https://feipiao594.github.io/2023/06/01/Hexo%E6%96%87%E7%AB%A0%E5%8A%A0%E5%AF%86/</id>
+    <published>2023-06-01T04:49:56.532Z</published>
+    <updated>2023-06-01T04:54:57.241Z</updated>
     
     
     <summary type="html">内容已加密，请输入密码后阅读，请注意加密文件无目录</summary>
     
     
     
-    <category term="Locked_Blog" scheme="https://feipiao594.github.io/categories/Locked-Blog/"/>
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Tools/"/>
     
     
   </entry>
@@ -385,25 +406,6 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>关于多元复合函数的困惑与思考</title>
-    <link href="https://feipiao594.github.io/2023/03/19/%E5%85%B3%E4%BA%8E%E5%A4%9A%E5%85%83%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%B0%E6%83%91%E4%B8%8E%E6%80%9D%E8%80%83/"/>
-    <id>https://feipiao594.github.io/2023/03/19/%E5%85%B3%E4%BA%8E%E5%A4%9A%E5%85%83%E5%A4%8D%E5%90%88%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%B0%E6%83%91%E4%B8%8E%E6%80%9D%E8%80%83/</id>
-    <published>2023-03-19T10:51:41.233Z</published>
-    <updated>2023-05-03T08:05:45.712Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;关于多元复合函数的困惑与思考&quot;&gt;&lt;a href=&quot;#关于多元复合函数的困惑与思考&quot; class=&quot;headerlink&quot; title=&quot;关于多元复合函数的困惑与思考&quot;&gt;&lt;/a&gt;关于多元复合函数的困惑与思考&lt;/h1&gt;&lt;p&gt;导读:偏导数是相对某个具体的坐标系才有意义的。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
-    
-    <category term="Analysis" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis/"/>
     
     
   </entry>
