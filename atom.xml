@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-06-01T04:54:47.050Z</updated>
+  <updated>2023-06-02T06:52:01.360Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>有界多体问题轨道封闭性问题</title>
+    <link href="https://feipiao594.github.io/2023/06/02/%E6%9C%89%E7%95%8C%E5%A4%9A%E4%BD%93%E9%97%AE%E9%A2%98%E8%BD%A8%E9%81%93%E5%B0%81%E9%97%AD%E6%80%A7%E9%97%AE%E9%A2%98%E7%8B%82%E6%83%B3/"/>
+    <id>https://feipiao594.github.io/2023/06/02/%E6%9C%89%E7%95%8C%E5%A4%9A%E4%BD%93%E9%97%AE%E9%A2%98%E8%BD%A8%E9%81%93%E5%B0%81%E9%97%AD%E6%80%A7%E9%97%AE%E9%A2%98%E7%8B%82%E6%83%B3/</id>
+    <published>2023-06-02T06:53:31.199Z</published>
+    <updated>2023-06-02T06:52:01.360Z</updated>
+    
+    
+    <summary type="html">此篇为狂想，没什么意义，就加密了</summary>
+    
+    
+    
+    <category term="Physics" scheme="https://feipiao594.github.io/categories/Physics/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>日常碎碎念_3</title>
+    <link href="https://feipiao594.github.io/2023/06/02/%E6%97%A5%E5%B8%B8%E7%A2%8E%E7%A2%8E%E5%BF%B5_3/"/>
+    <id>https://feipiao594.github.io/2023/06/02/%E6%97%A5%E5%B8%B8%E7%A2%8E%E7%A2%8E%E5%BF%B5_3/</id>
+    <published>2023-06-02T06:53:31.184Z</published>
+    <updated>2023-06-02T06:53:04.874Z</updated>
+    
+    
+    <summary type="html">此篇加密，随性而为，比较重要</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>关于三维流形上一般旋度公式</title>
@@ -364,48 +398,6 @@
     <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
     
     <category term="Math_modeling" scheme="https://feipiao594.github.io/categories/Mathematic/Math-modeling/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>高精度</title>
-    <link href="https://feipiao594.github.io/2023/03/20/%E9%AB%98%E7%B2%BE%E5%BA%A6/"/>
-    <id>https://feipiao594.github.io/2023/03/20/%E9%AB%98%E7%B2%BE%E5%BA%A6/</id>
-    <published>2023-03-20T14:39:09.487Z</published>
-    <updated>2023-05-03T10:12:44.497Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;高精度&quot;&gt;&lt;a href=&quot;#高精度&quot; class=&quot;headerlink&quot; title=&quot;高精度&quot;&gt;&lt;/a&gt;高精度&lt;/h1&gt;&lt;p&gt;以下给出高精度加法与高精度乘法的模板&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>排序</title>
-    <link href="https://feipiao594.github.io/2023/03/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
-    <id>https://feipiao594.github.io/2023/03/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</id>
-    <published>2023-03-20T14:39:09.474Z</published>
-    <updated>2023-05-03T10:12:49.472Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;排序算法&quot;&gt;&lt;a href=&quot;#排序算法&quot; class=&quot;headerlink&quot; title=&quot;排序算法&quot;&gt;&lt;/a&gt;排序算法&lt;/h1&gt;&lt;p&gt;排序算法是最经典的算法知识。其实现代码短，应用广&lt;br&gt;如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
     
     
   </entry>

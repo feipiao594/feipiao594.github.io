@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="初识stm32挖坑挖坑">
+  <meta name="description" content="此篇为狂想，没什么意义，就加密了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初识stm32">
-<meta property="og:url" content="https://feipiao594.github.io/2023/05/04/%E5%88%9D%E8%AF%86stm32/index.html">
+<meta property="og:title" content="有界多体问题轨道封闭性问题">
+<meta property="og:url" content="https://feipiao594.github.io/2023/06/02/%E6%9C%89%E7%95%8C%E5%A4%9A%E4%BD%93%E9%97%AE%E9%A2%98%E8%BD%A8%E9%81%93%E5%B0%81%E9%97%AD%E6%80%A7%E9%97%AE%E9%A2%98%E7%8B%82%E6%83%B3/index.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="初识stm32挖坑挖坑">
+<meta property="og:description" content="此篇为狂想，没什么意义，就加密了">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-04T14:52:58.839Z">
-<meta property="article:modified_time" content="2023-05-04T15:00:49.218Z">
+<meta property="article:published_time" content="2023-06-02T06:53:31.199Z">
+<meta property="article:modified_time" content="2023-06-02T06:52:01.360Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/2023/05/04/%E5%88%9D%E8%AF%86stm32/">
+<link rel="canonical" href="https://feipiao594.github.io/2023/06/02/%E6%9C%89%E7%95%8C%E5%A4%9A%E4%BD%93%E9%97%AE%E9%A2%98%E8%BD%A8%E9%81%93%E5%B0%81%E9%97%AD%E6%80%A7%E9%97%AE%E9%A2%98%E7%8B%82%E6%83%B3/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>初识stm32 | 594飞飘的个人博客</title>
+  <title>有界多体问题轨道封闭性问题 | 594飞飘的个人博客</title>
   
 
 
@@ -186,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/05/04/%E5%88%9D%E8%AF%86stm32/">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/2023/06/02/%E6%9C%89%E7%95%8C%E5%A4%9A%E4%BD%93%E9%97%AE%E9%A2%98%E8%BD%A8%E9%81%93%E5%B0%81%E9%97%AD%E6%80%A7%E9%97%AE%E9%A2%98%E7%8B%82%E6%83%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -199,7 +199,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          初识stm32
+          有界多体问题轨道封闭性问题
         </h1>
 
         <div class="post-meta">
@@ -210,7 +210,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-05-04 22:52:58 / 修改时间：23:00:49" itemprop="dateCreated datePublished" datetime="2023-05-04T22:52:58+08:00">2023-05-04</time>
+              <time title="创建时间：2023-06-02 14:53:31 / 修改时间：14:52:01" itemprop="dateCreated datePublished" datetime="2023-06-02T14:53:31+08:00">2023-06-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -218,11 +218,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">EE_电子工程</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">单片机</span></a>
+                  <a href="/categories/Physics/" itemprop="url" rel="index"><span itemprop="name">Physics</span></a>
                 </span>
             </span>
 
@@ -237,10 +233,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>挖坑挖坑</p>
-<span id="more"></span>
-<p>挖坑挖坑</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>
+        <div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="您输入的密码有误" data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="bee54cadb16eb4b29012f4fb7dd3ff9ba7b7be1e49f9b5fe092d81e66dd9b3d1">c423d735676a1b42a4d3d0da914a545edda7e563d9510560d0e71fa3b3a027826e2419e97153aa3e1d95bc611db323f71f03bef467b7881a94eab73c8043ab397f9614dbb9b104cfc1e9f60b3c7a433f597d488fd1cf42bffdf8e7e5ffe9287cbfcc1fb69955d0faaa30e44e270b764f10db2aaa7155de0de1cbcf498d86aa75e85c41c31ffd3d7d60e22123839b6706377c47de9d955e3aeba303ece8a9e50c96ff2c494eb3cd09eb633d176d4208ee3ae4d5b6b6083f4df9289ef46a614020feeef08a30d6be7af9545f24e5e72119dd49d3dac74daeaf690243f6b284f1f1590ecece26251cce14fe7334cdb8437992707d31e1869b5527aea02a4d67e571e6af6534e4b9d7053e816097a741923725946a5a21d22035d6fc6a308729c64ad0da9c8b349016797d578a9f082c0c8410aa0a7bd8e959d980aed91592b1217e6901a6113e3a01eee58d5bc48415cb041c3c042b83b54d69a58ef22e9779e6c81e54795061f154d9ab3fbc40b46626cc2cb788358b59681c04f5c88aa47b160891154da46048b095e4dcc066932f01d11eafcd865739867b5777a5c310b30adeb09dc7167ba45628e9a5b9b1aa5c0837241d7e5e38039391f46d4fec91019a71985008b3562ea3c3161739d41c2dcfa5889a8e130392bcc4f3e61698cf215f2d275f9844d8c028ae777f7db5c4633832a83c784f4d51d82232aa5619c307a49bb7a40d7896b354b2683e054e9ff8791061fb471cc21c74f98b218759f937b064786b03b03f0f7ec232e2ba93626b46418904a956f080992c74b169e17a7bfc1434eb824acb5a8bc98b4b5533d83d6e848eb1557a20a029e439019b06df1169cb541294835dd158977d335f85451a2a2db63f19eed06d297be5cec46b0bd6d439df246364c0bc4b8b35be44cc743eeff4cb7739a4740d1cb22a9620f5d1f9c8387fda72291f956e887775e2f2257f533812486a33af0d58018f041fc104bb470dfea766b714f9e9234a59d8288c3ea5e320c14bacbb252ecf11d06ff2b78b78b2a231508055284feb5277fd9b15eeb296c98d74221dbb6b22ba74728e471f499780e1d3fce58aa53b53dc7aa40a5ab576d8382a51d803576b8ca917ec661d8eda21f585c01ac447f237ef2357591c28977c460dd31fbdbc2fc28939d4e0bb1b8f5d6eff361dd534ca6aa27df3cbcf092ec9621ceef85b3d8c880a4ce671a6694f76645cba604cd03539d2623641c79b41fee1902b98d90a8fd736bd8bb62e59aa5d85538e303a91757bb737128e1bf23e9bf8a483b56b915d14b7140661298f24ba1978d60b6d55a4033895d343b46450da94181c5ce61926b5e7f113b1edfdd416ec3262c66160cc552c73893b4ee29edbfdd378c9cccfc749e21ebcb028abdcbb40b5cf6fba4875b92badba39d8470a1744ca12abb7dcd8d67633770bc5530a7ed3e73a1302b7ec81098bc2d1f935cdb12d5749ac8562cc772113842f7940af5ed068481af9ce3c78032e27a06320646e41dd18ff63401a0be03b740b2001fbc67ca116cd18ddc03d7aa0a026f990ffccae466fa5bf0b512d3f35b58ba36ed4fdc9345cc7b14be31017864afa99ed64ea17405d4bd930ba64afc5748270d6102f675cd2fcec3426d6e54e8fbe538761f7cbb39907d0cacf269a149138feb59a10681548021ee683f3da918fee2f9b13409cd8b096c9bddd0225de0c2c62ae14c9a14d45d91bc7cbdc16c5b78d5544656a5bddc6ab4c3cbccf801aebc4f52bd8c2c57e80493f051349d9d51f66535600e044a37b47a10fcdddb8488908f7545c307af2f20b5e534ee7960c48565f4ef76bcf5a9f7399825064b45d7fbb3782164b7145b8145f406c6b21b9f343dcdb51ea4cc72506fd93d3dc57ffef73e6649f8fd7c30f300b6ad1a0750b76d0198dfa2fce914e893f133759b5d5d4a1d3f1c04aaf17f063d7ec33cf44b678930e7e8175c98418ae75f2724e48ce1e91304b248044e596cf2c47ef622803c117ae301f6f5ad8bbfc6a4ae0da441c69782fd62772c820573440a44d46f9366c47bc1e28d167fbbc2705ec16b3a16b0553c35c06a8dd8b345c9671888987be989a057eb43afd997998883fa8eec4909654dcb047eb9383faa184c5fb5794d13c1dc0dcb9c48646bd0a7daabdd8ad05a8b705cd00321cb87f8a8d272b36371484d9b8ffb9120a4e1c6d51bee609b90fc7f365f22f4a4f429731e4eca061a287c8f88905f47c7665976d7a8f5522fc1c5a31c8e468d6b02779ad070ee71b52da7d769ac303115bb0e1f01cef682cea636c2cd9f22224b7a12ad785a7ec9711876e3fc7d5078da21c7530737183f05fb84e3875d20a39f46fd3f89deea431ab2f47e77eb5694309cd35a0d6f635bd7b67642a3c24bef8a34f6a24e011b1522eaaf978c770a230bc30bf966ea92842ec8448d56333667256c9c90ad7afcfbf3c4dd16ddff196e1905c4db7e87305636c47ad755deab9d23f8650910bab84ea979eafe81777acd72a0aa7beb3100eea3614bc8e93e8f88f68a7ca4ce9bc5a82c352770135c384c506906800f7e65d69da595161252a8c2ea3bdf1d9a78e314024bd8af50c9764f84b86caa55b85344ce83b1b8c4eb17c8f02defe2b9f608c6654da43db3f14efcf524b814bb9746375dc3c2fdd9e5044c6ab3f016e654c6c9cc6c330017428f5</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-flip">
+      <input class="hbe hbe-input-field hbe-input-field-flip" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-flip" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-flip" data-content="您好，这里需要密码。">您好，这里需要密码。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -255,13 +259,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/05/03/51%E5%8D%95%E7%89%87%E6%9C%BA%E5%88%9D%E6%AD%A5%E5%8D%B0%E8%B1%A1/" rel="prev" title="51单片机初步印象">
-      <i class="fa fa-chevron-left"></i> 51单片机初步印象
+    <a href="/2023/06/02/%E6%97%A5%E5%B8%B8%E7%A2%8E%E7%A2%8E%E5%BF%B5_3/" rel="prev" title="日常碎碎念_3">
+      <i class="fa fa-chevron-left"></i> 日常碎碎念_3
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/05/08/%E5%85%B3%E4%BA%8E%E6%80%9D%E8%80%83%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%9B%B2%E9%9D%A2%E7%A7%AF%E5%88%86%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0/" rel="next" title="关于思考第一类曲面积分时的发现">
-      关于思考第一类曲面积分时的发现 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -321,7 +322,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9D%E8%AF%86stm32"><span class="nav-number">1.</span> <span class="nav-text">初识stm32</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%BD%E5%B7%A5%E4%B8%AD"><span class="nav-number">1.1.</span> <span class="nav-text">施工中</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -447,6 +447,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
@@ -461,7 +514,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '3bbc4d212a025acb4c9d50d403c4469b',
+      id          : '6ddab8f54ffe339b040e71a187b8d922',
         language: 'zh-CN',
       distractionFreeMode: true
     });
