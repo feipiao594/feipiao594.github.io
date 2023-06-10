@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-06-02T07:03:18.746Z</updated>
+  <updated>2023-06-10T15:15:36.012Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,46 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>复变函数的微积分的诠释</title>
+    <link href="https://feipiao594.github.io/2023/06/10/%E5%A4%8D%E5%8F%98%E5%87%BD%E6%95%B0%E7%9A%84%E5%BE%AE%E7%A7%AF%E5%88%86%E7%9A%84%E8%AF%A0%E9%87%8A/"/>
+    <id>https://feipiao594.github.io/2023/06/10/%E5%A4%8D%E5%8F%98%E5%87%BD%E6%95%B0%E7%9A%84%E5%BE%AE%E7%A7%AF%E5%88%86%E7%9A%84%E8%AF%A0%E9%87%8A/</id>
+    <published>2023-06-10T15:16:18.485Z</published>
+    <updated>2023-06-10T15:15:36.012Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;复变函数的微积分的诠释&quot;&gt;&lt;a href=&quot;#复变函数的微积分的诠释&quot; class=&quot;headerlink&quot; title=&quot;复变函数的微积分的诠释&quot;&gt;&lt;/a&gt;复变函数的微积分的诠释&lt;/h1&gt;&lt;p&gt;作为电子类专业的学生，我从一开始就知道复变函数对我的重要性，原因是电路当中的知识会&lt;strong&gt;极大&lt;/strong&gt;的使用到复变函数。而常用的傅里叶变换，也将在复平面上进行，所以这一部分其实我必须搞清楚。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
+    
+    <category term="Complex_function" scheme="https://feipiao594.github.io/categories/Mathematic/Complex-function/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>C++模板元编程</title>
+    <link href="https://feipiao594.github.io/2023/06/10/C++%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B/"/>
+    <id>https://feipiao594.github.io/2023/06/10/C++%E6%A8%A1%E6%9D%BF%E5%85%83%E7%BC%96%E7%A8%8B/</id>
+    <published>2023-06-10T15:16:17.884Z</published>
+    <updated>2023-06-08T00:49:24.987Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;C-模板元编程&quot;&gt;&lt;a href=&quot;#C-模板元编程&quot; class=&quot;headerlink&quot; title=&quot;C++模板元编程&quot;&gt;&lt;/a&gt;C++模板元编程&lt;/h1&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>有界多体问题轨道封闭性问题</title>
@@ -359,45 +399,6 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>日常困惑之梯度的换元</title>
-    <link href="https://feipiao594.github.io/2023/03/23/%E6%97%A5%E5%B8%B8%E5%9B%B0%E6%83%91%E4%B9%8B%E6%A2%AF%E5%BA%A6%E7%9A%84%E6%8D%A2%E5%85%83/"/>
-    <id>https://feipiao594.github.io/2023/03/23/%E6%97%A5%E5%B8%B8%E5%9B%B0%E6%83%91%E4%B9%8B%E6%A2%AF%E5%BA%A6%E7%9A%84%E6%8D%A2%E5%85%83/</id>
-    <published>2023-03-23T15:19:33.612Z</published>
-    <updated>2023-05-03T08:05:44.435Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;日常困惑之梯度的换元&quot;&gt;&lt;a href=&quot;#日常困惑之梯度的换元&quot; class=&quot;headerlink&quot; title=&quot;日常困惑之梯度的换元&quot;&gt;&lt;/a&gt;日常困惑之梯度的换元&lt;/h1&gt;&lt;p&gt;又是上物理课的突发奇想，造就了一些关于梯度的疑惑&lt;br&gt;</summary>
-    
-    
-    
-    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
-    
-    <category term="Analysis" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>数学实验综合练习</title>
-    <link href="https://feipiao594.github.io/2023/03/21/%E6%95%B0%E5%AD%A6%E5%AE%9E%E9%AA%8C%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0/"/>
-    <id>https://feipiao594.github.io/2023/03/21/%E6%95%B0%E5%AD%A6%E5%AE%9E%E9%AA%8C%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0/</id>
-    <published>2023-03-21T04:51:18.451Z</published>
-    <updated>2023-05-03T08:05:32.391Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;数学实验综合练习&quot;&gt;&lt;a href=&quot;#数学实验综合练习&quot; class=&quot;headerlink&quot; title=&quot;数学实验综合练习&quot;&gt;&lt;/a&gt;数学实验综合练习&lt;/h1&gt;&lt;p&gt;这里是我大一数学实验课的综合练习一的题解&lt;/p&gt;
-&lt;h2 id=&quot;题目-新冠疫情预测&quot;&gt;&lt;a href=&quot;#题目-新冠疫情预测&quot; class=&quot;headerlink&quot; title=&quot;题目_新冠疫情预测&quot;&gt;&lt;/a&gt;题目_新冠疫情预测&lt;/h2&gt;&lt;p&gt;搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的&lt;strong&gt;函数类型&lt;/strong&gt;，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的&lt;strong&gt;最终规模&lt;/strong&gt;，判断全球(或者该国家)疫情何时结束。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
-    
-    <category term="Math_modeling" scheme="https://feipiao594.github.io/categories/Mathematic/Math-modeling/"/>
     
     
   </entry>
