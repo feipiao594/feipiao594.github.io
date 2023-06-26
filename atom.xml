@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-06-22T08:15:23.306Z</updated>
+  <updated>2023-06-26T04:43:27.566Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>初识量子计算</title>
+    <link href="https://feipiao594.github.io/posts/fe2da916.html"/>
+    <id>https://feipiao594.github.io/posts/fe2da916.html</id>
+    <published>2023-06-26T04:43:38.825Z</published>
+    <updated>2023-06-26T04:43:27.566Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;初识量子计算&quot;&gt;&lt;a href=&quot;#初识量子计算&quot; class=&quot;headerlink&quot; title=&quot;初识量子计算&quot;&gt;&lt;/a&gt;初识量子计算&lt;/h1&gt;&lt;p&gt;施工中，待期末考试考完后完成&lt;br&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Python/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>思想道德与法治复习提纲整理</title>
@@ -76,7 +95,7 @@
     <link href="https://feipiao594.github.io/posts/d046a7c5.html"/>
     <id>https://feipiao594.github.io/posts/d046a7c5.html</id>
     <published>2023-06-10T15:16:18.485Z</published>
-    <updated>2023-06-25T07:57:02.251Z</updated>
+    <updated>2023-06-25T08:00:11.334Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;复变函数的微积分的诠释&quot;&gt;&lt;a href=&quot;#复变函数的微积分的诠释&quot; class=&quot;headerlink&quot; title=&quot;复变函数的微积分的诠释&quot;&gt;&lt;/a&gt;复变函数的微积分的诠释&lt;/h1&gt;&lt;p&gt;作为电子类专业的学生，我从一开始就知道复变函数对我的重要性，原因是电路当中的知识会&lt;strong&gt;极大&lt;/strong&gt;的使用到复变函数。而常用的傅里叶变换，也将在复平面上进行，所以这一部分其实我必须搞清楚。&lt;/p&gt;</summary>
@@ -267,7 +286,7 @@
     <link href="https://feipiao594.github.io/posts/8a033795.html"/>
     <id>https://feipiao594.github.io/posts/8a033795.html</id>
     <published>2023-05-03T07:22:36.924Z</published>
-    <updated>2023-05-03T12:12:11.469Z</updated>
+    <updated>2023-06-26T04:41:34.202Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;含水滚筒的水平面&quot;&gt;&lt;a href=&quot;#含水滚筒的水平面&quot; class=&quot;headerlink&quot; title=&quot;含水滚筒的水平面&quot;&gt;&lt;/a&gt;含水滚筒的水平面&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨&lt;/p&gt;</summary>
@@ -275,6 +294,8 @@
     
     
     <category term="Physics" scheme="https://feipiao594.github.io/categories/Physics/"/>
+    
+    <category term="Mechanics" scheme="https://feipiao594.github.io/categories/Physics/Mechanics/"/>
     
     
   </entry>
@@ -371,23 +392,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;日常碎碎念-2&quot;&gt;&lt;a href=&quot;#日常碎碎念-2&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_2&quot;&gt;&lt;/a&gt;日常碎碎念_2&lt;/h1&gt;&lt;p&gt;日常碎碎念_2，日常碎碎念，生人勿进&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>日常碎碎念_1</title>
-    <link href="https://feipiao594.github.io/posts/6b49fcb0.html"/>
-    <id>https://feipiao594.github.io/posts/6b49fcb0.html</id>
-    <published>2023-04-11T14:45:14.673Z</published>
-    <updated>2023-06-02T06:30:32.425Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;日常碎碎念-1&quot;&gt;&lt;a href=&quot;#日常碎碎念-1&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_1&quot;&gt;&lt;/a&gt;日常碎碎念_1&lt;/h1&gt;&lt;p&gt;日常碎碎念_1，日常碎碎念，生人勿进&lt;/p&gt;</summary>
     
     
     
