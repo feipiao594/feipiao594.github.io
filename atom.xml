@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-07-05T17:21:17.643Z</updated>
+  <updated>2023-07-07T10:13:43.019Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>广义函数的阐释</title>
+    <link href="https://feipiao594.github.io/posts/afca48d5.html"/>
+    <id>https://feipiao594.github.io/posts/afca48d5.html</id>
+    <published>2023-07-07T10:14:09.065Z</published>
+    <updated>2023-07-07T10:13:43.019Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;广义函数的阐释&quot;&gt;&lt;a href=&quot;#广义函数的阐释&quot; class=&quot;headerlink&quot; title=&quot;广义函数的阐释&quot;&gt;&lt;/a&gt;广义函数的阐释&lt;/h1&gt;&lt;p&gt;当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它由一定的解释&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
+    
+    <category term="Analysis_theory" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis-theory/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>日常碎碎念_5</title>
@@ -377,25 +396,6 @@
     <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
     
     <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>stokes公式</title>
-    <link href="https://feipiao594.github.io/posts/7fc7eed7.html"/>
-    <id>https://feipiao594.github.io/posts/7fc7eed7.html</id>
-    <published>2023-04-25T15:07:49.191Z</published>
-    <updated>2023-06-11T00:17:26.889Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;stokes公式&quot;&gt;&lt;a href=&quot;#stokes公式&quot; class=&quot;headerlink&quot; title=&quot;stokes公式&quot;&gt;&lt;/a&gt;stokes公式&lt;/h1&gt;&lt;p&gt;我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
-    
-    <category term="Analysis_theory" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis-theory/"/>
     
     
   </entry>
