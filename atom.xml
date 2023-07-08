@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-07-08T15:15:09.613Z</updated>
+  <updated>2023-07-08T15:48:16.409Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Rust_Chapter_4_使用结构体</title>
+    <link href="https://feipiao594.github.io/posts/f75e4487.html"/>
+    <id>https://feipiao594.github.io/posts/f75e4487.html</id>
+    <published>2023-07-08T15:48:21.392Z</published>
+    <updated>2023-07-08T15:48:16.409Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-4-使用结构体&quot;&gt;&lt;a href=&quot;#Rust-Chapter-4-使用结构体&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_4_使用结构体&quot;&gt;&lt;/a&gt;Rust_Chapter_4_使用结构体&lt;/h1&gt;&lt;p&gt;对于早期学习了c++的我来说，oop是很重要的东西，因而同理rust里的结构体也是极其重要的&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>使用说明之qblog批处理</title>
@@ -353,27 +374,6 @@
     <category term="Physics" scheme="https://feipiao594.github.io/categories/Physics/"/>
     
     <category term="Mechanics" scheme="https://feipiao594.github.io/categories/Physics/Mechanics/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Rust_Chapter_3_所有权</title>
-    <link href="https://feipiao594.github.io/posts/f75e4487.html"/>
-    <id>https://feipiao594.github.io/posts/f75e4487.html</id>
-    <published>2023-05-03T07:22:36.610Z</published>
-    <updated>2023-07-08T13:34:21.042Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-3-所有权&quot;&gt;&lt;a href=&quot;#Rust-Chapter-3-所有权&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_3_所有权&quot;&gt;&lt;/a&gt;Rust_Chapter_3_所有权&lt;/h1&gt;&lt;p&gt;所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
     
     
   </entry>
