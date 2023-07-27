@@ -28,7 +28,7 @@
 <meta property="og:description" content="广义Fouier变换与Laplace变换这一篇记录广义函数的Fouier变换与Laplace变换的定义">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-24T11:07:01.575Z">
-<meta property="article:modified_time" content="2023-07-27T09:43:36.344Z">
+<meta property="article:modified_time" content="2023-07-27T09:46:23.352Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-27 17:43:36" itemprop="dateModified" datetime="2023-07-27T17:43:36+08:00">2023-07-27</time>
+                <time title="修改时间：2023-07-27 17:46:23" itemprop="dateModified" datetime="2023-07-27T17:46:23+08:00">2023-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +297,7 @@
 \left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
 <p>看上去这是双边拉普拉斯变换等价的定义，在数学里似乎并不区分双边还是单边，<strong>单边拉普拉斯变换就是要求广义函数支集在</strong>$(0,+\infty)$(当$a\to 0^-$下$(a,+\infty)$)，否则将没有意义</p>
 <p>在工程中，有这么一个结论</p>
-<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>我理解这里的$f(0^-)$为趋于0处的极限，其实就是$f(0)$，当然这个结论严格来讲肯定不对，毕竟不管怎么样，广义函数都不能直接取值，所以事实上用单边拉普拉斯变换来解微分方程似乎只是还是严格的Laplace变换解法的语法糖罢了，或者说只在常义函数和冲激响应上成立而已(事实上，要解释这个似乎得把概念延拓到hyperfunction上，但是已经触及现代数学了，继续下去也毫无意义，接受这个语法糖，才是解决问题的关键)</p>
+<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>我理解这里的$f(0^-)$为趋于0处的极限，其实就是$f(0)$，当然这个结论严格来讲肯定不对，毕竟不管怎么样，广义函数都不能直接取值，所以事实上用单边拉普拉斯变换来解微分方程似乎只是还是严格的Laplace变换解法的语法糖罢了，或者说只在常义函数和冲激响应上成立而已(事实上，要解释这个似乎得把概念延拓到hyperfunction上，从而将整体函数限制在正半轴，再进行hyperfunction的拉普拉斯变换，其实和这个语法糖做法毫无差别，但是已经触及现代数学了，继续下去也毫无意义，接受这个语法糖，才是解决问题的关键)</p>
 
     </div>
 
