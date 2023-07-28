@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-07-28T04:46:16.853Z</updated>
+  <updated>2023-07-28T12:59:59.346Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,11 +17,30 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Pytorch学习_1</title>
+    <link href="https://feipiao594.github.io/posts/6c7f2ed0.html"/>
+    <id>https://feipiao594.github.io/posts/6c7f2ed0.html</id>
+    <published>2023-07-28T13:00:04.711Z</published>
+    <updated>2023-07-28T12:59:59.346Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Pytorch学习-1&quot;&gt;&lt;a href=&quot;#Pytorch学习-1&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_1&quot;&gt;&lt;/a&gt;Pytorch学习_1&lt;/h1&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Python/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>广义Fouier变换与Laplace变换</title>
     <link href="https://feipiao594.github.io/posts/f38b0ecb.html"/>
     <id>https://feipiao594.github.io/posts/f38b0ecb.html</id>
     <published>2023-07-24T11:07:01.575Z</published>
-    <updated>2023-07-28T04:46:16.853Z</updated>
+    <updated>2023-07-28T12:54:18.177Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;a href=&quot;#广义Fouier变换与Laplace变换&quot; class=&quot;headerlink&quot; title=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;/a&gt;广义Fouier变换与Laplace变换&lt;/h1&gt;&lt;p&gt;这一篇记录广义函数的Fouier变换与Laplace变换的定义&lt;/p&gt;</summary>
@@ -120,7 +139,7 @@
     <link href="https://feipiao594.github.io/posts/c4ebbeff.html"/>
     <id>https://feipiao594.github.io/posts/c4ebbeff.html</id>
     <published>2023-07-08T10:44:56.571Z</published>
-    <updated>2023-07-24T11:07:11.096Z</updated>
+    <updated>2023-07-28T12:53:46.063Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;a href=&quot;#对书本中狄拉克函数的诠释&quot; class=&quot;headerlink&quot; title=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;/a&gt;对书本中狄拉克函数的诠释&lt;/h1&gt;&lt;p&gt;当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释&lt;/p&gt;</summary>
@@ -370,25 +389,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;初识stm32&quot;&gt;&lt;a href=&quot;#初识stm32&quot; class=&quot;headerlink&quot; title=&quot;初识stm32&quot;&gt;&lt;/a&gt;初识stm32&lt;/h1&gt;&lt;p&gt;其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="单片机" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>51单片机初步印象</title>
-    <link href="https://feipiao594.github.io/posts/69d698d4.html"/>
-    <id>https://feipiao594.github.io/posts/69d698d4.html</id>
-    <published>2023-05-03T12:57:27.025Z</published>
-    <updated>2023-07-08T13:34:21.023Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;51单片机初步印象&quot;&gt;&lt;a href=&quot;#51单片机初步印象&quot; class=&quot;headerlink&quot; title=&quot;51单片机初步印象&quot;&gt;&lt;/a&gt;51单片机初步印象&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少&lt;br&gt;51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点&lt;br&gt;</summary>
     
     
     
