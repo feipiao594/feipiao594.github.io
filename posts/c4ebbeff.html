@@ -28,7 +28,7 @@
 <meta property="og:description" content="对书本中狄拉克函数的诠释当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-08T10:44:56.571Z">
-<meta property="article:modified_time" content="2023-09-17T13:45:04.229Z">
+<meta property="article:modified_time" content="2023-09-18T07:53:09.097Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-17 21:45:04" itemprop="dateModified" datetime="2023-09-17T21:45:04+08:00">2023-09-17</time>
+                <time title="修改时间：2023-09-18 15:53:09" itemprop="dateModified" datetime="2023-09-18T15:53:09+08:00">2023-09-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,7 +255,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.2k</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -290,7 +290,7 @@
 <h3 id="Dirac函数"><a href="#Dirac函数" class="headerlink" title="Dirac函数"></a>Dirac函数</h3><p>任意试验函数$\varphi(x)$与它在$x=0$上的函数值$\varphi(0)$对应的广义函数称为$\delta$函数，即$\delta$函数满足</p>
 <script type="math/tex; mode=display">
 \langle \delta,\varphi\rangle = \varphi(0),\varphi(x)\in\mathcal{D}(\Omega)</script><p>注意这里的$\Omega$，这说明了其实如果写成积分形式(看下文)， 积分上下限可以不是无穷</p>
-<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数是$\varphi(x)\in\mathcal{D}(\Omega)$的泛函，所以对定积分也有定义</p>
+<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数乘以除上下限包围的区域以外为1都为0的常义函数(广义函数是有更加广泛的乘法定义的，这样说明没有问题)，再对$f(x)=1$进行内积，虽然在奇异点上不能使用，不过除了这种无法讨论的情况，对于大部分情况都成立</p>
 <h3 id="对于局部绝对可积函数"><a href="#对于局部绝对可积函数" class="headerlink" title="对于局部绝对可积函数"></a>对于局部绝对可积函数</h3><p>设$f(x)$是 $\mathbb{R}$上的局部绝对可积函数，即在任何有限区间$(a,b)$上积分$\int_{a}^{b}|f(x)|dx$均存在，则试验函数$\varphi(x)$与积分值 $\int_{-\infty}^{\infty}f(x)\varphi(x)dx$的对应是一个广义函数，即$f(x)$对应着一个广义函数</p>
 <script type="math/tex; mode=display">
 \langle f,\varphi\rangle = \int_{-\infty}^{\infty}f(x)\varphi(x)\mathrm{d}x</script><h2 id="广义函数的导数"><a href="#广义函数的导数" class="headerlink" title="广义函数的导数"></a>广义函数的导数</h2><p>(<strong>广义函数的导数</strong>)对 $T\in\mathcal{D}^{\prime}(\Omega)$，分布导数 $\frac{\partial T}{\partial x_k}\in\mathcal{D}’(\Omega)$ 定义为</p>
@@ -364,6 +364,19 @@ f^{(n)}(0)+f^{(n-1)}(0)+\cdots+f'(x)+f(x)=0\\\\
 f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0\\\\
 f^{(n-1)}(0)=\frac{1}{a_n}
 \end{cases}</script><p>核心的等价的微分方程就是上面这个方程组的第二式，是一个<strong>高阶齐次线性微分方程</strong>，第三、四式是第二式的边界条件，由这三个式子可以唯一确定一个$f(x)$，进而唯一确定一个$h(x)$，从而求得我们所要的冲激响应</p>
+<h2 id="另一种解释方法"><a href="#另一种解释方法" class="headerlink" title="另一种解释方法"></a>另一种解释方法</h2><p>关于Dirac函数本身，其具有的积分性质仍然是难以表达的，我们可以使用另一种方法去说明函数，即将极限解释成弱极限的方法</p>
+<p>首先对于$\mathscr{D}’(\Omega)$来说，可以将广义函数的微商完全使用弱极限去书写<br>其中$h_i$为向量的第$i$个分量</p>
+<script type="math/tex; mode=display">
+\lim_{h_i\to0}\frac{f(x+h)-f(x)}{h_i} = \frac{\partial f}{\partial x_i}</script><p>围绕Dirac函数的积分的一切内容其实都是未定义的行为，上面已有的东西解释清楚了除了积分以外的东西，而积分我们可以给它补充定义，就像工科书中说的那样，但是光有定义不能保证其与原本积分的相容性，定义本身应该满足原有的积分性质</p>
+<p>其实Dirac函数也有其它的定义，例如它是由函数列求极限得来(事实上，对于$f\in\mathscr{D}’(\Omega)$，其一定可以找到某种函数列$f_i\in C^\infty$弱收敛逼近的)，只要把原先的极限承认为弱极限。</p>
+<script type="math/tex; mode=display">
+f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，就定义为先算序列的积分再进行弱极限，即</p>
+<script type="math/tex; mode=display">
+\int_a^b f(x)dx=\int_a^b \lim_{i\to 0}f_i(x)dx:=\lim_{i\to 0}\int_a^b f_i(x)dx</script><p>这种记法天生支持原先积分的所有性质，因为极限随时可以先算，我完全可以把函数列当成逼近后的结果，反正随时都可以先算极限</p>
+<p>而对于傅里叶变换这种积分变换当中也存在一个极限，是对于广义积分的上下限而言的，如果那个求极限也认为是弱极限的话，也可以得到算出来是广义函数的结果</p>
+<blockquote>
+<p>虽然弱极限很有用，但是普遍定义下的积分肯定是不存在的，对于课程而言，最根本的还是求解微分方程和本身被特化了的积分变换，我们要做的就是用泛函的语言去得到相同的结果罢了，而不应该注意它是否应该和原本的常规函数性质相同，这没有意义，因为我们并不能创造什么定义<br>事实上对冲激函数及其导数进行积分根本就不会在实际工程中遇到，特别赋予它含义只是工程感性说明的过程罢了，更多的讨论还是集中在$L^2$空间上</p>
+</blockquote>
 
     </div>
 
@@ -445,7 +458,7 @@ f^{(n-1)}(0)=\frac{1}{a_n}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E4%B9%A6%E6%9C%AC%E4%B8%AD%E7%8B%84%E6%8B%89%E5%85%8B%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%A0%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">对书本中狄拉克函数的诠释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WARNING"><span class="nav-number">1.1.</span> <span class="nav-text">WARNING</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E8%BF%99%E7%AF%87%E6%96%87%E6%A1%A3%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.2.</span> <span class="nav-text">写这篇文档的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text">广义函数的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Omega-subset-mathbb-R-n"><span class="nav-number">1.3.1.</span> <span class="nav-text">关于$\Omega\subset\mathbb{R}^n$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dirac%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">Dirac函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%B1%80%E9%83%A8%E7%BB%9D%E5%AF%B9%E5%8F%AF%E7%A7%AF%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">对于局部绝对可积函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">广义函数的导数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E4%B9%98%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">广义函数的乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E7%90%86-%E5%AF%BC%E6%95%B0%E8%BF%90%E7%AE%97%E6%B3%95%E5%88%99-%E4%B9%98%E6%B3%95"><span class="nav-number">1.5.1.</span> <span class="nav-text">定理_导数运算法则(乘法)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-delta-%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">关于$\delta$函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-delta%E2%80%99-%E5%87%BD%E6%95%B0"><span class="nav-number">1.7.</span> <span class="nav-text">关于$\delta’$函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B2%E6%BF%80%E5%93%8D%E5%BA%94"><span class="nav-number">1.8.</span> <span class="nav-text">求解线性系统的冲激响应</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E4%B9%A6%E6%9C%AC%E4%B8%AD%E7%8B%84%E6%8B%89%E5%85%8B%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%A0%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">对书本中狄拉克函数的诠释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WARNING"><span class="nav-number">1.1.</span> <span class="nav-text">WARNING</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E8%BF%99%E7%AF%87%E6%96%87%E6%A1%A3%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.2.</span> <span class="nav-text">写这篇文档的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text">广义函数的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Omega-subset-mathbb-R-n"><span class="nav-number">1.3.1.</span> <span class="nav-text">关于$\Omega\subset\mathbb{R}^n$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dirac%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">Dirac函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%B1%80%E9%83%A8%E7%BB%9D%E5%AF%B9%E5%8F%AF%E7%A7%AF%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">对于局部绝对可积函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">广义函数的导数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E4%B9%98%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">广义函数的乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E7%90%86-%E5%AF%BC%E6%95%B0%E8%BF%90%E7%AE%97%E6%B3%95%E5%88%99-%E4%B9%98%E6%B3%95"><span class="nav-number">1.5.1.</span> <span class="nav-text">定理_导数运算法则(乘法)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-delta-%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">关于$\delta$函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-delta%E2%80%99-%E5%87%BD%E6%95%B0"><span class="nav-number">1.7.</span> <span class="nav-text">关于$\delta’$函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B2%E6%BF%80%E5%93%8D%E5%BA%94"><span class="nav-number">1.8.</span> <span class="nav-text">求解线性系统的冲激响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E8%A7%A3%E9%87%8A%E6%96%B9%E6%B3%95"><span class="nav-number">1.9.</span> <span class="nav-text">另一种解释方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
