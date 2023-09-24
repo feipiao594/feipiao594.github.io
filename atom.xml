@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-07-31T08:48:17.626Z</updated>
+  <updated>2023-09-23T03:56:01.532Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,11 +17,72 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Git使用_第2弹</title>
+    <link href="https://feipiao594.github.io/posts/2b9af9d8.html"/>
+    <id>https://feipiao594.github.io/posts/2b9af9d8.html</id>
+    <published>2023-09-24T03:23:07.744Z</published>
+    <updated>2023-09-23T03:56:01.532Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Git使用-第2弹&quot;&gt;&lt;a href=&quot;#Git使用-第2弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第2弹&quot;&gt;&lt;/a&gt;Git使用_第2弹&lt;/h1&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Git使用_第1弹</title>
+    <link href="https://feipiao594.github.io/posts/392f5636.html"/>
+    <id>https://feipiao594.github.io/posts/392f5636.html</id>
+    <published>2023-09-24T03:23:07.731Z</published>
+    <updated>2023-09-23T03:55:22.672Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Git使用-第1弹&quot;&gt;&lt;a href=&quot;#Git使用-第1弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第1弹&quot;&gt;&lt;/a&gt;Git使用_第1弹&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;:&lt;br&gt;在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。&lt;br&gt;本系列为&lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;这本书的学习笔记，感谢编写这本书的贡献者们&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Pytorch学习_2</title>
+    <link href="https://feipiao594.github.io/posts/f5767f6a.html"/>
+    <id>https://feipiao594.github.io/posts/f5767f6a.html</id>
+    <published>2023-09-24T03:23:07.544Z</published>
+    <updated>2023-09-20T09:49:04.578Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Pytorch学习-2&quot;&gt;&lt;a href=&quot;#Pytorch学习-2&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_2&quot;&gt;&lt;/a&gt;Pytorch学习_2&lt;/h1&gt;&lt;p&gt;隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Python/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Pytorch学习_1</title>
     <link href="https://feipiao594.github.io/posts/6c7f2ed0.html"/>
     <id>https://feipiao594.github.io/posts/6c7f2ed0.html</id>
     <published>2023-07-28T13:00:04.711Z</published>
-    <updated>2023-07-31T08:48:17.626Z</updated>
+    <updated>2023-09-20T12:37:08.398Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Pytorch学习-1&quot;&gt;&lt;a href=&quot;#Pytorch学习-1&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_1&quot;&gt;&lt;/a&gt;Pytorch学习_1&lt;/h1&gt;&lt;p&gt;也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西&lt;/p&gt;</summary>
@@ -101,7 +162,7 @@
     <link href="https://feipiao594.github.io/posts/64b84f95.html"/>
     <id>https://feipiao594.github.io/posts/64b84f95.html</id>
     <published>2023-07-08T14:47:31.719Z</published>
-    <updated>2023-07-08T15:15:09.613Z</updated>
+    <updated>2023-09-23T02:57:40.274Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;使用说明之qblog批处理&quot;&gt;&lt;a href=&quot;#使用说明之qblog批处理&quot; class=&quot;headerlink&quot; title=&quot;使用说明之qblog批处理&quot;&gt;&lt;/a&gt;使用说明之qblog批处理&lt;/h1&gt;&lt;p&gt;在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以&lt;code&gt;README.md&lt;/code&gt;显示的，在这里再发一遍，写成一篇blog&lt;/p&gt;</summary>
@@ -111,6 +172,8 @@
     <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
     
     <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
     
     
   </entry>
@@ -325,7 +388,7 @@
     <link href="https://feipiao594.github.io/posts/5d7e6e4.html"/>
     <id>https://feipiao594.github.io/posts/5d7e6e4.html</id>
     <published>2023-06-01T04:49:56.532Z</published>
-    <updated>2023-07-08T13:34:21.039Z</updated>
+    <updated>2023-09-23T03:55:56.003Z</updated>
     
     
     <summary type="html">这里是--abstract--吖</summary>
@@ -336,65 +399,7 @@
     
     <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>关于51单片机移植u8g2失败经历</title>
-    <link href="https://feipiao594.github.io/posts/572ad35a.html"/>
-    <id>https://feipiao594.github.io/posts/572ad35a.html</id>
-    <published>2023-05-10T15:13:04.861Z</published>
-    <updated>2023-07-08T13:34:21.047Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;关于51单片机移植u8g2失败经历&quot;&gt;&lt;a href=&quot;#关于51单片机移植u8g2失败经历&quot; class=&quot;headerlink&quot; title=&quot;关于51单片机移植u8g2失败经历&quot;&gt;&lt;/a&gt;关于51单片机移植u8g2失败经历&lt;/h1&gt;&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="单片机" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>关于思考第一类曲面积分时的发现</title>
-    <link href="https://feipiao594.github.io/posts/951a7cd2.html"/>
-    <id>https://feipiao594.github.io/posts/951a7cd2.html</id>
-    <published>2023-05-08T07:22:35.518Z</published>
-    <updated>2023-07-08T13:34:21.050Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;关于思考第一类曲面积分时的发现&quot;&gt;&lt;a href=&quot;#关于思考第一类曲面积分时的发现&quot; class=&quot;headerlink&quot; title=&quot;关于思考第一类曲面积分时的发现&quot;&gt;&lt;/a&gt;关于思考第一类曲面积分时的发现&lt;/h1&gt;&lt;p&gt;声明:本文是对&lt;strong&gt;知乎答主@李治林&lt;/strong&gt;的回答的个人总结，原链接如下，侵权删&lt;br&gt;&lt;a href=&quot;https://www.zhihu.com/question/48421749/answer/134203246&quot;&gt;https://www.zhihu.com/question/48421749/answer/134203246&lt;/a&gt;&lt;br&gt;</summary>
-    
-    
-    
-    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
-    
-    <category term="Analysis_theory" scheme="https://feipiao594.github.io/categories/Mathematic/Analysis-theory/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>初识stm32</title>
-    <link href="https://feipiao594.github.io/posts/fc4ef914.html"/>
-    <id>https://feipiao594.github.io/posts/fc4ef914.html</id>
-    <published>2023-05-04T14:52:58.839Z</published>
-    <updated>2023-07-08T13:34:21.055Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;初识stm32&quot;&gt;&lt;a href=&quot;#初识stm32&quot; class=&quot;headerlink&quot; title=&quot;初识stm32&quot;&gt;&lt;/a&gt;初识stm32&lt;/h1&gt;&lt;p&gt;其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="单片机" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
+    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
     
     
   </entry>
