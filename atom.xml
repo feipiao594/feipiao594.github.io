@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2023-09-23T03:56:01.532Z</updated>
+  <updated>2023-09-27T13:53:40.643Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://feipiao594.github.io/posts/2b9af9d8.html"/>
     <id>https://feipiao594.github.io/posts/2b9af9d8.html</id>
     <published>2023-09-24T03:23:07.744Z</published>
-    <updated>2023-09-23T03:56:01.532Z</updated>
+    <updated>2023-09-27T13:53:40.643Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;Git使用-第2弹&quot;&gt;&lt;a href=&quot;#Git使用-第2弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第2弹&quot;&gt;&lt;/a&gt;Git使用_第2弹&lt;/h1&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;Git使用-第2弹&quot;&gt;&lt;a href=&quot;#Git使用-第2弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第2弹&quot;&gt;&lt;/a&gt;Git使用_第2弹&lt;/h1&gt;&lt;p&gt;接下来正式进入Git的使用部分，这一弹从&lt;code&gt;&amp;quot;Git Pro&amp;quot;&lt;/code&gt;的第二章开始&lt;/p&gt;</summary>
     
     
     
@@ -42,7 +42,7 @@
     <link href="https://feipiao594.github.io/posts/392f5636.html"/>
     <id>https://feipiao594.github.io/posts/392f5636.html</id>
     <published>2023-09-24T03:23:07.731Z</published>
-    <updated>2023-09-23T03:55:22.672Z</updated>
+    <updated>2023-09-27T09:00:54.215Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Git使用-第1弹&quot;&gt;&lt;a href=&quot;#Git使用-第1弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第1弹&quot;&gt;&lt;/a&gt;Git使用_第1弹&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;:&lt;br&gt;在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。&lt;br&gt;本系列为&lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;这本书的学习笔记，感谢编写这本书的贡献者们&lt;/p&gt;</summary>
@@ -63,7 +63,7 @@
     <link href="https://feipiao594.github.io/posts/f5767f6a.html"/>
     <id>https://feipiao594.github.io/posts/f5767f6a.html</id>
     <published>2023-09-24T03:23:07.544Z</published>
-    <updated>2023-09-20T09:49:04.578Z</updated>
+    <updated>2023-09-27T08:55:43.810Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Pytorch学习-2&quot;&gt;&lt;a href=&quot;#Pytorch学习-2&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_2&quot;&gt;&lt;/a&gt;Pytorch学习_2&lt;/h1&gt;&lt;p&gt;隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始&lt;/p&gt;</summary>
@@ -72,7 +72,9 @@
     
     <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
     
-    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Python/"/>
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
     
     
   </entry>
@@ -82,7 +84,7 @@
     <link href="https://feipiao594.github.io/posts/6c7f2ed0.html"/>
     <id>https://feipiao594.github.io/posts/6c7f2ed0.html</id>
     <published>2023-07-28T13:00:04.711Z</published>
-    <updated>2023-09-20T12:37:08.398Z</updated>
+    <updated>2023-09-27T11:49:16.942Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Pytorch学习-1&quot;&gt;&lt;a href=&quot;#Pytorch学习-1&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_1&quot;&gt;&lt;/a&gt;Pytorch学习_1&lt;/h1&gt;&lt;p&gt;也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西&lt;/p&gt;</summary>
@@ -91,7 +93,9 @@
     
     <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
     
-    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Python/"/>
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
     
     
   </entry>
@@ -238,7 +242,7 @@
     <link href="https://feipiao594.github.io/posts/fe2da916.html"/>
     <id>https://feipiao594.github.io/posts/fe2da916.html</id>
     <published>2023-06-26T04:43:38.825Z</published>
-    <updated>2023-07-08T13:34:21.056Z</updated>
+    <updated>2023-09-27T09:01:03.571Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;初识量子计算&quot;&gt;&lt;a href=&quot;#初识量子计算&quot; class=&quot;headerlink&quot; title=&quot;初识量子计算&quot;&gt;&lt;/a&gt;初识量子计算&lt;/h1&gt;&lt;p&gt;考试周瞎学，写一份初见的文档，量子计算确实很有意思&lt;br&gt;</summary>
@@ -247,7 +251,9 @@
     
     <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
     
-    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Python/"/>
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
     
     
   </entry>
