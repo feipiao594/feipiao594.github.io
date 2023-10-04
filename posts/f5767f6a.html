@@ -28,7 +28,7 @@
 <meta property="og:description" content="Pytorch学习_2隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-09-24T03:23:07.544Z">
-<meta property="article:modified_time" content="2023-09-27T08:55:43.810Z">
+<meta property="article:modified_time" content="2023-10-04T04:44:48.786Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-27 16:55:43" itemprop="dateModified" datetime="2023-09-27T16:55:43+08:00">2023-09-27</time>
+                <time title="修改时间：2023-10-04 12:44:48" itemprop="dateModified" datetime="2023-10-04T12:44:48+08:00">2023-10-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,7 +259,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>49</span>
+              <span>241</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -280,6 +280,13 @@
       
         <h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
 <span id="more"></span>
+<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
+<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
+<li>矢量化使数学表达上更简洁，同时运行的更快</li>
+<li>最小化目标函数和执行极大似然估计等价</li>
+<li>线性回归模型也是一个简单的神经网络</li>
+</ul>
+<p>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大.</p>
 
     </div>
 
@@ -361,7 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pytorch%E5%AD%A6%E4%B9%A0-2"><span class="nav-number">1.</span> <span class="nav-text">Pytorch学习_2</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pytorch%E5%AD%A6%E4%B9%A0-2"><span class="nav-number">1.</span> <span class="nav-text">Pytorch学习_2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A7%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.</span> <span class="nav-text">概览神经网络</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -433,13 +440,13 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">116k</span>
+      站点总字数：<span title="站点总字数">120k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
         <i class="fa fa-coffee"></i>
       </span>
-      站点阅读时长：<span title="站点阅读时长">3:31</span>
+      站点阅读时长：<span title="站点阅读时长">3:38</span>
 </div>
 
 
