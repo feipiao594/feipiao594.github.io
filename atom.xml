@@ -80,25 +80,6 @@
   </entry>
   
   <entry>
-    <title>贝塞尔曲线</title>
-    <link href="https://feipiao594.github.io/posts/cc351245.html"/>
-    <id>https://feipiao594.github.io/posts/cc351245.html</id>
-    <published>2023-10-09T13:24:14.621Z</published>
-    <updated>2023-09-29T03:22:52.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;贝塞尔曲线&quot;&gt;&lt;a href=&quot;#贝塞尔曲线&quot; class=&quot;headerlink&quot; title=&quot;贝塞尔曲线&quot;&gt;&lt;/a&gt;贝塞尔曲线&lt;/h1&gt;&lt;p&gt;平滑的曲线，计算机图形学的天堂，线性代数的产物&lt;br&gt;同时这篇文章也是关于嵌入html与js的测试&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
-    
-    <category term="Linear_algebra" scheme="https://feipiao594.github.io/categories/Mathematic/Linear-algebra/"/>
-    
-    
-  </entry>
-  
-  <entry>
     <title>链接、装载与库</title>
     <link href="https://feipiao594.github.io/posts/8525127.html"/>
     <id>https://feipiao594.github.io/posts/8525127.html</id>
@@ -115,6 +96,25 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>贝塞尔曲线</title>
+    <link href="https://feipiao594.github.io/posts/cc351245.html"/>
+    <id>https://feipiao594.github.io/posts/cc351245.html</id>
+    <published>2023-10-09T13:24:14.621Z</published>
+    <updated>2023-09-29T03:22:52.000Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;贝塞尔曲线&quot;&gt;&lt;a href=&quot;#贝塞尔曲线&quot; class=&quot;headerlink&quot; title=&quot;贝塞尔曲线&quot;&gt;&lt;/a&gt;贝塞尔曲线&lt;/h1&gt;&lt;p&gt;平滑的曲线，计算机图形学的天堂，线性代数的产物&lt;br&gt;同时这篇文章也是关于嵌入html与js的测试&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
+    
+    <category term="Linear_algebra" scheme="https://feipiao594.github.io/categories/Mathematic/Linear-algebra/"/>
     
     
   </entry>
