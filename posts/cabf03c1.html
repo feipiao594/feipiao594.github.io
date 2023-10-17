@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="行列式1.1 行列式的定义我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
+  <meta name="description" content="C++模板基础为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容">
 <meta property="og:type" content="article">
-<meta property="og:title" content="行列式">
-<meta property="og:url" content="https://feipiao594.github.io/posts/336095f8.html">
+<meta property="og:title" content="C++模板基础">
+<meta property="og:url" content="https://feipiao594.github.io/posts/cabf03c1.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="行列式1.1 行列式的定义我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情">
+<meta property="og:description" content="C++模板基础为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-10-09T13:24:14.620Z">
-<meta property="article:modified_time" content="2023-07-08T13:34:22.000Z">
+<meta property="article:published_time" content="2023-10-16T14:33:33.914Z">
+<meta property="article:modified_time" content="2023-10-17T06:46:31.680Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://feipiao594.github.io/posts/336095f8.html">
+<link rel="canonical" href="https://feipiao594.github.io/posts/cabf03c1.html">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>行列式 | 594飞飘的个人博客</title>
+  <title>C++模板基础 | 594飞飘的个人博客</title>
   
 
 
@@ -196,7 +196,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/336095f8.html">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/cabf03c1.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -209,7 +209,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          行列式
+          C++模板基础
         </h1>
 
         <div class="post-meta">
@@ -219,14 +219,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-10-09 21:24:14" itemprop="dateCreated datePublished" datetime="2023-10-09T21:24:14+08:00">2023-10-09</time>
+              <time title="创建时间：2023-10-16 22:33:33" itemprop="dateCreated datePublished" datetime="2023-10-16T22:33:33+08:00">2023-10-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-08 21:34:22" itemprop="dateModified" datetime="2023-07-08T21:34:22+08:00">2023-07-08</time>
+                <time title="修改时间：2023-10-17 14:46:31" itemprop="dateModified" datetime="2023-10-17T14:46:31+08:00">2023-10-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,11 +234,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mathematic/Linear-algebra/" itemprop="url" rel="index"><span itemprop="name">Linear_algebra</span></a>
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming_Language</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
                 </span>
             </span>
 
@@ -255,14 +259,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -274,34 +278,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
-<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
-<script type="math/tex; mode=display">
-\begin{vmatrix}  
-  a_{11}& a_{12}& \cdots  & a_{1n} \\  
-  a_{21}& a_{22}& \cdots  & a_{2n} \\  
-  \vdots & \vdots & \ddots & \vdots \\  
-  a_{m1}& a_{m2}& \cdots  & a_{mn}  
-\end{vmatrix}  
-=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
-<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
-<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a target="_blank" rel="noopener" href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
-<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
-<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
-<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
+        <h1 id="C-模板基础"><a href="#C-模板基础" class="headerlink" title="C++模板基础"></a>C++模板基础</h1><p>为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容</p>
+<span id="more"></span>
+<h2 id="TMP的简单介绍"><a href="#TMP的简单介绍" class="headerlink" title="TMP的简单介绍"></a>TMP的简单介绍</h2><p>在上世纪末，C++模板就被发现是图灵完备的，当时就有大佬利用编译器的报错，在编译器的输出里生成了质数序列</p>
+<p>模板元编程，简称TMP，对于元编程的解释要从元程序来说</p>
+<blockquote>
+<p><strong>NOTE</strong>: Metaprogram is a program about a program.</p>
+</blockquote>
+<p>元程序是处理程序的程序，而元编程就是编写元程序的一种编程技巧。Python解释器就是一种元程序</p>
+<p>C++模板元编程属于元编程中的一种(Metaprogramming in Host Language)，在这类元编程中，逻辑代码和元程序自身的代码是写在一起的，用同一种语言，元程序代码通过某种机制(通常是编译)转变为(或者说生成)逻辑代码，并与其他逻辑代码合并到一起。这就产生一种效果，这个元程序看起来像是在自己改写自己。C++TMP的代码与普通的C++代码写在一起，但TMP的逻辑在编译期执行，而普通C++代码的逻辑在运行期执行。</p>
+<p>所以说C++TMP是用于一些编译期的运算，类型的计算，也能进一步美化代码，甚至是效率更高的编译期多态。</p>
+<p>C++模板元和宏搭配起来可以被称为是黑魔法，但是缺点也很明显，只能对编译期起到作用，而且缺少debug的工具，debug异常困难</p>
+<h2 id="模板的声明与定义"><a href="#模板的声明与定义" class="headerlink" title="模板的声明与定义"></a>模板的声明与定义</h2><p>在C++中，我们一共可以声明5种不同的模板，分别是：<strong>类模板、函数模板</strong>、<strong>变量模板(C++14)</strong>、<strong>别名模板(C++11)</strong>和<strong>Concept(C++20)</strong></p>
+<p>特别提醒，Concept我们后面提及</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// declarations</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span>  <span class="title class_">class_tmpl</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="type">void</span>    <span class="title">function_tmpl</span><span class="params">(T)</span></span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; T       variable_tmpl;          <span class="comment">// since c++14</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">using</span>   alias_tmpl = T;         <span class="comment">// since c++11</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">concept</span> no_constraint = <span class="literal">true</span>;   <span class="comment">// since c++20</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>INFO</strong>: 可以看到关键的东西已经接触到了C++11，这倒不是说较旧的C++不能实现模板元，只是一般来说这些东西都会在相对来说modern cpp来进行</p>
+</blockquote>
+<p>对于前三种模板可以拥有定义<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// definitions</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">struct</span>  <span class="title class_">class_tmpl</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="function"><span class="type">void</span>    <span class="title">function_tmpl</span><span class="params">(T)</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; T       variable_tmpl = <span class="built_in">T</span>(<span class="number">3.14</span>);</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，对于类模板、函数模板和变量模板，它们的声明和定义与普通的类、函数和变量一致，区别仅是在开头多了一个<code>template</code>关键字以及一对尖括号<code>&lt;...&gt;</code></p>
+<p>尖括号中声明了模板的参数。参数通常是类型，因为模板的发明就是为了实现泛型编程。也正是因为如此，模板一开始就不是为了元编程来的，所以它的确很难</p>
+<h2 id="模板形参"><a href="#模板形参" class="headerlink" title="模板形参"></a>模板形参</h2><p>在模板中，我们可以声明三种类型的形参，分别是：<strong>非类型模板形参</strong>、<strong>类型模板形参</strong>和<strong>模板模板形参</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// There are 3 kinds of template parameters:</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> n&gt;                               <span class="keyword">struct</span> <span class="title class_">NontypeTemplateParameter</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;                          <span class="keyword">struct</span> <span class="title class_">TypeTemplateParameter</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">typename</span> Tmpl&gt; <span class="keyword">struct</span> <span class="title class_">TemplateTemplateParameter</span> &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中，非类型的形参接受一个确定类型的常量作为实参，例如在上面的例子中，模板<code>NontypeTemplateParameter</code>接受一个int类型的常量。更一般地，非类型模板形参必须是结构化类型的，主要包括：</p>
 <ul>
-<li>转置最后结果不变</li>
-<li>行列交换一次，加一个负号</li>
-<li>数乘只算在一行(列)上</li>
-<li>如果有两行(列)整体成比例，则值为0</li>
-<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
+<li>整型，如<code>int, char, long</code></li>
+<li><code>enum</code>类型</li>
+<li>指针和引用类型</li>
+<li>浮点数类型和字面量类型(C++20后)</li>
+<li>要注意的是，非类型模板实参<strong>必须是常量</strong>，因为模板是在编译期被展开的，在这个阶段只有常量，没有变量。</li>
 </ul>
-<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
-<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
-<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
-<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
-<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
-<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
+<p>要注意的是，非类型模板实参必须是常量，因为模板是在编译期被展开的，在这个阶段只有常量，没有变量。</p>
+<p>对于类型模板形参，我们使用<code>typename</code>/<code>class</code>关键字声明它是一个类型。对于模板模板形参，和类模板的声明类似，也是在类型的前面加上<code>template &lt;...&gt;</code>。模<strong>板模板形参只接受类模板或类的别名模板作为实参，并且实参模板的形参列表必须要与形参模板的形参列表匹配</strong>。要注意的是，关键字<code>typename</code>和<code>class</code>是完全等效的，唯一的不同就是字面语义。</p>
+<p>一个模板可以声明多个形参，更一般地，可以声明一个变长的形参列表，变长形参列表可以接受0个或多个非类型常量、类型、或模板作为模板实参。变长形参列表必须出现在所有模板形参的最后。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... Args&gt;                            <span class="keyword">struct</span> <span class="title class_">VariadicTemplate1</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>, <span class="keyword">typename</span>... Args&gt;                  <span class="keyword">struct</span> <span class="title class_">VariadicTemplate2</span> &#123;&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; <span class="keyword">typename</span>... Args&gt; <span class="keyword">struct</span> <span class="title class_">VariadicTemplate3</span> &#123;&#125;;</span><br></pre></td></tr></table></figure>
+<p>模板可以声明默认实参，与函数的默认实参类似。只有主模板才可以声明默认实参，模板特化不可以。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// default template argument</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T = <span class="type">int</span>&gt; <span class="keyword">struct</span> TemplateWithDefaultArguments &#123;&#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="模板实例化"><a href="#模板实例化" class="headerlink" title="模板实例化"></a>模板实例化</h2><p>是指由泛型的模板定义生成具体的类型、函数、和变量的过程。模板在实例化时，模板形参被替换为实参，从而生成具体的实例。<br>模板的实例化分为两种：<strong>隐式实例化</strong>和<strong>显式实例化</strong>，其中隐式的实例化是我们平时最常用的实例化方式。</p>
 
     </div>
 
@@ -317,12 +329,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/242bb035.html" rel="prev" title="有界多体问题轨道封闭性问题">
-      <i class="fa fa-chevron-left"></i> 有界多体问题轨道封闭性问题
+    <a href="/posts/49c1fbdc.html" rel="prev" title="高精度">
+      <i class="fa fa-chevron-left"></i> 高精度
     </a></div>
       <div class="post-nav-item">
-    <a href="/posts/8525127.html" rel="next" title="链接、装载与库">
-      链接、装载与库 <i class="fa fa-chevron-right"></i>
+    <a href="/posts/acc766b1.html" rel="next" title="C++模板元-欧拉函数表">
+      C++模板元-欧拉函数表 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -383,7 +395,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%8C%E5%88%97%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">行列式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 行列式的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%88%A4%E5%AE%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%87%E5%81%B6%E6%80%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">快速判定排序的奇偶性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E8%A1%8C%E5%88%97%E5%BC%8F%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 行列式的性质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E8%A1%8C%E5%88%97%E5%BC%8F%E4%BE%9D%E8%A1%8C-%E5%88%97-%E5%B1%95%E5%BC%80"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 行列式依行(列)展开</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E6%A8%A1%E6%9D%BF%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">C++模板基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TMP%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.1.</span> <span class="nav-text">TMP的简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%9A%84%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">模板的声明与定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%BD%A2%E5%8F%82"><span class="nav-number">1.3.</span> <span class="nav-text">模板形参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">模板实例化</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -536,59 +548,6 @@
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
@@ -603,7 +562,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '12eef5580c9facece3e1850a1cfc241a',
+      id          : '5f059a97be3adfdcab5397a6b6a4dd08',
         language: 'zh-CN',
       distractionFreeMode: true
     });
