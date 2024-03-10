@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-01-24T17:49:53.196Z</updated>
+  <updated>2024-03-10T12:20:57.889Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>初入Linux的一些感想</title>
+    <link href="https://feipiao594.github.io/posts/13c32592.html"/>
+    <id>https://feipiao594.github.io/posts/13c32592.html</id>
+    <published>2024-02-12T11:45:42.600Z</published>
+    <updated>2024-03-10T12:20:57.889Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;初入Linux的一些感想&quot;&gt;&lt;a href=&quot;#初入Linux的一些感想&quot; class=&quot;headerlink&quot; title=&quot;初入Linux的一些感想&quot;&gt;&lt;/a&gt;初入Linux的一些感想&lt;/h1&gt;&lt;p&gt;这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>日常碎碎念_6</title>
     <link href="https://feipiao594.github.io/posts/f52d6913.html"/>
     <id>https://feipiao594.github.io/posts/f52d6913.html</id>
     <published>2024-01-24T17:50:08.341Z</published>
-    <updated>2024-01-24T17:49:53.196Z</updated>
+    <updated>2024-01-24T17:50:14.701Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;日常碎碎念-6&quot;&gt;&lt;a href=&quot;#日常碎碎念-6&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_6&quot;&gt;&lt;/a&gt;日常碎碎念_6&lt;/h1&gt;&lt;p&gt;日常碎碎念_6，日常碎碎念，生人勿进&lt;/p&gt;</summary>
@@ -400,25 +421,6 @@
     <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
     
     <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <link href="https://feipiao594.github.io/posts/f38b0ecb.html"/>
-    <id>https://feipiao594.github.io/posts/f38b0ecb.html</id>
-    <published>2023-09-06T12:35:36.000Z</published>
-    <updated>2023-09-06T12:35:36.000Z</updated>
-    
-    
-    <summary type="html">这一篇记录广义函数的Fouier变换与Laplace变换的定义</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="信号与系统" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/"/>
     
     
   </entry>
