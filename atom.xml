@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-03-10T12:20:57.889Z</updated>
+  <updated>2024-03-24T14:43:35.578Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从LFS构建中习得的交叉编译</title>
+    <link href="https://feipiao594.github.io/posts/c858dee6.html"/>
+    <id>https://feipiao594.github.io/posts/c858dee6.html</id>
+    <published>2024-03-24T14:44:22.648Z</published>
+    <updated>2024-03-24T14:43:35.578Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;a href=&quot;#从LFS构建中习得的交叉编译&quot; class=&quot;headerlink&quot; title=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;/a&gt;从LFS构建中习得的交叉编译&lt;/h1&gt;&lt;p&gt;在2024年寒假的过程中，我构建了LFS(&lt;strong&gt;L&lt;/strong&gt;inux &lt;strong&gt;F&lt;/strong&gt;rom &lt;strong&gt;S&lt;/strong&gt;cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>初入Linux的一些感想</title>
@@ -392,27 +413,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;使用说明之qblog批处理&quot;&gt;&lt;a href=&quot;#使用说明之qblog批处理&quot; class=&quot;headerlink&quot; title=&quot;使用说明之qblog批处理&quot;&gt;&lt;/a&gt;使用说明之qblog批处理&lt;/h1&gt;&lt;p&gt;在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以&lt;code&gt;README.md&lt;/code&gt;显示的，在这里再发一遍，写成一篇blog&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>CMake的使用</title>
-    <link href="https://feipiao594.github.io/posts/3c5e47f1.html"/>
-    <id>https://feipiao594.github.io/posts/3c5e47f1.html</id>
-    <published>2023-09-23T02:57:04.000Z</published>
-    <updated>2023-09-23T02:57:04.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;CMake的使用&quot;&gt;&lt;a href=&quot;#CMake的使用&quot; class=&quot;headerlink&quot; title=&quot;CMake的使用&quot;&gt;&lt;/a&gt;CMake的使用&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;Feipiao&lt;/strong&gt;前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 &lt;strong&gt;code &amp;amp; study&lt;/strong&gt;&lt;br&gt;对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。&lt;br&gt;在这样的情况下，使用cmake进行&lt;strong&gt;跨平台&lt;/strong&gt;的高级编译配置也就免不了了。&lt;br&gt;</summary>
     
     
     
