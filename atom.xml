@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-03-24T14:43:35.578Z</updated>
+  <updated>2024-03-25T03:59:37.186Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/c858dee6.html"/>
     <id>https://feipiao594.github.io/posts/c858dee6.html</id>
     <published>2024-03-24T14:44:22.648Z</published>
-    <updated>2024-03-24T14:43:35.578Z</updated>
+    <updated>2024-03-25T03:59:37.186Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;a href=&quot;#从LFS构建中习得的交叉编译&quot; class=&quot;headerlink&quot; title=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;/a&gt;从LFS构建中习得的交叉编译&lt;/h1&gt;&lt;p&gt;在2024年寒假的过程中，我构建了LFS(&lt;strong&gt;L&lt;/strong&gt;inux &lt;strong&gt;F&lt;/strong&gt;rom &lt;strong&gt;S&lt;/strong&gt;cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑&lt;/p&gt;</summary>
