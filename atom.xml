@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-03-25T03:59:37.186Z</updated>
+  <updated>2024-05-23T12:23:05.083Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,48 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Rust_Chapter_6_包与crate</title>
+    <link href="https://feipiao594.github.io/posts/23fc5c90.html"/>
+    <id>https://feipiao594.github.io/posts/23fc5c90.html</id>
+    <published>2024-05-23T12:22:57.569Z</published>
+    <updated>2024-05-23T12:23:05.083Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-6-包与crate&quot;&gt;&lt;a href=&quot;#Rust-Chapter-6-包与crate&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_6_包与crate&quot;&gt;&lt;/a&gt;Rust_Chapter_6_包与crate&lt;/h1&gt;&lt;p&gt;相比于C++，Rust最吸引我得就是其强大的包管理与调用，cargo实在是太好用了。现在，我们来讨论包与crate相关的内容&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Rust_Chapter_5_枚举与模式匹配</title>
+    <link href="https://feipiao594.github.io/posts/28bcc6be.html"/>
+    <id>https://feipiao594.github.io/posts/28bcc6be.html</id>
+    <published>2024-05-23T12:22:57.552Z</published>
+    <updated>2024-05-23T12:23:05.080Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-5-枚举与模式匹配&quot;&gt;&lt;a href=&quot;#Rust-Chapter-5-枚举与模式匹配&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_5_枚举与模式匹配&quot;&gt;&lt;/a&gt;Rust_Chapter_5_枚举与模式匹配&lt;/h1&gt;&lt;p&gt;&lt;code&gt;enums&lt;/code&gt;，一个很有用的东西，使用枚举可以简化很多东西&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>从LFS构建中习得的交叉编译</title>
@@ -287,7 +329,7 @@
     <link href="https://feipiao594.github.io/posts/c4ebbeff.html"/>
     <id>https://feipiao594.github.io/posts/c4ebbeff.html</id>
     <published>2023-09-29T02:27:44.000Z</published>
-    <updated>2023-09-29T02:27:44.000Z</updated>
+    <updated>2024-05-23T11:16:44.257Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;a href=&quot;#对书本中狄拉克函数的诠释&quot; class=&quot;headerlink&quot; title=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;/a&gt;对书本中狄拉克函数的诠释&lt;/h1&gt;&lt;p&gt;当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释&lt;/p&gt;</summary>
@@ -296,7 +338,7 @@
     
     <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
     
-    <category term="信号与系统" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/"/>
+    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
     
     
   </entry>
@@ -379,48 +421,6 @@
     <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
     
     <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo文章加密(密码123456)</title>
-    <link href="https://feipiao594.github.io/posts/5d7e6e4.html"/>
-    <id>https://feipiao594.github.io/posts/5d7e6e4.html</id>
-    <published>2023-09-23T03:55:58.000Z</published>
-    <updated>2023-09-23T03:55:58.000Z</updated>
-    
-    
-    <summary type="html">这里是--abstract--吖</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>使用说明之qblog批处理</title>
-    <link href="https://feipiao594.github.io/posts/64b84f95.html"/>
-    <id>https://feipiao594.github.io/posts/64b84f95.html</id>
-    <published>2023-09-23T02:57:42.000Z</published>
-    <updated>2023-09-23T02:57:42.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;使用说明之qblog批处理&quot;&gt;&lt;a href=&quot;#使用说明之qblog批处理&quot; class=&quot;headerlink&quot; title=&quot;使用说明之qblog批处理&quot;&gt;&lt;/a&gt;使用说明之qblog批处理&lt;/h1&gt;&lt;p&gt;在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以&lt;code&gt;README.md&lt;/code&gt;显示的，在这里再发一遍，写成一篇blog&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
     
     
   </entry>
