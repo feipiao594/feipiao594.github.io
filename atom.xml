@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-05-24T14:17:47.804Z</updated>
+  <updated>2024-06-16T11:52:33.307Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>离散与连续傅里叶变换之间的联系</title>
+    <link href="https://feipiao594.github.io/posts/f1193ad8.html"/>
+    <id>https://feipiao594.github.io/posts/f1193ad8.html</id>
+    <published>2024-06-16T11:44:59.535Z</published>
+    <updated>2024-06-16T11:52:33.307Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;离散与连续傅里叶变换之间的联系&quot;&gt;&lt;a href=&quot;#离散与连续傅里叶变换之间的联系&quot; class=&quot;headerlink&quot; title=&quot;离散与连续傅里叶变换之间的联系&quot;&gt;&lt;/a&gt;离散与连续傅里叶变换之间的联系&lt;/h1&gt;&lt;p&gt;在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
+    
+    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Rust_Chapter_6_包与crate</title>
@@ -400,27 +419,6 @@
     <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
     
     <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Git使用_第1弹</title>
-    <link href="https://feipiao594.github.io/posts/392f5636.html"/>
-    <id>https://feipiao594.github.io/posts/392f5636.html</id>
-    <published>2023-09-27T09:00:56.000Z</published>
-    <updated>2023-09-27T09:00:56.000Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Git使用-第1弹&quot;&gt;&lt;a href=&quot;#Git使用-第1弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第1弹&quot;&gt;&lt;/a&gt;Git使用_第1弹&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;:&lt;br&gt;在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。&lt;br&gt;本系列为&lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;这本书的学习笔记，感谢编写这本书的贡献者们&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
     
     
   </entry>
