@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="对书本中狄拉克函数的诠释当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对书本中狄拉克函数的诠释">
+<meta property="og:url" content="https://feipiao594.github.io/posts/c4ebbeff.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="对书本中狄拉克函数的诠释当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-27T08:06:50.014Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/c4ebbeff.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>对书本中狄拉克函数的诠释 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/c4ebbeff.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对书本中狄拉克函数的诠释
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-01 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-01T00:00:00+08:00">2023-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-27 16:06:50" itemprop="dateModified" datetime="2024-10-27T16:06:50+08:00">2024-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">EE_电子工程</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">数字信号相关</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="对书本中狄拉克函数的诠释"><a href="#对书本中狄拉克函数的诠释" class="headerlink" title="对书本中狄拉克函数的诠释"></a>对书本中狄拉克函数的诠释</h1><p>当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释</p>
+<span id="more"></span>
+<h2 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a>WARNING</h2><blockquote>
+<p>前排提示:本文只是记录记录某一些定理，方便我进行理解，但不作为严谨的推导，所以看看就行，不必当真<br>文章的定义摘抄自<strong>知乎@我烂了 专栏</strong>:<a target="_blank" rel="noopener" href="https://www.zhihu.com/column/c_1462378232960466945">广义函数论与函数空间</a><br>只是摘抄了些定义用作笔记应该不会有什么问题吧QAQ</p>
+</blockquote>
+<h2 id="写这篇文档的原因"><a href="#写这篇文档的原因" class="headerlink" title="写这篇文档的原因"></a>写这篇文档的原因</h2><p>主要是在看《信号与系统分析》这本书的时候发现了一个奇怪的东西，即$\int_{0^-}^{0^+}$这个积分符号，我们可以理解它其实是</p>
+<script type="math/tex; mode=display">\lim_{a \to 0} \int_{a^-}^{a^+}</script><p>但我个人第一次看的时候觉得书中对线性系统的冲激响应求法说明不够正确(<strong>实质上还是挺对的</strong>)，于是就有了接下来的内容</p>
+<h2 id="广义函数的定义"><a href="#广义函数的定义" class="headerlink" title="广义函数的定义"></a>广义函数的定义</h2><p>$(\mathcal{D}^{\prime}(\Omega)$<strong>广义函数</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，$\mathcal{D}^{\prime}(\Omega)$广义函数是 指$\mathcal{D}(\Omega)$ 上的有界连续线性泛函所组成的集合。亦即对于任意$T\in\mathcal{D}^{\prime}(\Omega)$，$T:\mathcal{D}^{\prime}(\Omega)\to\mathbb{C}$是$\mathcal{D}(\Omega)$上的线性泛函，且满足下面的连续性条件:</p>
+<p>对任意$\{\varphi_\nu\}\subset\mathcal{D}(\Omega)$，$\varphi_\nu\to0\:(\mathcal{D}(\Omega))$，则成立$\lim_{\nu\to\infty}T[\varphi_\nu]=0$</p>
+<p>注意这里的$\mathcal{D}(\Omega)$定义如下<br>(<strong>紧支集的光滑函数空间</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，则$\mathcal{D}(\Omega)$定义如下</p>
+<script type="math/tex; mode=display">
+\mathcal{D}(\Omega)\stackrel{\text{def}}{=}\begin{Bmatrix}\varphi\in C^\infty(\Omega),\text{supp}\varphi\text{ 是紧集}\end{Bmatrix}</script><p>需要注意的是，$\mathbb{R}^n$不是紧致的，这意味着如果$\Omega$就是$\mathbb{R}^n$，那么函数在无穷远处都是0<br>而$\mathcal{D}^{\prime}(\Omega)$指的则是构建在其上的泛函空间</p>
+<h3 id="关于-Omega-subset-mathbb-R-n"><a href="#关于-Omega-subset-mathbb-R-n" class="headerlink" title="关于$\Omega\subset\mathbb{R}^n$"></a>关于$\Omega\subset\mathbb{R}^n$</h3><p>在这里$R^n$可以推广到任意<strong>光滑流形</strong>，这意味着闭集这种紧流形上的函数，在自己这个流形内讨论也可以把整个流形作为开集，也就符合了定义在闭区间上函数的定义，下面讨论的这些也就自然而然满足了闭集了</p>
+<h3 id="Dirac函数"><a href="#Dirac函数" class="headerlink" title="Dirac函数"></a>Dirac函数</h3><p>任意试验函数$\varphi(x)$与它在$x=0$上的函数值$\varphi(0)$对应的广义函数称为$\delta$函数，即$\delta$函数满足</p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \varphi(0),\varphi(x)\in\mathcal{D}(\Omega)</script><p>注意这里的$\Omega$，这说明了其实如果写成积分形式(看下文)， 积分上下限可以不是无穷</p>
+<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数乘以除上下限包围的区域以外为1都为0的常义函数(广义函数是有更加广泛的乘法定义的，这样说明没有问题)，再对$f(x)=1$进行内积，虽然在奇异点上不能使用，不过除了这种无法讨论的情况，对于大部分情况都成立</p>
+<h3 id="对于局部绝对可积函数"><a href="#对于局部绝对可积函数" class="headerlink" title="对于局部绝对可积函数"></a>对于局部绝对可积函数</h3><p>设$f(x)$是 $\mathbb{R}$上的局部绝对可积函数，即在任何有限区间$(a,b)$上积分$\int_{a}^{b}|f(x)|dx$均存在，则试验函数$\varphi(x)$与积分值 $\int_{-\infty}^{\infty}f(x)\varphi(x)dx$的对应是一个广义函数，即$f(x)$对应着一个广义函数</p>
+<script type="math/tex; mode=display">
+\langle f,\varphi\rangle = \int_{-\infty}^{\infty}f(x)\varphi(x)\mathrm{d}x</script><h2 id="广义函数的导数"><a href="#广义函数的导数" class="headerlink" title="广义函数的导数"></a>广义函数的导数</h2><p>(<strong>广义函数的导数</strong>)对 $T\in\mathcal{D}^{\prime}(\Omega)$，分布导数 $\frac{\partial T}{\partial x_k}\in\mathcal{D}’(\Omega)$ 定义为</p>
+<script type="math/tex; mode=display">
+\Big\langle\frac{\partial T}{\partial x_{k}},\varphi\Big\rangle\stackrel{\mathrm{def}}{=}-\Big\langle T,\frac{\partial\varphi}{\partial x_{k}}\Big\rangle,\quad\forall\:\varphi\in\mathcal{D}(\Omega).</script><p>由于广义导数的存在，使得含有广义函数的<strong>微分方程</strong>有了良好的定义，但也只是微分方程有定义，积分方程就不一定了</p>
+<blockquote>
+<p>显然，广义函数的导数和广义函数本身一般是不同的泛函</p>
+</blockquote>
+<h2 id="广义函数的乘法"><a href="#广义函数的乘法" class="headerlink" title="广义函数的乘法"></a>广义函数的乘法</h2><p>(<strong>广义函数的乘法</strong>)对$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，定义他俩的乘法$\psi f\in\mathcal{D}^{\prime}(\Omega)$为</p>
+<script type="math/tex; mode=display">
+\langle f\psi,\varphi\rangle=\langle\psi f,\varphi\rangle=\langle f,\psi\varphi\rangle,\quad(\forall\varphi\in\mathcal{D}(\Omega))</script><h3 id="定理-导数运算法则-乘法"><a href="#定理-导数运算法则-乘法" class="headerlink" title="定理_导数运算法则(乘法)"></a>定理_导数运算法则(乘法)</h3><p>广义函数满足导数的运算法则，即若$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，则</p>
+<script type="math/tex; mode=display">
+(\psi f)'=\psi'f+\psi f'</script><p><strong>proof.</strong><br>即证</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>首先</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=-\langle \psi f,\varphi'\rangle=-\langle f,\psi\varphi'\rangle=\langle f,-\psi\varphi'\rangle</script><p>然后</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\langle\psi' f + \psi f',\varphi\rangle &= \langle f,\psi'\varphi\rangle + \langle f',\psi\varphi\rangle \\&=\langle f,\psi'\varphi\rangle - \langle f,(\psi\varphi)'\rangle \\& = \langle f,\psi'\varphi\rangle - \langle f,\psi'\varphi + \psi\varphi'\rangle \\& = \langle f,\psi'\varphi-\psi'\varphi-\psi\varphi'\rangle\\& = \langle f,-\psi\varphi'\rangle\end{aligned}</script><p>最后</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=\langle f,-\psi\varphi'\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>得证，<strong>Q.E.D</strong></p>
+<h2 id="关于-delta-函数"><a href="#关于-delta-函数" class="headerlink" title="关于$\delta$函数"></a>关于$\delta$函数</h2><p><strong>e.g</strong>.考虑Heaviside函数</p>
+<script type="math/tex; mode=display">
+H(x)=\left\{\begin{array}{ll}1,&\text{若 }x>0,\\0,&\text{若 }x<0.\end{array}\right.</script><p>则 $\frac{\mathrm{d}H(x)}{\mathrm{d}x}=\delta.$</p>
+<p>证明，对任意$g\in\mathcal{D}(\Omega)$，成立</p>
+<script type="math/tex; mode=display">
+\Big\langle\frac{\mathrm{d}H}{\mathrm{d}x},\varphi\Big\rangle=-\Big\langle H,\frac{\mathrm{d}\varphi}{\mathrm{d}x}\Big\rangle=-\int_0^\infty\frac{\mathrm{d}\varphi(x)}{\mathrm{d}x}=\varphi(0)=\langle\delta,\varphi\rangle</script><p>证毕</p>
+<p>由上述式子可以从逻辑上得到$\delta$函数的积分结果，但实际上，$\delta$函数的积分是得从它的定义来的，<strong>而广义函数应该并不能定义实际上的积分</strong></p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \varphi(0)</script><p>历史原因，使得其可以写成</p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \int_{-\infty}^{\infty}\delta(x)\varphi(x)\mathrm{d}x = \int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x=\varphi(0)</script><p>那么取一个极限，也可以得到最开始的问题的解决方案</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\langle \delta,\varphi\rangle &= \lim_{a\to\infty}\int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x\\&=\int_{0^-}^{0^+}\delta(x)\varphi(x)\mathrm{d}x\\&=\varphi(0)\end{aligned}</script><p>假设$\varphi(x) = 1$，则$\varphi\in\mathcal{D}(\Omega)$，那么我们就可以得到</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}\delta(x)\mathrm{d}x =\int_{0^-}^{0^+}\delta(x)\mathrm{d}x= 1</script><p>其实事实上对于$\delta$函数来说，<strong>根本就没有定义黎曼积分或勒贝格积分</strong>，这只是一种写法而已，完全可以不用这种写法，转而使用严格的泛函的写法</p>
+<h2 id="关于-delta’-函数"><a href="#关于-delta’-函数" class="headerlink" title="关于$\delta’$函数"></a>关于$\delta’$函数</h2><p>根据上面的逻辑可以导出$\delta’$，即Dirac Delta函数的导函数，称为冲激偶函数</p>
+<p>冲激偶$\delta’$函数是<strong>奇函数</strong>，即$-\delta’(x)=\delta’(-x)$</p>
+<p>冲激偶函数是从正向逼近$0$为$-\infty$，从负向逼近$0$为$+\infty$的奇异函数，其定义的另一种形式如下</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}f(x)\delta'(x-x_0)\mathrm{d}x = -f'(x_0)</script><p>如此也可以定义delta函数的任意n阶导函数</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}f(x)\delta^{(n)}(x-x_0)\mathrm{d}x = (-1)^nf^{(n)}(x_0)</script><p>根据定义、冲激函数$f(x)\delta(x)=f(0)$的性质与上面有提到的导数运算法则(乘法)和可以得到如下等式</p>
+<script type="math/tex; mode=display">
+f(t)\delta'(t)=f(0)\delta'(t)-f'(0)\delta(t)</script><p>从而</p>
+<script type="math/tex; mode=display">
+x\delta'(x)=-\delta(x)\qquad x^2\delta''(x)=2\delta(x)</script><h2 id="求解线性系统的冲激响应"><a href="#求解线性系统的冲激响应" class="headerlink" title="求解线性系统的冲激响应"></a>求解线性系统的冲激响应</h2><script type="math/tex; mode=display">
+a_{n}h^{(n)}(t)+a_{n-1}h^{(n-1)}(t)+\cdots+a_{1}h^{\prime}(t)+a_{0}h(t)=\delta(t)</script><p>对于这个方程，我们观察到，从逻辑上讲，解得的$h(t)$一定是一个<strong>常义函数</strong>，根据冲激函数的物理意义是一个瞬间的无穷大信号而言，我也可以推得在小于0的时候信号一定为0，而在大于0的时候才是我们真正需要考量的函数，因此最终在<strong>物理意义的辅助</strong>下我们得到了微分方程解的形式，拆解为$h(x)=f(x)u(x)$(这里的$u(x)$就是上面说的<strong>Heaviside函数</strong>)，而因为$h(x)$在大于0上是连续可导的函数(在大于0的部分微分方程的基本要求，这是这里的特殊要求，原因是防止产生冲激偶，也正是因为这样，在这里$0^-$和$0$没啥区别)，那么在小于0的部分也可以延拓出一个连续的$f(x)$，所以$f(x)$是连续可导的</p>
+<p>求解微分方程可以先把这个形式代入进去看看，我们来看看对$h(x)$求多次导的结果(用上面的那些公式就都可以计算出来了)</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+h(x)=f(x)u(x)\\\\
+h'(x)=f'(x)u(x)+f(0)\delta(x)\\\\
+h''(x)=f''(x)u(x)+f'(0)\delta(x)+f(0)\delta'(x)\\\\
+h'''(x)=f'''(x)u(x)+f(0)''\delta(x)+f'(0)\delta'(x)+f(0)\delta''(x)\\\\
+\cdots\cdots\cdots\cdots
+\end{cases}</script><p>可以看到，对于上面这些式子乘以原本式子里$a_k$累加的结果，如下</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^{n} a_kh^{(k)}(x)=(\sum_{k=0}^{n}a_kf^{(k)}(x))u(x)+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)+\\(\sum_{k=0}^{n-2}a_{(k+2)}f^{(k)}(0))\delta'(x)+\cdots+a_nf(0)\delta^{(n-1)}(x)</script><p>好了，我们观察一下这个式子，这个就<strong>是微分方程等式的左端</strong>，而等式右端只是单独的一个$\delta(x)$，所以这个式子<strong>从第三项开始全是0</strong>，即第三项开始到最后那些大和式都是0<br>知道了这点，我们直接去看最后一项，这里只有一项 $a_nf(0)$，想要它为0，即$f(0)=0$，然后再看最后第二项$a_{(n-1)}f(0)+a_nf’(0)$，因为从后一项推得$f(0)=0$，要想$a_{(n-1)}f(0)+a_nf’(0)=0$，只需要$f’(0)=0$。同理再看前一项得到$f’’(x)=0$，<strong>以此类推</strong>，便得到了</p>
+<script type="math/tex; mode=display">f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0</script><p>然后我们看第二项，和原微分方程等式右端组成式子如下</p>
+<script type="math/tex; mode=display">
+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)=\delta(x)</script><p>由上面推导的等于0的等式就可以化简得</p>
+<script type="math/tex; mode=display">
+f^{(n-1)}(0)=\frac{1}{a_n}</script><p>剩下的第一个项也应该为0</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^{n}a_kf^{(k)}=0</script><p>综合起来就得到了和这个微分方程通解的式子，即</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+h(x)=f(x)u(x)\\\\
+f^{(n)}(0)+f^{(n-1)}(0)+\cdots+f'(x)+f(x)=0\\\\
+f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0\\\\
+f^{(n-1)}(0)=\frac{1}{a_n}
+\end{cases}</script><p>核心的等价的微分方程就是上面这个方程组的第二式，是一个<strong>高阶齐次线性微分方程</strong>，第三、四式是第二式的边界条件，由这三个式子可以唯一确定一个$f(x)$，进而唯一确定一个$h(x)$，从而求得我们所要的冲激响应</p>
+<h2 id="另一种解释方法"><a href="#另一种解释方法" class="headerlink" title="另一种解释方法"></a>另一种解释方法</h2><p>关于Dirac函数本身，其具有的积分性质仍然是难以表达的，我们可以使用另一种方法去说明函数，即将极限解释成弱极限的方法</p>
+<p>首先对于$\mathscr{D}’(\Omega)$来说，可以将广义函数的微商完全使用弱极限去书写<br>其中$h_i$为向量的第$i$个分量</p>
+<script type="math/tex; mode=display">
+\lim_{h_i\to0}\frac{f(x+h)-f(x)}{h_i} = \frac{\partial f}{\partial x_i}</script><p>围绕Dirac函数的积分的一切内容其实都是未定义的行为，上面已有的东西解释清楚了除了积分以外的东西，而积分我们可以给它补充定义，就像工科书中说的那样，但是光有定义不能保证其与原本积分的相容性，定义本身应该满足原有的积分性质</p>
+<p>其实Dirac函数也有其它的定义，例如它是由函数列求极限得来(事实上，对于$f\in\mathscr{D}’(\Omega)$，其一定可以找到某种函数列$f_i\in C^\infty$弱收敛逼近的)，只要把原先的极限承认为弱极限。</p>
+<script type="math/tex; mode=display">
+f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，就定义为先算序列的积分再进行弱极限，即</p>
+<script type="math/tex; mode=display">
+\int_a^b f(x)dx=\int_a^b \lim_{i\to 0}f_i(x)dx:=\lim_{i\to 0}\int_a^b f_i(x)dx</script><p>这种记法天生支持原先积分的所有性质，因为极限随时可以先算，我完全可以把函数列当成逼近后的结果，反正随时都可以先算极限</p>
+<p>而对于傅里叶变换这种积分变换当中也存在一个极限，是对于广义积分的上下限而言的，如果那个求极限也认为是弱极限的话，也可以得到算出来是广义函数的结果</p>
+<blockquote>
+<p>虽然弱极限很有用，但是普遍定义下的积分肯定是不存在的，对于课程而言，最根本的还是求解微分方程和本身被特化了的积分变换，我们要做的就是用泛函的语言去得到相同的结果罢了，而不应该注意它是否应该和原本的常规函数性质相同，这没有意义，因为我们并不能创造什么定义<br>事实上对冲激函数及其导数进行积分根本就不会在实际工程中遇到，特别赋予它含义只是工程感性说明的过程罢了，更多的讨论还是集中在$L^2$空间上<br>如果需要更加明确的定义，可以考虑将distribution视作被包含的特例的hyperfunction</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/a444b428.html" rel="prev" title="排序">
+      <i class="fa fa-chevron-left"></i> 排序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/f38b0ecb.html" rel="next" title="广义Fouier变换与Laplace变换">
+      广义Fouier变换与Laplace变换 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E4%B9%A6%E6%9C%AC%E4%B8%AD%E7%8B%84%E6%8B%89%E5%85%8B%E5%87%BD%E6%95%B0%E7%9A%84%E8%AF%A0%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">对书本中狄拉克函数的诠释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#WARNING"><span class="nav-number">1.1.</span> <span class="nav-text">WARNING</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E8%BF%99%E7%AF%87%E6%96%87%E6%A1%A3%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.2.</span> <span class="nav-text">写这篇文档的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text">广义函数的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Omega-subset-mathbb-R-n"><span class="nav-number">1.3.1.</span> <span class="nav-text">关于$\Omega\subset\mathbb{R}^n$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dirac%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">Dirac函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E5%B1%80%E9%83%A8%E7%BB%9D%E5%AF%B9%E5%8F%AF%E7%A7%AF%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.3.</span> <span class="nav-text">对于局部绝对可积函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">广义函数的导数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BF%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E4%B9%98%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">广义函数的乘法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E7%90%86-%E5%AF%BC%E6%95%B0%E8%BF%90%E7%AE%97%E6%B3%95%E5%88%99-%E4%B9%98%E6%B3%95"><span class="nav-number">1.5.1.</span> <span class="nav-text">定理_导数运算法则(乘法)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-delta-%E5%87%BD%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">关于$\delta$函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-delta%E2%80%99-%E5%87%BD%E6%95%B0"><span class="nav-number">1.7.</span> <span class="nav-text">关于$\delta’$函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%B2%E6%BF%80%E5%93%8D%E5%BA%94"><span class="nav-number">1.8.</span> <span class="nav-text">求解线性系统的冲激响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E8%A7%A3%E9%87%8A%E6%96%B9%E6%B3%95"><span class="nav-number">1.9.</span> <span class="nav-text">另一种解释方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">133k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:01</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      总访客量：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : 'a6adc86f65dafee37586228feb0786b4',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

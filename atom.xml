@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>594飞飘的个人博客</title>
+  
+  <subtitle>学习笔记与生活记录</subtitle>
+  <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://feipiao594.github.io/"/>
+  <updated>2024-10-27T08:33:26.990Z</updated>
+  <id>https://feipiao594.github.io/</id>
+  
+  <author>
+    <name>594飞飘</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>日常碎碎念_3</title>
+    <link href="https://feipiao594.github.io/posts/85479d9c.html"/>
+    <id>https://feipiao594.github.io/posts/85479d9c.html</id>
+    <published>2024-10-27T16:00:00.000Z</published>
+    <updated>2024-10-27T08:33:26.990Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;日常碎碎念-3&quot;&gt;&lt;a href=&quot;#日常碎碎念-3&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_3&quot;&gt;&lt;/a&gt;日常碎碎念_3&lt;/h1&gt;&lt;p&gt;日常碎碎念_3，日常碎碎念，生人勿进&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>遨游在内存中的硬件启动过程</title>
+    <link href="https://feipiao594.github.io/posts/42db1e6.html"/>
+    <id>https://feipiao594.github.io/posts/42db1e6.html</id>
+    <published>2024-09-25T16:00:00.000Z</published>
+    <updated>2024-10-27T07:55:07.050Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;遨游在内存中的硬件启动过程&quot;&gt;&lt;a href=&quot;#遨游在内存中的硬件启动过程&quot; class=&quot;headerlink&quot; title=&quot;遨游在内存中的硬件启动过程&quot;&gt;&lt;/a&gt;遨游在内存中的硬件启动过程&lt;/h1&gt;&lt;p&gt;2024.9.28 &lt;code&gt;.NET Conf&lt;/code&gt; 介绍话题，话题来自我之前对硬件启动过程的好奇&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>离散与连续傅里叶变换之间的联系</title>
+    <link href="https://feipiao594.github.io/posts/f1193ad8.html"/>
+    <id>https://feipiao594.github.io/posts/f1193ad8.html</id>
+    <published>2024-07-10T16:00:00.000Z</published>
+    <updated>2024-10-27T08:07:31.881Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;离散与连续傅里叶变换之间的联系&quot;&gt;&lt;a href=&quot;#离散与连续傅里叶变换之间的联系&quot; class=&quot;headerlink&quot; title=&quot;离散与连续傅里叶变换之间的联系&quot;&gt;&lt;/a&gt;离散与连续傅里叶变换之间的联系&lt;/h1&gt;&lt;p&gt;在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
+    
+    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Rust_Chapter_6_包与crate</title>
+    <link href="https://feipiao594.github.io/posts/23fc5c90.html"/>
+    <id>https://feipiao594.github.io/posts/23fc5c90.html</id>
+    <published>2024-05-22T16:00:00.000Z</published>
+    <updated>2024-10-27T08:02:07.270Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-6-包与crate&quot;&gt;&lt;a href=&quot;#Rust-Chapter-6-包与crate&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_6_包与crate&quot;&gt;&lt;/a&gt;Rust_Chapter_6_包与crate&lt;/h1&gt;&lt;p&gt;相比于C++，Rust最吸引我得就是其强大的包管理与调用，cargo实在是太好用了。现在，我们来讨论包与crate相关的内容&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Rust_Chapter_5_枚举与模式匹配</title>
+    <link href="https://feipiao594.github.io/posts/28bcc6be.html"/>
+    <id>https://feipiao594.github.io/posts/28bcc6be.html</id>
+    <published>2024-04-15T16:00:00.000Z</published>
+    <updated>2024-10-27T08:01:55.363Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-5-枚举与模式匹配&quot;&gt;&lt;a href=&quot;#Rust-Chapter-5-枚举与模式匹配&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_5_枚举与模式匹配&quot;&gt;&lt;/a&gt;Rust_Chapter_5_枚举与模式匹配&lt;/h1&gt;&lt;p&gt;&lt;code&gt;enums&lt;/code&gt;，一个很有用的东西，使用枚举可以简化很多东西&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>从LFS构建中习得的交叉编译</title>
+    <link href="https://feipiao594.github.io/posts/c858dee6.html"/>
+    <id>https://feipiao594.github.io/posts/c858dee6.html</id>
+    <published>2024-03-23T16:00:00.000Z</published>
+    <updated>2024-10-27T07:56:21.328Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;a href=&quot;#从LFS构建中习得的交叉编译&quot; class=&quot;headerlink&quot; title=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;/a&gt;从LFS构建中习得的交叉编译&lt;/h1&gt;&lt;p&gt;在2024年寒假的过程中，我构建了LFS(&lt;strong&gt;L&lt;/strong&gt;inux &lt;strong&gt;F&lt;/strong&gt;rom &lt;strong&gt;S&lt;/strong&gt;cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>初入Linux的一些感想</title>
+    <link href="https://feipiao594.github.io/posts/13c32592.html"/>
+    <id>https://feipiao594.github.io/posts/13c32592.html</id>
+    <published>2024-03-09T16:00:00.000Z</published>
+    <updated>2024-10-27T07:56:32.212Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;初入Linux的一些感想&quot;&gt;&lt;a href=&quot;#初入Linux的一些感想&quot; class=&quot;headerlink&quot; title=&quot;初入Linux的一些感想&quot;&gt;&lt;/a&gt;初入Linux的一些感想&lt;/h1&gt;&lt;p&gt;这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>初识stm32</title>
+    <link href="https://feipiao594.github.io/posts/fc4ef914.html"/>
+    <id>https://feipiao594.github.io/posts/fc4ef914.html</id>
+    <published>2023-10-16T16:00:00.000Z</published>
+    <updated>2024-10-27T08:06:19.923Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;初识stm32&quot;&gt;&lt;a href=&quot;#初识stm32&quot; class=&quot;headerlink&quot; title=&quot;初识stm32&quot;&gt;&lt;/a&gt;初识stm32&lt;/h1&gt;&lt;p&gt;其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
+    
+    <category term="单片机" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Pytorch学习_2</title>
+    <link href="https://feipiao594.github.io/posts/f5767f6a.html"/>
+    <id>https://feipiao594.github.io/posts/f5767f6a.html</id>
+    <published>2023-10-02T16:00:00.000Z</published>
+    <updated>2024-10-27T07:59:34.607Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Pytorch学习-2&quot;&gt;&lt;a href=&quot;#Pytorch学习-2&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_2&quot;&gt;&lt;/a&gt;Pytorch学习_2&lt;/h1&gt;&lt;p&gt;隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>使用说明之qblog批处理</title>
+    <link href="https://feipiao594.github.io/posts/64b84f95.html"/>
+    <id>https://feipiao594.github.io/posts/64b84f95.html</id>
+    <published>2023-09-25T16:00:00.000Z</published>
+    <updated>2024-10-27T08:02:54.084Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;使用说明之qblog批处理&quot;&gt;&lt;a href=&quot;#使用说明之qblog批处理&quot; class=&quot;headerlink&quot; title=&quot;使用说明之qblog批处理&quot;&gt;&lt;/a&gt;使用说明之qblog批处理&lt;/h1&gt;&lt;p&gt;在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以&lt;code&gt;README.md&lt;/code&gt;显示的，在这里再发一遍，写成一篇blog&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>广义Fouier变换与Laplace变换</title>
+    <link href="https://feipiao594.github.io/posts/f38b0ecb.html"/>
+    <id>https://feipiao594.github.io/posts/f38b0ecb.html</id>
+    <published>2023-08-07T16:00:00.000Z</published>
+    <updated>2024-10-27T08:07:04.511Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;a href=&quot;#广义Fouier变换与Laplace变换&quot; class=&quot;headerlink&quot; title=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;/a&gt;广义Fouier变换与Laplace变换&lt;/h1&gt;&lt;p&gt;这一篇记录广义函数的Fouier变换与Laplace变换的定义&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
+    
+    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>对书本中狄拉克函数的诠释</title>
+    <link href="https://feipiao594.github.io/posts/c4ebbeff.html"/>
+    <id>https://feipiao594.github.io/posts/c4ebbeff.html</id>
+    <published>2023-07-31T16:00:00.000Z</published>
+    <updated>2024-10-27T08:06:50.014Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;a href=&quot;#对书本中狄拉克函数的诠释&quot; class=&quot;headerlink&quot; title=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;/a&gt;对书本中狄拉克函数的诠释&lt;/h1&gt;&lt;p&gt;当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
+    
+    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>排序</title>
+    <link href="https://feipiao594.github.io/posts/a444b428.html"/>
+    <id>https://feipiao594.github.io/posts/a444b428.html</id>
+    <published>2023-07-23T16:00:00.000Z</published>
+    <updated>2024-10-27T07:56:05.404Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;排序算法&quot;&gt;&lt;a href=&quot;#排序算法&quot; class=&quot;headerlink&quot; title=&quot;排序算法&quot;&gt;&lt;/a&gt;排序算法&lt;/h1&gt;&lt;p&gt;排序算法是最经典的算法知识。其实现代码短，应用广&lt;br&gt;如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>高精度</title>
+    <link href="https://feipiao594.github.io/posts/49c1fbdc.html"/>
+    <id>https://feipiao594.github.io/posts/49c1fbdc.html</id>
+    <published>2023-07-23T16:00:00.000Z</published>
+    <updated>2024-10-27T07:56:06.651Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;高精度&quot;&gt;&lt;a href=&quot;#高精度&quot; class=&quot;headerlink&quot; title=&quot;高精度&quot;&gt;&lt;/a&gt;高精度&lt;/h1&gt;&lt;p&gt;以下给出高精度加法与高精度乘法的模板&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Git使用_第2弹</title>
+    <link href="https://feipiao594.github.io/posts/2b9af9d8.html"/>
+    <id>https://feipiao594.github.io/posts/2b9af9d8.html</id>
+    <published>2023-07-20T16:00:00.000Z</published>
+    <updated>2024-10-27T08:03:24.847Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Git使用-第2弹&quot;&gt;&lt;a href=&quot;#Git使用-第2弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第2弹&quot;&gt;&lt;/a&gt;Git使用_第2弹&lt;/h1&gt;&lt;p&gt;接下来正式进入Git的使用部分，这一弹从 &lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;的第二章开始&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Pytorch学习_1</title>
+    <link href="https://feipiao594.github.io/posts/6c7f2ed0.html"/>
+    <id>https://feipiao594.github.io/posts/6c7f2ed0.html</id>
+    <published>2023-07-17T16:00:00.000Z</published>
+    <updated>2024-10-27T07:59:55.651Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Pytorch学习-1&quot;&gt;&lt;a href=&quot;#Pytorch学习-1&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_1&quot;&gt;&lt;/a&gt;Pytorch学习_1&lt;/h1&gt;&lt;p&gt;也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <link href="https://feipiao594.github.io/posts/acc766b1.html"/>
+    <id>https://feipiao594.github.io/posts/acc766b1.html</id>
+    <published>2023-07-15T16:00:00.000Z</published>
+    <updated>2024-10-27T07:58:01.839Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;C-模板元-欧拉函数表&quot;&gt;&lt;a href=&quot;#C-模板元-欧拉函数表&quot; class=&quot;headerlink&quot; title=&quot;C++模板元-欧拉函数表&quot;&gt;&lt;/a&gt;C++模板元-欧拉函数表&lt;/h1&gt;&lt;p&gt;SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义&lt;br&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Git使用_第1弹</title>
+    <link href="https://feipiao594.github.io/posts/392f5636.html"/>
+    <id>https://feipiao594.github.io/posts/392f5636.html</id>
+    <published>2023-07-10T16:00:00.000Z</published>
+    <updated>2024-10-27T08:03:16.384Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Git使用-第1弹&quot;&gt;&lt;a href=&quot;#Git使用-第1弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第1弹&quot;&gt;&lt;/a&gt;Git使用_第1弹&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;:&lt;br&gt;在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。&lt;br&gt;本系列为&lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;这本书的学习笔记，感谢编写这本书的贡献者们&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>C++模板元编程</title>
+    <link href="https://feipiao594.github.io/posts/9244e40f.html"/>
+    <id>https://feipiao594.github.io/posts/9244e40f.html</id>
+    <published>2023-07-09T16:00:00.000Z</published>
+    <updated>2024-10-27T07:58:28.643Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;C-模板元编程&quot;&gt;&lt;a href=&quot;#C-模板元编程&quot; class=&quot;headerlink&quot; title=&quot;C++模板元编程&quot;&gt;&lt;/a&gt;C++模板元编程&lt;/h1&gt;&lt;p&gt;之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>C++模板基础</title>
+    <link href="https://feipiao594.github.io/posts/cabf03c1.html"/>
+    <id>https://feipiao594.github.io/posts/cabf03c1.html</id>
+    <published>2023-07-09T16:00:00.000Z</published>
+    <updated>2024-10-27T07:58:27.273Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;C-模板基础&quot;&gt;&lt;a href=&quot;#C-模板基础&quot; class=&quot;headerlink&quot; title=&quot;C++模板基础&quot;&gt;&lt;/a&gt;C++模板基础&lt;/h1&gt;&lt;p&gt;为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
+    
+    
+  </entry>
+  
+</feed>

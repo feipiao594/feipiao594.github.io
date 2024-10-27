@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="日常困惑之梯度的换元又是上物理课的突发奇想，造就了一些关于梯度的疑惑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="日常困惑之梯度的换元">
+<meta property="og:url" content="https://feipiao594.github.io/posts/10d711a6.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="日常困惑之梯度的换元又是上物理课的突发奇想，造就了一些关于梯度的疑惑">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-27T08:10:29.447Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/10d711a6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>日常困惑之梯度的换元 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/10d711a6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          日常困惑之梯度的换元
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-13T00:00:00+08:00">2023-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-27 16:10:29" itemprop="dateModified" datetime="2024-10-27T16:10:29+08:00">2024-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Analysis-theory/" itemprop="url" rel="index"><span itemprop="name">Analysis_theory</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="日常困惑之梯度的换元"><a href="#日常困惑之梯度的换元" class="headerlink" title="日常困惑之梯度的换元"></a>日常困惑之梯度的换元</h1><p>又是上物理课的突发奇想，造就了一些关于梯度的疑惑<br><span id="more"></span></p>
+<hr>
+<h2 id="疑惑来源"><a href="#疑惑来源" class="headerlink" title="疑惑来源"></a>疑惑来源</h2><p>首先我们考察在平面上的万有引力公式，在$ \mathbb{R^2} $上其实是一个向量场(vector field)，即在$ \mathbb{R^2} $上的每一个点都有一个向量与之一一对应。</p>
+<script type="math/tex; mode=display">F = G\frac{Mm}{R^2}</script><p>而引力势能，其实就是这个向量场所对应的标量场，也即</p>
+<script type="math/tex; mode=display">E_A=-G\frac{Mm}{R}</script><p>我们知道，对标量场求梯度可以得到向量场(梯度的几何意义就是等高线嘛)，但是课本上的梯度公式可是基于笛卡尔坐标系的，而我发现对引力势能对极坐标系下求梯度也能得到万有引力公式，那是不是说梯度满足以下的式子呢</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+    \nabla y=\frac{\partial \psi}{\partial x_1} \overrightarrow{x_1}+\frac{\partial \psi}{\partial x_2}\overrightarrow{x_2} \\
+    \nabla y=\frac{\partial \phi}{\partial z_1} \overrightarrow{z_1}+\frac{\partial \phi}{\partial z_2}\overrightarrow{z_2}
+\end{cases}</script><p>其中$\phi $,$ \psi $是同一个标量场在不同坐标系下的表达式，事实上，这个公式<strong>并不成立</strong></p>
+<hr>
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>在任意坐标系下，梯度算符的表达式应该是：</p>
+<p>$\nabla f = g^{ij} \frac{\partial f}{\partial x^i} \frac{\partial}{\partial x^j}$</p>
+<p>其中 $g^{ij}$ 表示<strong>度规张量的逆矩阵</strong>。</p>
+<p>在笛卡尔坐标系下，度规张量为单位矩阵，逆矩阵也是单位矩阵，因此 $g^{ij}$ 等于 $\delta_{ij}$，其中 $\delta_{ij}$ 表示克罗内克符号，它在 $i=j$ 时等于 1，在 $i\neq j$ 时等于 0，因此在笛卡尔坐标系下的梯度算符表达式就简化为了：</p>
+<p>$\nabla f = \frac{\partial f}{\partial x^i} \frac{\partial}{\partial x^i}$</p>
+<p>而在其他坐标系下，$g^{ij}$ 的值会发生变化，因此梯度算符的表达式也会有所不同</p>
+<h2 id="关于度规的公式"><a href="#关于度规的公式" class="headerlink" title="关于度规的公式"></a>关于度规的公式</h2><script type="math/tex; mode=display">
+g_{i j}=\langle r_{i},r_{j}\rangle=\sum_{k=1}^{n}\frac{\partial f^{k}}{\partial u^{i}}\frac{\partial f^{k}}{\partial u^{j}}.</script><p>其中$ x^{i}=f^{i}\left(u^{1},\cdots,u^{n}\right),1\leq i\leq n $，其中$ x^{i} $为单位正交标架，$ u^{i} $是曲纹坐标系诱导的自然标架</p>
+<p>做一些个人的总结把，对于一个空间来说，度规是空间的属性，和空间里选取怎样的坐标系无关，不同的坐标系下度规是不同的，但是空间的属性是确定的，单位正交标架是欧氏空间中自然的产物，度规在这个参考系下就是单位矩阵，其它的坐标系便是在这个基础上转化而来的，要想研究例如四维时空下的坐标系，也需要找到一个最初的参考系，使得其它的坐标系能转化，不然度规就是一个游离在量化计算之外的数值，无法被具体化，毕竟参考系与参考系之间的关系也必须是比较得到的嘛</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>首先我们要知道我们现在研究的空间都是欧氏空间，而在欧式空间上取得一个坐标系，其中最基础最自然的就是笛卡尔坐标系<br>对于这样的一个流形来说，在一个<strong>区域</strong>内，我们可以选取到一个自然标架，自然标架构成<strong>分布在区域上</strong>的一个标架“场”<br>这样的标架是$ u^i $-曲线，即让$ u^i $变动，其余的不变所得到的曲线的<strong>切向量</strong>，这是本质，并且这样的切向量的长度如果嵌入欧式空间其实<strong>并不一定是1</strong>，需要除以其本身的长度才可以得到单位向量的长度，即<script type="math/tex">\overrightarrow{x_i}=\frac{1}{\sqrt{g_{ii}}}\frac{\partial}{\partial x_i}</script></p>
+<h2 id="任意坐标系下的基向量"><a href="#任意坐标系下的基向量" class="headerlink" title="任意坐标系下的基向量"></a>任意坐标系下的基向量</h2><p>根据微分流形当中的知识可知，这样的切向量也是在欧式空间里的单位向量，是写成$\{\frac{\partial}{\partial x^1},\cdots,\frac{\partial}{\partial x^n}\}$这样的形式的，而这样<strong>偏导数的形式</strong>，我们自然就可以使用<strong>链式法则</strong>来进行单位向量的转化<br>如笛卡尔坐标系为极坐标系，求极坐标系下的单位向量，即:</p>
+<script type="math/tex; mode=display">
+ \begin{cases} 
+    \frac{\partial}{\partial r} =\frac{\partial x}{\partial r}\frac{\partial}{\partial x} + \frac{\partial y}{\partial r}\frac{\partial}{\partial y} \\
+    \frac{\partial}{\partial \theta} =\frac{\partial x}{\partial \theta}\frac{\partial}{\partial x} + \frac{\partial y}{\partial \theta}\frac{\partial}{\partial y} \end{cases}</script><p>或者换成向量的写法</p>
+<script type="math/tex; mode=display">
+ \begin{cases} 
+    \overrightarrow{r_0}=\frac{\partial x}{\partial r}\overrightarrow{x_0} + \frac{\partial y}{\partial r}\overrightarrow{y_0} \\
+    \overrightarrow{\theta_0}=\frac{\partial x}{\partial \theta}\overrightarrow{x_0} + \frac{\partial y}{\partial \theta}\overrightarrow{y_0} \end{cases}</script><p>这个式子也可以利用另外的方法进行证明，比如在同样的欧氏空间，取不同的坐标系，可以得到两个坐标函数(即输入两个数字，输出在空间上面对应的一个点)。<br>有这样的定义，坐标函数对$ x_i $求偏导，即是坐标分量</p>
+<script type="math/tex; mode=display">
+f(x,y)=x=g(p(x,y),\theta(x,y))</script><p>这里的$f$,$g$都是坐标函数，对等式两边求偏导并利用链式法则就可以得到上面的式子</p>
+<p>那么把等式代入一开始的错误预期的一式，在处理$ \overrightarrow{\rho_0} $的时候就出现了问题</p>
+<script type="math/tex; mode=display">
+\frac{\partial\varphi}{\partial\rho}\frac{\partial\rho}{\partial x}\frac{\partial\rho}{\partial x}+\frac{\partial\varphi}{\partial\theta}\frac{\partial\theta}{\partial x}\frac{\partial\rho}{\partial x}+\frac{\partial\varphi}{\partial\rho}\frac{\partial\rho}{\partial y}\frac{\partial\rho}{\partial y}+\frac{\partial\varphi}{\partial\theta}\frac{\partial\theta}{\partial y}\frac{\partial\rho}{\partial y}\stackrel{?}{=}\frac{\partial\varphi}{\partial \rho}</script><p>好嘛，这根本就不等嘛，其实经过一次的<strong>合并同类项</strong>，会发现其中有好几项看起来像内积，仔细一看这不就是度规的分量嘛，于是就得到了上面说的那个用度规表达的形式啦</p>
+<p>合并同类项如下</p>
+<script type="math/tex; mode=display">
+\frac{\partial\varphi}{\partial\rho}(\frac{\partial\rho}{\partial x}\frac{\partial\rho}{\partial x}+\frac{\partial\rho}{\partial y}\frac{\partial\rho}{\partial y})+\frac{\partial\varphi}{\partial\theta}(\frac{\partial\theta}{\partial x}\frac{\partial\rho}{\partial x}+\frac{\partial\theta}{\partial y}\frac{\partial\rho}{\partial y})</script><h2 id="对单位向量在标架上的导数"><a href="#对单位向量在标架上的导数" class="headerlink" title="对单位向量在标架上的导数"></a>对单位向量在标架上的导数</h2><p>这也是困惑我许久的问题，为什么极坐标的单位向量可以被$ r $求导，我发现自然标架完全不同，要想计算自然标架沿着坐标曲线的微商其实是很重要的<br>由于切向量关于坐标曲线的导数还是区域上的向量场，故可以待定系数设</p>
+<script type="math/tex; mode=display">
+\frac{\partial r_{i}}{\partial u^{l}}=\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k}</script><p>已知($*$式)</p>
+<script type="math/tex; mode=display">
+g_{i j}=\langle r_{i},r_{j}\rangle=\sum_{k=1}^{n}\frac{\partial f^{k}}{\partial u^{i}}\frac{\partial f^{k}}{\partial u^{j}}.</script><p>由此可得</p>
+<script type="math/tex; mode=display">
+\langle\frac{\partial r_{i}}{\partial u^{i}},r_{j}\rangle=\sum_{k=1}^{n}\Gamma_{il}^{k}g_{k j}</script><p>因为</p>
+<script type="math/tex; mode=display">
+\frac{\partial r_{i}}{\partial u^{i}}=\frac{\partial r_{i}}{\partial u^{i}}=\frac{\partial^{2}r}{\partial u^{i}\partial u^{i}}=\sum_{k=1}^{n}\frac{\partial^{2}f^{k}}{\partial u^{i}\partial u^{i}}\partial_{k}</script><p>所以</p>
+<script type="math/tex; mode=display">
+\Gamma_{li}^k=\Gamma_{il}^k</script><p>对($*$式)求导得到</p>
+<script type="math/tex; mode=display">
+\frac{\partial g_{i}}{\partial u^{\prime}}=\sum_{i=1}^{n}\left\{\frac{\partial^{2}f^{k}}{\partial u^{i}\partial u^{l}}\frac{\partial f^{k}}{\partial u^{j}}+\frac{\partial f^{k}}{\partial u^{i}}\frac{\partial^{2}f^{k}}{\partial u^{j}\partial u^{l}}\right\}\\ =\left\langle\frac{\partial r_{i}}{\partial u^{l}}\cdot r_{j}\right\rangle+\left\langle r_{i},\frac{\partial r_{j}}{\partial u^{l}}\right\rangle\\=\Gamma_{i l}^{k}g_{k j}+\Gamma_{j l}^{k}g_{k i}</script><p>于是</p>
+<script type="math/tex; mode=display">
+\Gamma_{il}^{k}=\frac{1}{2}g^{k_{j}}\left(\frac{\partial g_{i j}}{\partial u^{i}}+\frac{\partial g_{j i}}{\partial u^{i}}-\frac{\partial g_{il}}{\partial u^{j}}\right)</script><p>$\Gamma^i_{jk}$ 称为Christoffel符号</p>
+<p>所以以后，对区域$V$上的向量场，用自然标架场表示为</p>
+<script type="math/tex; mode=display">v=\sum_{i=1}^{n}v^{i}r_{i}</script><p>那么</p>
+<script type="math/tex; mode=display">\frac{\partial v}{\partial u^{l}}=\sum_{i=1}^{n}\left\{\frac{\partial v^{i}}{\partial u^{l}}r_{i}+v^{i}\frac{\partial r_{i}}{\partial u^{l}}\right\}\\=\sum_{i=1}^{n}\left\{\frac{\partial v^{i}}{\partial u^{l}}+\sum_{k=1}^{n}v^{k}\Gamma_{k l}^{i}\right\}r_{i}</script><p>也可以总结得到</p>
+<script type="math/tex; mode=display">
+dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这玩意远远没有我想的那么简单，不过好在现在已经都清楚了，想了有一天左右吧，确实是很复杂<br>对于标量场的转化，只要把坐标的转换方程代入原式就可以改写标量场为新坐标系格式<br>如果是新坐标系的矢量场对就坐标系的坐标求导，可以灵活利用单位矢量的转换方程，把它转化为旧坐标系，算完再转化回去<br>举个例子，极坐标系下，速度是对位移的对t求导，里面会需要利用链式法则转换出对极坐标下坐标的求偏导<br>对于每一个用$n$个自由度来表示空间上一点，那一点都有诱导出的一个切向量，用那个切向量为标架可以求出很多东西，那个向量本身也有物理意义，而位矢，速度等其实是空间上的向量场，也是坐标系无关的，切换坐标系要用转化的式子做对应转化的，具体在下一次文章里会写到吧<br>$\partial\partial x_i$同时也是$\{xi\}$的函数<br>这些告诉我们，流形M上向量场在固定坐标系下的基有一个最基本的基，为$\frac{\partial}{\partial x_i}$，其他可以由这个线性组合得到<br>由此，对标量场求导，对矢量场求导，在另外的坐标系中对标量场求导，对矢量场求导这些全部统统可以利用坐标系间相互转换，单位矢量的转换，这样的转换可以把标量场和矢量场中字母和矢量完全转化为另一个参考系的，以便于导出所有相关的式子</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/fed4c017.html" rel="prev" title="IO流">
+      <i class="fa fa-chevron-left"></i> IO流
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/951a7cd2.html" rel="next" title="关于思考第一类曲面积分时的发现">
+      关于思考第一类曲面积分时的发现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%B8%B8%E5%9B%B0%E6%83%91%E4%B9%8B%E6%A2%AF%E5%BA%A6%E7%9A%84%E6%8D%A2%E5%85%83"><span class="nav-number">1.</span> <span class="nav-text">日常困惑之梯度的换元</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%96%91%E6%83%91%E6%9D%A5%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">疑惑来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E7%BB%93%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">最终结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BA%A6%E8%A7%84%E7%9A%84%E5%85%AC%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">关于度规的公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.4.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E5%9D%90%E6%A0%87%E7%B3%BB%E4%B8%8B%E7%9A%84%E5%9F%BA%E5%90%91%E9%87%8F"><span class="nav-number">1.5.</span> <span class="nav-text">任意坐标系下的基向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E5%8D%95%E4%BD%8D%E5%90%91%E9%87%8F%E5%9C%A8%E6%A0%87%E6%9E%B6%E4%B8%8A%E7%9A%84%E5%AF%BC%E6%95%B0"><span class="nav-number">1.6.</span> <span class="nav-text">对单位向量在标架上的导数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">133k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:01</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      总访客量：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : 'cd1fbecfbed00fc8a0342f33cba6f8b9',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

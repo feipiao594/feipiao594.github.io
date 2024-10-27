@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Rust_Chapter_1_变量这一章节内容主要是Rust的变量 前言从现在开始，我正式开始学习Rust。Rust相对于C++在出于安全的规范优势不必多说，我发现Rust也能用于嵌入式开发。因而我受够了，快用Rust重写(乐)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust_Chapter_1_变量">
+<meta property="og:url" content="https://feipiao594.github.io/posts/2d38ec93.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="Rust_Chapter_1_变量这一章节内容主要是Rust的变量 前言从现在开始，我正式开始学习Rust。Rust相对于C++在出于安全的规范优势不必多说，我发现Rust也能用于嵌入式开发。因而我受够了，快用Rust重写(乐)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-27T08:00:39.235Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/2d38ec93.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Rust_Chapter_1_变量 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/2d38ec93.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust_Chapter_1_变量
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-05-01 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-01T00:00:00+08:00">2023-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-27 16:00:39" itemprop="dateModified" datetime="2024-10-27T16:00:39+08:00">2024-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming_Language</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/" itemprop="url" rel="index"><span itemprop="name">Rust</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Rust-Chapter-1-变量"><a href="#Rust-Chapter-1-变量" class="headerlink" title="Rust_Chapter_1_变量"></a>Rust_Chapter_1_变量</h1><p>这一章节内容主要是Rust的变量</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从现在开始，我正式开始学习Rust。Rust相对于C++在出于安全的<strong>规范优势</strong>不必多说，我发现Rust也能用于嵌入式开发。<br>因而我受够了，<strong>快用Rust重写</strong>(乐)</p>
+<span id="more"></span>
+<blockquote>
+<p>在写这一章的时候，我手头看的这一本书是《Rust权威指南》，虽说序论中说并不适合新手，但是就我读了前三章似乎也没有遇见特别难懂的概念。这一章包括之后，都是这本书的学习笔记</p>
+</blockquote>
+<h2 id="Hello-Rust"><a href="#Hello-Rust" class="headerlink" title="Hello Rust"></a>Hello Rust</h2><p>新学一门编程语言，肯定少不了Hello_World，基本礼仪<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello Rust!&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>简简单单的一行，与C++类似<br><code>fn main()</code>是main函数的声明，入口函数就是<code>main()</code>函数，没什么好说的<br><code>println!()</code>是一个宏而非函数，这点在后面在解释<br><code>println!()</code>可以使用类似C++20<code>std::format</code>的语法形式，具体如下<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;1&#125; learn rust &#123;0&#125;&quot;</span>,<span class="number">666</span>,<span class="string">&quot;feipiao&quot;</span>);</span><br><span class="line"><span class="comment">//输出结果 feipiao learn rust 666</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">666</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">y</span> = <span class="number">233</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先，Rust中的变量默认是<strong>不可变变量</strong>，也就是<code>let x = 666;</code>，这和C++有很大的不同，我想不出C++有什么平替，因为它并不是C++中加<code>const</code>的那种常量，C/C++中的变量其实都是第二条<code>let mut y = 233;</code>，为<strong>可变变量</strong><br>还记得C/C++有一个<code>mutable</code>关键字么，这里的<code>mut</code>其实就是它的缩写，那么他俩有什么区别呢？</p>
+<h3 id="不可变变量"><a href="#不可变变量" class="headerlink" title="不可变变量"></a>不可变变量</h3><p>不可变变量保证了数据不会被修改，例如运行如下的错误代码会报错<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">666</span>;</span><br><span class="line">    x = <span class="number">100</span>;<span class="comment">//这是会报错滴</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>而以下代码就不会报错，因为这里<code>666</code>是利用<code>let</code>被<strong>隐藏/shadow</strong>了，我们可以重复使用<code>let</code>关键字并配以相同的名称来不断地<strong>隐藏</strong>变量<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">666</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">100</span>;<span class="comment">//666被隐藏了，x代表100，这保证了666这个数据没有被修改</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>值得一提的是，这种shadow甚至可以改变x的类型，也就是说除了x的名字没变，它这个名字代表的本身是什么完全可以变掉<br>也就是说，把一个人的名字给了另一个人，这个人也就自然被隐藏起来了，但谁也还是自己，<strong>没被修改</strong>不是么<br>个人感觉这和<strong>C/C++作用域下名称的覆盖</strong>类似，也许那也是一种shadow呢？</p>
+<h3 id="可变变量"><a href="#可变变量" class="headerlink" title="可变变量"></a>可变变量</h3><p>像可变变量就很类似C/C++了，其在第一次声明的时候类型就已经被确定了<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">x</span> = <span class="number">666</span>;</span><br><span class="line">    x = <span class="number">233</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这里声明了x是一个可变变量，第二句就修改了它的值，但<strong>x的类型</strong>在第一句的时候就已经被<strong>确认</strong>是一个整型了(下面会讲到，这里是<strong>自动类型推导</strong>)，如果在这个时候把第二句改成<code>x = 233.2</code>就会报错</p>
+<h3 id="let即隐藏-amp-可变与不可变的底层内涵"><a href="#let即隐藏-amp-可变与不可变的底层内涵" class="headerlink" title="let即隐藏&amp;可变与不可变的底层内涵"></a>let即隐藏&amp;可变与不可变的底层内涵</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = <span class="number">233</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, a);</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">a</span> = <span class="number">233</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, a);</span><br><span class="line">    a = <span class="number">666</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//正确编译，结果如下</span></span><br><span class="line"><span class="comment">//233</span></span><br><span class="line"><span class="comment">//233</span></span><br><span class="line"><span class="comment">//666</span></span><br></pre></td></tr></table></figure>
+<p>注意<code>let</code>代表的就是shadow的含义，既然是隐藏，那么意味着类型可以被更改，也就是说第二个<code>let mut a = 233;</code>时a就变成了一个可变变量了，但原来上面第一个的<code>let a = 233</code>中233还存在于栈上，并<strong>没有被改变</strong>，只是a不再能访问到它了而已。第三句由于a已经是一个可变变量了，自然也是成立的</p>
+<p>可以看看如下<strong>缩减的汇编码</strong>，本篇文档记录时使用的环境为<code>rustc 1.69.0 (84c898d65 2023-04-16)</code><br>上述代码经过<code>rustc -O --emit asm=main.s .\main.rs</code>生成的<a target="_blank" rel="noopener" href="https://github.com/feipiao594/Self-study-notes/blob/main/CS_%E8%AE%A1%E7%AE%97%E6%9C%BA/Rust/Rust_Chapter_1_%E5%8F%98%E9%87%8F_%E7%A4%BA%E4%BE%8B%E6%96%87%E4%BB%B6.s">完整的汇编文件github仓库链接</a><br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">_ZN4main4main17hd0d97daef3a32cf2E:</span><br><span class="line">...</span><br><span class="line">movl	$233, 36(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E</span><br><span class="line">...</span><br><span class="line">movl	$233, 32(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E、</span><br><span class="line">...</span><br><span class="line">movl	$666, 32(%rsp)</span><br><span class="line">...</span><br><span class="line">callq	_ZN3std2io5stdio6_print17hce7a376ab49946d5E</span><br></pre></td></tr></table></figure><br>可以清晰的看到Rust所承诺的<strong>不可变变量的不可被修改性</strong>，也可以看到<strong>可变变量在原位被更改</strong>，而let就是生成一个崭新的变量，在地址上区别于原对象，这不像C++，因为C++是不允许局部静态变量重复被初始化的</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>用<code>const</code>而不是<code>let</code>来声明一个常量，常量和变量是不同的，不论变量可变还是不可变，常量不可以使用<code>mut</code>修饰，常量不仅默认不可变，还总是不可变，这体现为下列<strong>错误</strong><br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">const</span> MAX: <span class="type">u32</span> = <span class="number">100</span>;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, MAX);</span><br><span class="line">    <span class="keyword">const</span> MAX: <span class="type">u32</span> = <span class="number">10</span>;<span class="comment">//ERROR!!!报错啦</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, MAX);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>即不允许MAX被重定义<br>常量在声明时候必须<strong>第一时间显式标注类型</strong><br>常量只能绑定到常量表达式上，不能被绑定到函数的返回值上，或其它需要在运行时计算的值</p>
+<h3 id="变量的类型"><a href="#变量的类型" class="headerlink" title="变量的类型"></a>变量的类型</h3><p>Rust是一个<strong>强类型</strong>的语言，但从上面的例子好像看不出来，因为它存在有<strong>自动的类型推导</strong>，当然我们也<strong>可以显式</strong>的给它声明变量是什么类型，如下<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">test</span>: <span class="type">u32</span> = <span class="number">42</span>;</span><br></pre></td></tr></table></figure><br>有时候Rust无法推导出变量的类型，我们就不能去掉这个显式声明的过程，如下段代码，就不能去除<code>: u32</code>，否则就会愉快的报错<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">guess</span>: <span class="type">u32</span> = <span class="string">&quot;42&quot;</span>.<span class="title function_ invoke__">parse</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Not a number!&quot;</span>);</span><br></pre></td></tr></table></figure><br>Rust中内建了4种基础的标量类型：整型、浮点数、布尔值与字符，2种内置的基础的复合类型：元组(tuple)和数组(array)</p>
+<h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p>没啥好说的，直接上表格</p>
+<p><strong>Rust中的整数类型</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>长度</th>
+<th>有符号</th>
+<th>无符号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8-bit</td>
+<td>i8</td>
+<td>u8</td>
+</tr>
+<tr>
+<td>16-bit</td>
+<td>i16</td>
+<td>u16</td>
+</tr>
+<tr>
+<td>32-bit</td>
+<td>i32</td>
+<td>u32</td>
+</tr>
+<tr>
+<td>64-bit</td>
+<td>i64</td>
+<td>u64</td>
+</tr>
+<tr>
+<td>arch</td>
+<td>isize</td>
+<td>usize</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后一行的<code>isize</code>和<code>usize</code>的长度取决于程序运行的目标平台，在64位上就64位，32位上就32位</p>
+<p>你可以使用如下表的方式书写整型字面量，注意，除了Byte，其余所有的字面量都可以使用<strong>整型后缀</strong>，比如<code>57u8</code>，代表一个使用了u8类型的整数57。同时你可以使用<code>_</code>作为<strong>分隔符</strong>方便读数，比如<code>1_000</code></p>
+<p><strong>Rust中的整型字面量</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>整型字面量</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Decimal</td>
+<td>98_222</td>
+</tr>
+<tr>
+<td>Hex</td>
+<td>0xff</td>
+</tr>
+<tr>
+<td>Octal</td>
+<td>0o77</td>
+</tr>
+<tr>
+<td>Binary</td>
+<td>0b1111_0000</td>
+</tr>
+<tr>
+<td>Byte(u8 only)</td>
+<td>b’A’</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>关于整型的类型溢出，在debug版本下会直接被Rust检测到，<strong>弹出panic并结束程序</strong>，在release版本下会形成经典的C/C++中的overflowing，这本书中称为<strong>二进制补码环绕</strong>，如果希望显示使用环绕，可以使用标准库中的类型<code>Wrapping</code></p>
+<h3 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h3><p>基本的两个类型<code>f32</code>与<code>f64</code>，依照遵循IEEE-754，Rust中浮点数字面量默认推导为<code>f64</code></p>
+<h3 id="Bool类型"><a href="#Bool类型" class="headerlink" title="Bool类型"></a>Bool类型</h3><p>没啥好说的，和其它编程语言一致，都是<code>True</code>和<code>False</code>，类型名就是<code>Bool</code></p>
+<h3 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h3><p>即<code>char</code>类型，注意字符类型是用<strong>单引号</strong>包围的，而字符串是用<strong>双引号</strong>包围的<br>Rust中的<code>char</code>类型占4个字节，是一个Unicode标量值，头皮发麻了</p>
+<h3 id="元组类型"><a href="#元组类型" class="headerlink" title="元组类型"></a>元组类型</h3><p>元组类型可以将多个<strong>不同类型</strong>的多个值组合进一个复合类型中<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">tup</span>:(<span class="type">i32</span>,<span class="type">f64</span>,<span class="type">u8</span>) = (<span class="number">500</span>,<span class="number">6.4</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> (x,y,z) = tup;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这里第一行创建了一个元组，注意这里的类型显示说明是不必要的，我们也可以写成<code>let tup = (500,6.4,1);</code></p>
+<p>第二行看起来像是结构化绑定，在这里被称为是<strong>解构</strong></p>
+<p>除此以外我们还可以使用<strong>索引</strong>并通过<strong>点号</strong>来访问元组中的值<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = (<span class="number">500</span>,<span class="number">6.4</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = x.<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = x.<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">c</span> = x.<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h3><p>与元组类型不同，数组中的每个值只能够是<strong>相同</strong>的类型，相同的是类型在一开始必须就能推导或者显式声明，而且数组的大小也必须在一开始就确定<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span>:[<span class="type">i32</span>;<span class="number">5</span>] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//显式说明类型以及个数</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//隐式推导</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>特殊用法</strong>，如果想创建一个含有相同值的数组，可以如下简写<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">3</span>;<span class="number">5</span>];<span class="comment">//注意中括号里面是分号</span></span><br></pre></td></tr></table></figure></p>
+<p>访问数组的元素与C/C++一致，即<code>arrayname[index]</code>，如果数组越界访问，也会引起运行时的panic，程序会崩溃退出，十分的<strong>保守与安全</strong>，不像C/C++留下引发一系列的安全问题的隐患</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/ebf347fe.html" rel="prev" title="曼德勃罗集">
+      <i class="fa fa-chevron-left"></i> 曼德勃罗集
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3c5e47f1.html" rel="next" title="CMake的使用">
+      CMake的使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust-Chapter-1-%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">Rust_Chapter_1_变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-Rust"><span class="nav-number">1.2.</span> <span class="nav-text">Hello Rust</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">不可变变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%98%E9%87%8F"><span class="nav-number">1.3.2.</span> <span class="nav-text">可变变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#let%E5%8D%B3%E9%9A%90%E8%97%8F-amp-%E5%8F%AF%E5%8F%98%E4%B8%8E%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84%E5%BA%95%E5%B1%82%E5%86%85%E6%B6%B5"><span class="nav-number">1.3.3.</span> <span class="nav-text">let即隐藏&amp;可变与不可变的底层内涵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F"><span class="nav-number">1.3.4.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.5.</span> <span class="nav-text">变量的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%9E%8B"><span class="nav-number">1.3.6.</span> <span class="nav-text">整型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.7.</span> <span class="nav-text">浮点类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bool%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.8.</span> <span class="nav-text">Bool类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.9.</span> <span class="nav-text">字符类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.10.</span> <span class="nav-text">元组类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.11.</span> <span class="nav-text">数组类型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">133k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:01</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      总访客量：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : '0626002d47af200881ab7c363434d073',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="遨游在内存中的硬件启动过程2024.9.28 .NET Conf 介绍话题，话题来自我之前对硬件启动过程的好奇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="遨游在内存中的硬件启动过程">
+<meta property="og:url" content="https://feipiao594.github.io/posts/42db1e6.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="遨游在内存中的硬件启动过程2024.9.28 .NET Conf 介绍话题，话题来自我之前对硬件启动过程的好奇">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-09-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-27T07:55:07.050Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/42db1e6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>遨游在内存中的硬件启动过程 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/42db1e6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          遨游在内存中的硬件启动过程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-09-26 00:00:00" itemprop="dateCreated datePublished" datetime="2024-09-26T00:00:00+08:00">2024-09-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-27 15:55:07" itemprop="dateModified" datetime="2024-10-27T15:55:07+08:00">2024-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/" itemprop="url" rel="index"><span itemprop="name">Basic_principles</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/" itemprop="url" rel="index"><span itemprop="name">Computer_composition</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
+<span id="more"></span>
+<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
+<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
+</blockquote>
+<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
+<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
+<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
+<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
+<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
+<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
+<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
+<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
+<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
+<blockquote>
+<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
+</blockquote>
+<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
+<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
+<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
+<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
+<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
+<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
+<ol>
+<li>SEC(安全验证)</li>
+<li>PEI(EFI前期初始化)</li>
+<li>DXE(驱动执行环境)</li>
+<li>BDS(启动设备选择)</li>
+<li>TSL(操作系统加载前期)</li>
+<li>RT(Run Time)</li>
+<li>AL(系统灾难恢复期)</li>
+</ol>
+<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
+<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
+<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a target="_blank" rel="noopener" href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/f1193ad8.html" rel="prev" title="离散与连续傅里叶变换之间的联系">
+      <i class="fa fa-chevron-left"></i> 离散与连续傅里叶变换之间的联系
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/85479d9c.html" rel="next" title="日常碎碎念_3">
+      日常碎碎念_3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%81%A8%E6%B8%B8%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E7%A1%AC%E4%BB%B6%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">遨游在内存中的硬件启动过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%A0%E7%94%B2"><span class="nav-number">1.1.</span> <span class="nav-text">叠甲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%97%B6%E5%85%B4%E8%B5%B7"><span class="nav-number">1.2.</span> <span class="nav-text">一时兴起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.3.</span> <span class="nav-text">基础知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RAM-amp-ROM-%E5%9C%A8-CPU-%E7%9C%8B%E6%9D%A5%E9%83%BD%E6%98%AF-Memory"><span class="nav-number">1.4.</span> <span class="nav-text">RAM &amp; ROM 在 CPU 看来都是 Memory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%AD%E7%A7%98%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">1.5.</span> <span class="nav-text">揭秘启动过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%9D%A1%E6%8C%87%E4%BB%A4"><span class="nav-number">1.5.1.</span> <span class="nav-text">第一条指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AE%A4%E8%AF%86%E4%B8%80%E4%B8%8B-UEFI"><span class="nav-number">1.5.2.</span> <span class="nav-text">简单认识一下 UEFI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%BD%E7%94%A8%E7%9A%84%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90"><span class="nav-number">1.6.</span> <span class="nav-text">好用的工具推荐</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">133k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:01</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      总访客量：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : '656100c82d937805701ddb9384a3654c',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

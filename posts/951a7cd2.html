@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="关于思考第一类曲面积分时的发现声明:本文是对知乎答主@李治林的回答的个人总结，原链接如下，侵权删https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;48421749&#x2F;answer&#x2F;134203246">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于思考第一类曲面积分时的发现">
+<meta property="og:url" content="https://feipiao594.github.io/posts/951a7cd2.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="关于思考第一类曲面积分时的发现声明:本文是对知乎答主@李治林的回答的个人总结，原链接如下，侵权删https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;48421749&#x2F;answer&#x2F;134203246">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://feipiao594.github.io/images/%E5%85%B3%E4%BA%8E%E6%80%9D%E8%80%83%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%9B%B2%E9%9D%A2%E7%A7%AF%E5%88%86%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0_%E5%9B%BE1.jpg">
+<meta property="og:image" content="https://feipiao594.github.io/images/%E5%85%B3%E4%BA%8E%E6%80%9D%E8%80%83%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%9B%B2%E9%9D%A2%E7%A7%AF%E5%88%86%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0_%E5%9B%BE2.png">
+<meta property="article:published_time" content="2023-03-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-27T08:09:52.653Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://feipiao594.github.io/images/%E5%85%B3%E4%BA%8E%E6%80%9D%E8%80%83%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%9B%B2%E9%9D%A2%E7%A7%AF%E5%88%86%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0_%E5%9B%BE1.jpg">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/951a7cd2.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于思考第一类曲面积分时的发现 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/951a7cd2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于思考第一类曲面积分时的发现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-22 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-22T00:00:00+08:00">2023-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-27 16:09:52" itemprop="dateModified" datetime="2024-10-27T16:09:52+08:00">2024-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Analysis-theory/" itemprop="url" rel="index"><span itemprop="name">Analysis_theory</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
+<h2 id="从线元到面元"><a href="#从线元到面元" class="headerlink" title="从线元到面元"></a>从线元到面元</h2><p>首先我们知道在弧微分里的线元是长成这样的，我们在当时微分流形公式里也有写到</p>
+<script type="math/tex; mode=display">ds^2=g_{ij}dx^i dx^j</script><p>其实它可以是由下面这个式子经过坐标变换得到</p>
+<script type="math/tex; mode=display">ds^2=(dx^i)^2</script><p>这个式子其实就是二维空间里经典的勾股定理，那么要想把它推广到三维，从第一类曲线积分推广到第一类曲面积分，那么我们需要找到所谓三维的勾股定理</p>
+<h2 id="关于开根号后的方向"><a href="#关于开根号后的方向" class="headerlink" title="关于开根号后的方向"></a>关于开根号后的方向</h2><p>我们默认规定了平面正向就是和直角坐标系一致，或者说是相同的<strong>轮换序</strong>，本质上是定向相同，故而对于一个正向的平面这边只要保证开平方后结果是轮换序就好了，就能保证满足微分形式和积分同向<br>顺带一提，第一类积分无方向性就是这个开根号来的，$ds$与$dS$显然是无方向的，那么它就会自适应当前是在哪个流形上计算，这种自适应其实就是开根号取正还是取负，<strong>取正理由是几何意义</strong>，如果和原式定向相符，所谓的积分函数为1，结果就是正的，因而就<strong>规定</strong>取正也就是流形定向相符的顺序了(我是这么理解的，但并不一定正确，但从结果上来说无可反驳)，开根号就正好从逻辑上消除了方向，总之开完根号方向需要与子流形的定向一致，从整体来说，即使积分区域反向，也可以把它掰回正向，用轮换序去套</p>
+<h2 id="三维的勾股定理"><a href="#三维的勾股定理" class="headerlink" title="三维的勾股定理"></a>三维的勾股定理</h2><p>这个只给出，但我不做证明，其实还是挺简单的，当然在链接里，李老师还是给出了证明</p>
+<script type="math/tex; mode=display">S_4^2=S_1^2+S_2^2+S_3^2</script><h2 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h2><p>由上面这个<strong>三维勾股定理</strong>就可以导出这个</p>
+<script type="math/tex; mode=display">ds^2=(dydz)^2+(dzdx)^2+(dxdy)^2</script><p>首先注意，两个对偶矢量之间的符号是楔积，但平方代表的是张量积<br>这点和弧微分是对应的，如果说这个平方代表的是楔积的话，$ds$直接就是0了，那显然不对<br>提出因子$dxdy$就可以得到</p>
+<script type="math/tex; mode=display">ds^2=(dxdy)^2((\frac{dydz}{dxdy})^2+(\frac{dzdx}{dxdy})^2+1)\\=(dxdy)^2(z_x^2+z_y^2+1)</script><p>开根号就能得到直角坐标系下把面元转换为微分形式的式子</p>
+<h2 id="关于评论区说的规范化"><a href="#关于评论区说的规范化" class="headerlink" title="关于评论区说的规范化"></a>关于评论区说的规范化</h2><p>看到评论区里有人问这里的$\frac{dydz}{dxdy}=z_x$规范化是什么样的，我仔细思考了一下给出了我的答案<br>其实这个式子是不正确的，完整的写法是这样的</p>
+<script type="math/tex; mode=display">(\frac{dydz}{dxdy})^2=(z_x)^2</script><p>首先这里$dydz$中间是楔积，只需把$dz$展开</p>
+<script type="math/tex; mode=display">\frac{dydz}{dxdy} = \frac{dy(\frac{z}{x}dx+\frac{z}{y}dy)}{dxdy}\\=\frac{\frac{\partial z}{\partial x}dy\wedge dx+\frac{\partial z}{\partial y}dy\wedge dy}{dx\wedge dy}\\=\frac{\frac{\partial z}{\partial x}dy\wedge dx}{dx\wedge dy}\\=\frac{-\frac{\partial z}{\partial x}dx\wedge dy}{dx\wedge dy}\\=-\frac{\partial z}{\partial x}</script><p>发现了么，这里居然还有一个负号在呢，所以那个平方是不能少的，存在那个张量积，这个负号就无所谓了</p>
+<h2 id="一般坐标系下面元"><a href="#一般坐标系下面元" class="headerlink" title="一般坐标系下面元"></a>一般坐标系下面元</h2><p>上面推导了直角坐标系下面元的来源，那么我们就可以直接使用<strong>源头的式子</strong>来求解一般坐标系下，只需要把坐标系变换的式子往这里一代</p>
+<script type="math/tex; mode=display">ds^2=(dydz)^2+(dzdx)^2+(dxdy)^2</script><p>就可以得到柱坐标，球坐标乃至任意坐标系下的式子啦<br>如下，展示一个柱坐标下的</p>
+<script type="math/tex; mode=display">ds^2=r^2(drd\theta)^2+(d\theta dz)^2+r^2(dzdr)^2</script><p>按理来说，应该可以写成<strong>度规的形式</strong>，但是本人有些懒惰，在写这篇blog时未完成这个工作</p>
+<h2 id="参数方程法"><a href="#参数方程法" class="headerlink" title="参数方程法"></a>参数方程法</h2><script type="math/tex; mode=display">ds^2=(dydz)^2+(dzdx)^2+(dxdy)^2</script><p>将这个式子代入参数方程的转化式，将直接可以将其简单化，可以省去转化坐标系的方法，因为参数方程包含了完整的曲面信息<br>注意参数方程和坐标系转化是<strong>不一样的</strong>方法，坐标系转化只代入了坐标系转化的方程，而参数方程则是一步到位</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><p>求$I=\iint_{\Sigma}{\frac{d S}{x^{2}+y^{2}+Z^{2}}}$，其中$\Sigma$是介于平面$z=0$和$z=H$之间的曲面柱$x^2+y^2 = R^2$</p>
+<h3 id="更换坐标系"><a href="#更换坐标系" class="headerlink" title="更换坐标系"></a>更换坐标系</h3><script type="math/tex; mode=display">ds^2=r^2(drd\theta)^2+(d\theta dz)^2+r^2(dzdr)^2</script><p>由该式子可得到面元，此时式子已经变化为了</p>
+<script type="math/tex; mode=display">\left\{\begin{matrix} r=R\\  \theta = \theta\\z=z\end{matrix}\right.</script><p>这是一个子流形的浸入映射，将其代入原微分形式，可以得到</p>
+<script type="math/tex; mode=display">ds^2=r^2(d\theta dz)^2</script><h3 id="参数方程法-1"><a href="#参数方程法-1" class="headerlink" title="参数方程法"></a>参数方程法</h3><script type="math/tex; mode=display">\left\{\begin{matrix} x=Rcos\theta\\y = Rsin\theta\\z=z\end{matrix}\right.</script><p>直接代入也可以得到</p>
+<script type="math/tex; mode=display">ds^2=r^2(d\theta dz)^2</script><p>其实他俩是在同一个坐标系下的</p>
+<h2 id="放到流形当中进行思考"><a href="#放到流形当中进行思考" class="headerlink" title="放到流形当中进行思考"></a>放到流形当中进行思考</h2><p>第二类积分即对子流形上的积分，需要把整个微分形式按照子流形的映射，即把其映射成子流形上的坐标卡，那么这种具体就体现为约束的方程，其中参数方程就属于这一类，不管上面使用了什么方法，其实都首先把第一类积分的元变为了微分形式，进而使用参数方程进行代换，转化为第二类积分，那么是否进行坐标系的转化对它进行简化并不重要，但求取定向是否相符是一个计算量较大的问题<br>已知定向，当然可以随意构造一种坐标系，在欧式空间当中最简单的就是在切平面方向构造一个定向相符的直角坐标系，正好，它和我们之前提到的那张判断stokes诱导定向完全一致，可以细细品味一下，接着再用雅可比矩阵的东西计算同向的定义，似乎也只有这种办法进行进行计算，别的什么去求和代换前坐标系的坐标的排列顺序都不靠谱<br>故而平时就使用直角坐标系中转，即可直观确定方向，即使是常见坐标系如球坐标系也得来算个定向相符的事情，整体的概念如下图，看上去好像坐标系被扭曲了，但由于函数也被扭曲了，整体的积分是不变的</p>
+<blockquote>
+<p>再次提醒，换坐标系或者代入并非高数书，也就是下一段我们提到的这个特殊的变换以外，其它要取定向是否相符的微分形式都是需要算的，不然只能取得绝对值的相等没有什么好办法，目前我还没见到需要进行坐标系变换或者代入参数方程是必须的，暂时保留这些方法</p>
+</blockquote>
+<p><img src="/images/关于思考第一类曲面积分时的发现_图1.jpg" width="70%" height="70%"></p>
+<p>对于常见的二重积分，用$z(x,y)$代换$z$，其实是变化为了这样的一个流形上的曲纹坐标系(粉色线为曲纹坐标为<strong>常值</strong>的线)，如下图，其实在这种情况下，$x$，$y$早就不是原来那俩了，它已经是新的子流形上的坐标了，严格来说可以加个上撇来区分他们，在反向的平面内，注意类似球面这样的流形，它并不能被一个坐标卡覆盖，而我没上面这种特殊的坐标卡其实也只能覆盖上半球面，覆盖不了下半球面(理由是这种映射(x,y)显然对应流形上的两个点，显然只覆盖了上半)，所以下半和上半要分开考虑，而分开考虑后，下半就会因为和原坐标系定向不相符而导致产生一个负号，这就是为什么第二类曲面积分投影下侧投影时会产生负号的原因</p>
+<blockquote>
+<p>同广义积分之理，从直觉上去掉有限个相对于积分区域低维的间断区域不会影响整体的积分，该说法可以修正其无法完全覆盖的障碍，或某些低维区域覆盖有限遍的障碍(该理论<strong>存疑</strong>，但暂且能大致解释)</p>
+</blockquote>
+<p><img src="/images/关于思考第一类曲面积分时的发现_图2.png" width="70%" height="70%"></p>
+<p>子流形其实除了等式<strong>还有不等式</strong>，这俩也就是约束方程，不等式包括自由变量的范围，而这种不等式的约束在映射为子流形前后<strong>也会发生变化</strong>，所以我们考虑第二类曲面积分，在把它变成子流形上的二重积分时，对于直角坐标系下的情况，如把第二类曲面积分，积分区域为圆心在坐标原点的上半球面，它包含两个约束，一个是$z=\sqrt{R^2-x^2-y^2}$，另一个是$x^2+y^2\le R^2$，我们<strong>不能忽略</strong>在变换时后面这一个不等式，不然无法得到正确的积分区域，在变换后不等式即变为积分区域</p>
+<h2 id="向未来更高维的展望"><a href="#向未来更高维的展望" class="headerlink" title="向未来更高维的展望"></a>向未来更高维的展望</h2><p>我猜测更高维也首先得知晓高维下的<strong>勾股定理</strong>，再同理可得，想必也就只是计算<strong>麻烦亿点点</strong>罢了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/10d711a6.html" rel="prev" title="日常困惑之梯度的换元">
+      <i class="fa fa-chevron-left"></i> 日常困惑之梯度的换元
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/572ad35a.html" rel="next" title="关于51单片机移植u8g2失败经历">
+      关于51单片机移植u8g2失败经历 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%80%9D%E8%80%83%E7%AC%AC%E4%B8%80%E7%B1%BB%E6%9B%B2%E9%9D%A2%E7%A7%AF%E5%88%86%E6%97%B6%E7%9A%84%E5%8F%91%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">关于思考第一类曲面积分时的发现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E7%BA%BF%E5%85%83%E5%88%B0%E9%9D%A2%E5%85%83"><span class="nav-number">1.1.</span> <span class="nav-text">从线元到面元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BC%80%E6%A0%B9%E5%8F%B7%E5%90%8E%E7%9A%84%E6%96%B9%E5%90%91"><span class="nav-number">1.2.</span> <span class="nav-text">关于开根号后的方向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E7%9A%84%E5%8B%BE%E8%82%A1%E5%AE%9A%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">三维的勾股定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA"><span class="nav-number">1.4.</span> <span class="nav-text">导出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%AF%84%E8%AE%BA%E5%8C%BA%E8%AF%B4%E7%9A%84%E8%A7%84%E8%8C%83%E5%8C%96"><span class="nav-number">1.5.</span> <span class="nav-text">关于评论区说的规范化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E5%9D%90%E6%A0%87%E7%B3%BB%E4%B8%8B%E9%9D%A2%E5%85%83"><span class="nav-number">1.6.</span> <span class="nav-text">一般坐标系下面元</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E6%96%B9%E7%A8%8B%E6%B3%95"><span class="nav-number">1.7.</span> <span class="nav-text">参数方程法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98"><span class="nav-number">1.8.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%8D%A2%E5%9D%90%E6%A0%87%E7%B3%BB"><span class="nav-number">1.8.1.</span> <span class="nav-text">更换坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E6%96%B9%E7%A8%8B%E6%B3%95-1"><span class="nav-number">1.8.2.</span> <span class="nav-text">参数方程法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BE%E5%88%B0%E6%B5%81%E5%BD%A2%E5%BD%93%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%80%9D%E8%80%83"><span class="nav-number">1.9.</span> <span class="nav-text">放到流形当中进行思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E6%9C%AA%E6%9D%A5%E6%9B%B4%E9%AB%98%E7%BB%B4%E7%9A%84%E5%B1%95%E6%9C%9B"><span class="nav-number">1.10.</span> <span class="nav-text">向未来更高维的展望</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">133k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:01</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      总访客量：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : '945c79b7f94c459629ef126367642eb2',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="微分流形公式整理其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了大一统的美丽。在这里记录下一些重要定义，重要公式吧。  免责声明：不保证摘录的是完全正确的，自用，请谨慎阅览">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微分流形公式整理">
+<meta property="og:url" content="https://feipiao594.github.io/posts/7391c17b.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="微分流形公式整理其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了大一统的美丽。在这里记录下一些重要定义，重要公式吧。  免责声明：不保证摘录的是完全正确的，自用，请谨慎阅览">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-27T08:10:10.643Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/7391c17b.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>微分流形公式整理 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/7391c17b.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微分流形公式整理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-19T00:00:00+08:00">2023-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-27 16:10:10" itemprop="dateModified" datetime="2024-10-27T16:10:10+08:00">2024-10-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Analysis-theory/" itemprop="url" rel="index"><span itemprop="name">Analysis_theory</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义，重要公式吧。</p>
+<hr>
+<p><strong>免责声明</strong>：不保证摘录的是完全正确的，自用，请<strong>谨慎阅览</strong></p>
+<hr>
+<span id="more"></span>
+<h2 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h2><p>张量积的定义：</p>
+<script type="math/tex; mode=display">\alpha \otimes \beta (v,w)=\alpha(v) \cdot \beta (w)</script><p>可以看到整个这个的定义和乘法几乎也没什么多大的区别，不过是符号用的奇特了些</p>
+<p>张量积的结合律：</p>
+<script type="math/tex; mode=display">(U\otimes V)\otimes W \cong U\otimes (V\otimes W)</script><p>张量积的分配律：</p>
+<script type="math/tex; mode=display">U\otimes (V\oplus W)\cong (U\otimes V)\oplus (U\otimes W)</script><p>张量积的交换律：</p>
+<script type="math/tex; mode=display">U\otimes V\cong V\otimes U</script><p>向量与张量积的结合：</p>
+<script type="math/tex; mode=display">U\otimes (V\otimes W)\cong (U\otimes V)\otimes W \cong U\otimes V\otimes W</script><p>张量积的对偶：设$U$和$V$是有限维向量空间，${u_i}$和${v_j}$分别是$U$和$V$的一组基，则$u_i\otimes v_j$构成了$U\otimes V$的一组基，同时也可以证明$\mathrm{Hom}(U\otimes V, \mathbb{R})\cong \mathrm{Bil}(U,V)$，即$U\otimes V$的对偶空间和$U$和$V$的双线性函数空间同构。</p>
+<p>由定义可得($C$为常数，<strong>0-tenser</strong>，等号右边的运算符是乘积)</p>
+<script type="math/tex; mode=display">C\otimes V=CV</script><h2 id="楔积"><a href="#楔积" class="headerlink" title="楔积"></a>楔积</h2><p>对于任意$f\in A_k(V)$，$g\in A_l(V)$，定义楔积如下</p>
+<script type="math/tex; mode=display">
+\alpha\wedge\beta:= \frac{1}{k!l!}A(\alpha\otimes\beta)</script><p>楔积有如下的<strong>运算性质</strong><br>设$f\in A_k(V)$，$g\in A_l(V)$，$h\in A_m(V)$</p>
+<ul>
+<li>楔积$\wedge$关于$f$和$g$是双线性的</li>
+<li>对于任意常数$c$，有$c\wedge f=cf$</li>
+<li>反交换性：$f\wedge g=(-1)^{kl}g\wedge f$</li>
+<li>结合性：$(f\wedge g)\wedge h=f\wedge (g\wedge h)$</li>
+</ul>
+<p>同理如果$f$为常数$c$，$c\wedge g = cg$</p>
+<h2 id="切映射"><a href="#切映射" class="headerlink" title="切映射"></a>切映射</h2><p>在光滑流形$M$中取点$x_0$的局部坐标系$(U;x^i)$，在光滑流形$N$中取点$\varphi(x_0)$的局部坐标系$(V;y^a)$，则光滑映射$\varphi :M\to N$在局部上可表示为</p>
+<script type="math/tex; mode=display">y^a=y^a(x^1,x^2,\cdots,x^m)</script><p>其中$y^a(x^1,x^2,\cdots,x^m)$是定义在$U\cap\varphi^{-1}\left(V\right)$上的光滑函数，在切空间$T_{x_0}M$和$T_{\varphi(x_0)}N$中分别有自然基底$\{\frac{\partial}{\partial x^i}\}$和$\{\frac{\partial}{\partial y^a}\}$，设</p>
+<script type="math/tex; mode=display">\varphi_{* x_{0}}\left(\frac{\partial}{\partial x^{i}}\right)=\sum_{a=1}^{n}A_{a}^{i}\frac{\partial}{\partial y^{a}}</script><p>让上式两边都作用在坐标函数$y^\beta$上，得到</p>
+<script type="math/tex; mode=display">A_{i}^{\beta}=\left(\varphi_{\circ x_{0}}\left(\frac{\partial}{\partial x^{i}}\right)\right)y^{\beta}\\ =\frac{\partial}{\partial x^{i}}\left(y^{\beta}\circ\varphi\right)\\ =\frac{\partial y^{\beta}\left(x^{i}\cdot\cdots\cdot x^{m}\right)}{\partial x^{i}}</script><p>其中$T_{x_0}M$中不同的自然基底之间的关系可以看作从光滑流形$M$到自身的恒通映射在点$x_0$的切映射(仍然是恒同映射)在这两个自然基底下的表示。设$(U,\varphi)$，$(V,\psi)$是光滑流形$M$在点$x_0$的两个容许坐标卡，记</p>
+<script type="math/tex; mode=display">x^{i}\left(p\right)=\left(\varphi\left(p\right)\right)^{i},y^{i}\left(p\right)=\left(\varphi\left(p\right)\right)^{i},\forall p\in U\cap V</script><p>由上方式子得到</p>
+<script type="math/tex; mode=display">\frac{\partial}{\partial y^{i}}=\left(i d\right)_*\left(\frac{\partial}{\partial y^{i}}\right)\\=\sum_{j=1}^{m}A^j_i \frac{\partial}{\partial x^j}</script><p>其中</p>
+<script type="math/tex; mode=display">A_{i}^{j}=\frac{\partial x^{j}\left(y^{i}\cdot\cdots\cdot y^{m}\right)}{\partial y^{i}}|_{\psi(x_0)}</script><p>(《微分流形初步》p77)</p>
+<h2 id="Christoffel符号"><a href="#Christoffel符号" class="headerlink" title="Christoffel符号"></a>Christoffel符号</h2><p>定义式如下</p>
+<script type="math/tex; mode=display">\Gamma_{i j}^{k}=\frac{1}{2}g^{k l}\left(\frac{\partial g_{l j}}{\partial x^{i}}+\frac{\partial g_{i l}}{\partial x^{j}}-\frac{\partial g_{i j}}{\partial x^{l}}\right)</script><h2 id="度量张量场"><a href="#度量张量场" class="headerlink" title="度量张量场"></a>度量张量场</h2><p>光滑流形$M$上任意一个对称、正定的光滑2阶协变张量称为$M$上的一个黎曼结构，若在$M$上指定一个黎曼结构，及则称$(M,g)$为一个黎曼流形，此时称$g$为黎曼流形$M$上的基本张量场，或度规张量场</p>
+<script type="math/tex; mode=display">
+g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p>欧式空间自带一个自然的度规张量场，为一个单位矩阵，并且$g$为欧式内积</p>
+<h2 id="积分的定义"><a href="#积分的定义" class="headerlink" title="积分的定义"></a>积分的定义</h2><p>设$M$是满足第二可数公理$m$维有向光滑流形，则对于任意的有紧致支撑集的$m$次外微分式$\omega$，取$M$的<strong>定向相符</strong>的坐标卡集$\{(U_a,\varphi_a)\}$使得$\{U_a\}$构成$M$的局部有限开覆盖，因此在$M$上有从属于$\{U_a\}$的单位分解$\{h_a\}$，故$Supph_{a}\subset U_{a}$，$h_{a}\in C\left(M\right)$，$h_{a}\geq0$，$\sum h_{a}=1$，在$M$上的积分定义如下</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\int_{a_{1}}\omega&=\int_{a_{1}}h_{a}\cdot\omega=\sum_{a_{1}}\int_{a_{1}}^{}h_{a}\cdot\omega\\&=\sum_{a_{1}}\int_{a_{2}}^{i}\left(\left(h_{a}\cdot a_{a}\right)\cdot\varphi_{a}^{-1}\right)d x_{a}^{1}\cdots d x_{a}^{n}\end{aligned}</script><p>这里单位分解既是用一种巧妙的方法把函数分割到每个开集中，让他们在各自的局部坐标系里进行运算，最终得到结果的方法。<br>注意这里微分形式后面的${x^i}$是有顺序的，只有在顺序与<strong>定向完全相同</strong>的时候才是<strong>n重积分</strong>，才能进行计算，如果顺序和定向反了，需要把顺序调换回来，这才是<strong>符号的来源</strong>，其实和顺序无关</p>
+<h2 id="长度元素"><a href="#长度元素" class="headerlink" title="长度元素"></a>长度元素</h2><p>在实际计算时，可以使用给定的局部坐标系下的度量分量来计算 $ds$，即</p>
+<script type="math/tex; mode=display">ds=\sqrt{g_{ij}dx^i dx^j}</script><p>注意，$ds$原本的定义为</p>
+<script type="math/tex; mode=display">ds^2=g_{ij}dx^i dx^j</script><p>注意这里隐藏的符号是张量积，显然要想求得$ds$，左右两式要同时代入相同的$v$，即</p>
+<script type="math/tex; mode=display">ds^2(v,v)=g_{ij}dx^i dx^j(v,v)</script><p>在此基础上</p>
+<script type="math/tex; mode=display">\begin{aligned}ds(v)&=\sqrt{g_{ij}dx^i dx^j}(v)\\&=\sqrt{(g_{ij}dx^i dx^j)(v,v)}\\&=\sqrt{g_{ij}dx^i(v) dx^j(v)}\end{aligned}</script><p>看上去根号就像有了，把一个参数变为两个参数的功能<br>由于张量积的定义上和乘积也没什么多大区别，所以类似欧氏空间当中的弧微分也就可以做到提出一个$dt$，凑出积分式子进行运算了</p>
+<script type="math/tex; mode=display">ds=\sqrt{dx^2+dy^2}=\sqrt{1+\frac{dy^2}{dx^2}}dx=\sqrt{1+{y'}^2}dx</script><h2 id="体积元素"><a href="#体积元素" class="headerlink" title="体积元素"></a>体积元素</h2><p>设$(M,g)$是$n$维有向的黎曼流形，$(U;x^i)$是$M$的定向相符的局部坐标系，记</p>
+<script type="math/tex; mode=display">g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p>则</p>
+<script type="math/tex; mode=display">\Omega=\sqrt{G}dx^1\wedge\cdots\wedge dx^n</script><p>是在$M$上大范围定义的$n$次外微分式，其中$G=det(g_{ij})$。很明显，$\Omega$处处不为零，称为黎曼流形$(M,g)$的<strong>体积元素</strong></p>
+<h2 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h2><p>设$f\in C^{\infty}\left(M\right)$，则$df$是$M$上的1次微分式,下面这个式子称为光滑函数$f$的<strong>梯度场</strong>，是与$df$<strong>对偶</strong>的光滑切向量场</p>
+<script type="math/tex; mode=display">\nabla f = g^{ij} \frac{\partial f}{\partial x^i} \frac{\partial}{\partial x^j}</script><h2 id="散度"><a href="#散度" class="headerlink" title="散度"></a>散度</h2><p>设切向量场$X$，$G=det(g_{ij})$，散度公式如下</p>
+<script type="math/tex; mode=display">divX=\frac{1}{\sqrt{G}}\frac{\partial}{\partial x^i}(\sqrt{G}X^i)</script><h2 id="旋度"><a href="#旋度" class="headerlink" title="旋度"></a>旋度</h2><p>在三维流形上(旋度一般只能定义在三维流形上)，设切向量场$X$，$G=det(g_{ij})$，旋度计算公式如下</p>
+<script type="math/tex; mode=display">curl X=\frac{1}{\sqrt{G}}\begin{vmatrix}e_1&e_2&e_3\\ \frac{\partial}{\partial u^1}&\frac{\partial}{\partial u^2}&\frac{\partial}{\partial u^3}\\ X_1&X_2&X_3\end{vmatrix}\\=\frac{1}{\sqrt{G}}\begin{vmatrix}e_1&e_2&e_3\\ \frac{\partial}{\partial u^1}&\frac{\partial}{\partial u^2}&\frac{\partial}{\partial u^3}\\ g_{1j}X^1&g_{2j}X^2&g_{3j}X^3\end{vmatrix}</script><p>注意这里的$e^i$并非是<strong>单位</strong>的正交基，而是曲线坐标系里的$\{\frac{\partial}{\partial u^1}\}$但由于与下面的微分算子的记号相同，所以就写成$e^i$的格式<br>正是因为如此，所以真正计算时，要注意给出的向量场要<strong>先化为标准的形式</strong>再进行计算，这<strong>非常重要</strong></p>
+<p>如果要计算二维下的旋度，计算公式如下</p>
+<script type="math/tex; mode=display">curlX=\frac{1}{\sqrt{G}}(\frac{\partial g_{1j}X^1}{\partial u^1}-\frac{\partial g_{2j}X^2}{\partial u^2})</script><p>其实旋度还可以使用<strong>hodge星算子和外微分算子</strong>定义为</p>
+<script type="math/tex; mode=display">curl X = (\star dX^\flat)^\sharp</script><p>这等价于上面推导出来的公式，同时从这里可以看出，三维旋度有意义，二维旋度好歹也能算个标量场，四维及以上这<strong>定义就不太好耍</strong>了，干脆就放弃定义吧(乐)</p>
+<h2 id="Stokes公式"><a href="#Stokes公式" class="headerlink" title="Stokes公式"></a>Stokes公式</h2><p>对于 $n$ 维微分流形 $M$ ，$\Omega\subset M$ ，$\partial\Omega$ 是一个 $n-1$ 维微分流形，为 $M$ 的<strong>边界</strong>，其定向是$M$诱导的stokes定向，$\omega$ 为 $(n-1)$ -形式，$d\omega$ 为 $n$ -形式，可得</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="协变微分"><a href="#协变微分" class="headerlink" title="协变微分"></a>协变微分</h2><p>设$(M,g)$是一个$m$维黎曼流形，$v\in\mathscr{X}\left(M\right)$。在局部坐标系$(U;x^i)$下，设$v|_{v}=v^{i}\frac{\partial}{\partial x^{i}}$，命</p>
+<script type="math/tex; mode=display">D v|_{U}=D v^{i}\otimes\frac{\partial}{\partial x^{i}}=\left(\frac{\partial v^{i}}{\partial x^{k}}+v^{i}\Gamma_{i k}^{i}\right)d x^{k}\otimes\frac{\partial}{\partial x^{i}},</script><p>则$D v$是在光滑流形$M$上大范围定义的$(1,1)$型光滑张量场，称为光滑切向量场$v$的<strong>协变微分</strong>。映射$D:\mathscr{X}\left(M\right)\rightarrow \mathscr{X}\left(M\right)$称为<strong>协变微分算子</strong><br>这个是欧式空间中全微分在流形上的版本，也就是说欧氏空间中的全微分是流形上的协变微分的特例。即可以完全把$d\overrightarrow{F}$看成是$D\overrightarrow{F}$，把$\frac{\partial\overrightarrow{F}}{\partial x^i}$看成是$D\overrightarrow{F}$的分量</p>
+<h2 id="协变导数"><a href="#协变导数" class="headerlink" title="协变导数"></a>协变导数</h2><p>设$(M,g)$是一个$m$维黎曼流形，$v\in\mathscr{X}\left(M\right)$，$X\in T_pM$，则下式所定义的$D_Xv\in T_pM$称为光滑切向量场$v$关于切向量$X\in T_pM$的<strong>协变导数</strong></p>
+<script type="math/tex; mode=display">D_{X}v=X^{k}\left(\frac{\partial v^{i}}{\partial x^{k}}+v^{j}\Gamma_{j k}^{i}\right)\frac{\partial}{\partial x^{i}}</script><p>这个是欧式空间中方向导数在流形上的版本，也就是说欧氏空间中的方向导数(偏导数)是流形上的协变微分的特例。</p>
+<p>在 $ds = g_{ij} dx^i dx^j$ 中，$dx^i$ 和 $dx^j$ 之间的运算符是乘号 $\times$，表示 $dx^i$ 与 $dx^j$ 的乘积。这个乘法是指张量积，也就是向量的张量积。这个式子相当于对两个一阶协变张量 $dx^i$ 和 $dx^j$ 进行张量积得到一个二阶张量 $dx^i \otimes dx^j$，然后与度量张量 $g_{ij}$ 进行收缩。</p>
+<h2 id="写这篇整理时遇到的各种问题"><a href="#写这篇整理时遇到的各种问题" class="headerlink" title="写这篇整理时遇到的各种问题"></a>写这篇整理时遇到的各种问题</h2><p>到目前为止(2023.4.11)，基本的公式已经整理完成，接下来就是碰见实际例子时候的具体问题具体分析了</p>
+<h3 id="纠结动量定理是不是向量场的积分"><a href="#纠结动量定理是不是向量场的积分" class="headerlink" title="纠结动量定理是不是向量场的积分"></a>纠结动量定理是不是向量场的积分</h3><p>其实动量定理更本质应该是微分形式，写成积分形式纯粹是约定了欧式空间。其实最终形成了一个微分方程。</p>
+<script type="math/tex; mode=display">\overrightarrow{F}=\frac{d\overrightarrow{I}}{dt}</script><p>可以看到这个式子右端最终结果是一个向量场，左端也是向量场，最终等式成为恒等式，只要取两端向量分量恒等就可以得到最终结果啦<br>确实可以反过来定义对于协变微分的逆运算，但是由于我们暂时用到的协变微分只定义了对向量场的微分，所以只是把协变位置高了一位，所以按照我们现在的知识，只能利用上面这种方法定义向量场的路径积分，所以换而言之，这些积分的全部可以用单一元替换，变成$dt$，进而两边对$t$求导，得到我们想要的微分式，也就类似上面的动量定理，且只有这种对向量场积分的形式，这样原本的积分式也不过就是微分式的额外拓展罢了</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/93a8bfd0.html" rel="prev" title="数学实验综合练习">
+      <i class="fa fa-chevron-left"></i> 数学实验综合练习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/ebf347fe.html" rel="next" title="曼德勃罗集">
+      曼德勃罗集 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E6%B5%81%E5%BD%A2%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">微分流形公式整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%A0%E9%87%8F%E7%A7%AF"><span class="nav-number">1.1.</span> <span class="nav-text">张量积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A5%94%E7%A7%AF"><span class="nav-number">1.2.</span> <span class="nav-text">楔积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%87%E6%98%A0%E5%B0%84"><span class="nav-number">1.3.</span> <span class="nav-text">切映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Christoffel%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.4.</span> <span class="nav-text">Christoffel符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%A6%E9%87%8F%E5%BC%A0%E9%87%8F%E5%9C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">度量张量场</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.6.</span> <span class="nav-text">积分的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E5%BA%A6%E5%85%83%E7%B4%A0"><span class="nav-number">1.7.</span> <span class="nav-text">长度元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%93%E7%A7%AF%E5%85%83%E7%B4%A0"><span class="nav-number">1.8.</span> <span class="nav-text">体积元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6"><span class="nav-number">1.9.</span> <span class="nav-text">梯度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%A3%E5%BA%A6"><span class="nav-number">1.10.</span> <span class="nav-text">散度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%8B%E5%BA%A6"><span class="nav-number">1.11.</span> <span class="nav-text">旋度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stokes%E5%85%AC%E5%BC%8F"><span class="nav-number">1.12.</span> <span class="nav-text">Stokes公式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%BE%AE%E5%88%86"><span class="nav-number">1.13.</span> <span class="nav-text">协变微分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E5%8F%98%E5%AF%BC%E6%95%B0"><span class="nav-number">1.14.</span> <span class="nav-text">协变导数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E8%BF%99%E7%AF%87%E6%95%B4%E7%90%86%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E5%90%84%E7%A7%8D%E9%97%AE%E9%A2%98"><span class="nav-number">1.15.</span> <span class="nav-text">写这篇整理时遇到的各种问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A0%E7%BB%93%E5%8A%A8%E9%87%8F%E5%AE%9A%E7%90%86%E6%98%AF%E4%B8%8D%E6%98%AF%E5%90%91%E9%87%8F%E5%9C%BA%E7%9A%84%E7%A7%AF%E5%88%86"><span class="nav-number">1.15.1.</span> <span class="nav-text">纠结动量定理是不是向量场的积分</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">133k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:01</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      总访客量：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : 'dc2fc6fe60999b0ad671c19ffadb07b2',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
