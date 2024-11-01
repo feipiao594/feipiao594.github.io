@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-10-27T08:33:26.990Z</updated>
+  <updated>2024-11-01T09:43:37.088Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>日常碎碎念_4</title>
+    <link href="https://feipiao594.github.io/posts/1b23083f.html"/>
+    <id>https://feipiao594.github.io/posts/1b23083f.html</id>
+    <published>2024-10-31T16:00:00.000Z</published>
+    <updated>2024-11-01T09:43:37.088Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;日常碎碎念-4&quot;&gt;&lt;a href=&quot;#日常碎碎念-4&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_4&quot;&gt;&lt;/a&gt;日常碎碎念_4&lt;/h1&gt;&lt;p&gt;日常碎碎念_4，日常碎碎念，生人勿进&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>日常碎碎念_3</title>
@@ -202,7 +219,7 @@
     <link href="https://feipiao594.github.io/posts/64b84f95.html"/>
     <id>https://feipiao594.github.io/posts/64b84f95.html</id>
     <published>2023-09-25T16:00:00.000Z</published>
-    <updated>2024-10-27T08:02:54.084Z</updated>
+    <updated>2024-11-01T08:14:34.565Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;使用说明之qblog批处理&quot;&gt;&lt;a href=&quot;#使用说明之qblog批处理&quot; class=&quot;headerlink&quot; title=&quot;使用说明之qblog批处理&quot;&gt;&lt;/a&gt;使用说明之qblog批处理&lt;/h1&gt;&lt;p&gt;在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以&lt;code&gt;README.md&lt;/code&gt;显示的，在这里再发一遍，写成一篇blog&lt;/p&gt;</summary>
@@ -391,27 +408,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;C-模板元编程&quot;&gt;&lt;a href=&quot;#C-模板元编程&quot; class=&quot;headerlink&quot; title=&quot;C++模板元编程&quot;&gt;&lt;/a&gt;C++模板元编程&lt;/h1&gt;&lt;p&gt;之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>C++模板基础</title>
-    <link href="https://feipiao594.github.io/posts/cabf03c1.html"/>
-    <id>https://feipiao594.github.io/posts/cabf03c1.html</id>
-    <published>2023-07-09T16:00:00.000Z</published>
-    <updated>2024-10-27T07:58:27.273Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;C-模板基础&quot;&gt;&lt;a href=&quot;#C-模板基础&quot; class=&quot;headerlink&quot; title=&quot;C++模板基础&quot;&gt;&lt;/a&gt;C++模板基础&lt;/h1&gt;&lt;p&gt;为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容&lt;/p&gt;</summary>
     
     
     
