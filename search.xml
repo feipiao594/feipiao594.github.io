@@ -567,33 +567,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Pytorch学习_2</title>
-    <url>/posts/f5767f6a.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
-<span id="more"></span>
-<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
-<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
-<li>矢量化使数学表达上更简洁，同时运行的更快</li>
-<li>最小化目标函数和执行极大似然估计等价</li>
-<li>线性回归模型也是一个简单的神经网络</li>
-</ul>
-<h2 id="线性回归的从零开始实现"><a href="#线性回归的从零开始实现" class="headerlink" title="线性回归的从零开始实现"></a>线性回归的从零开始实现</h2><p>先把包引入一下<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure><br>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大</p>
-<p>首先为了简单起见，我们用带有噪声的线性模型手动构造一个人造数据集。首先生成一个包含1000个样本的数据集，每个样本包含从标准正态分布<br>我们使用线性模型参数$\mathbf{w}=[2,-3.4]^T$、$b=4.2$和噪声项$\epsilon$生成数据集及其标签：</p>
-<script type="math/tex; mode=display">
-\mathbf{y}=\mathbf{Xw}+b+\epsilon</script><p>$\epsilon$可以被视作模型预测和标签时的潜在观测误差。在这里我们认为标准假设成立，即$\epsilon$服从均值为0的正态分布。为了简化问题，我们将标准差设为0.01.下面的代码生成数据集</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, num_examples</span>): <span class="comment">#@save</span></span><br><span class="line"><span class="comment"># 生成y=Xw+b噪声</span></span><br><span class="line">  X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(w)))</span><br><span class="line">  y = torch.matmul(X, w) + b</span><br><span class="line">  y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">  <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_1_变量</title>
     <url>/posts/2d38ec93.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-1-变量"><a href="#Rust-Chapter-1-变量" class="headerlink" title="Rust_Chapter_1_变量"></a>Rust_Chapter_1_变量</h1><p>这一章节内容主要是Rust的变量</p>
@@ -702,6 +675,33 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_2</title>
+    <url>/posts/f5767f6a.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
+<span id="more"></span>
+<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
+<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
+<li>矢量化使数学表达上更简洁，同时运行的更快</li>
+<li>最小化目标函数和执行极大似然估计等价</li>
+<li>线性回归模型也是一个简单的神经网络</li>
+</ul>
+<h2 id="线性回归的从零开始实现"><a href="#线性回归的从零开始实现" class="headerlink" title="线性回归的从零开始实现"></a>线性回归的从零开始实现</h2><p>先把包引入一下<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure><br>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大</p>
+<p>首先为了简单起见，我们用带有噪声的线性模型手动构造一个人造数据集。首先生成一个包含1000个样本的数据集，每个样本包含从标准正态分布<br>我们使用线性模型参数$\mathbf{w}=[2,-3.4]^T$、$b=4.2$和噪声项$\epsilon$生成数据集及其标签：</p>
+<script type="math/tex; mode=display">
+\mathbf{y}=\mathbf{Xw}+b+\epsilon</script><p>$\epsilon$可以被视作模型预测和标签时的潜在观测误差。在这里我们认为标准假设成立，即$\epsilon$服从均值为0的正态分布。为了简化问题，我们将标准差设为0.01.下面的代码生成数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, num_examples</span>): <span class="comment">#@save</span></span><br><span class="line"><span class="comment"># 生成y=Xw+b噪声</span></span><br><span class="line">  X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(w)))</span><br><span class="line">  y = torch.matmul(X, w) + b</span><br><span class="line">  y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">  <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
