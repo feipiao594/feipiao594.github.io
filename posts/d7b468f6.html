@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Rust_Chapter_7_错误处理Rust 没有异常。相反，它有 Result&lt;T, E&gt; 类型，用于处理可恢复的错误，还有 panic! 宏，在程序遇到不可恢复的错误时停止执行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust_Chapter_7_错误处理">
+<meta property="og:url" content="https://feipiao594.github.io/posts/d7b468f6.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="Rust_Chapter_7_错误处理Rust 没有异常。相反，它有 Result&lt;T, E&gt; 类型，用于处理可恢复的错误，还有 panic! 宏，在程序遇到不可恢复的错误时停止执行。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-10T01:11:24.000Z">
+<meta property="article:modified_time" content="2024-11-10T02:05:20.625Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/d7b468f6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Rust_Chapter_7_错误处理 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/d7b468f6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rust_Chapter_7_错误处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-10 09:11:24 / 修改时间：10:05:20" itemprop="dateCreated datePublished" datetime="2024-11-10T09:11:24+08:00">2024-11-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/" itemprop="url" rel="index"><span itemprop="name">Programming_Language</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/" itemprop="url" rel="index"><span itemprop="name">Rust</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Rust-Chapter-7-错误处理"><a href="#Rust-Chapter-7-错误处理" class="headerlink" title="Rust_Chapter_7_错误处理"></a>Rust_Chapter_7_错误处理</h1><p>Rust 没有异常。相反，它有 <code>Result&lt;T, E&gt;</code> 类型，用于处理可恢复的错误，还有 <code>panic!</code> 宏，在程序遇到不可恢复的错误时停止执行。</p>
+<span id="more"></span>
+<h2 id="panic"><a href="#panic" class="headerlink" title="panic!"></a><code>panic!</code></h2><p><code>panic!</code> 针对的是不可恢复的操作</p>
+<p>执行会造成代码 <code>panic</code> 的操作（比如访问超过数组结尾的内容）或者显式调用 <code>panic!</code> 宏。这两种情况都会使程序 <code>panic</code>。通常情况下这些 panic 会打印出一个错误信息，展开并清理栈数据，然后退出。</p>
+<p>在错误信息中，通常会提示你设置 <code>RUST_BACKTRACE</code> 环境变量已得到错误发生时的函数调用栈，以帮助你定位错误发生的位置</p>
+<h2 id="使用-Result"><a href="#使用-Result" class="headerlink" title="使用 Result"></a>使用 Result</h2><p>现如今，很多语言都引入了 Result 的概念，将错误和结果打包成一个枚举返回有助于错误的传递<br>当结果无误时，返回 Ok(something)，在结果有错误时，返回一个 Err(some_error)</p>
+<p>可以利用模式匹配来处理这些枚举</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::ErrorKind;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = <span class="keyword">match</span> greeting_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(error) =&gt; <span class="keyword">match</span> error.<span class="title function_ invoke__">kind</span>() &#123;</span><br><span class="line">            ErrorKind::NotFound =&gt; <span class="keyword">match</span> File::<span class="title function_ invoke__">create</span>(<span class="string">&quot;hello.txt&quot;</span>) &#123;</span><br><span class="line">                <span class="title function_ invoke__">Ok</span>(fc) =&gt; fc,</span><br><span class="line">                <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="built_in">panic!</span>(<span class="string">&quot;Problem creating the file: &#123;e:?&#125;&quot;</span>),</span><br><span class="line">            &#125;,</span><br><span class="line">            other_error =&gt; &#123;</span><br><span class="line">                <span class="built_in">panic!</span>(<span class="string">&quot;Problem opening the file: &#123;other_error:?&#125;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但模式匹配仍然会导致代码长度很长，你也可以使用一些相对来说更简单易用的函数，例如 <code>unwrap_or_else</code></p>
+<p>比较常用的另一组是 <code>unwarp</code> 和 <code>expect</code>，他们两作为 Result 的函数，会获取 Ok 内部的值，如果获取不到，则陷入 panic，区别在于 expect 有自己的参数，你填写的字符串作为报错信息显示</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>).<span class="title function_ invoke__">unwarp</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;hello.txt should be included in this project&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="传播可恢复的错误"><a href="#传播可恢复的错误" class="headerlink" title="传播可恢复的错误"></a>传播可恢复的错误</h2><p>当编写一个其实先会调用一些可能会失败的操作的函数时，除了在这个函数中处理错误外，还可以选择让调用者知道这个错误并决定该如何处理。这被称为<strong>传播</strong>错误，这样能更好的控制代码调用，因为比起你代码所拥有的上下文，调用者可能拥有更多信息或逻辑来决定应该如何处理错误。</p>
+<p>你可以使用下面的方法手动把获取到的 Result 拆开，生成你自己函数要返回的 Result<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">username_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = <span class="keyword">match</span> username_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">match</span> username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username) &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(_) =&gt; <span class="title function_ invoke__">Ok</span>(username),</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为这种错误传播效果比较明显，所以会被大量使用，但每次都这么写太冗余了</p>
+<h2 id="传播错误的简写：-运算符"><a href="#传播错误的简写：-运算符" class="headerlink" title="传播错误的简写：? 运算符"></a>传播错误的简写：? 运算符</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username)?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(username)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 Result 的值是 Ok，这个表达式将会返回 Ok 中的值而程序将继续执行。如果值是 Err，Err 将作为整个函数的返回值，就好像使用了 return 关键字一样，这样错误值就被传播给了调用者。</p>
+<p>? 运算符所使用的错误值被传递给了 from 函数，它定义于标准库的 From trait 中，其用来将错误从一种类型转换为另一种类型。当 ? 运算符调用 from 函数时，收到的错误类型被转换为由当前函数返回类型所指定的错误类型。这在当函数返回单个错误类型来代表所有可能失败的方式时很有用，即使其可能会因很多种原因失败。</p>
+<p>例如，我们可以将示例中的 <code>read_username_from_file</code> 函数修改为返回一个自定义的 <code>OurError</code> 错误类型。如果我们也定义了 <code>impl From&lt;io::Error&gt; for OurError</code> 来从 <code>io::Error</code> 构造一个 <code>OurError</code> 实例，那么 <code>read_username_from_file</code> 函数体中的 ? 运算符调用会调用 from 并转换错误而无需在函数中增加任何额外的代码。</p>
+<p>关于 ? 运算符还有以下几点</p>
+<ul>
+<li>? 运算符只能被用于返回值与 ? 作用的值相兼容的函数。</li>
+<li>? 运算符也可用于 <code>Option&lt;T&gt;</code> 值。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/85479d9c.html" rel="prev" title="日常碎碎念_3">
+      <i class="fa fa-chevron-left"></i> 日常碎碎念_3
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust-Chapter-7-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">Rust_Chapter_7_错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#panic"><span class="nav-number">1.1.</span> <span class="nav-text">panic!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Result"><span class="nav-number">1.2.</span> <span class="nav-text">使用 Result</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E6%92%AD%E5%8F%AF%E6%81%A2%E5%A4%8D%E7%9A%84%E9%94%99%E8%AF%AF"><span class="nav-number">1.3.</span> <span class="nav-text">传播可恢复的错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E6%92%AD%E9%94%99%E8%AF%AF%E7%9A%84%E7%AE%80%E5%86%99%EF%BC%9A-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.4.</span> <span class="nav-text">传播错误的简写：? 运算符</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">136k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">4:07</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : 'd429019a97264a8b92838a3478e1dd31',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

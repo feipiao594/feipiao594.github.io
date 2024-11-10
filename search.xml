@@ -916,6 +916,39 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_7_错误处理</title>
+    <url>/posts/d7b468f6.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-7-错误处理"><a href="#Rust-Chapter-7-错误处理" class="headerlink" title="Rust_Chapter_7_错误处理"></a>Rust_Chapter_7_错误处理</h1><p>Rust 没有异常。相反，它有 <code>Result&lt;T, E&gt;</code> 类型，用于处理可恢复的错误，还有 <code>panic!</code> 宏，在程序遇到不可恢复的错误时停止执行。</p>
+<span id="more"></span>
+<h2 id="panic"><a href="#panic" class="headerlink" title="panic!"></a><code>panic!</code></h2><p><code>panic!</code> 针对的是不可恢复的操作</p>
+<p>执行会造成代码 <code>panic</code> 的操作（比如访问超过数组结尾的内容）或者显式调用 <code>panic!</code> 宏。这两种情况都会使程序 <code>panic</code>。通常情况下这些 panic 会打印出一个错误信息，展开并清理栈数据，然后退出。</p>
+<p>在错误信息中，通常会提示你设置 <code>RUST_BACKTRACE</code> 环境变量已得到错误发生时的函数调用栈，以帮助你定位错误发生的位置</p>
+<h2 id="使用-Result"><a href="#使用-Result" class="headerlink" title="使用 Result"></a>使用 Result</h2><p>现如今，很多语言都引入了 Result 的概念，将错误和结果打包成一个枚举返回有助于错误的传递<br>当结果无误时，返回 Ok(something)，在结果有错误时，返回一个 Err(some_error)</p>
+<p>可以利用模式匹配来处理这些枚举</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::ErrorKind;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = <span class="keyword">match</span> greeting_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(error) =&gt; <span class="keyword">match</span> error.<span class="title function_ invoke__">kind</span>() &#123;</span><br><span class="line">            ErrorKind::NotFound =&gt; <span class="keyword">match</span> File::<span class="title function_ invoke__">create</span>(<span class="string">&quot;hello.txt&quot;</span>) &#123;</span><br><span class="line">                <span class="title function_ invoke__">Ok</span>(fc) =&gt; fc,</span><br><span class="line">                <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="built_in">panic!</span>(<span class="string">&quot;Problem creating the file: &#123;e:?&#125;&quot;</span>),</span><br><span class="line">            &#125;,</span><br><span class="line">            other_error =&gt; &#123;</span><br><span class="line">                <span class="built_in">panic!</span>(<span class="string">&quot;Problem opening the file: &#123;other_error:?&#125;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但模式匹配仍然会导致代码长度很长，你也可以使用一些相对来说更简单易用的函数，例如 <code>unwrap_or_else</code></p>
+<p>比较常用的另一组是 <code>unwarp</code> 和 <code>expect</code>，他们两作为 Result 的函数，会获取 Ok 内部的值，如果获取不到，则陷入 panic，区别在于 expect 有自己的参数，你填写的字符串作为报错信息显示</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>).<span class="title function_ invoke__">unwarp</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;hello.txt should be included in this project&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="传播可恢复的错误"><a href="#传播可恢复的错误" class="headerlink" title="传播可恢复的错误"></a>传播可恢复的错误</h2><p>当编写一个其实先会调用一些可能会失败的操作的函数时，除了在这个函数中处理错误外，还可以选择让调用者知道这个错误并决定该如何处理。这被称为<strong>传播</strong>错误，这样能更好的控制代码调用，因为比起你代码所拥有的上下文，调用者可能拥有更多信息或逻辑来决定应该如何处理错误。</p>
+<p>你可以使用下面的方法手动把获取到的 Result 拆开，生成你自己函数要返回的 Result<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">username_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = <span class="keyword">match</span> username_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">match</span> username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username) &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(_) =&gt; <span class="title function_ invoke__">Ok</span>(username),</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为这种错误传播效果比较明显，所以会被大量使用，但每次都这么写太冗余了</p>
+<h2 id="传播错误的简写：-运算符"><a href="#传播错误的简写：-运算符" class="headerlink" title="传播错误的简写：? 运算符"></a>传播错误的简写：? 运算符</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username)?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(username)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 Result 的值是 Ok，这个表达式将会返回 Ok 中的值而程序将继续执行。如果值是 Err，Err 将作为整个函数的返回值，就好像使用了 return 关键字一样，这样错误值就被传播给了调用者。</p>
+<p>? 运算符所使用的错误值被传递给了 from 函数，它定义于标准库的 From trait 中，其用来将错误从一种类型转换为另一种类型。当 ? 运算符调用 from 函数时，收到的错误类型被转换为由当前函数返回类型所指定的错误类型。这在当函数返回单个错误类型来代表所有可能失败的方式时很有用，即使其可能会因很多种原因失败。</p>
+<p>例如，我们可以将示例中的 <code>read_username_from_file</code> 函数修改为返回一个自定义的 <code>OurError</code> 错误类型。如果我们也定义了 <code>impl From&lt;io::Error&gt; for OurError</code> 来从 <code>io::Error</code> 构造一个 <code>OurError</code> 实例，那么 <code>read_username_from_file</code> 函数体中的 ? 运算符调用会调用 from 并转换错误而无需在函数中增加任何额外的代码。</p>
+<p>关于 ? 运算符还有以下几点</p>
+<ul>
+<li>? 运算符只能被用于返回值与 ? 作用的值相兼容的函数。</li>
+<li>? 运算符也可用于 <code>Option&lt;T&gt;</code> 值。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CMake的使用</title>
     <url>/posts/3c5e47f1.html</url>
     <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
@@ -1154,18 +1187,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -1184,6 +1205,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>EE_电子工程</category>
         <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
+<span id="more"></span>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1783,8 +1816,7 @@ A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后
 A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
 <p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
 <h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
-<script type="math/tex; mode=display">
-e^{i\pi}=-1</script>]]></content>
+]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
@@ -1899,6 +1931,10 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <li>删除了原本有的加密功能，以及原本所有的加密博客，有的改成公开，有的直接删除了</li>
 <li>打算把qblog这个工具重新改一改重写了，暂时这个博客就手动维护吧</li>
 </ul>
+<p><code>qblog.py</code> 这个说了好久的东西，咕咕咕了这么久也是终于搞定了，其实写一个脚本再正常不过了，我也没想到这个我居然因为这个东西停了这么久，可能是因为 bat 并不是一个很令人舒服的脚本吧，bash 要更舒服一点。不管怎么说，这下也可以继续愉快的写博客了</p>
+<p>前段时间有同学找到我告诉我说，”我是看您博客长大的”，啊？这有点夸张了吧，其实我因为 qblog 以及 hexo 这个工具始终不合我心意，已经很少更新博客了，基本上只在 2022 年写的多一点，那时候我也才接触技术不久</p>
+<p>不过我很感动的是，居然真的能有后人看我的博客，甚至能给他们带来一点点的作用，但是我好像确实也没写什么有用的东西啊喂</p>
+<p>接下来也不知道能不能有空接着写下去，如果可以的话，一定会写出相对曾经更精彩的东西吧</p>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2027,20 +2063,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_4</title>
-    <url>/posts/1b23083f.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-4"><a href="#日常碎碎念-4" class="headerlink" title="日常碎碎念_4"></a>日常碎碎念_4</h1><p>日常碎碎念_4，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<p><code>qblog.py</code> 这个说了好久的东西，咕咕咕了这么久也是终于搞定了，其实写一个脚本再正常不过了，我也没想到这个我居然因为这个东西停了这么久，可能是因为 bat 并不是一个很令人舒服的脚本吧，bash 要更舒服一点。不管怎么说，这下也可以继续愉快的写博客了</p>
-<p>前段时间有同学找到我告诉我说，”我是看您博客长大的”，啊？这有点夸张了吧，其实我因为 qblog 以及 hexo 这个工具始终不合我心意，已经很少更新博客了，基本上只在 2022 年写的多一点，那时候我也才接触技术不久</p>
-<p>不过我很感动的是，居然真的能有后人看我的博客，甚至能给他们带来一点点的作用，但是我好像确实也没写什么有用的东西啊喂</p>
-<p>接下来也不知道能不能有空接着写下去，如果可以的话，一定会写出相对曾经更精彩的东西吧</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
