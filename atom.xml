@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-11-10T02:05:20.625Z</updated>
+  <updated>2024-11-11T06:43:07.206Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,86 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Rust_Chapter_10_生命周期</title>
+    <link href="https://feipiao594.github.io/posts/11c8f25c.html"/>
+    <id>https://feipiao594.github.io/posts/11c8f25c.html</id>
+    <published>2024-11-11T06:04:57.000Z</published>
+    <updated>2024-11-11T06:43:07.206Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-10-生命周期&quot;&gt;&lt;a href=&quot;#Rust-Chapter-10-生命周期&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_10_生命周期&quot;&gt;&lt;/a&gt;Rust_Chapter_10_生命周期&lt;/h1&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Rust_Chapter_9_Trait</title>
+    <link href="https://feipiao594.github.io/posts/fa0fbc5d.html"/>
+    <id>https://feipiao594.github.io/posts/fa0fbc5d.html</id>
+    <published>2024-11-11T06:00:29.000Z</published>
+    <updated>2024-11-11T08:12:54.582Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-9-Trait&quot;&gt;&lt;a href=&quot;#Rust-Chapter-9-Trait&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_9_Trait&quot;&gt;&lt;/a&gt;Rust_Chapter_9_Trait&lt;/h1&gt;&lt;p&gt;Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为&lt;strong&gt;接口&lt;/strong&gt;(interfaces)的功能，虽然有一些不同。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Rust_Chapter_8_泛型</title>
+    <link href="https://feipiao594.github.io/posts/bdd7a1b0.html"/>
+    <id>https://feipiao594.github.io/posts/bdd7a1b0.html</id>
+    <published>2024-11-11T05:09:46.000Z</published>
+    <updated>2024-11-11T06:27:32.263Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-8-泛型&quot;&gt;&lt;a href=&quot;#Rust-Chapter-8-泛型&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_8_泛型&quot;&gt;&lt;/a&gt;Rust_Chapter_8_泛型&lt;/h1&gt;&lt;p&gt;泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>我的自学小计划</title>
+    <link href="https://feipiao594.github.io/posts/e97bb949.html"/>
+    <id>https://feipiao594.github.io/posts/e97bb949.html</id>
+    <published>2024-11-10T15:22:09.000Z</published>
+    <updated>2024-11-11T08:13:48.452Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;我的自学小计划&quot;&gt;&lt;a href=&quot;#我的自学小计划&quot; class=&quot;headerlink&quot; title=&quot;我的自学小计划&quot;&gt;&lt;/a&gt;我的自学小计划&lt;/h1&gt;&lt;p&gt;这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Rust_Chapter_7_错误处理</title>
@@ -336,90 +416,6 @@
     <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
     
     <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Pytorch学习_1</title>
-    <link href="https://feipiao594.github.io/posts/6c7f2ed0.html"/>
-    <id>https://feipiao594.github.io/posts/6c7f2ed0.html</id>
-    <published>2023-07-17T16:00:00.000Z</published>
-    <updated>2024-10-27T07:59:55.651Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Pytorch学习-1&quot;&gt;&lt;a href=&quot;#Pytorch学习-1&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_1&quot;&gt;&lt;/a&gt;Pytorch学习_1&lt;/h1&gt;&lt;p&gt;也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <link href="https://feipiao594.github.io/posts/acc766b1.html"/>
-    <id>https://feipiao594.github.io/posts/acc766b1.html</id>
-    <published>2023-07-15T16:00:00.000Z</published>
-    <updated>2024-10-27T07:58:01.839Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;C-模板元-欧拉函数表&quot;&gt;&lt;a href=&quot;#C-模板元-欧拉函数表&quot; class=&quot;headerlink&quot; title=&quot;C++模板元-欧拉函数表&quot;&gt;&lt;/a&gt;C++模板元-欧拉函数表&lt;/h1&gt;&lt;p&gt;SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义&lt;br&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Git使用_第1弹</title>
-    <link href="https://feipiao594.github.io/posts/392f5636.html"/>
-    <id>https://feipiao594.github.io/posts/392f5636.html</id>
-    <published>2023-07-10T16:00:00.000Z</published>
-    <updated>2024-10-27T08:03:16.384Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Git使用-第1弹&quot;&gt;&lt;a href=&quot;#Git使用-第1弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第1弹&quot;&gt;&lt;/a&gt;Git使用_第1弹&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;:&lt;br&gt;在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。&lt;br&gt;本系列为&lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;这本书的学习笔记，感谢编写这本书的贡献者们&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>C++模板元编程</title>
-    <link href="https://feipiao594.github.io/posts/9244e40f.html"/>
-    <id>https://feipiao594.github.io/posts/9244e40f.html</id>
-    <published>2023-07-09T16:00:00.000Z</published>
-    <updated>2024-10-27T07:58:28.643Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;C-模板元编程&quot;&gt;&lt;a href=&quot;#C-模板元编程&quot; class=&quot;headerlink&quot; title=&quot;C++模板元编程&quot;&gt;&lt;/a&gt;C++模板元编程&lt;/h1&gt;&lt;p&gt;之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="C++" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/C/"/>
     
     
   </entry>

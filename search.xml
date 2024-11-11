@@ -313,44 +313,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>C/C++的特别复杂的类型</title>
-    <url>/posts/8fb716fa.html</url>
-    <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
-<hr>
-<h2 id="前人的智慧"><a href="#前人的智慧" class="headerlink" title="前人的智慧"></a>前人的智慧</h2><p>其实可以通过一个叫右左法则的东西来解决这个问题，不过我觉得后缀表达式还是看的有点头疼，有兴趣可以找找看，它可以将式子变成一个后缀表达式，采取编译器的形式进行处理。但我们不采用这种方法，<del>原因是后缀表达式还是不够可读</del>，原因是我不会用<br>补充：链接贴在这里<a href="https://www.bilibili.com/video/BV1mB4y1L7HB/?is_story_h5=false&amp;p=1&amp;share_from=ugc&amp;share_medium=android&amp;share_plat=android&amp;share_session_id=8c3141a9-9324-4449-8409-8f2d1d7846dd&amp;share_source=QQ&amp;share_tag=s_i&amp;timestamp=1668064269&amp;unique_k=GWrf0E0">B站：初中生也能看懂的C/C++类型声明规则教学，很简单的！</a></p>
-<hr>
-<h2 id="着手解决这个问题"><a href="#着手解决这个问题" class="headerlink" title="着手解决这个问题"></a>着手解决这个问题</h2><p>我们先来看看一个声明，他到底是什么意思<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">char</span> (*p)[] = <span class="literal">NULL</span>;<span class="comment">//这是一个指向char数组的指针</span></span><br></pre></td></tr></table></figure></p>
-<p>其实无论是什么样的声明，都是同样的格式<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Type_1 Type_2 = xxx;</span><br><span class="line"><span class="comment">//准确来说Type_2不是一种类型，而是对变量进行多种符号操作后的产物</span></span><br><span class="line"><span class="comment">//简单的变量声明如 &quot;int a;&quot; 中 a被0个符号修饰 从而a等价int</span></span><br></pre></td></tr></table></figure></p>
-<p>就是说，在如上这个声明里就是<br><code>Type_1</code>是<code>char</code><br><code>Type_2</code>是<code>(*p)[]</code><br>你可以把<code>p</code>就想象成一个已经定义的指向<code>char</code>数组的指针<br>对其解引用并取下标类型就是<code>char</code></p>
-<p>也就是说<br><code>char</code> 在类型上等价于<code>(*p)[]</code></p>
-<p>也就是说这是通过一个<span style="color: pink; font-size: 20px; font-weight: bolder;"><code>Type_1</code>在类型上等价<code>Type_2</code>的一个类型的等式</span>来确定的要赋值的变量名的类型到底是什么<br><span style="color: pink; font-size: 20px; font-weight: bolder;">所以，我们可以对一个合法的变量声明在其内部任意位置进行分割，然后加括号保证可读性,用以区分<code>Type_1</code>和<code>Type_2</code></span></p>
-<p>也就是说其实可以这么处理：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> **p[]; <span class="comment">// 以下对表达式逐步进行分割</span></span><br><span class="line">**p[] <span class="comment">//是int</span></span><br><span class="line">*p[]  <span class="comment">//是指向int的指针 即int*</span></span><br><span class="line">p[]   <span class="comment">//是指向 指向int的指针 的指针 即int**</span></span><br><span class="line">p     <span class="comment">//是指向 指向int的指针 的指针 的数组 即int**</span></span><br></pre></td></tr></table></figure></p>
-<hr>
-<h2 id="现在找一个看起来更舒服的方法"><a href="#现在找一个看起来更舒服的方法" class="headerlink" title="现在找一个看起来更舒服的方法"></a>现在找一个看起来更舒服的方法</h2><p>让我们来看一个例子<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> * <span class="type">const</span> * ch2;</span><br><span class="line">(<span class="built_in">const</span> (<span class="type">char</span>*))* ch2;</span><br><span class="line"><span class="comment">//这两个是等价的</span></span><br></pre></td></tr></table></figure><br>仔细看看<strong>第二个式子</strong>绝对比第一个式子阳间，为什么？<br>因为这里的<code>Type_2</code>就是<code>ch2</code><br><strong>变量名ch2没有经过各种符号的修饰</strong>，直接等于左边的一坨<code>Type_1</code><br>那所以说其实化成可读性强的式子就是把变量名从一堆修辞里拯救出来的过程<br>就是说把变量名的一堆枷锁找个简单的类型当替死鬼装它身上(奇妙的比喻增加了)<br>我们可以用一些看上去更数学的方法来做(滑稽)</p>
-<h2 id="需要强调的一点"><a href="#需要强调的一点" class="headerlink" title="需要强调的一点"></a>需要强调的一点</h2><p><strong>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！</strong></p>
-<h2 id="让我们来开始着手做吧"><a href="#让我们来开始着手做吧" class="headerlink" title="让我们来开始着手做吧"></a>让我们来开始着手做吧</h2><p>首先一个声明里其实是只有一个简单类型的(这里的简单类型就是说的那些基础类型，<code>int</code>，<code>char</code>，<code>double</code>，或者是<code>class</code>，<code>struct</code>)<br><code>模板&lt;&gt;</code>和<code>函数()</code>内的简单类型其实是不会和其混淆的<br><code>模板&lt;&gt;</code>有尖括号<br>而<code>函数()</code>在变量名后，而简单类型一定在变量名前<br><code>int</code>是类型声明，<code>(int)</code>是参数表<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//int不会和(int)混淆</span></span><br></pre></td></tr></table></figure><br>变量名并不好脱掉一堆枷锁嘛，所以我们要强迫让简单类型这个替死鬼自己扒了变量名的衣服自己穿上(What’s The Fuck)<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>); <span class="comment">// 这是一个函数指针的形式</span></span><br></pre></td></tr></table></figure><br><code>float</code>替死鬼上线，先把和它处于同一优先级的”<code>(int)</code>“扒了套自己身上，并加个括号以示对它的主权(乐)<br>并暗示你被我扒了一层所以这下<code>(*(*fp2)(int,int,float))</code>最外层的括号可以脱了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">float</span> (<span class="type">int</span>)) *(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>可以看到这个工具的强大了<br><code>(float (int))</code>这个就是一个传入<code>int</code>返回<code>float</code>的函数<br>但是过不了编译！！！！！注意！！！！！<br>然后替死鬼现在是<code>(float (int))</code>，继续把<code>*</code>扒了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((<span class="built_in">float</span> (<span class="type">int</span>))*) (*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>虽然现在已经能看出来最外层是<code>(float (int))</code>的函数指针了，但我们再来一次<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)) *fp2;</span><br></pre></td></tr></table></figure><br>得到 返回值<code>((float (int))*</code>，参数表<code>(int,int,float)</code> 的<code>Type_1</code><br>再来<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)))* fp2;</span><br></pre></td></tr></table></figure><br>这下结构也太清晰了<br>看懂了但是很难描述，但是我还是想尝试描述一下 （就算是中文也要靠多重括号来断句（悲<br><code>fp2</code>是一个{以【返回值为<code>float</code>，参数表为<code>(int)</code>的函数指针】为返回值，<code>(int,int,float)</code>为参数表}的函数指针</p>
-<p>实质上当中的过程覆盖了所有可能的情况了，我们可以用 <a href="#着手解决这个问题">着手解决这个问题</a> 上面这一小标题所写的本质证明这样做的合理性，如指针无非就是一方解引用一方变指针做到的等价。</p>
-<hr>
-<h2 id="cv限定符"><a href="#cv限定符" class="headerlink" title="cv限定符"></a>cv限定符</h2><p>因为有<code>const</code>，<code>volatile</code>这样的限定符存在，故而这个方法进行开扒的时候，需<strong>先向</strong>替死鬼<strong>前</strong>看一看有没有这些<strong>限定符</strong>，再结合后面<strong>距离<code>Type_1</code>最近的运算符</strong><br><strong>cv限定符应该置于Type_1之前以修饰Type_1</strong><br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子一</span></span><br><span class="line"><span class="type">char</span>* <span class="type">const</span> ch1;</span><br><span class="line">(<span class="type">char</span>*) <span class="type">const</span> ch1;</span><br><span class="line"><span class="built_in">const</span> (<span class="type">char</span>*)  ch1;</span><br><span class="line"><span class="comment">//例子二</span></span><br><span class="line"><span class="type">char</span> **<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">(<span class="type">char</span> *) *<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">((<span class="type">char</span> *)*)<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line"><span class="built_in">const</span> (<span class="built_in">const</span>((<span class="type">char</span>*)*))* ch2;</span><br><span class="line"><span class="comment">//例子三</span></span><br><span class="line"><span class="type">int</span> *a[][N];</span><br><span class="line">((<span class="type">int</span> *)[N])[] a;</span><br><span class="line"><span class="comment">//例子四</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">()</span>[]</span>;<span class="comment">//无法过编译，如vs2022会指出其为返回数组的函数</span></span><br><span class="line">(<span class="type">int</span> [])() a;<span class="comment">//可以看到这是返回数组的函数，非法</span></span><br><span class="line"><span class="comment">//例子五</span></span><br><span class="line"><span class="type">int</span> a[]();<span class="comment">//无法过编译，如vs2022会指出其为函数数组</span></span><br><span class="line">(<span class="built_in">int</span> ())[] a;<span class="comment">//可以看到这是函数数组，非法</span></span><br></pre></td></tr></table></figure><br>对于例子三和例子四还有例子五，实质上有一个整体考虑的办法</p>
-<ul>
-<li>例子三<code>[][]</code>可以当作二维数组来看，第一个<code>[]</code>转移过程中可以不给替死鬼加括号就清楚了</li>
-<li>对于例子四<code>()[]</code>，其实我们完全可以把数组取下标看作一种特殊的函数，反过来也是</li>
-<li>函数其实和数组在这里可以不用特别区分，所以五和四和三一样</li>
-<li>同时这也启示我们<code>()[]</code> , <code>[]()</code>如果出现在一块，这必定不可能是合法的</li>
-<li>因为其必定包含函数数组或是返回数组的函数，不合法<br>*当然<code>[]</code>和<code>()</code>因为优先级是最高的，所以和名字结合最紧，最后才能被扒掉，而<code>()[]</code>之间呢，与名字最靠近的当然结合更紧，所以在之后被扒</li>
-</ul>
-<hr>
-<h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>至此我们完成了这种特别复杂的声明的辨析，但其实这个工具还有一种应用就是依照这种格式，可以从<strong>可读性强的格式反向推得这种复杂的声明</strong>。<br><span style="color: pink; font-size: 20px; font-weight: bolder;">即<code>Type_1</code>在类型上等价<code>Type_2</code>先将变量名后缀移到<code>Type_1</code>上，再通过分割将变量名彻底弄干净（无符号修饰无后缀），最后变量类型即为<code>Type_1</code>，而开扒的顺序，关键看这些符号作用在变量名上的顺序，如果优先级高，则说明与之结合紧，越晚被扒，而括号里的部分可以看作一个整体开扒，这样就可以化简整体的结构</span><br>终于写完了，虽然如此，我只希望尽可能不要有人为了炫技而写出这种声明<br>脱帽子，yeah~~</p>
-<hr>
-<p><strong>editor</strong>  594飞飘<br><strong>audit</strong>   Serein</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git使用_第1弹</title>
     <url>/posts/392f5636.html</url>
     <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
@@ -392,6 +354,44 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C/C++的特别复杂的类型</title>
+    <url>/posts/8fb716fa.html</url>
+    <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
+<hr>
+<h2 id="前人的智慧"><a href="#前人的智慧" class="headerlink" title="前人的智慧"></a>前人的智慧</h2><p>其实可以通过一个叫右左法则的东西来解决这个问题，不过我觉得后缀表达式还是看的有点头疼，有兴趣可以找找看，它可以将式子变成一个后缀表达式，采取编译器的形式进行处理。但我们不采用这种方法，<del>原因是后缀表达式还是不够可读</del>，原因是我不会用<br>补充：链接贴在这里<a href="https://www.bilibili.com/video/BV1mB4y1L7HB/?is_story_h5=false&amp;p=1&amp;share_from=ugc&amp;share_medium=android&amp;share_plat=android&amp;share_session_id=8c3141a9-9324-4449-8409-8f2d1d7846dd&amp;share_source=QQ&amp;share_tag=s_i&amp;timestamp=1668064269&amp;unique_k=GWrf0E0">B站：初中生也能看懂的C/C++类型声明规则教学，很简单的！</a></p>
+<hr>
+<h2 id="着手解决这个问题"><a href="#着手解决这个问题" class="headerlink" title="着手解决这个问题"></a>着手解决这个问题</h2><p>我们先来看看一个声明，他到底是什么意思<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">char</span> (*p)[] = <span class="literal">NULL</span>;<span class="comment">//这是一个指向char数组的指针</span></span><br></pre></td></tr></table></figure></p>
+<p>其实无论是什么样的声明，都是同样的格式<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Type_1 Type_2 = xxx;</span><br><span class="line"><span class="comment">//准确来说Type_2不是一种类型，而是对变量进行多种符号操作后的产物</span></span><br><span class="line"><span class="comment">//简单的变量声明如 &quot;int a;&quot; 中 a被0个符号修饰 从而a等价int</span></span><br></pre></td></tr></table></figure></p>
+<p>就是说，在如上这个声明里就是<br><code>Type_1</code>是<code>char</code><br><code>Type_2</code>是<code>(*p)[]</code><br>你可以把<code>p</code>就想象成一个已经定义的指向<code>char</code>数组的指针<br>对其解引用并取下标类型就是<code>char</code></p>
+<p>也就是说<br><code>char</code> 在类型上等价于<code>(*p)[]</code></p>
+<p>也就是说这是通过一个<span style="color: pink; font-size: 20px; font-weight: bolder;"><code>Type_1</code>在类型上等价<code>Type_2</code>的一个类型的等式</span>来确定的要赋值的变量名的类型到底是什么<br><span style="color: pink; font-size: 20px; font-weight: bolder;">所以，我们可以对一个合法的变量声明在其内部任意位置进行分割，然后加括号保证可读性,用以区分<code>Type_1</code>和<code>Type_2</code></span></p>
+<p>也就是说其实可以这么处理：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> **p[]; <span class="comment">// 以下对表达式逐步进行分割</span></span><br><span class="line">**p[] <span class="comment">//是int</span></span><br><span class="line">*p[]  <span class="comment">//是指向int的指针 即int*</span></span><br><span class="line">p[]   <span class="comment">//是指向 指向int的指针 的指针 即int**</span></span><br><span class="line">p     <span class="comment">//是指向 指向int的指针 的指针 的数组 即int**</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="现在找一个看起来更舒服的方法"><a href="#现在找一个看起来更舒服的方法" class="headerlink" title="现在找一个看起来更舒服的方法"></a>现在找一个看起来更舒服的方法</h2><p>让我们来看一个例子<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> * <span class="type">const</span> * ch2;</span><br><span class="line">(<span class="built_in">const</span> (<span class="type">char</span>*))* ch2;</span><br><span class="line"><span class="comment">//这两个是等价的</span></span><br></pre></td></tr></table></figure><br>仔细看看<strong>第二个式子</strong>绝对比第一个式子阳间，为什么？<br>因为这里的<code>Type_2</code>就是<code>ch2</code><br><strong>变量名ch2没有经过各种符号的修饰</strong>，直接等于左边的一坨<code>Type_1</code><br>那所以说其实化成可读性强的式子就是把变量名从一堆修辞里拯救出来的过程<br>就是说把变量名的一堆枷锁找个简单的类型当替死鬼装它身上(奇妙的比喻增加了)<br>我们可以用一些看上去更数学的方法来做(滑稽)</p>
+<h2 id="需要强调的一点"><a href="#需要强调的一点" class="headerlink" title="需要强调的一点"></a>需要强调的一点</h2><p><strong>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！</strong></p>
+<h2 id="让我们来开始着手做吧"><a href="#让我们来开始着手做吧" class="headerlink" title="让我们来开始着手做吧"></a>让我们来开始着手做吧</h2><p>首先一个声明里其实是只有一个简单类型的(这里的简单类型就是说的那些基础类型，<code>int</code>，<code>char</code>，<code>double</code>，或者是<code>class</code>，<code>struct</code>)<br><code>模板&lt;&gt;</code>和<code>函数()</code>内的简单类型其实是不会和其混淆的<br><code>模板&lt;&gt;</code>有尖括号<br>而<code>函数()</code>在变量名后，而简单类型一定在变量名前<br><code>int</code>是类型声明，<code>(int)</code>是参数表<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//int不会和(int)混淆</span></span><br></pre></td></tr></table></figure><br>变量名并不好脱掉一堆枷锁嘛，所以我们要强迫让简单类型这个替死鬼自己扒了变量名的衣服自己穿上(What’s The Fuck)<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>); <span class="comment">// 这是一个函数指针的形式</span></span><br></pre></td></tr></table></figure><br><code>float</code>替死鬼上线，先把和它处于同一优先级的”<code>(int)</code>“扒了套自己身上，并加个括号以示对它的主权(乐)<br>并暗示你被我扒了一层所以这下<code>(*(*fp2)(int,int,float))</code>最外层的括号可以脱了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">float</span> (<span class="type">int</span>)) *(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>可以看到这个工具的强大了<br><code>(float (int))</code>这个就是一个传入<code>int</code>返回<code>float</code>的函数<br>但是过不了编译！！！！！注意！！！！！<br>然后替死鬼现在是<code>(float (int))</code>，继续把<code>*</code>扒了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((<span class="built_in">float</span> (<span class="type">int</span>))*) (*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>虽然现在已经能看出来最外层是<code>(float (int))</code>的函数指针了，但我们再来一次<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)) *fp2;</span><br></pre></td></tr></table></figure><br>得到 返回值<code>((float (int))*</code>，参数表<code>(int,int,float)</code> 的<code>Type_1</code><br>再来<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)))* fp2;</span><br></pre></td></tr></table></figure><br>这下结构也太清晰了<br>看懂了但是很难描述，但是我还是想尝试描述一下 （就算是中文也要靠多重括号来断句（悲<br><code>fp2</code>是一个{以【返回值为<code>float</code>，参数表为<code>(int)</code>的函数指针】为返回值，<code>(int,int,float)</code>为参数表}的函数指针</p>
+<p>实质上当中的过程覆盖了所有可能的情况了，我们可以用 <a href="#着手解决这个问题">着手解决这个问题</a> 上面这一小标题所写的本质证明这样做的合理性，如指针无非就是一方解引用一方变指针做到的等价。</p>
+<hr>
+<h2 id="cv限定符"><a href="#cv限定符" class="headerlink" title="cv限定符"></a>cv限定符</h2><p>因为有<code>const</code>，<code>volatile</code>这样的限定符存在，故而这个方法进行开扒的时候，需<strong>先向</strong>替死鬼<strong>前</strong>看一看有没有这些<strong>限定符</strong>，再结合后面<strong>距离<code>Type_1</code>最近的运算符</strong><br><strong>cv限定符应该置于Type_1之前以修饰Type_1</strong><br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子一</span></span><br><span class="line"><span class="type">char</span>* <span class="type">const</span> ch1;</span><br><span class="line">(<span class="type">char</span>*) <span class="type">const</span> ch1;</span><br><span class="line"><span class="built_in">const</span> (<span class="type">char</span>*)  ch1;</span><br><span class="line"><span class="comment">//例子二</span></span><br><span class="line"><span class="type">char</span> **<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">(<span class="type">char</span> *) *<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">((<span class="type">char</span> *)*)<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line"><span class="built_in">const</span> (<span class="built_in">const</span>((<span class="type">char</span>*)*))* ch2;</span><br><span class="line"><span class="comment">//例子三</span></span><br><span class="line"><span class="type">int</span> *a[][N];</span><br><span class="line">((<span class="type">int</span> *)[N])[] a;</span><br><span class="line"><span class="comment">//例子四</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">()</span>[]</span>;<span class="comment">//无法过编译，如vs2022会指出其为返回数组的函数</span></span><br><span class="line">(<span class="type">int</span> [])() a;<span class="comment">//可以看到这是返回数组的函数，非法</span></span><br><span class="line"><span class="comment">//例子五</span></span><br><span class="line"><span class="type">int</span> a[]();<span class="comment">//无法过编译，如vs2022会指出其为函数数组</span></span><br><span class="line">(<span class="built_in">int</span> ())[] a;<span class="comment">//可以看到这是函数数组，非法</span></span><br></pre></td></tr></table></figure><br>对于例子三和例子四还有例子五，实质上有一个整体考虑的办法</p>
+<ul>
+<li>例子三<code>[][]</code>可以当作二维数组来看，第一个<code>[]</code>转移过程中可以不给替死鬼加括号就清楚了</li>
+<li>对于例子四<code>()[]</code>，其实我们完全可以把数组取下标看作一种特殊的函数，反过来也是</li>
+<li>函数其实和数组在这里可以不用特别区分，所以五和四和三一样</li>
+<li>同时这也启示我们<code>()[]</code> , <code>[]()</code>如果出现在一块，这必定不可能是合法的</li>
+<li>因为其必定包含函数数组或是返回数组的函数，不合法<br>*当然<code>[]</code>和<code>()</code>因为优先级是最高的，所以和名字结合最紧，最后才能被扒掉，而<code>()[]</code>之间呢，与名字最靠近的当然结合更紧，所以在之后被扒</li>
+</ul>
+<hr>
+<h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>至此我们完成了这种特别复杂的声明的辨析，但其实这个工具还有一种应用就是依照这种格式，可以从<strong>可读性强的格式反向推得这种复杂的声明</strong>。<br><span style="color: pink; font-size: 20px; font-weight: bolder;">即<code>Type_1</code>在类型上等价<code>Type_2</code>先将变量名后缀移到<code>Type_1</code>上，再通过分割将变量名彻底弄干净（无符号修饰无后缀），最后变量类型即为<code>Type_1</code>，而开扒的顺序，关键看这些符号作用在变量名上的顺序，如果优先级高，则说明与之结合紧，越晚被扒，而括号里的部分可以看作一个整体开扒，这样就可以化简整体的结构</span><br>终于写完了，虽然如此，我只希望尽可能不要有人为了炫技而写出这种声明<br>脱帽子，yeah~~</p>
+<hr>
+<p><strong>editor</strong>  594飞飘<br><strong>audit</strong>   Serein</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -594,6 +594,16 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_10_生命周期</title>
+    <url>/posts/11c8f25c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><span id="more"></span>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_1_变量</title>
     <url>/posts/2d38ec93.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-1-变量"><a href="#Rust-Chapter-1-变量" class="headerlink" title="Rust_Chapter_1_变量"></a>Rust_Chapter_1_变量</h1><p>这一章节内容主要是Rust的变量</p>
@@ -750,27 +760,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_3_所有权</title>
     <url>/posts/f75e4487.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
@@ -818,6 +807,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_5_枚举与模式匹配</title>
     <url>/posts/28bcc6be.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
@@ -850,39 +860,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>很合理对吧</p>
 <h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_7_错误处理</title>
-    <url>/posts/d7b468f6.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-7-错误处理"><a href="#Rust-Chapter-7-错误处理" class="headerlink" title="Rust_Chapter_7_错误处理"></a>Rust_Chapter_7_错误处理</h1><p>Rust 没有异常。相反，它有 <code>Result&lt;T, E&gt;</code> 类型，用于处理可恢复的错误，还有 <code>panic!</code> 宏，在程序遇到不可恢复的错误时停止执行。</p>
-<span id="more"></span>
-<h2 id="panic"><a href="#panic" class="headerlink" title="panic!"></a><code>panic!</code></h2><p><code>panic!</code> 针对的是不可恢复的操作</p>
-<p>执行会造成代码 <code>panic</code> 的操作（比如访问超过数组结尾的内容）或者显式调用 <code>panic!</code> 宏。这两种情况都会使程序 <code>panic</code>。通常情况下这些 panic 会打印出一个错误信息，展开并清理栈数据，然后退出。</p>
-<p>在错误信息中，通常会提示你设置 <code>RUST_BACKTRACE</code> 环境变量已得到错误发生时的函数调用栈，以帮助你定位错误发生的位置</p>
-<h2 id="使用-Result"><a href="#使用-Result" class="headerlink" title="使用 Result"></a>使用 Result</h2><p>现如今，很多语言都引入了 Result 的概念，将错误和结果打包成一个枚举返回有助于错误的传递<br>当结果无误时，返回 Ok(something)，在结果有错误时，返回一个 Err(some_error)</p>
-<p>可以利用模式匹配来处理这些枚举</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::ErrorKind;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = <span class="keyword">match</span> greeting_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(error) =&gt; <span class="keyword">match</span> error.<span class="title function_ invoke__">kind</span>() &#123;</span><br><span class="line">            ErrorKind::NotFound =&gt; <span class="keyword">match</span> File::<span class="title function_ invoke__">create</span>(<span class="string">&quot;hello.txt&quot;</span>) &#123;</span><br><span class="line">                <span class="title function_ invoke__">Ok</span>(fc) =&gt; fc,</span><br><span class="line">                <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="built_in">panic!</span>(<span class="string">&quot;Problem creating the file: &#123;e:?&#125;&quot;</span>),</span><br><span class="line">            &#125;,</span><br><span class="line">            other_error =&gt; &#123;</span><br><span class="line">                <span class="built_in">panic!</span>(<span class="string">&quot;Problem opening the file: &#123;other_error:?&#125;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但模式匹配仍然会导致代码长度很长，你也可以使用一些相对来说更简单易用的函数，例如 <code>unwrap_or_else</code></p>
-<p>比较常用的另一组是 <code>unwarp</code> 和 <code>expect</code>，他们两作为 Result 的函数，会获取 Ok 内部的值，如果获取不到，则陷入 panic，区别在于 expect 有自己的参数，你填写的字符串作为报错信息显示</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>).<span class="title function_ invoke__">unwarp</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;hello.txt should be included in this project&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="传播可恢复的错误"><a href="#传播可恢复的错误" class="headerlink" title="传播可恢复的错误"></a>传播可恢复的错误</h2><p>当编写一个其实先会调用一些可能会失败的操作的函数时，除了在这个函数中处理错误外，还可以选择让调用者知道这个错误并决定该如何处理。这被称为<strong>传播</strong>错误，这样能更好的控制代码调用，因为比起你代码所拥有的上下文，调用者可能拥有更多信息或逻辑来决定应该如何处理错误。</p>
-<p>你可以使用下面的方法手动把获取到的 Result 拆开，生成你自己函数要返回的 Result<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">username_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = <span class="keyword">match</span> username_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">match</span> username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username) &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(_) =&gt; <span class="title function_ invoke__">Ok</span>(username),</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>因为这种错误传播效果比较明显，所以会被大量使用，但每次都这么写太冗余了</p>
-<h2 id="传播错误的简写：-运算符"><a href="#传播错误的简写：-运算符" class="headerlink" title="传播错误的简写：? 运算符"></a>传播错误的简写：? 运算符</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username)?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(username)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果 Result 的值是 Ok，这个表达式将会返回 Ok 中的值而程序将继续执行。如果值是 Err，Err 将作为整个函数的返回值，就好像使用了 return 关键字一样，这样错误值就被传播给了调用者。</p>
-<p>? 运算符所使用的错误值被传递给了 from 函数，它定义于标准库的 From trait 中，其用来将错误从一种类型转换为另一种类型。当 ? 运算符调用 from 函数时，收到的错误类型被转换为由当前函数返回类型所指定的错误类型。这在当函数返回单个错误类型来代表所有可能失败的方式时很有用，即使其可能会因很多种原因失败。</p>
-<p>例如，我们可以将示例中的 <code>read_username_from_file</code> 函数修改为返回一个自定义的 <code>OurError</code> 错误类型。如果我们也定义了 <code>impl From&lt;io::Error&gt; for OurError</code> 来从 <code>io::Error</code> 构造一个 <code>OurError</code> 实例，那么 <code>read_username_from_file</code> 函数体中的 ? 运算符调用会调用 from 并转换错误而无需在函数中增加任何额外的代码。</p>
-<p>关于 ? 运算符还有以下几点</p>
-<ul>
-<li>? 运算符只能被用于返回值与 ? 作用的值相兼容的函数。</li>
-<li>? 运算符也可用于 <code>Option&lt;T&gt;</code> 值。</li>
-</ul>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -941,6 +918,99 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <li>用花括号减少写多行的引用：<code>use std::&#123;cmp::Ordering, io&#125;;</code></li>
 <li>使用<code>*</code>引入模块下的所有项，就像我们在python中做的那样</li>
 </ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_7_错误处理</title>
+    <url>/posts/d7b468f6.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-7-错误处理"><a href="#Rust-Chapter-7-错误处理" class="headerlink" title="Rust_Chapter_7_错误处理"></a>Rust_Chapter_7_错误处理</h1><p>Rust 没有异常。相反，它有 <code>Result&lt;T, E&gt;</code> 类型，用于处理可恢复的错误，还有 <code>panic!</code> 宏，在程序遇到不可恢复的错误时停止执行。</p>
+<span id="more"></span>
+<h2 id="panic"><a href="#panic" class="headerlink" title="panic!"></a><code>panic!</code></h2><p><code>panic!</code> 针对的是不可恢复的操作</p>
+<p>执行会造成代码 <code>panic</code> 的操作（比如访问超过数组结尾的内容）或者显式调用 <code>panic!</code> 宏。这两种情况都会使程序 <code>panic</code>。通常情况下这些 panic 会打印出一个错误信息，展开并清理栈数据，然后退出。</p>
+<p>在错误信息中，通常会提示你设置 <code>RUST_BACKTRACE</code> 环境变量已得到错误发生时的函数调用栈，以帮助你定位错误发生的位置</p>
+<h2 id="使用-Result"><a href="#使用-Result" class="headerlink" title="使用 Result"></a>使用 Result</h2><p>现如今，很多语言都引入了 Result 的概念，将错误和结果打包成一个枚举返回有助于错误的传递<br>当结果无误时，返回 Ok(something)，在结果有错误时，返回一个 Err(some_error)</p>
+<p>可以利用模式匹配来处理这些枚举</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::ErrorKind;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = <span class="keyword">match</span> greeting_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(error) =&gt; <span class="keyword">match</span> error.<span class="title function_ invoke__">kind</span>() &#123;</span><br><span class="line">            ErrorKind::NotFound =&gt; <span class="keyword">match</span> File::<span class="title function_ invoke__">create</span>(<span class="string">&quot;hello.txt&quot;</span>) &#123;</span><br><span class="line">                <span class="title function_ invoke__">Ok</span>(fc) =&gt; fc,</span><br><span class="line">                <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="built_in">panic!</span>(<span class="string">&quot;Problem creating the file: &#123;e:?&#125;&quot;</span>),</span><br><span class="line">            &#125;,</span><br><span class="line">            other_error =&gt; &#123;</span><br><span class="line">                <span class="built_in">panic!</span>(<span class="string">&quot;Problem opening the file: &#123;other_error:?&#125;&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但模式匹配仍然会导致代码长度很长，你也可以使用一些相对来说更简单易用的函数，例如 <code>unwrap_or_else</code></p>
+<p>比较常用的另一组是 <code>unwarp</code> 和 <code>expect</code>，他们两作为 Result 的函数，会获取 Ok 内部的值，如果获取不到，则陷入 panic，区别在于 expect 有自己的参数，你填写的字符串作为报错信息显示</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>).<span class="title function_ invoke__">unwarp</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">greeting_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;hello.txt should be included in this project&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="传播可恢复的错误"><a href="#传播可恢复的错误" class="headerlink" title="传播可恢复的错误"></a>传播可恢复的错误</h2><p>当编写一个其实先会调用一些可能会失败的操作的函数时，除了在这个函数中处理错误外，还可以选择让调用者知道这个错误并决定该如何处理。这被称为<strong>传播</strong>错误，这样能更好的控制代码调用，因为比起你代码所拥有的上下文，调用者可能拥有更多信息或逻辑来决定应该如何处理错误。</p>
+<p>你可以使用下面的方法手动把获取到的 Result 拆开，生成你自己函数要返回的 Result<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">username_file_result</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = <span class="keyword">match</span> username_file_result &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">match</span> username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username) &#123;</span><br><span class="line">        <span class="title function_ invoke__">Ok</span>(_) =&gt; <span class="title function_ invoke__">Ok</span>(username),</span><br><span class="line">        <span class="title function_ invoke__">Err</span>(e) =&gt; <span class="title function_ invoke__">Err</span>(e),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为这种错误传播效果比较明显，所以会被大量使用，但每次都这么写太冗余了</p>
+<h2 id="传播错误的简写：-运算符"><a href="#传播错误的简写：-运算符" class="headerlink" title="传播错误的简写：? 运算符"></a>传播错误的简写：? 运算符</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"><span class="keyword">use</span> std::io::&#123;<span class="keyword">self</span>, Read&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">read_username_from_file</span>() <span class="punctuation">-&gt;</span> <span class="type">Result</span>&lt;<span class="type">String</span>, io::Error&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username_file</span> = File::<span class="title function_ invoke__">open</span>(<span class="string">&quot;hello.txt&quot;</span>)?;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">username</span> = <span class="type">String</span>::<span class="title function_ invoke__">new</span>();</span><br><span class="line">    username_file.<span class="title function_ invoke__">read_to_string</span>(&amp;<span class="keyword">mut</span> username)?;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(username)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 Result 的值是 Ok，这个表达式将会返回 Ok 中的值而程序将继续执行。如果值是 Err，Err 将作为整个函数的返回值，就好像使用了 return 关键字一样，这样错误值就被传播给了调用者。</p>
+<p>? 运算符所使用的错误值被传递给了 from 函数，它定义于标准库的 From trait 中，其用来将错误从一种类型转换为另一种类型。当 ? 运算符调用 from 函数时，收到的错误类型被转换为由当前函数返回类型所指定的错误类型。这在当函数返回单个错误类型来代表所有可能失败的方式时很有用，即使其可能会因很多种原因失败。</p>
+<p>例如，我们可以将示例中的 <code>read_username_from_file</code> 函数修改为返回一个自定义的 <code>OurError</code> 错误类型。如果我们也定义了 <code>impl From&lt;io::Error&gt; for OurError</code> 来从 <code>io::Error</code> 构造一个 <code>OurError</code> 实例，那么 <code>read_username_from_file</code> 函数体中的 ? 运算符调用会调用 from 并转换错误而无需在函数中增加任何额外的代码。</p>
+<p>关于 ? 运算符还有以下几点</p>
+<ul>
+<li>? 运算符只能被用于返回值与 ? 作用的值相兼容的函数。</li>
+<li>? 运算符也可用于 <code>Option&lt;T&gt;</code> 值。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_8_泛型</title>
+    <url>/posts/bdd7a1b0.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-8-泛型"><a href="#Rust-Chapter-8-泛型" class="headerlink" title="Rust_Chapter_8_泛型"></a>Rust_Chapter_8_泛型</h1><p>泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具</p>
+<span id="more"></span>
+<blockquote>
+<p>关于: 这个系列一开始是帮我学习 Rust 的，但时间拖的有些长了，我也不再是初学者了，但我没有将事情做好一半就停下的习惯，就慢慢把它写完吧，说不定到时候还能在前面的内容添加一些自己的理解，不过短期内还是以学习笔记为主吧</p>
+</blockquote>
+<h2 id="在函数定义中使用泛型"><a href="#在函数定义中使用泛型" class="headerlink" title="在函数定义中使用泛型"></a>在函数定义中使用泛型</h2><p>同 C++ 中的泛型一样，如果要在函数体中使用参数，就必须在函数签名中声明它的名字，好让编译器知道这个名字指代的是什么。同理，当在函数签名中使用一个类型参数时，必须在使用它之前就声明它。类型参数声明位于函数名称与参数列表中间的尖括号 &lt;&gt; </p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">largest</span>&lt;T&gt;(list: &amp;[T]) <span class="punctuation">-&gt;</span> &amp;T &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结构体，枚举中的泛型"><a href="#结构体，枚举中的泛型" class="headerlink" title="结构体，枚举中的泛型"></a>结构体，枚举中的泛型</h2><p><strong>结构体&amp;方法的泛型</strong><br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Point&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">x</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;T &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">p</span> = Point &#123; x: <span class="number">5</span>, y: <span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;p.x = &#123;&#125;&quot;</span>, p.<span class="title function_ invoke__">x</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然定义方法时你也可以针对一个具体的从泛型确定的类型来定义，专业术语为<strong>泛型指定限制</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">Point</span>&lt;<span class="type">f32</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">distance_from_origin</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">f32</span> &#123;</span><br><span class="line">        (<span class="keyword">self</span>.x.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>) + <span class="keyword">self</span>.y.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>)).<span class="title function_ invoke__">sqrt</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结构体定义中的泛型类型参数并不总是与结构体方法签名中使用的泛型是同一类型。</p>
+</blockquote>
+<p><strong>枚举的泛型</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Result 就是一个很好的例子</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T, E&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关于实现"><a href="#关于实现" class="headerlink" title="关于实现"></a>关于实现</h2><p>仍然和 C++ 的模板一致，在编译期 Rust 编译器会根据具体使用到的代码，根据泛型实例化一个具体的实现</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_9_Trait</title>
+    <url>/posts/fa0fbc5d.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-9-Trait"><a href="#Rust-Chapter-9-Trait" class="headerlink" title="Rust_Chapter_9_Trait"></a>Rust_Chapter_9_Trait</h1><p>Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为<strong>接口</strong>(interfaces)的功能，虽然有一些不同。</p>
+<span id="more"></span>
+<h2 id="定义一个-Trait"><a href="#定义一个-Trait" class="headerlink" title="定义一个 Trait"></a>定义一个 Trait</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Summary</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">summarize</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">String</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>pub</code> 字段说明了其对外部 crate 的可见性，在这里不重要<br>这里我们定义了一个签名为 <code>Summary</code> 的 Trait，当然 Trait 体中可以有多个方法：一行一个方法签名且都以分号结尾。在大括号中声明描述实现这个 trait 的类型所需要的行为的方法签名，在这个例子中是 <code>fn summarize(&amp;self) -&gt; String</code>。在定义了 Trait 后我们就可以为类型实现 Trait 了</p>
+<h3 id="为类型实现-Trait"><a href="#为类型实现-Trait" class="headerlink" title="为类型实现 Trait"></a>为类型实现 Trait</h3><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">NewsArticle</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> headline: <span class="type">String</span>,</span><br><span class="line">    <span class="keyword">pub</span> location: <span class="type">String</span>,</span><br><span class="line">    <span class="keyword">pub</span> author: <span class="type">String</span>,</span><br><span class="line">    <span class="keyword">pub</span> content: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Summary</span> <span class="keyword">for</span> <span class="title class_">NewsArticle</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">summarize</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">        <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;, by &#123;&#125; (&#123;&#125;)&quot;</span>, <span class="keyword">self</span>.headline, <span class="keyword">self</span>.author, <span class="keyword">self</span>.location)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">struct</span> <span class="title class_">Tweet</span> &#123;</span><br><span class="line">    <span class="keyword">pub</span> username: <span class="type">String</span>,</span><br><span class="line">    <span class="keyword">pub</span> content: <span class="type">String</span>,</span><br><span class="line">    <span class="keyword">pub</span> reply: <span class="type">bool</span>,</span><br><span class="line">    <span class="keyword">pub</span> retweet: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Summary</span> <span class="keyword">for</span> <span class="title class_">Tweet</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">summarize</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">        <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125;: &#123;&#125;&quot;</span>, <span class="keyword">self</span>.username, <span class="keyword">self</span>.content)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们为两个类型 <code>NewsArticle</code>、<code>Tweet</code> 分别 <code>impl</code> 了 <code>Summary Trait</code>，也就是需要提供一个 summarize 的函数定义</p>
+<p>可以看到它的语义像是：一个可以 <strong>summarize</strong> 的东西是一个 <strong>Summary</strong></p>
+<h2 id="默认实现"><a href="#默认实现" class="headerlink" title="默认实现"></a>默认实现</h2><p>我们可以在定义 Trait 时给予函数一个定义，是为默认定义，如果后面 <code>impl</code> 时没有被显式覆盖，则使用默认定义，当然就像函数默认值那样，你可以不在 <code>impl</code> 时具体声明它，这样就使用的是默认定义</p>
+<h2 id="Trait-作为参数"><a href="#Trait-作为参数" class="headerlink" title="Trait 作为参数"></a>Trait 作为参数</h2><p>知道了如何定义 Trait 和在类型上实现这些 Trait 之后，我们可以探索一下如何使用 Trait 来接受多种不同类型的参数。下面的示例中为 <code>NewsArticle</code> 和 <code>Tweet</code> 类型实现了 <code>Summary</code> Trait，用其来定义了一个函数 notify 来调用其参数 item 上的 <code>summarize</code> 方法，该参数是实现了 <code>Summary</code> Trait 的某种类型。为此可以使用 <code>impl</code> Trait 语法，像这样：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">notify</span>(item: &amp;<span class="keyword">impl</span> <span class="title class_">Summary</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Breaking news! &#123;&#125;&quot;</span>, item.<span class="title function_ invoke__">summarize</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于 <code>item</code> 参数，我们指定了 <code>impl</code> 关键字和 Trait 名称，而不是具体的类型。该参数支持任何实现了指定 Trait 的类型。在 <code>notify</code> 函数体中，可以调用任何来自 <code>Summary</code> trait 的方法，比如 <code>summarize。我们可以传递任何</code> <code>NewsArticle</code> 或 <code>Tweet</code> 的实例来调用 <code>notify</code>。任何用其它如 <code>String</code> 或 <code>i32</code> 的类型调用该函数的代码都不能编译，因为它们没有实现 <code>Summary</code></p>
+<h2 id="Trait-Bound"><a href="#Trait-Bound" class="headerlink" title="Trait Bound"></a>Trait Bound</h2><p>上面的示例其实更像下面代码的语法糖</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">notify</span>&lt;T: Summary&gt;(item: &amp;T) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Breaking news! &#123;&#125;&quot;</span>, item.<span class="title function_ invoke__">summarize</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Trait Bound</strong> 这种写法的适用性更强</p>
+<p>下面的两个例子分别展示了使用 <code>+</code> 表示一个同时实现了  <code>Display</code> 和 <code>Clone</code> 的类型，这意味着 <code>some_function</code> 接受的类型必须同时实现 <code>Display</code> 和 <code>Clone</code> </p>
+<p>其中前者写进了尖括号&lt;&gt;<br>后者写在 <code>where</code> 从句中</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">some_function</span>&lt;T: Display + <span class="built_in">Clone</span>, U: <span class="built_in">Clone</span> + <span class="built_in">Debug</span>&gt;(t: &amp;T, u: &amp;U) <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">some_function</span>&lt;T, U&gt;(t: &amp;T, u: &amp;U) <span class="punctuation">-&gt;</span> <span class="type">i32</span></span><br><span class="line"><span class="keyword">where</span></span><br><span class="line">    T: Display + <span class="built_in">Clone</span>,</span><br><span class="line">    U: <span class="built_in">Clone</span> + <span class="built_in">Debug</span>,</span><br><span class="line">&#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以在返回值中使用 <code>impl</code> Trait 语法，来返回实现了某个 trait 的类型：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">returns_summarizable</span>() <span class="punctuation">-&gt;</span> <span class="keyword">impl</span> <span class="title class_">Summary</span> &#123;</span><br><span class="line">    Tweet &#123;</span><br><span class="line">        username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;horse_ebooks&quot;</span>),</span><br><span class="line">        content: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(</span><br><span class="line">            <span class="string">&quot;of course, as you probably already know, people&quot;</span>,</span><br><span class="line">        ),</span><br><span class="line">        reply: <span class="literal">false</span>,</span><br><span class="line">        retweet: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意此处要求返回确定的类型，如果你这个函数可能返回不止一种类型那么也是不行的</p>
+</blockquote>
+<h2 id="有条件的实现方法"><a href="#有条件的实现方法" class="headerlink" title="有条件的实现方法"></a>有条件的实现方法</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fmt::Display;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Pair</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Pair&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">new</span>(x: T, y: T) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        <span class="keyword">Self</span> &#123; x, y &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T: Display + <span class="built_in">PartialOrd</span>&gt; Pair&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cmp_display</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.x &gt;= <span class="keyword">self</span>.y &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;The largest member is x = &#123;&#125;&quot;</span>, <span class="keyword">self</span>.x);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;The largest member is y = &#123;&#125;&quot;</span>, <span class="keyword">self</span>.y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这有点像 C++ 偏特化，可以对任何实现了特定 trait 的类型有条件地实现 trait。对任何满足特定 trait bound 的类型实现 trait 被称为 blanket implementations，它们被广泛的用于 Rust 标准库中。</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1244,6 +1314,27 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -1283,27 +1374,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
-<span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1465,20 +1535,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
     <title>圆盘摩擦力矩</title>
     <url>/posts/8a033795.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
@@ -1502,6 +1558,20 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
 </blockquote>
 <p>小小思考，如是而已，愿君共勉。</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -1779,6 +1849,21 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分</p>
+<h3 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h3>]]></content>
+      <categories>
+        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
