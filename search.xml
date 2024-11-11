@@ -313,6 +313,44 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>C/C++的特别复杂的类型</title>
+    <url>/posts/8fb716fa.html</url>
+    <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
+<hr>
+<h2 id="前人的智慧"><a href="#前人的智慧" class="headerlink" title="前人的智慧"></a>前人的智慧</h2><p>其实可以通过一个叫右左法则的东西来解决这个问题，不过我觉得后缀表达式还是看的有点头疼，有兴趣可以找找看，它可以将式子变成一个后缀表达式，采取编译器的形式进行处理。但我们不采用这种方法，<del>原因是后缀表达式还是不够可读</del>，原因是我不会用<br>补充：链接贴在这里<a href="https://www.bilibili.com/video/BV1mB4y1L7HB/?is_story_h5=false&amp;p=1&amp;share_from=ugc&amp;share_medium=android&amp;share_plat=android&amp;share_session_id=8c3141a9-9324-4449-8409-8f2d1d7846dd&amp;share_source=QQ&amp;share_tag=s_i&amp;timestamp=1668064269&amp;unique_k=GWrf0E0">B站：初中生也能看懂的C/C++类型声明规则教学，很简单的！</a></p>
+<hr>
+<h2 id="着手解决这个问题"><a href="#着手解决这个问题" class="headerlink" title="着手解决这个问题"></a>着手解决这个问题</h2><p>我们先来看看一个声明，他到底是什么意思<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">char</span> (*p)[] = <span class="literal">NULL</span>;<span class="comment">//这是一个指向char数组的指针</span></span><br></pre></td></tr></table></figure></p>
+<p>其实无论是什么样的声明，都是同样的格式<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Type_1 Type_2 = xxx;</span><br><span class="line"><span class="comment">//准确来说Type_2不是一种类型，而是对变量进行多种符号操作后的产物</span></span><br><span class="line"><span class="comment">//简单的变量声明如 &quot;int a;&quot; 中 a被0个符号修饰 从而a等价int</span></span><br></pre></td></tr></table></figure></p>
+<p>就是说，在如上这个声明里就是<br><code>Type_1</code>是<code>char</code><br><code>Type_2</code>是<code>(*p)[]</code><br>你可以把<code>p</code>就想象成一个已经定义的指向<code>char</code>数组的指针<br>对其解引用并取下标类型就是<code>char</code></p>
+<p>也就是说<br><code>char</code> 在类型上等价于<code>(*p)[]</code></p>
+<p>也就是说这是通过一个<span style="color: pink; font-size: 20px; font-weight: bolder;"><code>Type_1</code>在类型上等价<code>Type_2</code>的一个类型的等式</span>来确定的要赋值的变量名的类型到底是什么<br><span style="color: pink; font-size: 20px; font-weight: bolder;">所以，我们可以对一个合法的变量声明在其内部任意位置进行分割，然后加括号保证可读性,用以区分<code>Type_1</code>和<code>Type_2</code></span></p>
+<p>也就是说其实可以这么处理：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> **p[]; <span class="comment">// 以下对表达式逐步进行分割</span></span><br><span class="line">**p[] <span class="comment">//是int</span></span><br><span class="line">*p[]  <span class="comment">//是指向int的指针 即int*</span></span><br><span class="line">p[]   <span class="comment">//是指向 指向int的指针 的指针 即int**</span></span><br><span class="line">p     <span class="comment">//是指向 指向int的指针 的指针 的数组 即int**</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="现在找一个看起来更舒服的方法"><a href="#现在找一个看起来更舒服的方法" class="headerlink" title="现在找一个看起来更舒服的方法"></a>现在找一个看起来更舒服的方法</h2><p>让我们来看一个例子<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> * <span class="type">const</span> * ch2;</span><br><span class="line">(<span class="built_in">const</span> (<span class="type">char</span>*))* ch2;</span><br><span class="line"><span class="comment">//这两个是等价的</span></span><br></pre></td></tr></table></figure><br>仔细看看<strong>第二个式子</strong>绝对比第一个式子阳间，为什么？<br>因为这里的<code>Type_2</code>就是<code>ch2</code><br><strong>变量名ch2没有经过各种符号的修饰</strong>，直接等于左边的一坨<code>Type_1</code><br>那所以说其实化成可读性强的式子就是把变量名从一堆修辞里拯救出来的过程<br>就是说把变量名的一堆枷锁找个简单的类型当替死鬼装它身上(奇妙的比喻增加了)<br>我们可以用一些看上去更数学的方法来做(滑稽)</p>
+<h2 id="需要强调的一点"><a href="#需要强调的一点" class="headerlink" title="需要强调的一点"></a>需要强调的一点</h2><p><strong>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！</strong></p>
+<h2 id="让我们来开始着手做吧"><a href="#让我们来开始着手做吧" class="headerlink" title="让我们来开始着手做吧"></a>让我们来开始着手做吧</h2><p>首先一个声明里其实是只有一个简单类型的(这里的简单类型就是说的那些基础类型，<code>int</code>，<code>char</code>，<code>double</code>，或者是<code>class</code>，<code>struct</code>)<br><code>模板&lt;&gt;</code>和<code>函数()</code>内的简单类型其实是不会和其混淆的<br><code>模板&lt;&gt;</code>有尖括号<br>而<code>函数()</code>在变量名后，而简单类型一定在变量名前<br><code>int</code>是类型声明，<code>(int)</code>是参数表<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//int不会和(int)混淆</span></span><br></pre></td></tr></table></figure><br>变量名并不好脱掉一堆枷锁嘛，所以我们要强迫让简单类型这个替死鬼自己扒了变量名的衣服自己穿上(What’s The Fuck)<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>); <span class="comment">// 这是一个函数指针的形式</span></span><br></pre></td></tr></table></figure><br><code>float</code>替死鬼上线，先把和它处于同一优先级的”<code>(int)</code>“扒了套自己身上，并加个括号以示对它的主权(乐)<br>并暗示你被我扒了一层所以这下<code>(*(*fp2)(int,int,float))</code>最外层的括号可以脱了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">float</span> (<span class="type">int</span>)) *(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>可以看到这个工具的强大了<br><code>(float (int))</code>这个就是一个传入<code>int</code>返回<code>float</code>的函数<br>但是过不了编译！！！！！注意！！！！！<br>然后替死鬼现在是<code>(float (int))</code>，继续把<code>*</code>扒了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((<span class="built_in">float</span> (<span class="type">int</span>))*) (*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>虽然现在已经能看出来最外层是<code>(float (int))</code>的函数指针了，但我们再来一次<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)) *fp2;</span><br></pre></td></tr></table></figure><br>得到 返回值<code>((float (int))*</code>，参数表<code>(int,int,float)</code> 的<code>Type_1</code><br>再来<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)))* fp2;</span><br></pre></td></tr></table></figure><br>这下结构也太清晰了<br>看懂了但是很难描述，但是我还是想尝试描述一下 （就算是中文也要靠多重括号来断句（悲<br><code>fp2</code>是一个{以【返回值为<code>float</code>，参数表为<code>(int)</code>的函数指针】为返回值，<code>(int,int,float)</code>为参数表}的函数指针</p>
+<p>实质上当中的过程覆盖了所有可能的情况了，我们可以用 <a href="#着手解决这个问题">着手解决这个问题</a> 上面这一小标题所写的本质证明这样做的合理性，如指针无非就是一方解引用一方变指针做到的等价。</p>
+<hr>
+<h2 id="cv限定符"><a href="#cv限定符" class="headerlink" title="cv限定符"></a>cv限定符</h2><p>因为有<code>const</code>，<code>volatile</code>这样的限定符存在，故而这个方法进行开扒的时候，需<strong>先向</strong>替死鬼<strong>前</strong>看一看有没有这些<strong>限定符</strong>，再结合后面<strong>距离<code>Type_1</code>最近的运算符</strong><br><strong>cv限定符应该置于Type_1之前以修饰Type_1</strong><br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子一</span></span><br><span class="line"><span class="type">char</span>* <span class="type">const</span> ch1;</span><br><span class="line">(<span class="type">char</span>*) <span class="type">const</span> ch1;</span><br><span class="line"><span class="built_in">const</span> (<span class="type">char</span>*)  ch1;</span><br><span class="line"><span class="comment">//例子二</span></span><br><span class="line"><span class="type">char</span> **<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">(<span class="type">char</span> *) *<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">((<span class="type">char</span> *)*)<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line"><span class="built_in">const</span> (<span class="built_in">const</span>((<span class="type">char</span>*)*))* ch2;</span><br><span class="line"><span class="comment">//例子三</span></span><br><span class="line"><span class="type">int</span> *a[][N];</span><br><span class="line">((<span class="type">int</span> *)[N])[] a;</span><br><span class="line"><span class="comment">//例子四</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">()</span>[]</span>;<span class="comment">//无法过编译，如vs2022会指出其为返回数组的函数</span></span><br><span class="line">(<span class="type">int</span> [])() a;<span class="comment">//可以看到这是返回数组的函数，非法</span></span><br><span class="line"><span class="comment">//例子五</span></span><br><span class="line"><span class="type">int</span> a[]();<span class="comment">//无法过编译，如vs2022会指出其为函数数组</span></span><br><span class="line">(<span class="built_in">int</span> ())[] a;<span class="comment">//可以看到这是函数数组，非法</span></span><br></pre></td></tr></table></figure><br>对于例子三和例子四还有例子五，实质上有一个整体考虑的办法</p>
+<ul>
+<li>例子三<code>[][]</code>可以当作二维数组来看，第一个<code>[]</code>转移过程中可以不给替死鬼加括号就清楚了</li>
+<li>对于例子四<code>()[]</code>，其实我们完全可以把数组取下标看作一种特殊的函数，反过来也是</li>
+<li>函数其实和数组在这里可以不用特别区分，所以五和四和三一样</li>
+<li>同时这也启示我们<code>()[]</code> , <code>[]()</code>如果出现在一块，这必定不可能是合法的</li>
+<li>因为其必定包含函数数组或是返回数组的函数，不合法<br>*当然<code>[]</code>和<code>()</code>因为优先级是最高的，所以和名字结合最紧，最后才能被扒掉，而<code>()[]</code>之间呢，与名字最靠近的当然结合更紧，所以在之后被扒</li>
+</ul>
+<hr>
+<h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>至此我们完成了这种特别复杂的声明的辨析，但其实这个工具还有一种应用就是依照这种格式，可以从<strong>可读性强的格式反向推得这种复杂的声明</strong>。<br><span style="color: pink; font-size: 20px; font-weight: bolder;">即<code>Type_1</code>在类型上等价<code>Type_2</code>先将变量名后缀移到<code>Type_1</code>上，再通过分割将变量名彻底弄干净（无符号修饰无后缀），最后变量类型即为<code>Type_1</code>，而开扒的顺序，关键看这些符号作用在变量名上的顺序，如果优先级高，则说明与之结合紧，越晚被扒，而括号里的部分可以看作一个整体开扒，这样就可以化简整体的结构</span><br>终于写完了，虽然如此，我只希望尽可能不要有人为了炫技而写出这种声明<br>脱帽子，yeah~~</p>
+<hr>
+<p><strong>editor</strong>  594飞飘<br><strong>audit</strong>   Serein</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Git使用_第1弹</title>
     <url>/posts/392f5636.html</url>
     <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
@@ -354,44 +392,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C/C++的特别复杂的类型</title>
-    <url>/posts/8fb716fa.html</url>
-    <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
-<hr>
-<h2 id="前人的智慧"><a href="#前人的智慧" class="headerlink" title="前人的智慧"></a>前人的智慧</h2><p>其实可以通过一个叫右左法则的东西来解决这个问题，不过我觉得后缀表达式还是看的有点头疼，有兴趣可以找找看，它可以将式子变成一个后缀表达式，采取编译器的形式进行处理。但我们不采用这种方法，<del>原因是后缀表达式还是不够可读</del>，原因是我不会用<br>补充：链接贴在这里<a href="https://www.bilibili.com/video/BV1mB4y1L7HB/?is_story_h5=false&amp;p=1&amp;share_from=ugc&amp;share_medium=android&amp;share_plat=android&amp;share_session_id=8c3141a9-9324-4449-8409-8f2d1d7846dd&amp;share_source=QQ&amp;share_tag=s_i&amp;timestamp=1668064269&amp;unique_k=GWrf0E0">B站：初中生也能看懂的C/C++类型声明规则教学，很简单的！</a></p>
-<hr>
-<h2 id="着手解决这个问题"><a href="#着手解决这个问题" class="headerlink" title="着手解决这个问题"></a>着手解决这个问题</h2><p>我们先来看看一个声明，他到底是什么意思<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">char</span> (*p)[] = <span class="literal">NULL</span>;<span class="comment">//这是一个指向char数组的指针</span></span><br></pre></td></tr></table></figure></p>
-<p>其实无论是什么样的声明，都是同样的格式<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Type_1 Type_2 = xxx;</span><br><span class="line"><span class="comment">//准确来说Type_2不是一种类型，而是对变量进行多种符号操作后的产物</span></span><br><span class="line"><span class="comment">//简单的变量声明如 &quot;int a;&quot; 中 a被0个符号修饰 从而a等价int</span></span><br></pre></td></tr></table></figure></p>
-<p>就是说，在如上这个声明里就是<br><code>Type_1</code>是<code>char</code><br><code>Type_2</code>是<code>(*p)[]</code><br>你可以把<code>p</code>就想象成一个已经定义的指向<code>char</code>数组的指针<br>对其解引用并取下标类型就是<code>char</code></p>
-<p>也就是说<br><code>char</code> 在类型上等价于<code>(*p)[]</code></p>
-<p>也就是说这是通过一个<span style="color: pink; font-size: 20px; font-weight: bolder;"><code>Type_1</code>在类型上等价<code>Type_2</code>的一个类型的等式</span>来确定的要赋值的变量名的类型到底是什么<br><span style="color: pink; font-size: 20px; font-weight: bolder;">所以，我们可以对一个合法的变量声明在其内部任意位置进行分割，然后加括号保证可读性,用以区分<code>Type_1</code>和<code>Type_2</code></span></p>
-<p>也就是说其实可以这么处理：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> **p[]; <span class="comment">// 以下对表达式逐步进行分割</span></span><br><span class="line">**p[] <span class="comment">//是int</span></span><br><span class="line">*p[]  <span class="comment">//是指向int的指针 即int*</span></span><br><span class="line">p[]   <span class="comment">//是指向 指向int的指针 的指针 即int**</span></span><br><span class="line">p     <span class="comment">//是指向 指向int的指针 的指针 的数组 即int**</span></span><br></pre></td></tr></table></figure></p>
-<hr>
-<h2 id="现在找一个看起来更舒服的方法"><a href="#现在找一个看起来更舒服的方法" class="headerlink" title="现在找一个看起来更舒服的方法"></a>现在找一个看起来更舒服的方法</h2><p>让我们来看一个例子<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> * <span class="type">const</span> * ch2;</span><br><span class="line">(<span class="built_in">const</span> (<span class="type">char</span>*))* ch2;</span><br><span class="line"><span class="comment">//这两个是等价的</span></span><br></pre></td></tr></table></figure><br>仔细看看<strong>第二个式子</strong>绝对比第一个式子阳间，为什么？<br>因为这里的<code>Type_2</code>就是<code>ch2</code><br><strong>变量名ch2没有经过各种符号的修饰</strong>，直接等于左边的一坨<code>Type_1</code><br>那所以说其实化成可读性强的式子就是把变量名从一堆修辞里拯救出来的过程<br>就是说把变量名的一堆枷锁找个简单的类型当替死鬼装它身上(奇妙的比喻增加了)<br>我们可以用一些看上去更数学的方法来做(滑稽)</p>
-<h2 id="需要强调的一点"><a href="#需要强调的一点" class="headerlink" title="需要强调的一点"></a>需要强调的一点</h2><p><strong>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！</strong></p>
-<h2 id="让我们来开始着手做吧"><a href="#让我们来开始着手做吧" class="headerlink" title="让我们来开始着手做吧"></a>让我们来开始着手做吧</h2><p>首先一个声明里其实是只有一个简单类型的(这里的简单类型就是说的那些基础类型，<code>int</code>，<code>char</code>，<code>double</code>，或者是<code>class</code>，<code>struct</code>)<br><code>模板&lt;&gt;</code>和<code>函数()</code>内的简单类型其实是不会和其混淆的<br><code>模板&lt;&gt;</code>有尖括号<br>而<code>函数()</code>在变量名后，而简单类型一定在变量名前<br><code>int</code>是类型声明，<code>(int)</code>是参数表<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//int不会和(int)混淆</span></span><br></pre></td></tr></table></figure><br>变量名并不好脱掉一堆枷锁嘛，所以我们要强迫让简单类型这个替死鬼自己扒了变量名的衣服自己穿上(What’s The Fuck)<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>); <span class="comment">// 这是一个函数指针的形式</span></span><br></pre></td></tr></table></figure><br><code>float</code>替死鬼上线，先把和它处于同一优先级的”<code>(int)</code>“扒了套自己身上，并加个括号以示对它的主权(乐)<br>并暗示你被我扒了一层所以这下<code>(*(*fp2)(int,int,float))</code>最外层的括号可以脱了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">float</span> (<span class="type">int</span>)) *(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>可以看到这个工具的强大了<br><code>(float (int))</code>这个就是一个传入<code>int</code>返回<code>float</code>的函数<br>但是过不了编译！！！！！注意！！！！！<br>然后替死鬼现在是<code>(float (int))</code>，继续把<code>*</code>扒了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((<span class="built_in">float</span> (<span class="type">int</span>))*) (*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>虽然现在已经能看出来最外层是<code>(float (int))</code>的函数指针了，但我们再来一次<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)) *fp2;</span><br></pre></td></tr></table></figure><br>得到 返回值<code>((float (int))*</code>，参数表<code>(int,int,float)</code> 的<code>Type_1</code><br>再来<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)))* fp2;</span><br></pre></td></tr></table></figure><br>这下结构也太清晰了<br>看懂了但是很难描述，但是我还是想尝试描述一下 （就算是中文也要靠多重括号来断句（悲<br><code>fp2</code>是一个{以【返回值为<code>float</code>，参数表为<code>(int)</code>的函数指针】为返回值，<code>(int,int,float)</code>为参数表}的函数指针</p>
-<p>实质上当中的过程覆盖了所有可能的情况了，我们可以用 <a href="#着手解决这个问题">着手解决这个问题</a> 上面这一小标题所写的本质证明这样做的合理性，如指针无非就是一方解引用一方变指针做到的等价。</p>
-<hr>
-<h2 id="cv限定符"><a href="#cv限定符" class="headerlink" title="cv限定符"></a>cv限定符</h2><p>因为有<code>const</code>，<code>volatile</code>这样的限定符存在，故而这个方法进行开扒的时候，需<strong>先向</strong>替死鬼<strong>前</strong>看一看有没有这些<strong>限定符</strong>，再结合后面<strong>距离<code>Type_1</code>最近的运算符</strong><br><strong>cv限定符应该置于Type_1之前以修饰Type_1</strong><br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子一</span></span><br><span class="line"><span class="type">char</span>* <span class="type">const</span> ch1;</span><br><span class="line">(<span class="type">char</span>*) <span class="type">const</span> ch1;</span><br><span class="line"><span class="built_in">const</span> (<span class="type">char</span>*)  ch1;</span><br><span class="line"><span class="comment">//例子二</span></span><br><span class="line"><span class="type">char</span> **<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">(<span class="type">char</span> *) *<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">((<span class="type">char</span> *)*)<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line"><span class="built_in">const</span> (<span class="built_in">const</span>((<span class="type">char</span>*)*))* ch2;</span><br><span class="line"><span class="comment">//例子三</span></span><br><span class="line"><span class="type">int</span> *a[][N];</span><br><span class="line">((<span class="type">int</span> *)[N])[] a;</span><br><span class="line"><span class="comment">//例子四</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">()</span>[]</span>;<span class="comment">//无法过编译，如vs2022会指出其为返回数组的函数</span></span><br><span class="line">(<span class="type">int</span> [])() a;<span class="comment">//可以看到这是返回数组的函数，非法</span></span><br><span class="line"><span class="comment">//例子五</span></span><br><span class="line"><span class="type">int</span> a[]();<span class="comment">//无法过编译，如vs2022会指出其为函数数组</span></span><br><span class="line">(<span class="built_in">int</span> ())[] a;<span class="comment">//可以看到这是函数数组，非法</span></span><br></pre></td></tr></table></figure><br>对于例子三和例子四还有例子五，实质上有一个整体考虑的办法</p>
-<ul>
-<li>例子三<code>[][]</code>可以当作二维数组来看，第一个<code>[]</code>转移过程中可以不给替死鬼加括号就清楚了</li>
-<li>对于例子四<code>()[]</code>，其实我们完全可以把数组取下标看作一种特殊的函数，反过来也是</li>
-<li>函数其实和数组在这里可以不用特别区分，所以五和四和三一样</li>
-<li>同时这也启示我们<code>()[]</code> , <code>[]()</code>如果出现在一块，这必定不可能是合法的</li>
-<li>因为其必定包含函数数组或是返回数组的函数，不合法<br>*当然<code>[]</code>和<code>()</code>因为优先级是最高的，所以和名字结合最紧，最后才能被扒掉，而<code>()[]</code>之间呢，与名字最靠近的当然结合更紧，所以在之后被扒</li>
-</ul>
-<hr>
-<h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>至此我们完成了这种特别复杂的声明的辨析，但其实这个工具还有一种应用就是依照这种格式，可以从<strong>可读性强的格式反向推得这种复杂的声明</strong>。<br><span style="color: pink; font-size: 20px; font-weight: bolder;">即<code>Type_1</code>在类型上等价<code>Type_2</code>先将变量名后缀移到<code>Type_1</code>上，再通过分割将变量名彻底弄干净（无符号修饰无后缀），最后变量类型即为<code>Type_1</code>，而开扒的顺序，关键看这些符号作用在变量名上的顺序，如果优先级高，则说明与之结合紧，越晚被扒，而括号里的部分可以看作一个整体开扒，这样就可以化简整体的结构</span><br>终于写完了，虽然如此，我只希望尽可能不要有人为了炫技而写出这种声明<br>脱帽子，yeah~~</p>
-<hr>
-<p><strong>editor</strong>  594飞飘<br><strong>audit</strong>   Serein</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -596,7 +596,44 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
   <entry>
     <title>Rust_Chapter_10_生命周期</title>
     <url>/posts/11c8f25c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><span id="more"></span>]]></content>
+    <content><![CDATA[<h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><p>一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的</p>
+<span id="more"></span>
+<h2 id="悬垂指针和生命周期"><a href="#悬垂指针和生命周期" class="headerlink" title="悬垂指针和生命周期"></a>悬垂指针和生命周期</h2><p>生命周期诞生的主要目的就是为了放置悬垂指针，避免引用空悬。通过 Rust 编译器检查生命周期，从语言层面上限制程序员，基本上可以在编译期就保证内存安全</p>
+<p>像下面的这段代码</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">        r = &amp;x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译时会报下面的错误<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error[E0597]: `x` does not live long enough // `x` 活得不够久</span><br><span class="line">  --&gt; src/main.rs:7:17</span><br><span class="line">   |</span><br><span class="line">7  |             r = &amp;x;</span><br><span class="line">   |                 ^^ borrowed value does not live long enough // 被借用的 `x` 活得不够久</span><br><span class="line">8  |         &#125;</span><br><span class="line">   |         - `x` dropped here while still borrowed // `x` 在这里被丢弃，但是它依然还在被借用</span><br><span class="line">9  |</span><br><span class="line">10 |         println!(&quot;r: &#123;&#125;&quot;, r);</span><br><span class="line">   |                           - borrow later used here // 对 `x` 的借用在此处被使用</span><br></pre></td></tr></table></figure></p>
+<p>我们在别的语言里会说 x 的作用域在第二个括号末就结束了，所以这是一个典型的可能导致引用空悬的代码，我们可以用 <code>&#39;a</code>、<code>&#39;b</code> 这样的标签来标记这么一个生命周期，如下</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;                <span class="comment">// ---------+-- &#x27;a</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    &#123;                     <span class="comment">//          |</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;        <span class="comment">// -+-- &#x27;b  |</span></span><br><span class="line">        r = &amp;x;           <span class="comment">//  |       |</span></span><br><span class="line">    &#125;                     <span class="comment">// -+       |</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r); <span class="comment">//          |</span></span><br><span class="line">&#125;                         <span class="comment">// ---------+</span></span><br></pre></td></tr></table></figure>
+<p>我们说 <code>r</code> 这个变量的生命周期是 <code>&#39;a</code>，而 <code>x</code> 这个变量的生命周期是 <code>‘b</code>，从图示上可以明显看出生命周期 <code>&#39;b</code> 比 <code>&#39;a</code> 小很多。</p>
+<p>在编译期，Rust 会比较两个变量的生命周期，结果发现 <code>r</code> 明明拥有生命周期 <code>&#39;a</code>，但是却引用了一个小得多的生命周期 <code>&#39;b</code>，在这种情况下，编译器会认为我们的程序存在风险，因此拒绝运行。</p>
+<p>在这里，编译器自动就知道了生命周期，但是这不是时时刻刻都能成的：在存在多个引用时，编译器有时会无法自动推导生命周期，此时就需要我们手动去标注，通过为参数标注合适的生命周期来帮助编译器进行借用检查的分析。</p>
+<h2 id="关于-Rust-类型系统"><a href="#关于-Rust-类型系统" class="headerlink" title="关于 Rust 类型系统"></a>关于 Rust 类型系统</h2><p>在了解这些之前，我们先要介绍一下由 Rust 生命周期而来的类型系统，详细需要观看如下的一篇文章<br>[SAST.Mathematics SIG / Subtyping variance and its application] <a href="https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/">https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/</a></p>
+<p>我们有一个基本的事实，即 <code>Bot = &amp;&#39;static T &lt;: &amp;&#39;b T &lt;: &amp;&#39;a T</code> ，没那么严谨的说法是，当生命周期标签的范围越大，那这个类型就是越小的子类型</p>
+<p>而如果 S 是 T 的子类型，意思是在任何需要使用 T 类型对象的环境中，都可以安全地使用 S 类型的对象。</p>
+<p>这暗含的含义就是：变量本身内蕴的生命周期标签大的可以被借用给生命周期小的，而且一个类型为 <code>&amp;&#39;b T</code> 的变量它的类型其实也满足 <code>&amp;&#39;a T</code></p>
+<h2 id="为一些特殊的函数标注生命周期"><a href="#为一些特殊的函数标注生命周期" class="headerlink" title="为一些特殊的函数标注生命周期"></a>为一些特殊的函数标注生命周期</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">longest</span>&lt;<span class="symbol">&#x27;a</span>&gt;(x: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>, y: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>) <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> x.<span class="title function_ invoke__">len</span>() &gt; y.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        x</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到生命周期标注和泛型标注很相似，且有了上面的铺垫，我们理解了为什么在这里需要标注生命周期(实际上，如果你这个函数不标记生命周期就会收获一个编译报错)</p>
+<p>该函数签名表明对于某些生命周期 <code>&#39;a</code>，函数的两个参数都至少跟 <code>&#39;a</code> 活得一样久，同时函数的返回引用也至少跟 <code>&#39;a</code> 活得一样久。实际上，这意味着返回值的生命周期与参数生命周期中的较小值一致：虽然两个参数的生命周期都是标注了 <code>&#39;a</code>，但是实际上这两个参数的真实生命周期可能是不一样的(上面的讨论说明了生命周期 <code>&#39;a</code> 不代表生命周期等于 <code>&#39;a</code>，而是大于等于 <code>&#39;a</code>)</p>
+<h2 id="结构体中的生命周期"><a href="#结构体中的生命周期" class="headerlink" title="结构体中的生命周期"></a>结构体中的生命周期</h2><p>定义包含引用的结构体时，需要为结构体定义中的每一个引用添加生命周期注解</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImportantExcerpt</span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    part: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">novel</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Call me Ishmael. Some years ago...&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">first_sentence</span> = novel.<span class="title function_ invoke__">split</span>(<span class="string">&#x27;.&#x27;</span>).<span class="title function_ invoke__">next</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">i</span> = ImportantExcerpt &#123;</span><br><span class="line">        part: first_sentence,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="生命周期消除"><a href="#生命周期消除" class="headerlink" title="生命周期消除"></a>生命周期消除</h2><p>并非所有时候使用引用都需要标注生命周期，历史为我们提供了一些语法糖帮助我们消除生命周期</p>
+<p>消除规则不是万能的，若编译器不能确定某件事是正确时，会直接判为不正确，那么你还是需要手动标注生命周期</p>
+<p>函数或者方法中，参数的生命周期被称为<strong>输入生命周期</strong>，返回值的生命周期被称为<strong>输出生命周期</strong></p>
+<h3 id="三条消除规则"><a href="#三条消除规则" class="headerlink" title="三条消除规则"></a>三条消除规则</h3><p>编译器使用三条消除规则来确定哪些场景不需要显式地去标注生命周期。其中第一条规则应用在输入生命周期上，第二、三条应用在输出生命周期上。若编译器发现三条规则都不适用时，就会报错，提示你需要手动标注生命周期。</p>
+<ol>
+<li>每一个引用参数都会获得独自的生命周期<br> 例如一个引用参数的函数就有一个生命周期标注: <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32)</code>，两个引用参数的有两个生命周期标注:<code>fn foo&lt;&#39;a, &#39;b&gt;(x: &amp;&#39;a i32, y: &amp;&#39;b i32)</code>, 依此类推。</li>
+<li>若只有一个输入生命周期（函数参数中只有一个引用类型），那么该生命周期会被赋给所有的输出生命周期，也就是所有返回值的生命周期都等于该输入生命周期<br> 例如函数 <code>fn foo(x: &amp;i32) -&gt; &amp;i32</code>，<code>x</code> 参数的生命周期会被自动赋给返回值 <code>&amp;i32</code>，因此该函数等同于 <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32) -&gt; &amp;&#39;a i32</code></li>
+<li>若存在多个输入生命周期，且其中一个是 <code>&amp;self</code> 或 <code>&amp;mut self</code>，则 <code>&amp;self</code> 的生命周期被赋给所有的输出生命周期<br> 拥有 <code>&amp;self</code> 形式的参数，说明该函数是一个 方法，该规则让方法的使用便利度大幅提升。</li>
+</ol>
+<h2 id="方法定义中的生命周期注解"><a href="#方法定义中的生命周期注解" class="headerlink" title="方法定义中的生命周期注解"></a>方法定义中的生命周期注解</h2><p>当为带有生命周期的结构体实现方法时，其语法依然类似泛型类型参数的语法。我们在哪里声明和使用生命周期参数，取决于它们是与结构体字段相关还是与方法参数和返回值相关。</p>
+<p>(实现方法时)结构体字段的生命周期必须总是在 <code>impl</code> 关键字之后声明并在结构体名称之后被使用，因为这些生命周期是结构体类型的一部分。</p>
+<p><code>impl</code> 块里的方法签名中，引用可能与结构体字段中的引用相关联，也可能是独立的。另外，生命周期省略规则也经常让我们无需在方法签名中使用生命周期注解。</p>
+<h2 id="静态生命周期"><a href="#静态生命周期" class="headerlink" title="静态生命周期"></a>静态生命周期</h2><p>这里有一种特殊的生命周期值得讨论：<code>&#39;static</code>，其生命周期能够存活于整个程序期间。所有的字符串字面值都拥有 <code>&#39;static</code> 生命周期，我们也可以选择像下面这样标注出来：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span>: &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> = <span class="string">&quot;I have a static lifetime.&quot;</span>;</span><br></pre></td></tr></table></figure><br>这个字符串的文本被直接储存在程序的二进制文件中而这个文件总是可用的。因此所有的字符串字面值都是 <code>&#39;static</code> 的。</p>
+<h2 id="泛型中的生命周期"><a href="#泛型中的生命周期" class="headerlink" title="泛型中的生命周期"></a>泛型中的生命周期</h2><p>因为生命周期也是泛型，所以生命周期参数 <code>&#39;a</code> 和泛型类型参数 <code>T</code> 都位于函数名后的同一尖括号列表中</p>
+<blockquote>
+<p>至此，匆匆忙忙把 Rust 一些很基础的语法介绍完毕了，接下来这一个小系列也告一段落了</p>
+</blockquote>
+]]></content>
       <categories>
         <category>CS_计算机</category>
         <category>Programming_Language</category>
@@ -1065,76 +1102,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>stokes公式</title>
-    <url>/posts/7fc7eed7.html</url>
-    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
-<span id="more"></span>
-<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
-<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
-<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
-</blockquote>
-<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
-<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
-<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
-<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
-<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
-<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
-<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
-</ul>
-<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
-<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
-<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
-<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
-<blockquote>
-<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
-</blockquote>
-<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
-<ul>
-<li>恰当形式<strong>一定是</strong>闭形式</li>
-<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
-<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
-</blockquote>
-</li>
-</ul>
-<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
-<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
-<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
-<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
-<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
-<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
-<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
-<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
-<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
-<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
-<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
-<ul>
-<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
-<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
-</ul>
-<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
-<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
-<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
-<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
-<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
-<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
-<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
-<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
-<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
-<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
     <title>从LFS构建中习得的交叉编译</title>
     <url>/posts/c858dee6.html</url>
     <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
@@ -1226,6 +1193,76 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>stokes公式</title>
+    <url>/posts/7fc7eed7.html</url>
+    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
+<span id="more"></span>
+<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
+<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+</blockquote>
+<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
+<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
+<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
+<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
+<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
+<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
+<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
+</ul>
+<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
+<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
+<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
+<blockquote>
+<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
+</blockquote>
+<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
+<ul>
+<li>恰当形式<strong>一定是</strong>闭形式</li>
+<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
+<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
+</blockquote>
+</li>
+</ul>
+<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
+<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
+<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
+<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
+<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
+<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
+<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
+<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
+<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
+<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
+<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
+<ul>
+<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
+<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
+</ul>
+<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
+<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
+<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
+<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
+<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
+<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
+<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
+<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
+<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
+<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
     <title>使用说明之qblog批处理</title>
     <url>/posts/64b84f95.html</url>
     <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
@@ -1278,18 +1315,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于多元复合函数的困惑与思考</title>
     <url>/posts/15db3d47.html</url>
     <content><![CDATA[<h1 id="关于多元复合函数的困惑与思考"><a href="#关于多元复合函数的困惑与思考" class="headerlink" title="关于多元复合函数的困惑与思考"></a>关于多元复合函数的困惑与思考</h1><p>导读:偏导数是相对某个具体的坐标系才有意义的。</p>
@@ -1314,24 +1339,15 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
 <span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1374,6 +1390,27 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1535,6 +1572,20 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
     <title>圆盘摩擦力矩</title>
     <url>/posts/8a033795.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
@@ -1558,20 +1609,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
 </blockquote>
 <p>小小思考，如是而已，愿君共勉。</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -1782,6 +1819,21 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分</p>
+<h3 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h3>]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -1849,21 +1901,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分</p>
-<h3 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h3>]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>

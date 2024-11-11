@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Rust_Chapter_10_生命周期">
+  <meta name="description" content="Rust_Chapter_10_生命周期一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust_Chapter_10_生命周期">
 <meta property="og:url" content="https://feipiao594.github.io/posts/11c8f25c.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="Rust_Chapter_10_生命周期">
+<meta property="og:description" content="Rust_Chapter_10_生命周期一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-11T06:04:57.000Z">
-<meta property="article:modified_time" content="2024-11-11T06:43:07.206Z">
+<meta property="article:modified_time" content="2024-11-11T11:55:30.583Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -220,7 +220,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-11-11 14:04:57 / 修改时间：14:43:07" itemprop="dateCreated datePublished" datetime="2024-11-11T14:04:57+08:00">2024-11-11</time>
+              <time title="创建时间：2024-11-11 14:04:57 / 修改时间：19:55:30" itemprop="dateCreated datePublished" datetime="2024-11-11T14:04:57+08:00">2024-11-11</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,14 +246,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>20</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -265,7 +265,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><span id="more"></span>
+        <h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><p>一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的</p>
+<span id="more"></span>
+<h2 id="悬垂指针和生命周期"><a href="#悬垂指针和生命周期" class="headerlink" title="悬垂指针和生命周期"></a>悬垂指针和生命周期</h2><p>生命周期诞生的主要目的就是为了放置悬垂指针，避免引用空悬。通过 Rust 编译器检查生命周期，从语言层面上限制程序员，基本上可以在编译期就保证内存安全</p>
+<p>像下面的这段代码</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">        r = &amp;x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译时会报下面的错误<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">error[E0597]: `x` does not live long enough // `x` 活得不够久</span><br><span class="line">  --&gt; src/main.rs:7:17</span><br><span class="line">   |</span><br><span class="line">7  |             r = &amp;x;</span><br><span class="line">   |                 ^^ borrowed value does not live long enough // 被借用的 `x` 活得不够久</span><br><span class="line">8  |         &#125;</span><br><span class="line">   |         - `x` dropped here while still borrowed // `x` 在这里被丢弃，但是它依然还在被借用</span><br><span class="line">9  |</span><br><span class="line">10 |         println!(&quot;r: &#123;&#125;&quot;, r);</span><br><span class="line">   |                           - borrow later used here // 对 `x` 的借用在此处被使用</span><br></pre></td></tr></table></figure></p>
+<p>我们在别的语言里会说 x 的作用域在第二个括号末就结束了，所以这是一个典型的可能导致引用空悬的代码，我们可以用 <code>&#39;a</code>、<code>&#39;b</code> 这样的标签来标记这么一个生命周期，如下</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;                <span class="comment">// ---------+-- &#x27;a</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    &#123;                     <span class="comment">//          |</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;        <span class="comment">// -+-- &#x27;b  |</span></span><br><span class="line">        r = &amp;x;           <span class="comment">//  |       |</span></span><br><span class="line">    &#125;                     <span class="comment">// -+       |</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r); <span class="comment">//          |</span></span><br><span class="line">&#125;                         <span class="comment">// ---------+</span></span><br></pre></td></tr></table></figure>
+<p>我们说 <code>r</code> 这个变量的生命周期是 <code>&#39;a</code>，而 <code>x</code> 这个变量的生命周期是 <code>‘b</code>，从图示上可以明显看出生命周期 <code>&#39;b</code> 比 <code>&#39;a</code> 小很多。</p>
+<p>在编译期，Rust 会比较两个变量的生命周期，结果发现 <code>r</code> 明明拥有生命周期 <code>&#39;a</code>，但是却引用了一个小得多的生命周期 <code>&#39;b</code>，在这种情况下，编译器会认为我们的程序存在风险，因此拒绝运行。</p>
+<p>在这里，编译器自动就知道了生命周期，但是这不是时时刻刻都能成的：在存在多个引用时，编译器有时会无法自动推导生命周期，此时就需要我们手动去标注，通过为参数标注合适的生命周期来帮助编译器进行借用检查的分析。</p>
+<h2 id="关于-Rust-类型系统"><a href="#关于-Rust-类型系统" class="headerlink" title="关于 Rust 类型系统"></a>关于 Rust 类型系统</h2><p>在了解这些之前，我们先要介绍一下由 Rust 生命周期而来的类型系统，详细需要观看如下的一篇文章<br>[SAST.Mathematics SIG / Subtyping variance and its application] <a target="_blank" rel="noopener" href="https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/">https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/</a></p>
+<p>我们有一个基本的事实，即 <code>Bot = &amp;&#39;static T &lt;: &amp;&#39;b T &lt;: &amp;&#39;a T</code> ，没那么严谨的说法是，当生命周期标签的范围越大，那这个类型就是越小的子类型</p>
+<p>而如果 S 是 T 的子类型，意思是在任何需要使用 T 类型对象的环境中，都可以安全地使用 S 类型的对象。</p>
+<p>这暗含的含义就是：变量本身内蕴的生命周期标签大的可以被借用给生命周期小的，而且一个类型为 <code>&amp;&#39;b T</code> 的变量它的类型其实也满足 <code>&amp;&#39;a T</code></p>
+<h2 id="为一些特殊的函数标注生命周期"><a href="#为一些特殊的函数标注生命周期" class="headerlink" title="为一些特殊的函数标注生命周期"></a>为一些特殊的函数标注生命周期</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">longest</span>&lt;<span class="symbol">&#x27;a</span>&gt;(x: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>, y: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>) <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> x.<span class="title function_ invoke__">len</span>() &gt; y.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        x</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到生命周期标注和泛型标注很相似，且有了上面的铺垫，我们理解了为什么在这里需要标注生命周期(实际上，如果你这个函数不标记生命周期就会收获一个编译报错)</p>
+<p>该函数签名表明对于某些生命周期 <code>&#39;a</code>，函数的两个参数都至少跟 <code>&#39;a</code> 活得一样久，同时函数的返回引用也至少跟 <code>&#39;a</code> 活得一样久。实际上，这意味着返回值的生命周期与参数生命周期中的较小值一致：虽然两个参数的生命周期都是标注了 <code>&#39;a</code>，但是实际上这两个参数的真实生命周期可能是不一样的(上面的讨论说明了生命周期 <code>&#39;a</code> 不代表生命周期等于 <code>&#39;a</code>，而是大于等于 <code>&#39;a</code>)</p>
+<h2 id="结构体中的生命周期"><a href="#结构体中的生命周期" class="headerlink" title="结构体中的生命周期"></a>结构体中的生命周期</h2><p>定义包含引用的结构体时，需要为结构体定义中的每一个引用添加生命周期注解</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImportantExcerpt</span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    part: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">novel</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Call me Ishmael. Some years ago...&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">first_sentence</span> = novel.<span class="title function_ invoke__">split</span>(<span class="string">&#x27;.&#x27;</span>).<span class="title function_ invoke__">next</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">i</span> = ImportantExcerpt &#123;</span><br><span class="line">        part: first_sentence,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="生命周期消除"><a href="#生命周期消除" class="headerlink" title="生命周期消除"></a>生命周期消除</h2><p>并非所有时候使用引用都需要标注生命周期，历史为我们提供了一些语法糖帮助我们消除生命周期</p>
+<p>消除规则不是万能的，若编译器不能确定某件事是正确时，会直接判为不正确，那么你还是需要手动标注生命周期</p>
+<p>函数或者方法中，参数的生命周期被称为<strong>输入生命周期</strong>，返回值的生命周期被称为<strong>输出生命周期</strong></p>
+<h3 id="三条消除规则"><a href="#三条消除规则" class="headerlink" title="三条消除规则"></a>三条消除规则</h3><p>编译器使用三条消除规则来确定哪些场景不需要显式地去标注生命周期。其中第一条规则应用在输入生命周期上，第二、三条应用在输出生命周期上。若编译器发现三条规则都不适用时，就会报错，提示你需要手动标注生命周期。</p>
+<ol>
+<li>每一个引用参数都会获得独自的生命周期<br> 例如一个引用参数的函数就有一个生命周期标注: <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32)</code>，两个引用参数的有两个生命周期标注:<code>fn foo&lt;&#39;a, &#39;b&gt;(x: &amp;&#39;a i32, y: &amp;&#39;b i32)</code>, 依此类推。</li>
+<li>若只有一个输入生命周期（函数参数中只有一个引用类型），那么该生命周期会被赋给所有的输出生命周期，也就是所有返回值的生命周期都等于该输入生命周期<br> 例如函数 <code>fn foo(x: &amp;i32) -&gt; &amp;i32</code>，<code>x</code> 参数的生命周期会被自动赋给返回值 <code>&amp;i32</code>，因此该函数等同于 <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32) -&gt; &amp;&#39;a i32</code></li>
+<li>若存在多个输入生命周期，且其中一个是 <code>&amp;self</code> 或 <code>&amp;mut self</code>，则 <code>&amp;self</code> 的生命周期被赋给所有的输出生命周期<br> 拥有 <code>&amp;self</code> 形式的参数，说明该函数是一个 方法，该规则让方法的使用便利度大幅提升。</li>
+</ol>
+<h2 id="方法定义中的生命周期注解"><a href="#方法定义中的生命周期注解" class="headerlink" title="方法定义中的生命周期注解"></a>方法定义中的生命周期注解</h2><p>当为带有生命周期的结构体实现方法时，其语法依然类似泛型类型参数的语法。我们在哪里声明和使用生命周期参数，取决于它们是与结构体字段相关还是与方法参数和返回值相关。</p>
+<p>(实现方法时)结构体字段的生命周期必须总是在 <code>impl</code> 关键字之后声明并在结构体名称之后被使用，因为这些生命周期是结构体类型的一部分。</p>
+<p><code>impl</code> 块里的方法签名中，引用可能与结构体字段中的引用相关联，也可能是独立的。另外，生命周期省略规则也经常让我们无需在方法签名中使用生命周期注解。</p>
+<h2 id="静态生命周期"><a href="#静态生命周期" class="headerlink" title="静态生命周期"></a>静态生命周期</h2><p>这里有一种特殊的生命周期值得讨论：<code>&#39;static</code>，其生命周期能够存活于整个程序期间。所有的字符串字面值都拥有 <code>&#39;static</code> 生命周期，我们也可以选择像下面这样标注出来：<br><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span>: &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> = <span class="string">&quot;I have a static lifetime.&quot;</span>;</span><br></pre></td></tr></table></figure><br>这个字符串的文本被直接储存在程序的二进制文件中而这个文件总是可用的。因此所有的字符串字面值都是 <code>&#39;static</code> 的。</p>
+<h2 id="泛型中的生命周期"><a href="#泛型中的生命周期" class="headerlink" title="泛型中的生命周期"></a>泛型中的生命周期</h2><p>因为生命周期也是泛型，所以生命周期参数 <code>&#39;a</code> 和泛型类型参数 <code>T</code> 都位于函数名后的同一尖括号列表中</p>
+<blockquote>
+<p>至此，匆匆忙忙把 Rust 一些很基础的语法介绍完毕了，接下来这一个小系列也告一段落了</p>
+</blockquote>
+
     </div>
 
     
@@ -343,7 +380,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust-Chapter-10-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">Rust_Chapter_10_生命周期</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust-Chapter-10-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.</span> <span class="nav-text">Rust_Chapter_10_生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%82%AC%E5%9E%82%E6%8C%87%E9%92%88%E5%92%8C%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.1.</span> <span class="nav-text">悬垂指针和生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Rust-%E7%B1%BB%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.2.</span> <span class="nav-text">关于 Rust 类型系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%B8%80%E4%BA%9B%E7%89%B9%E6%AE%8A%E7%9A%84%E5%87%BD%E6%95%B0%E6%A0%87%E6%B3%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.3.</span> <span class="nav-text">为一些特殊的函数标注生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93%E4%B8%AD%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.4.</span> <span class="nav-text">结构体中的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%B6%88%E9%99%A4"><span class="nav-number">1.5.</span> <span class="nav-text">生命周期消除</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E6%9D%A1%E6%B6%88%E9%99%A4%E8%A7%84%E5%88%99"><span class="nav-number">1.5.1.</span> <span class="nav-text">三条消除规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%AE%9A%E4%B9%89%E4%B8%AD%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.6.</span> <span class="nav-text">方法定义中的生命周期注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.7.</span> <span class="nav-text">静态生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E4%B8%AD%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">1.8.</span> <span class="nav-text">泛型中的生命周期</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -415,13 +452,13 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">140k</span>
+      站点总字数：<span title="站点总字数">143k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
         <i class="fa fa-coffee"></i>
       </span>
-      站点阅读时长：<span title="站点阅读时长">4:14</span>
+      站点阅读时长：<span title="站点阅读时长">4:21</span>
 </div>
 
 

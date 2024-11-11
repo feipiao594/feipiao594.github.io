@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-11-11T06:43:07.206Z</updated>
+  <updated>2024-11-11T11:55:30.583Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,10 +21,10 @@
     <link href="https://feipiao594.github.io/posts/11c8f25c.html"/>
     <id>https://feipiao594.github.io/posts/11c8f25c.html</id>
     <published>2024-11-11T06:04:57.000Z</published>
-    <updated>2024-11-11T06:43:07.206Z</updated>
+    <updated>2024-11-11T11:55:30.583Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-10-生命周期&quot;&gt;&lt;a href=&quot;#Rust-Chapter-10-生命周期&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_10_生命周期&quot;&gt;&lt;/a&gt;Rust_Chapter_10_生命周期&lt;/h1&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-10-生命周期&quot;&gt;&lt;a href=&quot;#Rust-Chapter-10-生命周期&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_10_生命周期&quot;&gt;&lt;/a&gt;Rust_Chapter_10_生命周期&lt;/h1&gt;&lt;p&gt;一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的&lt;/p&gt;</summary>
     
     
     
