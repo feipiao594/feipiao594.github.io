@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-11-11T14:16:33.065Z</updated>
+  <updated>2024-11-11T11:55:30.583Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,23 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>日常碎碎念_4</title>
-    <link href="https://feipiao594.github.io/posts/1b23083f.html"/>
-    <id>https://feipiao594.github.io/posts/1b23083f.html</id>
-    <published>2024-11-11T14:16:22.000Z</published>
-    <updated>2024-11-11T14:16:33.065Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;日常碎碎念-4&quot;&gt;&lt;a href=&quot;#日常碎碎念-4&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_4&quot;&gt;&lt;/a&gt;日常碎碎念_4&lt;/h1&gt;&lt;p&gt;一直想对学弟学妹们说点什么，一直没说，一次性说完吧&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
-    
-    
-  </entry>
   
   <entry>
     <title>Rust_Chapter_10_生命周期</title>
@@ -101,7 +84,7 @@
     <link href="https://feipiao594.github.io/posts/e97bb949.html"/>
     <id>https://feipiao594.github.io/posts/e97bb949.html</id>
     <published>2024-11-10T15:22:09.000Z</published>
-    <updated>2024-11-11T14:14:33.623Z</updated>
+    <updated>2024-11-13T05:59:05.710Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;我的自学小计划&quot;&gt;&lt;a href=&quot;#我的自学小计划&quot; class=&quot;headerlink&quot; title=&quot;我的自学小计划&quot;&gt;&lt;/a&gt;我的自学小计划&lt;/h1&gt;&lt;p&gt;这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划&lt;/p&gt;</summary>
@@ -412,6 +395,27 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Git使用_第2弹</title>
+    <link href="https://feipiao594.github.io/posts/2b9af9d8.html"/>
+    <id>https://feipiao594.github.io/posts/2b9af9d8.html</id>
+    <published>2023-07-20T16:00:00.000Z</published>
+    <updated>2024-10-27T08:03:24.847Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Git使用-第2弹&quot;&gt;&lt;a href=&quot;#Git使用-第2弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第2弹&quot;&gt;&lt;/a&gt;Git使用_第2弹&lt;/h1&gt;&lt;p&gt;接下来正式进入Git的使用部分，这一弹从 &lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;的第二章开始&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
     
     
   </entry>

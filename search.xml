@@ -503,6 +503,31 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Pytorch学习_1</title>
     <url>/posts/6c7f2ed0.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
@@ -539,31 +564,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -1351,6 +1351,27 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -1390,27 +1411,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
-<span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1520,18 +1520,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>初识量子计算</title>
     <url>/posts/fe2da916.html</url>
     <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
@@ -1569,6 +1557,18 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -1613,6 +1613,56 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>复变函数的微积分的诠释</title>
+    <url>/posts/d046a7c5.html</url>
+    <content><![CDATA[<h1 id="复变函数的微积分的诠释"><a href="#复变函数的微积分的诠释" class="headerlink" title="复变函数的微积分的诠释"></a>复变函数的微积分的诠释</h1><p>作为电子类专业的学生，我从一开始就知道复变函数对我的重要性，原因是电路当中的知识会<strong>极大</strong>的使用到复变函数。而常用的傅里叶变换，也将在复平面上进行，所以这一部分其实我必须搞清楚。</p>
+<span id="more"></span>
+<h2 id="扯点别的"><a href="#扯点别的" class="headerlink" title="扯点别的"></a>扯点别的</h2><p>关于复变函数其实我接触的有够早的，原因是当时还小的时候，深受因式分解这一个操作的困扰，虽然从现在的视角来看，因式分解不再是一个奇幻的问题，但是其仍然是一个<strong>复杂</strong>的问题。<br>当时我看到了 $x^{11}+x^7+1$ 因式分解这个问题，我第一次看见了凑根法这一种神奇的方法，而且我第一次看见这种方法就给我上强度，直接进入复变函数的部分<br>还记得当时利用互联网搜索到欧拉公式，借由它推导出了目前我所学到的那些基本初等函数在复数上的延拓，已经过去好久了</p>
+<blockquote>
+<p>由于本人只是一个工科专业的学生，极度受限于视野的局限性，我的复变函数主要偏向工科，甚至是合并到了我的高数书中，我也没有特意去看理科的复分析，如有不严谨的地方，万望包涵</p>
+</blockquote>
+<h2 id="微分部分"><a href="#微分部分" class="headerlink" title="微分部分"></a>微分部分</h2><p>首先，要想函数能够微分，在课本上我们给出了高于微分条件的解析的一个充要条件:<br>设函数$f(z)=u(x,y)+iv(x,y)$在区域$D$内有定义，则$f(z)$在$D$内一点$z=x+iy$处可导的充要条件是:$u(x,y)$与$v(x,y)$在点$(x,y)$处可微，且在该点处满足柯西-黎曼方程:</p>
+<script type="math/tex; mode=display">
+\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y}\quad-\frac{\partial u}{\partial y}=\frac{\partial v}{\partial x}</script><p>应该不只有我一个人觉得这个柯西-黎曼方程来路奇怪，因为根据前面我们学过的东西，这里的符号应该也有自洽性才对</p>
+<p>实际上</p>
+<script type="math/tex; mode=display">d\omega=du+idv\\
+\frac{d\omega}{dz}=\frac{du+idv}{dx+idy}</script><p>将上面这个式子同除$dx$或者$dy$，可以得到下面的式子</p>
+<script type="math/tex; mode=display">\frac{d\omega}{dz}=\frac{\frac{du}{dx}+i\frac{dv}{dx}}{1+i\frac{dy}{dx}}=\frac{\frac{du}{dy}+i\frac{dv}{dy}}{i+\frac{dx}{dy}}</script><p>根据变量的独立性，显然</p>
+<script type="math/tex; mode=display">\frac{dx}{dy}=\frac{dy}{dx}=0</script><p>那么整体整理就能得到柯西-黎曼方程，但是这只说明了<strong>必要性</strong>，<strong>充分性</strong>仍旧是一个问题，<strong>不过确实是自然的导出了这个式子，我们便可以以此来假设并证明它的充分性了</strong></p>
+<p>但也像二元函数一样</p>
+<ul>
+<li>偏导数存在<strong>不能</strong>推出方向导数存在</li>
+<li>偏导数存在<strong>能</strong>推出全微分存在<strong>进而</strong>推出方向导数存在</li>
+</ul>
+<p>解析就是一个区域内偏导数连续的概念，可以推导出整个区域内全微分存在，也就是和解析性类似<br>而单独一个点即使满足柯西-黎曼方程，也不能推导出导数存在</p>
+<p><strong>但是一个点实变函数可微且满足柯西-黎曼方程可以推导出函数复可微</strong></p>
+<h3 id="微分部分后记"><a href="#微分部分后记" class="headerlink" title="微分部分后记"></a>微分部分后记</h3><p>从微分角度可以更好的理解这个式子的来路</p>
+<script type="math/tex; mode=display">
+\begin{aligned}df&=f'(z)dz=du+idv\\&=(u_x+iv_x)(dx+idy)\\&=(u_x+iv_x)dx+(-v_x+iu_x)dy\end{aligned}</script><p>而根据$f=u+iv$可得</p>
+<script type="math/tex; mode=display">
+df = (u_x+iv_x)dx+(u_y+iv_y)dy</script><p>为了满足上面的抽象出来的式子，所以硬构造了一个规则</p>
+<blockquote>
+<p>(下面是存疑部分)实际上对于多元复变函数也是如此，只不过多加几个和式而已(虽然我已经计算出来了，但我因为学识浅薄，不能保证其是否真的存在这样的概念，权当我在胡扯)</p>
+</blockquote>
+<h2 id="积分部分"><a href="#积分部分" class="headerlink" title="积分部分"></a>积分部分</h2><p>这个没什么好说的，复数的积分</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\int_D\omega &= \int_Df(z)dz \\&= \int_D (u(x,y)+iv(x,y))(dx+idy)\end{aligned}</script><p>这可不是只是一种简单记忆的方法，这就是本质的定义，因而把它拆开变成两个普通的积分也是成立的，自然而然的，它也有stokes公式的那些性质，而这些性质就是书上所说的，<strong>积分基本定理</strong>，甚至看上去就和stokes定理毫无差别</p>
+<h3 id="柯西定理"><a href="#柯西定理" class="headerlink" title="柯西定理"></a>柯西定理</h3><p>因为解析函数必然有原函数，所以求两次外微分显然为0，柯西定理显然是成立的</p>
+<h3 id="其它定理"><a href="#其它定理" class="headerlink" title="其它定理"></a>其它定理</h3><p>根据柯西定理，显然其它定理，比如复合闭路定理也成立<br>唯一要注意的是方向问题，由于这个定理本质上就来自于stokes定理，所以方向取的其实和2维流形内方向的选取是完全一致的。</p>
+<h2 id="关于其于普通流形相关的诠释"><a href="#关于其于普通流形相关的诠释" class="headerlink" title="关于其于普通流形相关的诠释"></a>关于其于普通流形相关的诠释</h2><blockquote>
+<p>(下面是存疑部分，纯属胡扯)</p>
+</blockquote>
+<p>其实复平面稍微退化一下就是$\mathbb{R}^2$，或者说$dz$就是一种特殊的微分形式。所以环路积分为0是退化的结果<br>而复积分也许也有自己的这个层次的“stokes定理”，就是指它的“牛顿-莱布尼茨公式”<br>复微分也是一种复变函数上特殊的运算，虽然形式上和普通微分毫无差别，但它要求在复平面上每一个方向的微分其实都是一致的<br>在函数解析的前提之下，把$z$看作元，又可以得到复平面上整体的性质<br>这些复平面上的上级结论是和退化之前的应该是不一定能保证完全一致的</p>
+<script type="math/tex; mode=display">
+f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二元函数，但是这个式子要想成立得需要一系列的条件，而满足这些条件就可以用$z$为视角来看待积分<br>也就是说复积分是特化情况下可以把两个元看成同一个元的二元函数线积分，那么就是一种<strong>特殊化</strong>的stokes公式了，至少二元函数映射到$n$元其实也是$n$个毫不相干的实函数，当然可以满足stokes公式，区区复数$n=2$不在话下<br>对微分来说，直接变成其实微分也就是形式上直接对整体$z$微分和化为$n$元实函数进行微分没什么两样，对多元复变函数也是如此</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>从上面的讨论可以看出，复变函数真的是满足了更多更好性质的实变函数的一种更上层的抽象，<strong>也就是说复变函数研究的是一些“好函数”，而实变函数研究的是一些“坏函数”罢了</strong></p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Complex_function</category>
       </categories>
   </entry>
   <entry>
@@ -1725,56 +1775,6 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       <categories>
         <category>EE_电子工程</category>
         <category>数字信号相关</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>复变函数的微积分的诠释</title>
-    <url>/posts/d046a7c5.html</url>
-    <content><![CDATA[<h1 id="复变函数的微积分的诠释"><a href="#复变函数的微积分的诠释" class="headerlink" title="复变函数的微积分的诠释"></a>复变函数的微积分的诠释</h1><p>作为电子类专业的学生，我从一开始就知道复变函数对我的重要性，原因是电路当中的知识会<strong>极大</strong>的使用到复变函数。而常用的傅里叶变换，也将在复平面上进行，所以这一部分其实我必须搞清楚。</p>
-<span id="more"></span>
-<h2 id="扯点别的"><a href="#扯点别的" class="headerlink" title="扯点别的"></a>扯点别的</h2><p>关于复变函数其实我接触的有够早的，原因是当时还小的时候，深受因式分解这一个操作的困扰，虽然从现在的视角来看，因式分解不再是一个奇幻的问题，但是其仍然是一个<strong>复杂</strong>的问题。<br>当时我看到了 $x^{11}+x^7+1$ 因式分解这个问题，我第一次看见了凑根法这一种神奇的方法，而且我第一次看见这种方法就给我上强度，直接进入复变函数的部分<br>还记得当时利用互联网搜索到欧拉公式，借由它推导出了目前我所学到的那些基本初等函数在复数上的延拓，已经过去好久了</p>
-<blockquote>
-<p>由于本人只是一个工科专业的学生，极度受限于视野的局限性，我的复变函数主要偏向工科，甚至是合并到了我的高数书中，我也没有特意去看理科的复分析，如有不严谨的地方，万望包涵</p>
-</blockquote>
-<h2 id="微分部分"><a href="#微分部分" class="headerlink" title="微分部分"></a>微分部分</h2><p>首先，要想函数能够微分，在课本上我们给出了高于微分条件的解析的一个充要条件:<br>设函数$f(z)=u(x,y)+iv(x,y)$在区域$D$内有定义，则$f(z)$在$D$内一点$z=x+iy$处可导的充要条件是:$u(x,y)$与$v(x,y)$在点$(x,y)$处可微，且在该点处满足柯西-黎曼方程:</p>
-<script type="math/tex; mode=display">
-\frac{\partial u}{\partial x}=\frac{\partial v}{\partial y}\quad-\frac{\partial u}{\partial y}=\frac{\partial v}{\partial x}</script><p>应该不只有我一个人觉得这个柯西-黎曼方程来路奇怪，因为根据前面我们学过的东西，这里的符号应该也有自洽性才对</p>
-<p>实际上</p>
-<script type="math/tex; mode=display">d\omega=du+idv\\
-\frac{d\omega}{dz}=\frac{du+idv}{dx+idy}</script><p>将上面这个式子同除$dx$或者$dy$，可以得到下面的式子</p>
-<script type="math/tex; mode=display">\frac{d\omega}{dz}=\frac{\frac{du}{dx}+i\frac{dv}{dx}}{1+i\frac{dy}{dx}}=\frac{\frac{du}{dy}+i\frac{dv}{dy}}{i+\frac{dx}{dy}}</script><p>根据变量的独立性，显然</p>
-<script type="math/tex; mode=display">\frac{dx}{dy}=\frac{dy}{dx}=0</script><p>那么整体整理就能得到柯西-黎曼方程，但是这只说明了<strong>必要性</strong>，<strong>充分性</strong>仍旧是一个问题，<strong>不过确实是自然的导出了这个式子，我们便可以以此来假设并证明它的充分性了</strong></p>
-<p>但也像二元函数一样</p>
-<ul>
-<li>偏导数存在<strong>不能</strong>推出方向导数存在</li>
-<li>偏导数存在<strong>能</strong>推出全微分存在<strong>进而</strong>推出方向导数存在</li>
-</ul>
-<p>解析就是一个区域内偏导数连续的概念，可以推导出整个区域内全微分存在，也就是和解析性类似<br>而单独一个点即使满足柯西-黎曼方程，也不能推导出导数存在</p>
-<p><strong>但是一个点实变函数可微且满足柯西-黎曼方程可以推导出函数复可微</strong></p>
-<h3 id="微分部分后记"><a href="#微分部分后记" class="headerlink" title="微分部分后记"></a>微分部分后记</h3><p>从微分角度可以更好的理解这个式子的来路</p>
-<script type="math/tex; mode=display">
-\begin{aligned}df&=f'(z)dz=du+idv\\&=(u_x+iv_x)(dx+idy)\\&=(u_x+iv_x)dx+(-v_x+iu_x)dy\end{aligned}</script><p>而根据$f=u+iv$可得</p>
-<script type="math/tex; mode=display">
-df = (u_x+iv_x)dx+(u_y+iv_y)dy</script><p>为了满足上面的抽象出来的式子，所以硬构造了一个规则</p>
-<blockquote>
-<p>(下面是存疑部分)实际上对于多元复变函数也是如此，只不过多加几个和式而已(虽然我已经计算出来了，但我因为学识浅薄，不能保证其是否真的存在这样的概念，权当我在胡扯)</p>
-</blockquote>
-<h2 id="积分部分"><a href="#积分部分" class="headerlink" title="积分部分"></a>积分部分</h2><p>这个没什么好说的，复数的积分</p>
-<script type="math/tex; mode=display">
-\begin{aligned}\int_D\omega &= \int_Df(z)dz \\&= \int_D (u(x,y)+iv(x,y))(dx+idy)\end{aligned}</script><p>这可不是只是一种简单记忆的方法，这就是本质的定义，因而把它拆开变成两个普通的积分也是成立的，自然而然的，它也有stokes公式的那些性质，而这些性质就是书上所说的，<strong>积分基本定理</strong>，甚至看上去就和stokes定理毫无差别</p>
-<h3 id="柯西定理"><a href="#柯西定理" class="headerlink" title="柯西定理"></a>柯西定理</h3><p>因为解析函数必然有原函数，所以求两次外微分显然为0，柯西定理显然是成立的</p>
-<h3 id="其它定理"><a href="#其它定理" class="headerlink" title="其它定理"></a>其它定理</h3><p>根据柯西定理，显然其它定理，比如复合闭路定理也成立<br>唯一要注意的是方向问题，由于这个定理本质上就来自于stokes定理，所以方向取的其实和2维流形内方向的选取是完全一致的。</p>
-<h2 id="关于其于普通流形相关的诠释"><a href="#关于其于普通流形相关的诠释" class="headerlink" title="关于其于普通流形相关的诠释"></a>关于其于普通流形相关的诠释</h2><blockquote>
-<p>(下面是存疑部分，纯属胡扯)</p>
-</blockquote>
-<p>其实复平面稍微退化一下就是$\mathbb{R}^2$，或者说$dz$就是一种特殊的微分形式。所以环路积分为0是退化的结果<br>而复积分也许也有自己的这个层次的“stokes定理”，就是指它的“牛顿-莱布尼茨公式”<br>复微分也是一种复变函数上特殊的运算，虽然形式上和普通微分毫无差别，但它要求在复平面上每一个方向的微分其实都是一致的<br>在函数解析的前提之下，把$z$看作元，又可以得到复平面上整体的性质<br>这些复平面上的上级结论是和退化之前的应该是不一定能保证完全一致的</p>
-<script type="math/tex; mode=display">
-f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二元函数，但是这个式子要想成立得需要一系列的条件，而满足这些条件就可以用$z$为视角来看待积分<br>也就是说复积分是特化情况下可以把两个元看成同一个元的二元函数线积分，那么就是一种<strong>特殊化</strong>的stokes公式了，至少二元函数映射到$n$元其实也是$n$个毫不相干的实函数，当然可以满足stokes公式，区区复数$n=2$不在话下<br>对微分来说，直接变成其实微分也就是形式上直接对整体$z$微分和化为$n$元实函数进行微分没什么两样，对多元复变函数也是如此</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>从上面的讨论可以看出，复变函数真的是满足了更多更好性质的实变函数的一种更上层的抽象，<strong>也就是说复变函数研究的是一些“好函数”，而实变函数研究的是一些“坏函数”罢了</strong></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Complex_function</category>
       </categories>
   </entry>
   <entry>
@@ -1897,18 +1897,18 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
 <p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
 </blockquote>
 <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
 <h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Waiting)</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (<strong>Working</strong>)</p>
 <p>18.024 Multivariable Calculus (Waiting)</p>
 <p>18.700 Linear Algebra (Waiting)</p>
-<p><strong>Second Part</strong></p>
-<p>18.034 Differential Equations (Waiting)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (Waiting)</p>
 <p>18.100 Real Analysis (Waiting)</p>
 <p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习</p>
-<p>目前状态: MIT OCW learning</p>
-<p>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2069,16 +2069,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>不过我很感动的是，居然真的能有后人看我的博客，甚至能给他们带来一点点的作用，但是我好像确实也没写什么有用的东西啊喂</p>
 <p>接下来也不知道能不能有空接着写下去，如果可以的话，一定会写出相对曾经更精彩的东西吧</p>
 ]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_4</title>
-    <url>/posts/1b23083f.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-4"><a href="#日常碎碎念-4" class="headerlink" title="日常碎碎念_4"></a>日常碎碎念_4</h1><p>一直想对学弟学妹们说点什么，一直没说，一次性说完吧</p>
-<span id="more"></span>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2>]]></content>
       <categories>
         <category>Life_生活</category>
       </categories>
