@@ -351,6 +351,50 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
+<span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Git使用_第2弹</title>
     <url>/posts/2b9af9d8.html</url>
     <content><![CDATA[<h1 id="Git使用-第2弹"><a href="#Git使用-第2弹" class="headerlink" title="Git使用_第2弹"></a>Git使用_第2弹</h1><p>接下来正式进入Git的使用部分，这一弹从 <code>&quot;Pro Git&quot;</code>的第二章开始</p>
@@ -451,50 +495,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git last</span></span><br><span class="line">commit 66938dae3329c7aebe598c2246a8e6af90d04646</span><br><span class="line">Author: Josh Goebel &lt;dreamer3@example.com&gt;</span><br><span class="line">Date: Tue Aug 26 19:48:51 2008 +0800</span><br><span class="line">  test for current head</span><br><span class="line">  Signed-off-by: Scott Chacon &lt;schacon@example.com&gt;</span><br></pre></td></tr></table></figure>
 <p>可以看出，Git只是简单地将别名替换为对应的命令。 然而，你可能想要<strong>执行外部命令</strong>，而不是一个 Git 子命令。如果是那样的话，可以在<strong>命令前面加入<code>!</code>符号</strong>。 如果你自己要写一些与Git仓库协作的工具的话，那会很有用。我们现在演示将 git visual 定义为 gitk 的别名：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global alias.visual <span class="string">&#x27;!gitk&#x27;</span></span></span><br></pre></td></tr></table></figure></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一章讲了许多东西，但真正的重头戏还没有开始，下一弹，我们将进入分支模型</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1613,6 +1613,42 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Gentoo上用KVM玩Mac</title>
+    <url>/posts/ebefb94c.html</url>
+    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac。</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
+<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是装虚拟机有不少经验了。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
+<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
+<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
+<blockquote>
+<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
+<p>使用它的 python 脚本下载 Mac 官方镜像</p>
+<blockquote>
+<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
+<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
+<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
+<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
+<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
+<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
+<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>

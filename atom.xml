@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-11-11T11:55:30.583Z</updated>
+  <updated>2024-11-23T16:28:54.997Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>在Gentoo上用KVM玩Mac</title>
+    <link href="https://feipiao594.github.io/posts/ebefb94c.html"/>
+    <id>https://feipiao594.github.io/posts/ebefb94c.html</id>
+    <published>2024-11-19T02:32:33.000Z</published>
+    <updated>2024-11-23T16:28:54.997Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;在Gentoo上用KVM玩Mac&quot;&gt;&lt;a href=&quot;#在Gentoo上用KVM玩Mac&quot; class=&quot;headerlink&quot; title=&quot;在Gentoo上用KVM玩Mac&quot;&gt;&lt;/a&gt;在Gentoo上用KVM玩Mac&lt;/h1&gt;&lt;p&gt;看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Rust_Chapter_10_生命周期</title>
@@ -395,27 +416,6 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Git使用_第2弹</title>
-    <link href="https://feipiao594.github.io/posts/2b9af9d8.html"/>
-    <id>https://feipiao594.github.io/posts/2b9af9d8.html</id>
-    <published>2023-07-20T16:00:00.000Z</published>
-    <updated>2024-10-27T08:03:24.847Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Git使用-第2弹&quot;&gt;&lt;a href=&quot;#Git使用-第2弹&quot; class=&quot;headerlink&quot; title=&quot;Git使用_第2弹&quot;&gt;&lt;/a&gt;Git使用_第2弹&lt;/h1&gt;&lt;p&gt;接下来正式进入Git的使用部分，这一弹从 &lt;code&gt;&amp;quot;Pro Git&amp;quot;&lt;/code&gt;的第二章开始&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Git" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/"/>
     
     
   </entry>
