@@ -1618,10 +1618,10 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
   <entry>
     <title>在Gentoo上用KVM玩Mac</title>
     <url>/posts/ebefb94c.html</url>
-    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac。</p>
+    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
 <span id="more"></span>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
-<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是装虚拟机有不少经验了。</p>
+<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
 <p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
