@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-11-24T03:15:24.145Z</updated>
+  <updated>2024-12-21T04:11:05.012Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,11 +17,33 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
+    <link href="https://feipiao594.github.io/posts/57f25e7f.html"/>
+    <id>https://feipiao594.github.io/posts/57f25e7f.html</id>
+    <published>2024-12-21T04:09:09.000Z</published>
+    <updated>2024-12-21T04:11:05.012Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;南京邮电大学交换技术与通信网实验自动执行脚本&quot;&gt;&lt;a href=&quot;#南京邮电大学交换技术与通信网实验自动执行脚本&quot; class=&quot;headerlink&quot; title=&quot;南京邮电大学交换技术与通信网实验自动执行脚本&quot;&gt;&lt;/a&gt;南京邮电大学交换技术与通信网实验自动执行脚本&lt;/h1&gt;&lt;p&gt;这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Computer_network" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Computer-network/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>在Gentoo上用KVM玩Mac</title>
     <link href="https://feipiao594.github.io/posts/ebefb94c.html"/>
     <id>https://feipiao594.github.io/posts/ebefb94c.html</id>
     <published>2024-11-19T02:32:33.000Z</published>
-    <updated>2024-11-24T03:15:24.145Z</updated>
+    <updated>2024-12-04T04:52:00.313Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;在Gentoo上用KVM玩Mac&quot;&gt;&lt;a href=&quot;#在Gentoo上用KVM玩Mac&quot; class=&quot;headerlink&quot; title=&quot;在Gentoo上用KVM玩Mac&quot;&gt;&lt;/a&gt;在Gentoo上用KVM玩Mac&lt;/h1&gt;&lt;p&gt;看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家&lt;/p&gt;</summary>
@@ -387,27 +409,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;排序算法&quot;&gt;&lt;a href=&quot;#排序算法&quot; class=&quot;headerlink&quot; title=&quot;排序算法&quot;&gt;&lt;/a&gt;排序算法&lt;/h1&gt;&lt;p&gt;排序算法是最经典的算法知识。其实现代码短，应用广&lt;br&gt;如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>高精度</title>
-    <link href="https://feipiao594.github.io/posts/49c1fbdc.html"/>
-    <id>https://feipiao594.github.io/posts/49c1fbdc.html</id>
-    <published>2023-07-23T16:00:00.000Z</published>
-    <updated>2024-10-27T07:56:06.651Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;高精度&quot;&gt;&lt;a href=&quot;#高精度&quot; class=&quot;headerlink&quot; title=&quot;高精度&quot;&gt;&lt;/a&gt;高精度&lt;/h1&gt;&lt;p&gt;以下给出高精度加法与高精度乘法的模板&lt;/p&gt;</summary>
     
     
     

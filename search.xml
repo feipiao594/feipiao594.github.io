@@ -19,38 +19,6 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元-质数序列</title>
-    <url>/posts/3187765d.html</url>
-    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
-<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
-<p>输出上述数组的长度</p>
-<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
-<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -160,6 +128,38 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++模板元-质数序列</title>
+    <url>/posts/3187765d.html</url>
+    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
+<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
+<p>输出上述数组的长度</p>
+<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
+<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++模板元编程</title>
     <url>/posts/9244e40f.html</url>
     <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
@@ -170,6 +170,130 @@
 <p>通过一个迂回的方式来判断一个类型是不是int类型，当然我只是想叙述<code>std::enable_if</code>应该怎么用，这个模板是输入两个参数，第一个是<code>bool</code>类型，第二个是当输入<code>true</code>时，其<code>type</code>是什么类型，由于<code>std::enable_if</code>所返回的类型任意，且利用偏特化进行分支选择时，其主模板，和<code>std::enable_if</code>所处同样位置必须时模板<code>typename T</code>，且由于一般不会写上<code>enable_if</code>这一个位置的类型，主模板必须缺省，缺省<code>void</code>就是一个好选择</p>
 <p>注意特化和函数的默认参数不同，可以特化任意位置的参数，如我们可以特化如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTemplateType</span>&lt;<span class="type">float</span>, N&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//content</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <p>利用上述特化的性质，<code>enable_if</code>可以塞在模板参数中间，但以我之见，在其等价位置的后方应该只存在形参包或者有缺省值的模板参数</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
+<span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C/C++的特别复杂的类型</title>
+    <url>/posts/8fb716fa.html</url>
+    <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
+<hr>
+<h2 id="前人的智慧"><a href="#前人的智慧" class="headerlink" title="前人的智慧"></a>前人的智慧</h2><p>其实可以通过一个叫右左法则的东西来解决这个问题，不过我觉得后缀表达式还是看的有点头疼，有兴趣可以找找看，它可以将式子变成一个后缀表达式，采取编译器的形式进行处理。但我们不采用这种方法，<del>原因是后缀表达式还是不够可读</del>，原因是我不会用<br>补充：链接贴在这里<a href="https://www.bilibili.com/video/BV1mB4y1L7HB/?is_story_h5=false&amp;p=1&amp;share_from=ugc&amp;share_medium=android&amp;share_plat=android&amp;share_session_id=8c3141a9-9324-4449-8409-8f2d1d7846dd&amp;share_source=QQ&amp;share_tag=s_i&amp;timestamp=1668064269&amp;unique_k=GWrf0E0">B站：初中生也能看懂的C/C++类型声明规则教学，很简单的！</a></p>
+<hr>
+<h2 id="着手解决这个问题"><a href="#着手解决这个问题" class="headerlink" title="着手解决这个问题"></a>着手解决这个问题</h2><p>我们先来看看一个声明，他到底是什么意思<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">char</span> (*p)[] = <span class="literal">NULL</span>;<span class="comment">//这是一个指向char数组的指针</span></span><br></pre></td></tr></table></figure></p>
+<p>其实无论是什么样的声明，都是同样的格式<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Type_1 Type_2 = xxx;</span><br><span class="line"><span class="comment">//准确来说Type_2不是一种类型，而是对变量进行多种符号操作后的产物</span></span><br><span class="line"><span class="comment">//简单的变量声明如 &quot;int a;&quot; 中 a被0个符号修饰 从而a等价int</span></span><br></pre></td></tr></table></figure></p>
+<p>就是说，在如上这个声明里就是<br><code>Type_1</code>是<code>char</code><br><code>Type_2</code>是<code>(*p)[]</code><br>你可以把<code>p</code>就想象成一个已经定义的指向<code>char</code>数组的指针<br>对其解引用并取下标类型就是<code>char</code></p>
+<p>也就是说<br><code>char</code> 在类型上等价于<code>(*p)[]</code></p>
+<p>也就是说这是通过一个<span style="color: pink; font-size: 20px; font-weight: bolder;"><code>Type_1</code>在类型上等价<code>Type_2</code>的一个类型的等式</span>来确定的要赋值的变量名的类型到底是什么<br><span style="color: pink; font-size: 20px; font-weight: bolder;">所以，我们可以对一个合法的变量声明在其内部任意位置进行分割，然后加括号保证可读性,用以区分<code>Type_1</code>和<code>Type_2</code></span></p>
+<p>也就是说其实可以这么处理：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> **p[]; <span class="comment">// 以下对表达式逐步进行分割</span></span><br><span class="line">**p[] <span class="comment">//是int</span></span><br><span class="line">*p[]  <span class="comment">//是指向int的指针 即int*</span></span><br><span class="line">p[]   <span class="comment">//是指向 指向int的指针 的指针 即int**</span></span><br><span class="line">p     <span class="comment">//是指向 指向int的指针 的指针 的数组 即int**</span></span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="现在找一个看起来更舒服的方法"><a href="#现在找一个看起来更舒服的方法" class="headerlink" title="现在找一个看起来更舒服的方法"></a>现在找一个看起来更舒服的方法</h2><p>让我们来看一个例子<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> * <span class="type">const</span> * ch2;</span><br><span class="line">(<span class="built_in">const</span> (<span class="type">char</span>*))* ch2;</span><br><span class="line"><span class="comment">//这两个是等价的</span></span><br></pre></td></tr></table></figure><br>仔细看看<strong>第二个式子</strong>绝对比第一个式子阳间，为什么？<br>因为这里的<code>Type_2</code>就是<code>ch2</code><br><strong>变量名ch2没有经过各种符号的修饰</strong>，直接等于左边的一坨<code>Type_1</code><br>那所以说其实化成可读性强的式子就是把变量名从一堆修辞里拯救出来的过程<br>就是说把变量名的一堆枷锁找个简单的类型当替死鬼装它身上(奇妙的比喻增加了)<br>我们可以用一些看上去更数学的方法来做(滑稽)</p>
+<h2 id="需要强调的一点"><a href="#需要强调的一点" class="headerlink" title="需要强调的一点"></a>需要强调的一点</h2><p><strong>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！</strong></p>
+<h2 id="让我们来开始着手做吧"><a href="#让我们来开始着手做吧" class="headerlink" title="让我们来开始着手做吧"></a>让我们来开始着手做吧</h2><p>首先一个声明里其实是只有一个简单类型的(这里的简单类型就是说的那些基础类型，<code>int</code>，<code>char</code>，<code>double</code>，或者是<code>class</code>，<code>struct</code>)<br><code>模板&lt;&gt;</code>和<code>函数()</code>内的简单类型其实是不会和其混淆的<br><code>模板&lt;&gt;</code>有尖括号<br>而<code>函数()</code>在变量名后，而简单类型一定在变量名前<br><code>int</code>是类型声明，<code>(int)</code>是参数表<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//int不会和(int)混淆</span></span><br></pre></td></tr></table></figure><br>变量名并不好脱掉一堆枷锁嘛，所以我们要强迫让简单类型这个替死鬼自己扒了变量名的衣服自己穿上(What’s The Fuck)<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>); <span class="comment">// 这是一个函数指针的形式</span></span><br></pre></td></tr></table></figure><br><code>float</code>替死鬼上线，先把和它处于同一优先级的”<code>(int)</code>“扒了套自己身上，并加个括号以示对它的主权(乐)<br>并暗示你被我扒了一层所以这下<code>(*(*fp2)(int,int,float))</code>最外层的括号可以脱了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">float</span> (<span class="type">int</span>)) *(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>可以看到这个工具的强大了<br><code>(float (int))</code>这个就是一个传入<code>int</code>返回<code>float</code>的函数<br>但是过不了编译！！！！！注意！！！！！<br>然后替死鬼现在是<code>(float (int))</code>，继续把<code>*</code>扒了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((<span class="built_in">float</span> (<span class="type">int</span>))*) (*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>虽然现在已经能看出来最外层是<code>(float (int))</code>的函数指针了，但我们再来一次<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)) *fp2;</span><br></pre></td></tr></table></figure><br>得到 返回值<code>((float (int))*</code>，参数表<code>(int,int,float)</code> 的<code>Type_1</code><br>再来<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)))* fp2;</span><br></pre></td></tr></table></figure><br>这下结构也太清晰了<br>看懂了但是很难描述，但是我还是想尝试描述一下 （就算是中文也要靠多重括号来断句（悲<br><code>fp2</code>是一个{以【返回值为<code>float</code>，参数表为<code>(int)</code>的函数指针】为返回值，<code>(int,int,float)</code>为参数表}的函数指针</p>
+<p>实质上当中的过程覆盖了所有可能的情况了，我们可以用 <a href="#着手解决这个问题">着手解决这个问题</a> 上面这一小标题所写的本质证明这样做的合理性，如指针无非就是一方解引用一方变指针做到的等价。</p>
+<hr>
+<h2 id="cv限定符"><a href="#cv限定符" class="headerlink" title="cv限定符"></a>cv限定符</h2><p>因为有<code>const</code>，<code>volatile</code>这样的限定符存在，故而这个方法进行开扒的时候，需<strong>先向</strong>替死鬼<strong>前</strong>看一看有没有这些<strong>限定符</strong>，再结合后面<strong>距离<code>Type_1</code>最近的运算符</strong><br><strong>cv限定符应该置于Type_1之前以修饰Type_1</strong><br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子一</span></span><br><span class="line"><span class="type">char</span>* <span class="type">const</span> ch1;</span><br><span class="line">(<span class="type">char</span>*) <span class="type">const</span> ch1;</span><br><span class="line"><span class="built_in">const</span> (<span class="type">char</span>*)  ch1;</span><br><span class="line"><span class="comment">//例子二</span></span><br><span class="line"><span class="type">char</span> **<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">(<span class="type">char</span> *) *<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">((<span class="type">char</span> *)*)<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line"><span class="built_in">const</span> (<span class="built_in">const</span>((<span class="type">char</span>*)*))* ch2;</span><br><span class="line"><span class="comment">//例子三</span></span><br><span class="line"><span class="type">int</span> *a[][N];</span><br><span class="line">((<span class="type">int</span> *)[N])[] a;</span><br><span class="line"><span class="comment">//例子四</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">()</span>[]</span>;<span class="comment">//无法过编译，如vs2022会指出其为返回数组的函数</span></span><br><span class="line">(<span class="type">int</span> [])() a;<span class="comment">//可以看到这是返回数组的函数，非法</span></span><br><span class="line"><span class="comment">//例子五</span></span><br><span class="line"><span class="type">int</span> a[]();<span class="comment">//无法过编译，如vs2022会指出其为函数数组</span></span><br><span class="line">(<span class="built_in">int</span> ())[] a;<span class="comment">//可以看到这是函数数组，非法</span></span><br></pre></td></tr></table></figure><br>对于例子三和例子四还有例子五，实质上有一个整体考虑的办法</p>
+<ul>
+<li>例子三<code>[][]</code>可以当作二维数组来看，第一个<code>[]</code>转移过程中可以不给替死鬼加括号就清楚了</li>
+<li>对于例子四<code>()[]</code>，其实我们完全可以把数组取下标看作一种特殊的函数，反过来也是</li>
+<li>函数其实和数组在这里可以不用特别区分，所以五和四和三一样</li>
+<li>同时这也启示我们<code>()[]</code> , <code>[]()</code>如果出现在一块，这必定不可能是合法的</li>
+<li>因为其必定包含函数数组或是返回数组的函数，不合法<br>*当然<code>[]</code>和<code>()</code>因为优先级是最高的，所以和名字结合最紧，最后才能被扒掉，而<code>()[]</code>之间呢，与名字最靠近的当然结合更紧，所以在之后被扒</li>
+</ul>
+<hr>
+<h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>至此我们完成了这种特别复杂的声明的辨析，但其实这个工具还有一种应用就是依照这种格式，可以从<strong>可读性强的格式反向推得这种复杂的声明</strong>。<br><span style="color: pink; font-size: 20px; font-weight: bolder;">即<code>Type_1</code>在类型上等价<code>Type_2</code>先将变量名后缀移到<code>Type_1</code>上，再通过分割将变量名彻底弄干净（无符号修饰无后缀），最后变量类型即为<code>Type_1</code>，而开扒的顺序，关键看这些符号作用在变量名上的顺序，如果优先级高，则说明与之结合紧，越晚被扒，而括号里的部分可以看作一个整体开扒，这样就可以化简整体的结构</span><br>终于写完了，虽然如此，我只希望尽可能不要有人为了炫技而写出这种声明<br>脱帽子，yeah~~</p>
+<hr>
+<p><strong>editor</strong>  594飞飘<br><strong>audit</strong>   Serein</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -268,130 +392,6 @@
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C/C++的特别复杂的类型</title>
-    <url>/posts/8fb716fa.html</url>
-    <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
-<hr>
-<h2 id="前人的智慧"><a href="#前人的智慧" class="headerlink" title="前人的智慧"></a>前人的智慧</h2><p>其实可以通过一个叫右左法则的东西来解决这个问题，不过我觉得后缀表达式还是看的有点头疼，有兴趣可以找找看，它可以将式子变成一个后缀表达式，采取编译器的形式进行处理。但我们不采用这种方法，<del>原因是后缀表达式还是不够可读</del>，原因是我不会用<br>补充：链接贴在这里<a href="https://www.bilibili.com/video/BV1mB4y1L7HB/?is_story_h5=false&amp;p=1&amp;share_from=ugc&amp;share_medium=android&amp;share_plat=android&amp;share_session_id=8c3141a9-9324-4449-8409-8f2d1d7846dd&amp;share_source=QQ&amp;share_tag=s_i&amp;timestamp=1668064269&amp;unique_k=GWrf0E0">B站：初中生也能看懂的C/C++类型声明规则教学，很简单的！</a></p>
-<hr>
-<h2 id="着手解决这个问题"><a href="#着手解决这个问题" class="headerlink" title="着手解决这个问题"></a>着手解决这个问题</h2><p>我们先来看看一个声明，他到底是什么意思<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">char</span> (*p)[] = <span class="literal">NULL</span>;<span class="comment">//这是一个指向char数组的指针</span></span><br></pre></td></tr></table></figure></p>
-<p>其实无论是什么样的声明，都是同样的格式<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Type_1 Type_2 = xxx;</span><br><span class="line"><span class="comment">//准确来说Type_2不是一种类型，而是对变量进行多种符号操作后的产物</span></span><br><span class="line"><span class="comment">//简单的变量声明如 &quot;int a;&quot; 中 a被0个符号修饰 从而a等价int</span></span><br></pre></td></tr></table></figure></p>
-<p>就是说，在如上这个声明里就是<br><code>Type_1</code>是<code>char</code><br><code>Type_2</code>是<code>(*p)[]</code><br>你可以把<code>p</code>就想象成一个已经定义的指向<code>char</code>数组的指针<br>对其解引用并取下标类型就是<code>char</code></p>
-<p>也就是说<br><code>char</code> 在类型上等价于<code>(*p)[]</code></p>
-<p>也就是说这是通过一个<span style="color: pink; font-size: 20px; font-weight: bolder;"><code>Type_1</code>在类型上等价<code>Type_2</code>的一个类型的等式</span>来确定的要赋值的变量名的类型到底是什么<br><span style="color: pink; font-size: 20px; font-weight: bolder;">所以，我们可以对一个合法的变量声明在其内部任意位置进行分割，然后加括号保证可读性,用以区分<code>Type_1</code>和<code>Type_2</code></span></p>
-<p>也就是说其实可以这么处理：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> **p[]; <span class="comment">// 以下对表达式逐步进行分割</span></span><br><span class="line">**p[] <span class="comment">//是int</span></span><br><span class="line">*p[]  <span class="comment">//是指向int的指针 即int*</span></span><br><span class="line">p[]   <span class="comment">//是指向 指向int的指针 的指针 即int**</span></span><br><span class="line">p     <span class="comment">//是指向 指向int的指针 的指针 的数组 即int**</span></span><br></pre></td></tr></table></figure></p>
-<hr>
-<h2 id="现在找一个看起来更舒服的方法"><a href="#现在找一个看起来更舒服的方法" class="headerlink" title="现在找一个看起来更舒服的方法"></a>现在找一个看起来更舒服的方法</h2><p>让我们来看一个例子<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> * <span class="type">const</span> * ch2;</span><br><span class="line">(<span class="built_in">const</span> (<span class="type">char</span>*))* ch2;</span><br><span class="line"><span class="comment">//这两个是等价的</span></span><br></pre></td></tr></table></figure><br>仔细看看<strong>第二个式子</strong>绝对比第一个式子阳间，为什么？<br>因为这里的<code>Type_2</code>就是<code>ch2</code><br><strong>变量名ch2没有经过各种符号的修饰</strong>，直接等于左边的一坨<code>Type_1</code><br>那所以说其实化成可读性强的式子就是把变量名从一堆修辞里拯救出来的过程<br>就是说把变量名的一堆枷锁找个简单的类型当替死鬼装它身上(奇妙的比喻增加了)<br>我们可以用一些看上去更数学的方法来做(滑稽)</p>
-<h2 id="需要强调的一点"><a href="#需要强调的一点" class="headerlink" title="需要强调的一点"></a>需要强调的一点</h2><p><strong>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！<br>以下的转化到其最后结果只是为了可读性，不一定能过编译！！！！！</strong></p>
-<h2 id="让我们来开始着手做吧"><a href="#让我们来开始着手做吧" class="headerlink" title="让我们来开始着手做吧"></a>让我们来开始着手做吧</h2><p>首先一个声明里其实是只有一个简单类型的(这里的简单类型就是说的那些基础类型，<code>int</code>，<code>char</code>，<code>double</code>，或者是<code>class</code>，<code>struct</code>)<br><code>模板&lt;&gt;</code>和<code>函数()</code>内的简单类型其实是不会和其混淆的<br><code>模板&lt;&gt;</code>有尖括号<br>而<code>函数()</code>在变量名后，而简单类型一定在变量名前<br><code>int</code>是类型声明，<code>(int)</code>是参数表<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">fun</span><span class="params">(<span class="type">int</span>)</span></span>;<span class="comment">//int不会和(int)混淆</span></span><br></pre></td></tr></table></figure><br>变量名并不好脱掉一堆枷锁嘛，所以我们要强迫让简单类型这个替死鬼自己扒了变量名的衣服自己穿上(What’s The Fuck)<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>); <span class="comment">// 这是一个函数指针的形式</span></span><br></pre></td></tr></table></figure><br><code>float</code>替死鬼上线，先把和它处于同一优先级的”<code>(int)</code>“扒了套自己身上，并加个括号以示对它的主权(乐)<br>并暗示你被我扒了一层所以这下<code>(*(*fp2)(int,int,float))</code>最外层的括号可以脱了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(<span class="built_in">float</span> (<span class="type">int</span>)) *(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>可以看到这个工具的强大了<br><code>(float (int))</code>这个就是一个传入<code>int</code>返回<code>float</code>的函数<br>但是过不了编译！！！！！注意！！！！！<br>然后替死鬼现在是<code>(float (int))</code>，继续把<code>*</code>扒了<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((<span class="built_in">float</span> (<span class="type">int</span>))*) (*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>);</span><br></pre></td></tr></table></figure><br>虽然现在已经能看出来最外层是<code>(float (int))</code>的函数指针了，但我们再来一次<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">(((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)) *fp2;</span><br></pre></td></tr></table></figure><br>得到 返回值<code>((float (int))*</code>，参数表<code>(int,int,float)</code> 的<code>Type_1</code><br>再来<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">((((<span class="built_in">float</span> (<span class="type">int</span>))*) (<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>)))* fp2;</span><br></pre></td></tr></table></figure><br>这下结构也太清晰了<br>看懂了但是很难描述，但是我还是想尝试描述一下 （就算是中文也要靠多重括号来断句（悲<br><code>fp2</code>是一个{以【返回值为<code>float</code>，参数表为<code>(int)</code>的函数指针】为返回值，<code>(int,int,float)</code>为参数表}的函数指针</p>
-<p>实质上当中的过程覆盖了所有可能的情况了，我们可以用 <a href="#着手解决这个问题">着手解决这个问题</a> 上面这一小标题所写的本质证明这样做的合理性，如指针无非就是一方解引用一方变指针做到的等价。</p>
-<hr>
-<h2 id="cv限定符"><a href="#cv限定符" class="headerlink" title="cv限定符"></a>cv限定符</h2><p>因为有<code>const</code>，<code>volatile</code>这样的限定符存在，故而这个方法进行开扒的时候，需<strong>先向</strong>替死鬼<strong>前</strong>看一看有没有这些<strong>限定符</strong>，再结合后面<strong>距离<code>Type_1</code>最近的运算符</strong><br><strong>cv限定符应该置于Type_1之前以修饰Type_1</strong><br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子一</span></span><br><span class="line"><span class="type">char</span>* <span class="type">const</span> ch1;</span><br><span class="line">(<span class="type">char</span>*) <span class="type">const</span> ch1;</span><br><span class="line"><span class="built_in">const</span> (<span class="type">char</span>*)  ch1;</span><br><span class="line"><span class="comment">//例子二</span></span><br><span class="line"><span class="type">char</span> **<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">(<span class="type">char</span> *) *<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line">((<span class="type">char</span> *)*)<span class="type">const</span> *<span class="type">const</span> ch2;</span><br><span class="line"><span class="built_in">const</span> (<span class="built_in">const</span>((<span class="type">char</span>*)*))* ch2;</span><br><span class="line"><span class="comment">//例子三</span></span><br><span class="line"><span class="type">int</span> *a[][N];</span><br><span class="line">((<span class="type">int</span> *)[N])[] a;</span><br><span class="line"><span class="comment">//例子四</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">a</span><span class="params">()</span>[]</span>;<span class="comment">//无法过编译，如vs2022会指出其为返回数组的函数</span></span><br><span class="line">(<span class="type">int</span> [])() a;<span class="comment">//可以看到这是返回数组的函数，非法</span></span><br><span class="line"><span class="comment">//例子五</span></span><br><span class="line"><span class="type">int</span> a[]();<span class="comment">//无法过编译，如vs2022会指出其为函数数组</span></span><br><span class="line">(<span class="built_in">int</span> ())[] a;<span class="comment">//可以看到这是函数数组，非法</span></span><br></pre></td></tr></table></figure><br>对于例子三和例子四还有例子五，实质上有一个整体考虑的办法</p>
-<ul>
-<li>例子三<code>[][]</code>可以当作二维数组来看，第一个<code>[]</code>转移过程中可以不给替死鬼加括号就清楚了</li>
-<li>对于例子四<code>()[]</code>，其实我们完全可以把数组取下标看作一种特殊的函数，反过来也是</li>
-<li>函数其实和数组在这里可以不用特别区分，所以五和四和三一样</li>
-<li>同时这也启示我们<code>()[]</code> , <code>[]()</code>如果出现在一块，这必定不可能是合法的</li>
-<li>因为其必定包含函数数组或是返回数组的函数，不合法<br>*当然<code>[]</code>和<code>()</code>因为优先级是最高的，所以和名字结合最紧，最后才能被扒掉，而<code>()[]</code>之间呢，与名字最靠近的当然结合更紧，所以在之后被扒</li>
-</ul>
-<hr>
-<h2 id="Ending"><a href="#Ending" class="headerlink" title="Ending"></a>Ending</h2><p>至此我们完成了这种特别复杂的声明的辨析，但其实这个工具还有一种应用就是依照这种格式，可以从<strong>可读性强的格式反向推得这种复杂的声明</strong>。<br><span style="color: pink; font-size: 20px; font-weight: bolder;">即<code>Type_1</code>在类型上等价<code>Type_2</code>先将变量名后缀移到<code>Type_1</code>上，再通过分割将变量名彻底弄干净（无符号修饰无后缀），最后变量类型即为<code>Type_1</code>，而开扒的顺序，关键看这些符号作用在变量名上的顺序，如果优先级高，则说明与之结合紧，越晚被扒，而括号里的部分可以看作一个整体开扒，这样就可以化简整体的结构</span><br>终于写完了，虽然如此，我只希望尽可能不要有人为了炫技而写出这种声明<br>脱帽子，yeah~~</p>
-<hr>
-<p><strong>editor</strong>  594飞飘<br><strong>audit</strong>   Serein</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
       </categories>
   </entry>
   <entry>
@@ -752,6 +752,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_2_通用编程概念</title>
     <url>/posts/896c357a.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
@@ -789,6 +810,46 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 </ul>
 <p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
 <p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_5_枚举与模式匹配</title>
+    <url>/posts/28bcc6be.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
+<span id="more"></span>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>关于枚举，书上给出的一个例子是这样的</p>
+<blockquote>
+<p>假设我们要处理 IP 地址。目前被广泛使用的两个主要 IP 标准：IPv4(version four)和 IPv6(version six)。这是我们的程序可能会遇到的所有可能的 IP 地址类型：所以可以 <strong>枚举</strong> 出所有可能的值，这也正是此枚举名字的由来</p>
+</blockquote>
+<p>例子和代码都很简单，正如和常见语言都是一致的</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddrKind</span> &#123;</span><br><span class="line">    V4,</span><br><span class="line">    V6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><p>可以像下面这样创建<code>IpAddrKind</code>两个不同成员的实例</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">four</span> = IpAddrKind::V4;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">six</span> = IpAddrKind::V6;</span><br></pre></td></tr></table></figure>
+<p>也可以像C++那样作为函数参数传递给函数</p>
+<h3 id="枚举值绑定变量"><a href="#枚举值绑定变量" class="headerlink" title="枚举值绑定变量"></a>枚举值绑定变量</h3><p>这是Rust enum强于C++的地方，其允许枚举值去绑定一个变量，能够有效减少一些事情，比如像我最近写的一个<a href="https://github.com/feipiao594/telegram_rust_charge_bot">telegram_bot</a>，如果一个command需要传递，我们通常不仅仅需要command的类型，还有更多的信息需要被传递。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddr</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">V4</span>(<span class="type">String</span>),</span><br><span class="line">    <span class="title function_ invoke__">V6</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">home</span> = IpAddr::<span class="title function_ invoke__">V4</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;127.0.0.1&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">loopback</span> = IpAddr::<span class="title function_ invoke__">V6</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;::1&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>我们直接将数据附加到枚举的每个成员上，这样就不需要一个额外的结构体了。这里也很容易看出枚举工作的另一个细节：每一个我们定义的枚举成员的名字也变成了一个构建枚举的实例的函数。也就是说，<code>IpAddr::V4()</code> 是一个获取<code>String</code>参数并返回<code>IpAddr</code>类型实例的函数调用。作为定义枚举的结果，这些构造函数会<strong>自动被定义</strong>。</p>
+<p><strong>让我们分析这样做的好处</strong>，对于C++ enum来说，从数学上看，一个类型我们可以声明为一个集合里的元素，称这个集合为一个类型，集合内的元素是一个具体的值，比如int类型就是一个有限长的集合，而枚举类就相当于设定一个新类型，或者说叫新集合，其中的元素或者说叫做枚举值是固定的</p>
+<p>但是Rust高明之处就是将枚举值绑定了一个变量，它可以扩展其中的概念，让枚举的名称与枚举所带的变量构成的笛卡尔积内的元素成为了枚举的元素，大大提高了灵活度</p>
+<p>从这点看来union其实是一个非安全的enum，它没有标签，读取时也容易发生错误</p>
+<h3 id="Option"><a href="#Option" class="headerlink" title="Option\"></a>Option\<T\></h3><p><code>Option&lt;T&gt;</code>是那么有用以至于它其实被很多语言内嵌在语言当中，其表示一个值可以为空，这其实是一个很常见的东西</p>
+<p>在对<code>Option&lt;T&gt;</code>进行运算之前必须将其转换为T。通常这能帮助我们捕获到空值最常见的问题之一：假设某值不为空但实际上为空的情况。</p>
+<p>消除了错误地假设一个非空值的风险，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的<code>Option&lt;T&gt;</code>中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是<code>Option&lt;T&gt;</code>类型，你就可以安全的认定它的值不为空。这是Rust的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加Rust代码的安全性。</p>
+<h2 id="match控制流结构"><a href="#match控制流结构" class="headerlink" title="match控制流结构"></a>match控制流结构</h2><p>只要一个例子便可以解释这个东西，模式匹配我个人认为就是更为强大的switch case</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug)]</span> <span class="comment">// 这样可以立刻看到州的名称</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">UsState</span> &#123;</span><br><span class="line">    Alabama,</span><br><span class="line">    Alaska,</span><br><span class="line">    <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Coin</span> &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    <span class="title function_ invoke__">Quarter</span>(state),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">value_in_cents</span>(coin: Coin) <span class="punctuation">-&gt;</span> <span class="type">u8</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> coin &#123;</span><br><span class="line">        Coin::Penny =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Lucky penny!&quot;</span>);</span><br><span class="line">            <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Coin::Nickel =&gt; <span class="number">5</span>,</span><br><span class="line">        Coin::Dime =&gt; <span class="number">10</span>,</span><br><span class="line">        Coin::<span class="title function_ invoke__">Quarter</span>(state) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;State quarter from &#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">            <span class="number">25</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>语法结构就是<code>match</code>关键字后写要进行匹配的那个变量，当<code>match</code>表达式执行时，它将这个变量按从上到下的顺序与每一个分支的模式相比较。如果模式匹配了这个值，这个模式相关联的代码将被执行，也就是说<code>=&gt;</code>后面跟着的不一定非要是一个数字，也可以是一个<code>&#123;&#125;</code>里的一串语句，最后整个表达式输出一个值，这意味着你可以在模式匹配时做一些事情</p>
+<p>模式匹配也能拆解一个复杂的类型，比如获取到上面提到的enum内部的<code>state</code>类型</p>
+<p>注意，匹配表达式匹配结果将通过匹配到的<code>=&gt;</code>返回，整个<code>match</code>是一个表达式，它有具体的值与其对应的数据</p>
+<h3 id="通配模式与-占位符"><a href="#通配模式与-占位符" class="headerlink" title="通配模式与_占位符"></a>通配模式与<code>_</code>占位符</h3><p>我们可以在match表达式匹配无法被穷尽的时候，加入一个类似switch case里default的东西，比如在上面的例子里添加一个<code>_ =&gt; 594</code>，当当你仍然要用这个无法被匹配到的值做一些事情(比如你确信它实现了display traits，打算匹配不到就输出其中的内容)，那么你就可以使用</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">other =&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">do_someting</span>();</span><br><span class="line">    return_value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很合理对吧</p>
+<h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -836,67 +897,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p><strong>slice是对数据类型中一部分值的不可变引用</strong><br>小小用一下书里给的一些例子展示一下</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">len</span> = s.<span class="title function_ invoke__">len</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..len];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[..];</span><br></pre></td></tr></table></figure>
 <p>由于slice本身就是引用，所以在定义了slice后，对原本值的修改都会被 Rust 编译器检查到。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_5_枚举与模式匹配</title>
-    <url>/posts/28bcc6be.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
-<span id="more"></span>
-<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>关于枚举，书上给出的一个例子是这样的</p>
-<blockquote>
-<p>假设我们要处理 IP 地址。目前被广泛使用的两个主要 IP 标准：IPv4(version four)和 IPv6(version six)。这是我们的程序可能会遇到的所有可能的 IP 地址类型：所以可以 <strong>枚举</strong> 出所有可能的值，这也正是此枚举名字的由来</p>
-</blockquote>
-<p>例子和代码都很简单，正如和常见语言都是一致的</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddrKind</span> &#123;</span><br><span class="line">    V4,</span><br><span class="line">    V6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><p>可以像下面这样创建<code>IpAddrKind</code>两个不同成员的实例</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">four</span> = IpAddrKind::V4;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">six</span> = IpAddrKind::V6;</span><br></pre></td></tr></table></figure>
-<p>也可以像C++那样作为函数参数传递给函数</p>
-<h3 id="枚举值绑定变量"><a href="#枚举值绑定变量" class="headerlink" title="枚举值绑定变量"></a>枚举值绑定变量</h3><p>这是Rust enum强于C++的地方，其允许枚举值去绑定一个变量，能够有效减少一些事情，比如像我最近写的一个<a href="https://github.com/feipiao594/telegram_rust_charge_bot">telegram_bot</a>，如果一个command需要传递，我们通常不仅仅需要command的类型，还有更多的信息需要被传递。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddr</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">V4</span>(<span class="type">String</span>),</span><br><span class="line">    <span class="title function_ invoke__">V6</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">home</span> = IpAddr::<span class="title function_ invoke__">V4</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;127.0.0.1&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">loopback</span> = IpAddr::<span class="title function_ invoke__">V6</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;::1&quot;</span>));</span><br></pre></td></tr></table></figure>
-<p>我们直接将数据附加到枚举的每个成员上，这样就不需要一个额外的结构体了。这里也很容易看出枚举工作的另一个细节：每一个我们定义的枚举成员的名字也变成了一个构建枚举的实例的函数。也就是说，<code>IpAddr::V4()</code> 是一个获取<code>String</code>参数并返回<code>IpAddr</code>类型实例的函数调用。作为定义枚举的结果，这些构造函数会<strong>自动被定义</strong>。</p>
-<p><strong>让我们分析这样做的好处</strong>，对于C++ enum来说，从数学上看，一个类型我们可以声明为一个集合里的元素，称这个集合为一个类型，集合内的元素是一个具体的值，比如int类型就是一个有限长的集合，而枚举类就相当于设定一个新类型，或者说叫新集合，其中的元素或者说叫做枚举值是固定的</p>
-<p>但是Rust高明之处就是将枚举值绑定了一个变量，它可以扩展其中的概念，让枚举的名称与枚举所带的变量构成的笛卡尔积内的元素成为了枚举的元素，大大提高了灵活度</p>
-<p>从这点看来union其实是一个非安全的enum，它没有标签，读取时也容易发生错误</p>
-<h3 id="Option"><a href="#Option" class="headerlink" title="Option\"></a>Option\<T\></h3><p><code>Option&lt;T&gt;</code>是那么有用以至于它其实被很多语言内嵌在语言当中，其表示一个值可以为空，这其实是一个很常见的东西</p>
-<p>在对<code>Option&lt;T&gt;</code>进行运算之前必须将其转换为T。通常这能帮助我们捕获到空值最常见的问题之一：假设某值不为空但实际上为空的情况。</p>
-<p>消除了错误地假设一个非空值的风险，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的<code>Option&lt;T&gt;</code>中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是<code>Option&lt;T&gt;</code>类型，你就可以安全的认定它的值不为空。这是Rust的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加Rust代码的安全性。</p>
-<h2 id="match控制流结构"><a href="#match控制流结构" class="headerlink" title="match控制流结构"></a>match控制流结构</h2><p>只要一个例子便可以解释这个东西，模式匹配我个人认为就是更为强大的switch case</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug)]</span> <span class="comment">// 这样可以立刻看到州的名称</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">UsState</span> &#123;</span><br><span class="line">    Alabama,</span><br><span class="line">    Alaska,</span><br><span class="line">    <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Coin</span> &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    <span class="title function_ invoke__">Quarter</span>(state),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">value_in_cents</span>(coin: Coin) <span class="punctuation">-&gt;</span> <span class="type">u8</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> coin &#123;</span><br><span class="line">        Coin::Penny =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Lucky penny!&quot;</span>);</span><br><span class="line">            <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Coin::Nickel =&gt; <span class="number">5</span>,</span><br><span class="line">        Coin::Dime =&gt; <span class="number">10</span>,</span><br><span class="line">        Coin::<span class="title function_ invoke__">Quarter</span>(state) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;State quarter from &#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">            <span class="number">25</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>语法结构就是<code>match</code>关键字后写要进行匹配的那个变量，当<code>match</code>表达式执行时，它将这个变量按从上到下的顺序与每一个分支的模式相比较。如果模式匹配了这个值，这个模式相关联的代码将被执行，也就是说<code>=&gt;</code>后面跟着的不一定非要是一个数字，也可以是一个<code>&#123;&#125;</code>里的一串语句，最后整个表达式输出一个值，这意味着你可以在模式匹配时做一些事情</p>
-<p>模式匹配也能拆解一个复杂的类型，比如获取到上面提到的enum内部的<code>state</code>类型</p>
-<p>注意，匹配表达式匹配结果将通过匹配到的<code>=&gt;</code>返回，整个<code>match</code>是一个表达式，它有具体的值与其对应的数据</p>
-<h3 id="通配模式与-占位符"><a href="#通配模式与-占位符" class="headerlink" title="通配模式与_占位符"></a>通配模式与<code>_</code>占位符</h3><p>我们可以在match表达式匹配无法被穷尽的时候，加入一个类似switch case里default的东西，比如在上面的例子里添加一个<code>_ =&gt; 594</code>，当当你仍然要用这个无法被匹配到的值做一些事情(比如你确信它实现了display traits，打算匹配不到就输出其中的内容)，那么你就可以使用</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">other =&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">do_someting</span>();</span><br><span class="line">    return_value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>很合理对吧</p>
-<h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1074,6 +1074,34 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>n重积分转n次积分问题</title>
+    <url>/posts/622309a6.html</url>
+    <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
+<hr>
+<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
+<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
+<hr>
+<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
+<hr>
+<h2 id="三重积分的“细棒法”和“切片法”"><a href="#三重积分的“细棒法”和“切片法”" class="headerlink" title="三重积分的“细棒法”和“切片法”"></a>三重积分的“细棒法”和“切片法”</h2><p>本质上与上面的n重积分类似，“细棒法”就是说的这种方法，而“切片法”不过就是一下次拍扁两个维度而已。</p>
+<hr>
+<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
+<hr>
+<h2 id="关于n重积分可以拆成n次积分"><a href="#关于n重积分可以拆成n次积分" class="headerlink" title="关于n重积分可以拆成n次积分"></a>关于n重积分可以拆成n次积分</h2><p>这是由<strong>Fubini定理</strong>决定的，定理内容如下：<br>设$f:\mathbb{R}^{2}\rightarrow\mathbb{R}$是绝对可积函数、那么对于几乎每个$y\in\mathbb{R}$，$f(x,y)$是关于$r$在$\mathbb{R}^{2}$上绝对可积的，而且对于几乎每个$z\in\mathbb{R}$，$f(x,y)$是关于，在$\mathbb{R}$上绝对可积的、并且存在绝对可积函数$f:\mathbb{R}\rightarrow\mathbb{R}$以及绝对可积函数$G:\mathbb{R}\rightarrow\mathbb{R}$使得</p>
+<script type="math/tex; mode=display">
+F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathbb{R}$成立，并且</p>
+<script type="math/tex; mode=display">
+G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
+<script type="math/tex; mode=display">
+\int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
     <title>stokes公式</title>
     <url>/posts/7fc7eed7.html</url>
     <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
@@ -1144,31 +1172,55 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>n重积分转n次积分问题</title>
-    <url>/posts/622309a6.html</url>
-    <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
-<hr>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
-<hr>
-<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
-<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
-<hr>
-<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
-<hr>
-<h2 id="三重积分的“细棒法”和“切片法”"><a href="#三重积分的“细棒法”和“切片法”" class="headerlink" title="三重积分的“细棒法”和“切片法”"></a>三重积分的“细棒法”和“切片法”</h2><p>本质上与上面的n重积分类似，“细棒法”就是说的这种方法，而“切片法”不过就是一下次拍扁两个维度而已。</p>
-<hr>
-<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
-<hr>
-<h2 id="关于n重积分可以拆成n次积分"><a href="#关于n重积分可以拆成n次积分" class="headerlink" title="关于n重积分可以拆成n次积分"></a>关于n重积分可以拆成n次积分</h2><p>这是由<strong>Fubini定理</strong>决定的，定理内容如下：<br>设$f:\mathbb{R}^{2}\rightarrow\mathbb{R}$是绝对可积函数、那么对于几乎每个$y\in\mathbb{R}$，$f(x,y)$是关于$r$在$\mathbb{R}^{2}$上绝对可积的，而且对于几乎每个$z\in\mathbb{R}$，$f(x,y)$是关于，在$\mathbb{R}$上绝对可积的、并且存在绝对可积函数$f:\mathbb{R}\rightarrow\mathbb{R}$以及绝对可积函数$G:\mathbb{R}\rightarrow\mathbb{R}$使得</p>
-<script type="math/tex; mode=display">
-F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathbb{R}$成立，并且</p>
-<script type="math/tex; mode=display">
-G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
-<script type="math/tex; mode=display">
-\int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
       <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于51单片机移植u8g2失败经历</title>
+    <url>/posts/572ad35a.html</url>
+    <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
+<blockquote>
+<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
+<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
+<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
+<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
+</blockquote>
+<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br>图中使用的开发板是普中的51开发板<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -1263,55 +1315,15 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
 <span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于51单片机移植u8g2失败经历</title>
-    <url>/posts/572ad35a.html</url>
-    <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
-<blockquote>
-<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
-<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
-<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
-<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
-</blockquote>
-<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br>图中使用的开发板是普中的51开发板<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1332,18 +1344,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
 <li>它的函数名没有显式的给出</li>
 </ul>
 <p>至于偏导数还有没有可能会有更多的歧义之类的事情，要等我的物理学的更多，在下次对两边求偏导这件事再度发生时候，再考虑这个问题吧</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
         <category>Mathematic</category>
@@ -1411,6 +1411,58 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识量子计算</title>
+    <url>/posts/fe2da916.html</url>
+    <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
+<h2 id="关于使用的Python库-Qiskit"><a href="#关于使用的Python库-Qiskit" class="headerlink" title="关于使用的Python库:Qiskit"></a>关于使用的Python库:Qiskit</h2><p>可以看一手<a href="https://qiskit.org/">官网的介绍</a>:</p>
+<blockquote>
+<p>Qiskit [kiss-kit] is an open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules.</p>
+</blockquote>
+<p>我主要就使用Qiskit库进行量子计算的学习</p>
+<h2 id="量子计算的基础知识"><a href="#量子计算的基础知识" class="headerlink" title="量子计算的基础知识"></a>量子计算的基础知识</h2><p>这一部分讲一些基础的东西</p>
+<h3 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h3><p>量子比特属于叠加态，其可以表达成基础的几个状态的线性组合，而且线性组合的系数都是复数</p>
+<p>原因是其可以组成向量空间，其实是复希尔伯特空间，这很trival</p>
+<p>具体的表达如下</p>
+<script type="math/tex; mode=display">
+\langle\psi|=a\langle 1|+b \langle 0|、|\psi\rangle = a|1\rangle + b|0 \rangle</script><h3 id="左矢和右矢"><a href="#左矢和右矢" class="headerlink" title="左矢和右矢"></a>左矢和右矢</h3><p>右矢就是普通的向量<br>看起来左矢就是对偶向量</p>
+<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>如果$|\psi\rangle$是某个例子的初始状态，则$|\langle\phi|\psi\rangle|^2$代表在$|\phi\rangle$这个状态找到$|\psi\rangle$这个状态的概率</p>
+<p>点乘具有<strong>正交性和归一性</strong>，即</p>
+<script type="math/tex; mode=display">\langle i|j \rangle = \delta_{ij}</script><h3 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h3><p>张量分析当中的基本运算</p>
+<script type="math/tex; mode=display">|\psi\rangle\otimes|\phi\rangle\equiv|\psi\rangle|\phi\rangle\equiv|\psi,\phi\rangle\equiv|\psi\phi\rangle</script><p>注意，张量积不满足交换律感觉这里的张量积主要用于将qubit合成为张量进矩阵格式的运算</p>
+<p>运算满足如下方法</p>
+<script type="math/tex; mode=display">
+\langle\phi_1\phi_2|\psi_1\psi_2\rangle = \langle\phi_1|\psi_1\rangle_1\langle\phi_2|\psi_2\rangle_2</script><h3 id="外积"><a href="#外积" class="headerlink" title="外积"></a>外积</h3><p>外积是一种用于产生算符的运算，其定义为</p>
+<script type="math/tex; mode=display">|\psi\rangle\langle\phi|=|\psi\rangle\otimes\langle\phi|</script><h3 id="纯态与混合态"><a href="#纯态与混合态" class="headerlink" title="纯态与混合态"></a>纯态与混合态</h3><p>纯态是指可以被一个简单向量表示的量子态<br>位于布洛赫球上的向量是纯态，因为他们可以被书写成</p>
+<script type="math/tex; mode=display">
+|\psi\rangle=\begin{bmatrix}\cos\frac{\theta}{2}\\ e^{i\phi}\sin\frac{\theta}{2}\end{bmatrix}</script><p>而混合态就是在布洛赫球内的向量</p>
+<h3 id="密度矩阵"><a href="#密度矩阵" class="headerlink" title="密度矩阵"></a>密度矩阵</h3><p>给定一个纯态$|\psi\rangle$，其密度算符(矩阵)定义为</p>
+<script type="math/tex; mode=display">
+\rho=|\psi \rangle \langle \psi|</script><h2 id="量子逻辑门"><a href="#量子逻辑门" class="headerlink" title="量子逻辑门"></a>量子逻辑门</h2><p>对量子的逻辑运算可以被理解为<strong>张量乘法</strong>，即可以把量子逻辑门理解为一个矩阵运算，利用量子逻辑门计算一次的计算，由于叠加态的存在，可以同时处理很多情况，因此达到快于经典计算机的速度</p>
+<p>量子电路要求总是可逆电路</p>
+<p>量子逻辑门的物理实现中经常提到了一个结构，约瑟夫森结，这是组成量子逻辑门的一个重要元件</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> QuantumCircuit</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> Aer</span><br><span class="line"><span class="keyword">from</span> qiskit.visualization <span class="keyword">import</span> plot_state_city</span><br><span class="line"></span><br><span class="line">circ = QuantumCircuit(<span class="number">3</span>)</span><br><span class="line">circ.h(<span class="number">0</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">circ.h(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">backend = Aer.get_backend(<span class="string">&quot;statevector_simulator&quot;</span>)</span><br><span class="line">job = backend.run(circ)</span><br><span class="line">result = job.result()</span><br><span class="line">outputstate = result.get_statevector(circ, decimals=<span class="number">3</span>)</span><br><span class="line">plot_state_city(outputstate)</span><br><span class="line"><span class="comment"># 注意，生成的是密度矩阵而不是直接告诉我值的虚实部</span></span><br><span class="line"><span class="comment"># 注意，|\psi| = a|1&gt;+b|0&gt;的系数a，b是复数而非实数</span></span><br><span class="line"><span class="comment"># 因为这个是在一个复希尔伯特空间上</span></span><br><span class="line"><span class="comment"># 右矢是向量，左矢是对偶向量</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><strong>上述代码对应的量子电路图如下</strong><br><img src="/images/初识量子计算_图2.png" width="100%" height="100%"></p>
+<p><strong>输出的结果图如下</strong><br><img src="/images/初识量子计算_图1.png" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -1520,55 +1572,28 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识量子计算</title>
-    <url>/posts/fe2da916.html</url>
-    <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
-<h2 id="关于使用的Python库-Qiskit"><a href="#关于使用的Python库-Qiskit" class="headerlink" title="关于使用的Python库:Qiskit"></a>关于使用的Python库:Qiskit</h2><p>可以看一手<a href="https://qiskit.org/">官网的介绍</a>:</p>
+    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
+    <url>/posts/57f25e7f.html</url>
+    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
 <blockquote>
-<p>Qiskit [kiss-kit] is an open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules.</p>
+<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
 </blockquote>
-<p>我主要就使用Qiskit库进行量子计算的学习</p>
-<h2 id="量子计算的基础知识"><a href="#量子计算的基础知识" class="headerlink" title="量子计算的基础知识"></a>量子计算的基础知识</h2><p>这一部分讲一些基础的东西</p>
-<h3 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h3><p>量子比特属于叠加态，其可以表达成基础的几个状态的线性组合，而且线性组合的系数都是复数</p>
-<p>原因是其可以组成向量空间，其实是复希尔伯特空间，这很trival</p>
-<p>具体的表达如下</p>
-<script type="math/tex; mode=display">
-\langle\psi|=a\langle 1|+b \langle 0|、|\psi\rangle = a|1\rangle + b|0 \rangle</script><h3 id="左矢和右矢"><a href="#左矢和右矢" class="headerlink" title="左矢和右矢"></a>左矢和右矢</h3><p>右矢就是普通的向量<br>看起来左矢就是对偶向量</p>
-<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>如果$|\psi\rangle$是某个例子的初始状态，则$|\langle\phi|\psi\rangle|^2$代表在$|\phi\rangle$这个状态找到$|\psi\rangle$这个状态的概率</p>
-<p>点乘具有<strong>正交性和归一性</strong>，即</p>
-<script type="math/tex; mode=display">\langle i|j \rangle = \delta_{ij}</script><h3 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h3><p>张量分析当中的基本运算</p>
-<script type="math/tex; mode=display">|\psi\rangle\otimes|\phi\rangle\equiv|\psi\rangle|\phi\rangle\equiv|\psi,\phi\rangle\equiv|\psi\phi\rangle</script><p>注意，张量积不满足交换律感觉这里的张量积主要用于将qubit合成为张量进矩阵格式的运算</p>
-<p>运算满足如下方法</p>
-<script type="math/tex; mode=display">
-\langle\phi_1\phi_2|\psi_1\psi_2\rangle = \langle\phi_1|\psi_1\rangle_1\langle\phi_2|\psi_2\rangle_2</script><h3 id="外积"><a href="#外积" class="headerlink" title="外积"></a>外积</h3><p>外积是一种用于产生算符的运算，其定义为</p>
-<script type="math/tex; mode=display">|\psi\rangle\langle\phi|=|\psi\rangle\otimes\langle\phi|</script><h3 id="纯态与混合态"><a href="#纯态与混合态" class="headerlink" title="纯态与混合态"></a>纯态与混合态</h3><p>纯态是指可以被一个简单向量表示的量子态<br>位于布洛赫球上的向量是纯态，因为他们可以被书写成</p>
-<script type="math/tex; mode=display">
-|\psi\rangle=\begin{bmatrix}\cos\frac{\theta}{2}\\ e^{i\phi}\sin\frac{\theta}{2}\end{bmatrix}</script><p>而混合态就是在布洛赫球内的向量</p>
-<h3 id="密度矩阵"><a href="#密度矩阵" class="headerlink" title="密度矩阵"></a>密度矩阵</h3><p>给定一个纯态$|\psi\rangle$，其密度算符(矩阵)定义为</p>
-<script type="math/tex; mode=display">
-\rho=|\psi \rangle \langle \psi|</script><h2 id="量子逻辑门"><a href="#量子逻辑门" class="headerlink" title="量子逻辑门"></a>量子逻辑门</h2><p>对量子的逻辑运算可以被理解为<strong>张量乘法</strong>，即可以把量子逻辑门理解为一个矩阵运算，利用量子逻辑门计算一次的计算，由于叠加态的存在，可以同时处理很多情况，因此达到快于经典计算机的速度</p>
-<p>量子电路要求总是可逆电路</p>
-<p>量子逻辑门的物理实现中经常提到了一个结构，约瑟夫森结，这是组成量子逻辑门的一个重要元件</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> QuantumCircuit</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> Aer</span><br><span class="line"><span class="keyword">from</span> qiskit.visualization <span class="keyword">import</span> plot_state_city</span><br><span class="line"></span><br><span class="line">circ = QuantumCircuit(<span class="number">3</span>)</span><br><span class="line">circ.h(<span class="number">0</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">circ.h(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">backend = Aer.get_backend(<span class="string">&quot;statevector_simulator&quot;</span>)</span><br><span class="line">job = backend.run(circ)</span><br><span class="line">result = job.result()</span><br><span class="line">outputstate = result.get_statevector(circ, decimals=<span class="number">3</span>)</span><br><span class="line">plot_state_city(outputstate)</span><br><span class="line"><span class="comment"># 注意，生成的是密度矩阵而不是直接告诉我值的虚实部</span></span><br><span class="line"><span class="comment"># 注意，|\psi| = a|1&gt;+b|0&gt;的系数a，b是复数而非实数</span></span><br><span class="line"><span class="comment"># 因为这个是在一个复希尔伯特空间上</span></span><br><span class="line"><span class="comment"># 右矢是向量，左矢是对偶向量</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><strong>上述代码对应的量子电路图如下</strong><br><img src="/images/初识量子计算_图2.png" width="100%" height="100%"></p>
-<p><strong>输出的结果图如下</strong><br><img src="/images/初识量子计算_图1.png" width="100%" height="100%"></p>
+<span id="more"></span>
+<h2 id="前置要求"><a href="#前置要求" class="headerlink" title="前置要求"></a>前置要求</h2><h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
+<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
+<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
+<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
+<blockquote>
+<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
+</blockquote>
+<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
+<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
+<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
+        <category>Computer_network</category>
       </categories>
   </entry>
   <entry>
@@ -1646,6 +1671,10 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
 </blockquote>
 <p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
+<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
+<blockquote>
+<p>注意该项目实测可以安装较新版本的 MacOS</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1701,6 +1730,47 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>广义Fouier变换与Laplace变换</title>
+    <url>/posts/f38b0ecb.html</url>
+    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
+<span id="more"></span>
+<hr>
+<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
+<script type="math/tex; mode=display">
+\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
+<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
+</blockquote>
+<p>卷积运算满足结合律，交换律，分配律</p>
+<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
+<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
+<hr>
+<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
+<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
+</blockquote>
+<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
+<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
+<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
+<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
+<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
+\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
+<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
+<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
+<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
+<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
+<script type="math/tex; mode=display">
+\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
+<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
+<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
+<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -1816,44 +1886,29 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <url>/posts/f38b0ecb.html</url>
-    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
 <span id="more"></span>
-<hr>
-<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
-<script type="math/tex; mode=display">
-\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
-<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
 </blockquote>
-<p>卷积运算满足结合律，交换律，分配律</p>
-<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
-<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
-<hr>
-<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
-<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
-</blockquote>
-<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
-<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
-<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
-<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
-<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
-\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
-<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
-<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
-<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
-<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
-<script type="math/tex; mode=display">
-\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
-<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
-<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
-<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (<strong>Working</strong>)</p>
+<p>18.024 Multivariable Calculus (Waiting)</p>
+<p>18.700 Linear Algebra (Waiting)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (Waiting)</p>
+<p>18.100 Real Analysis (Waiting)</p>
+<p><strong>Third Part</strong><br>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
 ]]></content>
       <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
+        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
@@ -1924,32 +1979,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (<strong>Working</strong>)</p>
-<p>18.024 Multivariable Calculus (Waiting)</p>
-<p>18.700 Linear Algebra (Waiting)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (Waiting)</p>
-<p>18.100 Real Analysis (Waiting)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
@@ -2060,6 +2089,18 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>日常碎碎念_2</title>
+    <url>/posts/f52d6913.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
+<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>日常碎碎念_1</title>
     <url>/posts/6b49fcb0.html</url>
     <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
@@ -2075,18 +2116,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
 <li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
 </ul>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_2</title>
-    <url>/posts/f52d6913.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
-<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2313,6 +2342,43 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>行列式</title>
+    <url>/posts/336095f8.html</url>
+    <content><![CDATA[<h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
+<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
+<script type="math/tex; mode=display">
+\begin{vmatrix}  
+  a_{11}& a_{12}& \cdots  & a_{1n} \\  
+  a_{21}& a_{22}& \cdots  & a_{2n} \\  
+  \vdots & \vdots & \ddots & \vdots \\  
+  a_{m1}& a_{m2}& \cdots  & a_{mn}  
+\end{vmatrix}  
+=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
+<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
+<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
+<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
+<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
+<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
+<ul>
+<li>转置最后结果不变</li>
+<li>行列交换一次，加一个负号</li>
+<li>数乘只算在一行(列)上</li>
+<li>如果有两行(列)整体成比例，则值为0</li>
+<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
+</ul>
+<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
+<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
+<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
+<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
+<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
+<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Linear_algebra</category>
+      </categories>
+  </entry>
+  <entry>
     <title>贝塞尔曲线</title>
     <url>/posts/cc351245.html</url>
     <content><![CDATA[<h1 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h1><p>平滑的曲线，计算机图形学的天堂，线性代数的产物<br>同时这篇文章也是关于嵌入html与js的测试</p>
@@ -2451,43 +2517,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
         });
     </script>
 </body>]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Linear_algebra</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>行列式</title>
-    <url>/posts/336095f8.html</url>
-    <content><![CDATA[<h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
-<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
-<script type="math/tex; mode=display">
-\begin{vmatrix}  
-  a_{11}& a_{12}& \cdots  & a_{1n} \\  
-  a_{21}& a_{22}& \cdots  & a_{2n} \\  
-  \vdots & \vdots & \ddots & \vdots \\  
-  a_{m1}& a_{m2}& \cdots  & a_{mn}  
-\end{vmatrix}  
-=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
-<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
-<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
-<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
-<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
-<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
-<ul>
-<li>转置最后结果不变</li>
-<li>行列交换一次，加一个负号</li>
-<li>数乘只算在一行(列)上</li>
-<li>如果有两行(列)整体成比例，则值为0</li>
-<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
-</ul>
-<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
-<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
-<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
-<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
-<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
-<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
-]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
