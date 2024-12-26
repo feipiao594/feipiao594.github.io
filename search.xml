@@ -19,20 +19,6 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -142,6 +128,20 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++模板元-质数序列</title>
     <url>/posts/3187765d.html</url>
     <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
@@ -175,48 +175,6 @@
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -313,6 +271,48 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -348,6 +348,114 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
+<span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_1</title>
+    <url>/posts/6c7f2ed0.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
+<span id="more"></span>
+<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
+<ul>
+<li><code>:</code>表示一整行</li>
+<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
+<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
+<li><code>-1</code>表示最后一个元素</li>
+</ul>
+<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
+<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
+<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
+<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
+<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
+<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
+<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
+<script type="math/tex; mode=display">
+l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
+<script type="math/tex; mode=display">
+L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
+<script type="math/tex; mode=display">
+\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
+<blockquote>
+<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
+</blockquote>
+<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
+<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
+<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -459,75 +567,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Pytorch学习_2</title>
     <url>/posts/f5767f6a.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
@@ -547,45 +586,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
 <p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_1</title>
-    <url>/posts/6c7f2ed0.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
-<span id="more"></span>
-<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
-<ul>
-<li><code>:</code>表示一整行</li>
-<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
-<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
-<li><code>-1</code>表示最后一个元素</li>
-</ul>
-<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
-<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
-<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
-<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
-<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
-<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
-<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
-<script type="math/tex; mode=display">
-L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
-<script type="math/tex; mode=display">
-\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
-<blockquote>
-<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
-</blockquote>
-<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
-<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
-<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -865,6 +865,46 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_5_枚举与模式匹配</title>
+    <url>/posts/28bcc6be.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
+<span id="more"></span>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>关于枚举，书上给出的一个例子是这样的</p>
+<blockquote>
+<p>假设我们要处理 IP 地址。目前被广泛使用的两个主要 IP 标准：IPv4(version four)和 IPv6(version six)。这是我们的程序可能会遇到的所有可能的 IP 地址类型：所以可以 <strong>枚举</strong> 出所有可能的值，这也正是此枚举名字的由来</p>
+</blockquote>
+<p>例子和代码都很简单，正如和常见语言都是一致的</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddrKind</span> &#123;</span><br><span class="line">    V4,</span><br><span class="line">    V6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><p>可以像下面这样创建<code>IpAddrKind</code>两个不同成员的实例</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">four</span> = IpAddrKind::V4;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">six</span> = IpAddrKind::V6;</span><br></pre></td></tr></table></figure>
+<p>也可以像C++那样作为函数参数传递给函数</p>
+<h3 id="枚举值绑定变量"><a href="#枚举值绑定变量" class="headerlink" title="枚举值绑定变量"></a>枚举值绑定变量</h3><p>这是Rust enum强于C++的地方，其允许枚举值去绑定一个变量，能够有效减少一些事情，比如像我最近写的一个<a href="https://github.com/feipiao594/telegram_rust_charge_bot">telegram_bot</a>，如果一个command需要传递，我们通常不仅仅需要command的类型，还有更多的信息需要被传递。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddr</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">V4</span>(<span class="type">String</span>),</span><br><span class="line">    <span class="title function_ invoke__">V6</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">home</span> = IpAddr::<span class="title function_ invoke__">V4</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;127.0.0.1&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">loopback</span> = IpAddr::<span class="title function_ invoke__">V6</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;::1&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>我们直接将数据附加到枚举的每个成员上，这样就不需要一个额外的结构体了。这里也很容易看出枚举工作的另一个细节：每一个我们定义的枚举成员的名字也变成了一个构建枚举的实例的函数。也就是说，<code>IpAddr::V4()</code> 是一个获取<code>String</code>参数并返回<code>IpAddr</code>类型实例的函数调用。作为定义枚举的结果，这些构造函数会<strong>自动被定义</strong>。</p>
+<p><strong>让我们分析这样做的好处</strong>，对于C++ enum来说，从数学上看，一个类型我们可以声明为一个集合里的元素，称这个集合为一个类型，集合内的元素是一个具体的值，比如int类型就是一个有限长的集合，而枚举类就相当于设定一个新类型，或者说叫新集合，其中的元素或者说叫做枚举值是固定的</p>
+<p>但是Rust高明之处就是将枚举值绑定了一个变量，它可以扩展其中的概念，让枚举的名称与枚举所带的变量构成的笛卡尔积内的元素成为了枚举的元素，大大提高了灵活度</p>
+<p>从这点看来union其实是一个非安全的enum，它没有标签，读取时也容易发生错误</p>
+<h3 id="Option"><a href="#Option" class="headerlink" title="Option\"></a>Option\<T\></h3><p><code>Option&lt;T&gt;</code>是那么有用以至于它其实被很多语言内嵌在语言当中，其表示一个值可以为空，这其实是一个很常见的东西</p>
+<p>在对<code>Option&lt;T&gt;</code>进行运算之前必须将其转换为T。通常这能帮助我们捕获到空值最常见的问题之一：假设某值不为空但实际上为空的情况。</p>
+<p>消除了错误地假设一个非空值的风险，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的<code>Option&lt;T&gt;</code>中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是<code>Option&lt;T&gt;</code>类型，你就可以安全的认定它的值不为空。这是Rust的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加Rust代码的安全性。</p>
+<h2 id="match控制流结构"><a href="#match控制流结构" class="headerlink" title="match控制流结构"></a>match控制流结构</h2><p>只要一个例子便可以解释这个东西，模式匹配我个人认为就是更为强大的switch case</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug)]</span> <span class="comment">// 这样可以立刻看到州的名称</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">UsState</span> &#123;</span><br><span class="line">    Alabama,</span><br><span class="line">    Alaska,</span><br><span class="line">    <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Coin</span> &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    <span class="title function_ invoke__">Quarter</span>(state),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">value_in_cents</span>(coin: Coin) <span class="punctuation">-&gt;</span> <span class="type">u8</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> coin &#123;</span><br><span class="line">        Coin::Penny =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Lucky penny!&quot;</span>);</span><br><span class="line">            <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Coin::Nickel =&gt; <span class="number">5</span>,</span><br><span class="line">        Coin::Dime =&gt; <span class="number">10</span>,</span><br><span class="line">        Coin::<span class="title function_ invoke__">Quarter</span>(state) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;State quarter from &#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">            <span class="number">25</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>语法结构就是<code>match</code>关键字后写要进行匹配的那个变量，当<code>match</code>表达式执行时，它将这个变量按从上到下的顺序与每一个分支的模式相比较。如果模式匹配了这个值，这个模式相关联的代码将被执行，也就是说<code>=&gt;</code>后面跟着的不一定非要是一个数字，也可以是一个<code>&#123;&#125;</code>里的一串语句，最后整个表达式输出一个值，这意味着你可以在模式匹配时做一些事情</p>
+<p>模式匹配也能拆解一个复杂的类型，比如获取到上面提到的enum内部的<code>state</code>类型</p>
+<p>注意，匹配表达式匹配结果将通过匹配到的<code>=&gt;</code>返回，整个<code>match</code>是一个表达式，它有具体的值与其对应的数据</p>
+<h3 id="通配模式与-占位符"><a href="#通配模式与-占位符" class="headerlink" title="通配模式与_占位符"></a>通配模式与<code>_</code>占位符</h3><p>我们可以在match表达式匹配无法被穷尽的时候，加入一个类似switch case里default的东西，比如在上面的例子里添加一个<code>_ =&gt; 594</code>，当当你仍然要用这个无法被匹配到的值做一些事情(比如你确信它实现了display traits，打算匹配不到就输出其中的内容)，那么你就可以使用</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">other =&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">do_someting</span>();</span><br><span class="line">    return_value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很合理对吧</p>
+<h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_6_包与crate</title>
     <url>/posts/23fc5c90.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-6-包与crate"><a href="#Rust-Chapter-6-包与crate" class="headerlink" title="Rust_Chapter_6_包与crate"></a>Rust_Chapter_6_包与crate</h1><p>相比于C++，Rust最吸引我得就是其强大的包管理与调用，cargo实在是太好用了。现在，我们来讨论包与crate相关的内容</p>
@@ -915,46 +955,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <li>用花括号减少写多行的引用：<code>use std::&#123;cmp::Ordering, io&#125;;</code></li>
 <li>使用<code>*</code>引入模块下的所有项，就像我们在python中做的那样</li>
 </ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_5_枚举与模式匹配</title>
-    <url>/posts/28bcc6be.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
-<span id="more"></span>
-<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>关于枚举，书上给出的一个例子是这样的</p>
-<blockquote>
-<p>假设我们要处理 IP 地址。目前被广泛使用的两个主要 IP 标准：IPv4(version four)和 IPv6(version six)。这是我们的程序可能会遇到的所有可能的 IP 地址类型：所以可以 <strong>枚举</strong> 出所有可能的值，这也正是此枚举名字的由来</p>
-</blockquote>
-<p>例子和代码都很简单，正如和常见语言都是一致的</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddrKind</span> &#123;</span><br><span class="line">    V4,</span><br><span class="line">    V6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><p>可以像下面这样创建<code>IpAddrKind</code>两个不同成员的实例</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">four</span> = IpAddrKind::V4;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">six</span> = IpAddrKind::V6;</span><br></pre></td></tr></table></figure>
-<p>也可以像C++那样作为函数参数传递给函数</p>
-<h3 id="枚举值绑定变量"><a href="#枚举值绑定变量" class="headerlink" title="枚举值绑定变量"></a>枚举值绑定变量</h3><p>这是Rust enum强于C++的地方，其允许枚举值去绑定一个变量，能够有效减少一些事情，比如像我最近写的一个<a href="https://github.com/feipiao594/telegram_rust_charge_bot">telegram_bot</a>，如果一个command需要传递，我们通常不仅仅需要command的类型，还有更多的信息需要被传递。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddr</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">V4</span>(<span class="type">String</span>),</span><br><span class="line">    <span class="title function_ invoke__">V6</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">home</span> = IpAddr::<span class="title function_ invoke__">V4</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;127.0.0.1&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">loopback</span> = IpAddr::<span class="title function_ invoke__">V6</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;::1&quot;</span>));</span><br></pre></td></tr></table></figure>
-<p>我们直接将数据附加到枚举的每个成员上，这样就不需要一个额外的结构体了。这里也很容易看出枚举工作的另一个细节：每一个我们定义的枚举成员的名字也变成了一个构建枚举的实例的函数。也就是说，<code>IpAddr::V4()</code> 是一个获取<code>String</code>参数并返回<code>IpAddr</code>类型实例的函数调用。作为定义枚举的结果，这些构造函数会<strong>自动被定义</strong>。</p>
-<p><strong>让我们分析这样做的好处</strong>，对于C++ enum来说，从数学上看，一个类型我们可以声明为一个集合里的元素，称这个集合为一个类型，集合内的元素是一个具体的值，比如int类型就是一个有限长的集合，而枚举类就相当于设定一个新类型，或者说叫新集合，其中的元素或者说叫做枚举值是固定的</p>
-<p>但是Rust高明之处就是将枚举值绑定了一个变量，它可以扩展其中的概念，让枚举的名称与枚举所带的变量构成的笛卡尔积内的元素成为了枚举的元素，大大提高了灵活度</p>
-<p>从这点看来union其实是一个非安全的enum，它没有标签，读取时也容易发生错误</p>
-<h3 id="Option"><a href="#Option" class="headerlink" title="Option\"></a>Option\<T\></h3><p><code>Option&lt;T&gt;</code>是那么有用以至于它其实被很多语言内嵌在语言当中，其表示一个值可以为空，这其实是一个很常见的东西</p>
-<p>在对<code>Option&lt;T&gt;</code>进行运算之前必须将其转换为T。通常这能帮助我们捕获到空值最常见的问题之一：假设某值不为空但实际上为空的情况。</p>
-<p>消除了错误地假设一个非空值的风险，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的<code>Option&lt;T&gt;</code>中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是<code>Option&lt;T&gt;</code>类型，你就可以安全的认定它的值不为空。这是Rust的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加Rust代码的安全性。</p>
-<h2 id="match控制流结构"><a href="#match控制流结构" class="headerlink" title="match控制流结构"></a>match控制流结构</h2><p>只要一个例子便可以解释这个东西，模式匹配我个人认为就是更为强大的switch case</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug)]</span> <span class="comment">// 这样可以立刻看到州的名称</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">UsState</span> &#123;</span><br><span class="line">    Alabama,</span><br><span class="line">    Alaska,</span><br><span class="line">    <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Coin</span> &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    <span class="title function_ invoke__">Quarter</span>(state),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">value_in_cents</span>(coin: Coin) <span class="punctuation">-&gt;</span> <span class="type">u8</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> coin &#123;</span><br><span class="line">        Coin::Penny =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Lucky penny!&quot;</span>);</span><br><span class="line">            <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Coin::Nickel =&gt; <span class="number">5</span>,</span><br><span class="line">        Coin::Dime =&gt; <span class="number">10</span>,</span><br><span class="line">        Coin::<span class="title function_ invoke__">Quarter</span>(state) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;State quarter from &#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">            <span class="number">25</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>语法结构就是<code>match</code>关键字后写要进行匹配的那个变量，当<code>match</code>表达式执行时，它将这个变量按从上到下的顺序与每一个分支的模式相比较。如果模式匹配了这个值，这个模式相关联的代码将被执行，也就是说<code>=&gt;</code>后面跟着的不一定非要是一个数字，也可以是一个<code>&#123;&#125;</code>里的一串语句，最后整个表达式输出一个值，这意味着你可以在模式匹配时做一些事情</p>
-<p>模式匹配也能拆解一个复杂的类型，比如获取到上面提到的enum内部的<code>state</code>类型</p>
-<p>注意，匹配表达式匹配结果将通过匹配到的<code>=&gt;</code>返回，整个<code>match</code>是一个表达式，它有具体的值与其对应的数据</p>
-<h3 id="通配模式与-占位符"><a href="#通配模式与-占位符" class="headerlink" title="通配模式与_占位符"></a>通配模式与<code>_</code>占位符</h3><p>我们可以在match表达式匹配无法被穷尽的时候，加入一个类似switch case里default的东西，比如在上面的例子里添加一个<code>_ =&gt; 594</code>，当当你仍然要用这个无法被匹配到的值做一些事情(比如你确信它实现了display traits，打算匹配不到就输出其中的内容)，那么你就可以使用</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">other =&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">do_someting</span>();</span><br><span class="line">    return_value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>很合理对吧</p>
-<h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1294,18 +1294,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -1324,6 +1312,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>EE_电子工程</category>
         <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
+<span id="more"></span>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1423,6 +1423,85 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>EE_电子工程</category>
         <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识量子计算</title>
+    <url>/posts/fe2da916.html</url>
+    <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
+<h2 id="关于使用的Python库-Qiskit"><a href="#关于使用的Python库-Qiskit" class="headerlink" title="关于使用的Python库:Qiskit"></a>关于使用的Python库:Qiskit</h2><p>可以看一手<a href="https://qiskit.org/">官网的介绍</a>:</p>
+<blockquote>
+<p>Qiskit [kiss-kit] is an open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules.</p>
+</blockquote>
+<p>我主要就使用Qiskit库进行量子计算的学习</p>
+<h2 id="量子计算的基础知识"><a href="#量子计算的基础知识" class="headerlink" title="量子计算的基础知识"></a>量子计算的基础知识</h2><p>这一部分讲一些基础的东西</p>
+<h3 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h3><p>量子比特属于叠加态，其可以表达成基础的几个状态的线性组合，而且线性组合的系数都是复数</p>
+<p>原因是其可以组成向量空间，其实是复希尔伯特空间，这很trival</p>
+<p>具体的表达如下</p>
+<script type="math/tex; mode=display">
+\langle\psi|=a\langle 1|+b \langle 0|、|\psi\rangle = a|1\rangle + b|0 \rangle</script><h3 id="左矢和右矢"><a href="#左矢和右矢" class="headerlink" title="左矢和右矢"></a>左矢和右矢</h3><p>右矢就是普通的向量<br>看起来左矢就是对偶向量</p>
+<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>如果$|\psi\rangle$是某个例子的初始状态，则$|\langle\phi|\psi\rangle|^2$代表在$|\phi\rangle$这个状态找到$|\psi\rangle$这个状态的概率</p>
+<p>点乘具有<strong>正交性和归一性</strong>，即</p>
+<script type="math/tex; mode=display">\langle i|j \rangle = \delta_{ij}</script><h3 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h3><p>张量分析当中的基本运算</p>
+<script type="math/tex; mode=display">|\psi\rangle\otimes|\phi\rangle\equiv|\psi\rangle|\phi\rangle\equiv|\psi,\phi\rangle\equiv|\psi\phi\rangle</script><p>注意，张量积不满足交换律感觉这里的张量积主要用于将qubit合成为张量进矩阵格式的运算</p>
+<p>运算满足如下方法</p>
+<script type="math/tex; mode=display">
+\langle\phi_1\phi_2|\psi_1\psi_2\rangle = \langle\phi_1|\psi_1\rangle_1\langle\phi_2|\psi_2\rangle_2</script><h3 id="外积"><a href="#外积" class="headerlink" title="外积"></a>外积</h3><p>外积是一种用于产生算符的运算，其定义为</p>
+<script type="math/tex; mode=display">|\psi\rangle\langle\phi|=|\psi\rangle\otimes\langle\phi|</script><h3 id="纯态与混合态"><a href="#纯态与混合态" class="headerlink" title="纯态与混合态"></a>纯态与混合态</h3><p>纯态是指可以被一个简单向量表示的量子态<br>位于布洛赫球上的向量是纯态，因为他们可以被书写成</p>
+<script type="math/tex; mode=display">
+|\psi\rangle=\begin{bmatrix}\cos\frac{\theta}{2}\\ e^{i\phi}\sin\frac{\theta}{2}\end{bmatrix}</script><p>而混合态就是在布洛赫球内的向量</p>
+<h3 id="密度矩阵"><a href="#密度矩阵" class="headerlink" title="密度矩阵"></a>密度矩阵</h3><p>给定一个纯态$|\psi\rangle$，其密度算符(矩阵)定义为</p>
+<script type="math/tex; mode=display">
+\rho=|\psi \rangle \langle \psi|</script><h2 id="量子逻辑门"><a href="#量子逻辑门" class="headerlink" title="量子逻辑门"></a>量子逻辑门</h2><p>对量子的逻辑运算可以被理解为<strong>张量乘法</strong>，即可以把量子逻辑门理解为一个矩阵运算，利用量子逻辑门计算一次的计算，由于叠加态的存在，可以同时处理很多情况，因此达到快于经典计算机的速度</p>
+<p>量子电路要求总是可逆电路</p>
+<p>量子逻辑门的物理实现中经常提到了一个结构，约瑟夫森结，这是组成量子逻辑门的一个重要元件</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> QuantumCircuit</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> Aer</span><br><span class="line"><span class="keyword">from</span> qiskit.visualization <span class="keyword">import</span> plot_state_city</span><br><span class="line"></span><br><span class="line">circ = QuantumCircuit(<span class="number">3</span>)</span><br><span class="line">circ.h(<span class="number">0</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">circ.h(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">backend = Aer.get_backend(<span class="string">&quot;statevector_simulator&quot;</span>)</span><br><span class="line">job = backend.run(circ)</span><br><span class="line">result = job.result()</span><br><span class="line">outputstate = result.get_statevector(circ, decimals=<span class="number">3</span>)</span><br><span class="line">plot_state_city(outputstate)</span><br><span class="line"><span class="comment"># 注意，生成的是密度矩阵而不是直接告诉我值的虚实部</span></span><br><span class="line"><span class="comment"># 注意，|\psi| = a|1&gt;+b|0&gt;的系数a，b是复数而非实数</span></span><br><span class="line"><span class="comment"># 因为这个是在一个复希尔伯特空间上</span></span><br><span class="line"><span class="comment"># 右矢是向量，左矢是对偶向量</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><strong>上述代码对应的量子电路图如下</strong><br><img src="/images/初识量子计算_图2.png" width="100%" height="100%"></p>
+<p><strong>输出的结果图如下</strong><br><img src="/images/初识量子计算_图1.png" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
+    <url>/posts/57f25e7f.html</url>
+    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
+<blockquote>
+<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
+<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
+<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
+<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，而且路由器一定要是 R1、R2…这样的命名(即默认命名)，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
+<blockquote>
+<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
+</blockquote>
+<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
+<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
+<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Computer_network</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
       </categories>
   </entry>
   <entry>
@@ -1529,85 +1608,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识量子计算</title>
-    <url>/posts/fe2da916.html</url>
-    <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
-<h2 id="关于使用的Python库-Qiskit"><a href="#关于使用的Python库-Qiskit" class="headerlink" title="关于使用的Python库:Qiskit"></a>关于使用的Python库:Qiskit</h2><p>可以看一手<a href="https://qiskit.org/">官网的介绍</a>:</p>
-<blockquote>
-<p>Qiskit [kiss-kit] is an open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules.</p>
-</blockquote>
-<p>我主要就使用Qiskit库进行量子计算的学习</p>
-<h2 id="量子计算的基础知识"><a href="#量子计算的基础知识" class="headerlink" title="量子计算的基础知识"></a>量子计算的基础知识</h2><p>这一部分讲一些基础的东西</p>
-<h3 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h3><p>量子比特属于叠加态，其可以表达成基础的几个状态的线性组合，而且线性组合的系数都是复数</p>
-<p>原因是其可以组成向量空间，其实是复希尔伯特空间，这很trival</p>
-<p>具体的表达如下</p>
-<script type="math/tex; mode=display">
-\langle\psi|=a\langle 1|+b \langle 0|、|\psi\rangle = a|1\rangle + b|0 \rangle</script><h3 id="左矢和右矢"><a href="#左矢和右矢" class="headerlink" title="左矢和右矢"></a>左矢和右矢</h3><p>右矢就是普通的向量<br>看起来左矢就是对偶向量</p>
-<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>如果$|\psi\rangle$是某个例子的初始状态，则$|\langle\phi|\psi\rangle|^2$代表在$|\phi\rangle$这个状态找到$|\psi\rangle$这个状态的概率</p>
-<p>点乘具有<strong>正交性和归一性</strong>，即</p>
-<script type="math/tex; mode=display">\langle i|j \rangle = \delta_{ij}</script><h3 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h3><p>张量分析当中的基本运算</p>
-<script type="math/tex; mode=display">|\psi\rangle\otimes|\phi\rangle\equiv|\psi\rangle|\phi\rangle\equiv|\psi,\phi\rangle\equiv|\psi\phi\rangle</script><p>注意，张量积不满足交换律感觉这里的张量积主要用于将qubit合成为张量进矩阵格式的运算</p>
-<p>运算满足如下方法</p>
-<script type="math/tex; mode=display">
-\langle\phi_1\phi_2|\psi_1\psi_2\rangle = \langle\phi_1|\psi_1\rangle_1\langle\phi_2|\psi_2\rangle_2</script><h3 id="外积"><a href="#外积" class="headerlink" title="外积"></a>外积</h3><p>外积是一种用于产生算符的运算，其定义为</p>
-<script type="math/tex; mode=display">|\psi\rangle\langle\phi|=|\psi\rangle\otimes\langle\phi|</script><h3 id="纯态与混合态"><a href="#纯态与混合态" class="headerlink" title="纯态与混合态"></a>纯态与混合态</h3><p>纯态是指可以被一个简单向量表示的量子态<br>位于布洛赫球上的向量是纯态，因为他们可以被书写成</p>
-<script type="math/tex; mode=display">
-|\psi\rangle=\begin{bmatrix}\cos\frac{\theta}{2}\\ e^{i\phi}\sin\frac{\theta}{2}\end{bmatrix}</script><p>而混合态就是在布洛赫球内的向量</p>
-<h3 id="密度矩阵"><a href="#密度矩阵" class="headerlink" title="密度矩阵"></a>密度矩阵</h3><p>给定一个纯态$|\psi\rangle$，其密度算符(矩阵)定义为</p>
-<script type="math/tex; mode=display">
-\rho=|\psi \rangle \langle \psi|</script><h2 id="量子逻辑门"><a href="#量子逻辑门" class="headerlink" title="量子逻辑门"></a>量子逻辑门</h2><p>对量子的逻辑运算可以被理解为<strong>张量乘法</strong>，即可以把量子逻辑门理解为一个矩阵运算，利用量子逻辑门计算一次的计算，由于叠加态的存在，可以同时处理很多情况，因此达到快于经典计算机的速度</p>
-<p>量子电路要求总是可逆电路</p>
-<p>量子逻辑门的物理实现中经常提到了一个结构，约瑟夫森结，这是组成量子逻辑门的一个重要元件</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> QuantumCircuit</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> Aer</span><br><span class="line"><span class="keyword">from</span> qiskit.visualization <span class="keyword">import</span> plot_state_city</span><br><span class="line"></span><br><span class="line">circ = QuantumCircuit(<span class="number">3</span>)</span><br><span class="line">circ.h(<span class="number">0</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">circ.h(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">backend = Aer.get_backend(<span class="string">&quot;statevector_simulator&quot;</span>)</span><br><span class="line">job = backend.run(circ)</span><br><span class="line">result = job.result()</span><br><span class="line">outputstate = result.get_statevector(circ, decimals=<span class="number">3</span>)</span><br><span class="line">plot_state_city(outputstate)</span><br><span class="line"><span class="comment"># 注意，生成的是密度矩阵而不是直接告诉我值的虚实部</span></span><br><span class="line"><span class="comment"># 注意，|\psi| = a|1&gt;+b|0&gt;的系数a，b是复数而非实数</span></span><br><span class="line"><span class="comment"># 因为这个是在一个复希尔伯特空间上</span></span><br><span class="line"><span class="comment"># 右矢是向量，左矢是对偶向量</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><strong>上述代码对应的量子电路图如下</strong><br><img src="/images/初识量子计算_图2.png" width="100%" height="100%"></p>
-<p><strong>输出的结果图如下</strong><br><img src="/images/初识量子计算_图1.png" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
-    <url>/posts/57f25e7f.html</url>
-    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
-<blockquote>
-<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
-<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
-<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
-<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
-<blockquote>
-<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
-</blockquote>
-<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
-<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
-<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Computer_network</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
       </categories>
   </entry>
   <entry>
@@ -1845,47 +1845,6 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <url>/posts/f38b0ecb.html</url>
-    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
-<span id="more"></span>
-<hr>
-<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
-<script type="math/tex; mode=display">
-\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
-<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
-</blockquote>
-<p>卷积运算满足结合律，交换律，分配律</p>
-<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
-<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
-<hr>
-<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
-<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
-</blockquote>
-<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
-<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
-<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
-<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
-<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
-\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
-<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
-<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
-<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
-<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
-<script type="math/tex; mode=display">
-\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
-<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
-<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
-<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
-      </categories>
-  </entry>
-  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -1953,6 +1912,47 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>广义Fouier变换与Laplace变换</title>
+    <url>/posts/f38b0ecb.html</url>
+    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
+<span id="more"></span>
+<hr>
+<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
+<script type="math/tex; mode=display">
+\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
+<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
+</blockquote>
+<p>卷积运算满足结合律，交换律，分配律</p>
+<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
+<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
+<hr>
+<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
+<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
+</blockquote>
+<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
+<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
+<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
+<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
+<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
+\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
+<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
+<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
+<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
+<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
+<script type="math/tex; mode=display">
+\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
+<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
+<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
+<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -2141,6 +2141,82 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>离散与连续傅里叶变换之间的联系</title>
+    <url>/posts/f1193ad8.html</url>
+    <content><![CDATA[<h1 id="离散与连续傅里叶变换之间的联系"><a href="#离散与连续傅里叶变换之间的联系" class="headerlink" title="离散与连续傅里叶变换之间的联系"></a>离散与连续傅里叶变换之间的联系</h1><p>在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干</p>
+<span id="more"></span>
+<blockquote>
+<p>我用到的这本书上说，DTFT在信号与系统中有学，所以略讲，信号与系统里提都没提DTFT 而且我觉得DTFT还非常容易和DFT混，如果不是真去尝试证明真不清楚其中是什么含义</p>
+</blockquote>
+<h2 id="DTFT"><a href="#DTFT" class="headerlink" title="DTFT"></a>DTFT</h2><p>想要理解DTFT得先从实际的采样开始，采样就是每隔采样周期T取一个值，就是把一个连续的信号在时间域上离散化，或者用数学一点的说法，用这种方法把一个定义在$\mathbb{R}$(时间是实数)上的函数映射成一个数列(定义在$\mathbb{Z}$上的函数)</p>
+<blockquote>
+<p>所以这里的连续信号中的连续并不是说的数学上的函数连续，而是指定义域不是$\mathbb{R}$)</p>
+</blockquote>
+<p>其表达式为</p>
+<script type="math/tex; mode=display">x[n]=x_a(nT)</script><p>​很容易就会想知道对$x[n]$进行DTFT和对$x_a(t)$进行CTFT(连续傅里叶变换)之后的结果有什么关系</p>
+<p>我们把两个变换的定义的式子写出来</p>
+<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)]=\int_{-\infty}^{+\infty}x(t)e^{-j\omega t}dt</script><script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\sum_{n=-\infty}^{+\infty}x[n]e^{-j\omega n}</script><p>首先要说明一下我这边的符号，比如$\mathrm{DTFT}[x[n]] (\omega)$的含义是先对$x[n]$进行离散时间的傅里叶变换后的频域函数代入$\omega$，比如$\mathrm{DTFT}[x[n]] (\pi)$就是$x[n]$的频域函数代入$\pi$，这里之所以不使用$X(e^{j\omega})$这种符号是我觉得在数学上不够直观，虽然书上会说写成这种复合函数的形式有工程上的好处，但其实不方便从理论的角度去考虑，多一层不如少一层</p>
+<p>可以看出他俩其实很相似，所以我们很容易就能联想到下面这个等式</p>
+<p><strong>Lemma 1:</strong></p>
+<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\mathrm{DTFT}[x[n]](T\omega)</script><p>其中<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>，这是采样函数，画成图像就是在坐标轴上从原点出发每隔时间T就是一个冲激</p>
+<p><strong>Proof:</strong></p>
+<script type="math/tex; mode=display">\begin{aligned}
+\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
+&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
+&=\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}\delta(t-nT)e^{-j\omega t}dt\\
+&=\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)\delta(t-nT)e^{-j\omega t}dt\\
+&=\sum_{n=-\infty}^{+\infty}x(nT)e^{-j\omega nT}\\
+&=\sum_{n=-\infty}^{+\infty}x[n]e^{-jT\omega n}\\
+&=\mathrm{DTFT}[x[n]](T\omega)
+\end{aligned}</script><p>那么输入的函数关系怎么样已经找出来了，输出的频域函数两个变换又有什么关系呢?<br>首先再来算一个东西</p>
+<p><strong>Lemma 2:</strong></p>
+<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p><strong>Proof:</strong></p>
+<p>首先对<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>进行傅里叶级数展开，得到</p>
+<script type="math/tex; mode=display">\delta_T(t)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}e^{j\frac{2\pi n}{T}t}</script><p>将这个式子代入连续傅里叶变换的定义式，得到</p>
+<script type="math/tex; mode=display">\begin{aligned}
+\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
+&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
+&=\frac{1}{T}\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}e^{jn\omega t}e^{-j\omega t}dt\\
+&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)e^{j(\frac{2\pi n}{T}-\omega) t}dt\\
+&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{2\pi n}{T}-\omega)
+\end{aligned}</script><p>可以看到，对原本的连续信号的采样进行连续傅里叶变换得到的结果是原本信号的傅里叶变换的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有函数的和的$\frac{1}{T}$倍，这就是所谓的周期延拓</p>
+<p>好了，由上面得到的两个小等式联立一下可以证明我们需要的东西了</p>
+<p><strong>Equation:</strong> </p>
+<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]](T\omega)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p>将两边的$\omega$同时换元成$\frac{\omega}{T}$，再把换元后左式多余的$(\omega)$删掉，就是，就能得到最终的式子了</p>
+<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{\omega-2\pi n}{T})</script><ul>
+<li>用人话翻译一下这个句子，对一个离散信号进行DTFT，等价于对它采样前的连续信号进行周期延拓(连续傅里叶变换后的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有的无穷多个函数的叠加的$\frac{1}{T}$倍)后再把整个频谱函数沿着频率轴放大T倍</li>
+<li>或者说你也可以理解为采样前的连续信号先沿频率轴放大T倍在进行周期延拓</li>
+<li>再或者你还能理解为原连续信号的周期延拓完了之后把他沿频率轴放缩到以$2\pi$为周期(DTFT它是关于$2\pi$成周期的，你可以从这个等式里一目了然的看见，也能从DTFT的定义式中证明这个)</li>
+</ul>
+<p>那么你就可以理解DTFT诞生的原因了，本质上它也是一种近似获得连续信号的傅里叶变换的手段，只不过算出来的结果是原本连续傅里叶变换的移位之后又压缩了一下再叠加嘛。</p>
+<p>从这里你就知道什么叫混叠了，在一些比较良好的情况下，比如去DTFT一个带限信号的采样，带限信号是在频率上截止频率为$\omega_c$的信号，就是说$|\omega|\ge\omega_c$时，$X(\omega)=0$，那么，既然DTFT是原函数的周期延拓，对于带限的信号来说，根据上面的等式，你可以看到下图中一个小尖坡的影响范围是$\omega_cT$，而每$2\pi$的范围内，就有两个小尖坡在影响，要想他们不重叠，自然就要求$\omega_c T \le \frac{2 \pi}{2}$，把采样周期写成采样频率即$T=\frac{1}{\omega_s}$，代入就得到了$\omega_s \ge 2\omega_c$，这不就是奈奎斯特采样定律么，在满足这个条件的情况下，DTFT结果的$[-\pi,\pi]$的部分完全就是CTFT做了一些就简单的变换，换言之，你可以通过计算DTFT，在只存储采样后的离散的数据的情况下计算出原本信号的CTFT，这就是DTFT存在的目的，如果不满足这个条件，小尖坡就会变粗，接着叠起来，就不能从DTFT获得CTFT的信息了<br><img src="/images/离散与连续傅里叶变换之间的联系_图1.png" width="100%" height="100%"></p>
+<p>所以你现在明白了所谓奈奎斯特采样定律就是从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT的”约等于”能成立的需要的条件</p>
+<h2 id="DFT-FFT"><a href="#DFT-FFT" class="headerlink" title="DFT/FFT"></a>DFT/FFT</h2><p>FFT本质就是一个DFT的快速算法，就是另一种计算DFT的方法，和DFT完全没有区别，唯一需要注意的是要会用就行了，简单来说就是背下来那个蝶形图是怎么个画法</p>
+<p>而DFT就更有趣了，先看看它的定义式</p>
+<script type="math/tex; mode=display">\mathrm{DFT}[x[n]]=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}，0\le k\le N-1</script><p>这里没有写成$W^{-j(2\pi/N)}$也是出于这样能更加好的看出其原本的数学性质的目的</p>
+<p>它和DTFT只有一点点差别，首先它对$x[n]$有要求，它必须是一个有限长序列，长度为N，在这样的情况下，这个序列进行DTFT，其实求和号上的差别就没了，那剩下的就只有指数上的差别了，那么其实完全满足这样的式子</p>
+<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x[n]](k)&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}\\
+&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N}k)，0\le k\le N-1
+\end{aligned}</script><p>这下看懂了，对一个有限长序列进行DFT就是在对它进行DTFT后$[0,2\pi]$的部分再采样N个点呢</p>
+<p>还没完，如果你给这个长度为N的有限长序列$x[n]$后面再填M个0，让他变成长度为N+M的有限长序列$x’[n]$呢？表达式就变成了如下</p>
+<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x'[n]](k)&=\sum_{n=0}^{N+M-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
+&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
+&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N+M}k)，0\le k\le N+M-1
+\end{aligned}</script><p>好嘛，就是没添加0之前的结果采样的更加密集了一点，只要你M取特别特别大，你就可以用DFT完全逼近这个有限长序列的DTFT了，例子如下</p>
+<p><img src="/images/离散与连续傅里叶变换之间的联系_图2.gif" width="100%" height="100%"></p>
+<p>上图的matlab代码如下<br><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">pic_num = <span class="number">1</span>;   </span><br><span class="line"><span class="keyword">for</span> k=<span class="number">0</span>:<span class="number">4</span>:<span class="number">240</span></span><br><span class="line">    s=<span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line">    N=<span class="number">32</span>;</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>;</span><br><span class="line">    x=<span class="built_in">sin</span>(<span class="number">5</span>*n*<span class="built_in">pi</span>/N);<span class="comment">% 取样计算持续0到pi的sin(5t)信号</span></span><br><span class="line">    x=[x,<span class="built_in">zeros</span>(<span class="number">1</span>,k)];</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>+k;</span><br><span class="line">    w=<span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">2</span>*<span class="built_in">pi</span>,<span class="number">10000</span>);</span><br><span class="line">    y1=x*<span class="built_in">exp</span>(-<span class="built_in">j</span>*n&#x27;*w)/N*<span class="built_in">pi</span>;<span class="comment">% DFT</span></span><br><span class="line">    y2=<span class="built_in">j</span>*<span class="built_in">pi</span>*((<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>))-(<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)))/(<span class="number">2</span>*<span class="built_in">pi</span>);<span class="comment">% DTFT</span></span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>);stem(n,x,<span class="string">&#x27;.&#x27;</span>);ylabel(<span class="string">&#x27;$x(n)$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> N<span class="number">-1</span>+k]);</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y1));<span class="built_in">hold</span> on;</span><br><span class="line">    stem(n*<span class="number">2</span>*(N<span class="number">-2</span>+k)/(N<span class="number">-1</span>+k)/(N<span class="number">-1</span>+k),<span class="built_in">abs</span>(fft(x)/N*<span class="built_in">pi</span>),<span class="string">&#x27;.&#x27;</span>);xlabel(<span class="string">&#x27;$k \&amp; \omega$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|X[k]| \&amp; |X(e^&#123;j\omega&#125;)|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> <span class="number">2</span>]);<span class="built_in">hold</span> off;</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y2));xlabel(<span class="string">&#x27;$\omega/\pi$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|\mathrm&#123;FT&#125;[X]|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);</span><br><span class="line">    drawnow;F=getframe(s);I=frame2im(F);[I,map]=rgb2ind(I,<span class="number">256</span>);</span><br><span class="line">    <span class="keyword">if</span> pic_num == <span class="number">1</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;Loopcount&#x27;</span>,<span class="built_in">inf</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>,<span class="string">&#x27;WriteMode&#x27;</span>,<span class="string">&#x27;append&#x27;</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    pic_num = pic_num + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>所以，求有限长序列的DFT也是约等于求它的DTFT，这样做的优势就是，DFT还能让结果也变得离散化，方便存储的同时还有FFT这种神奇的算法能给计算加速</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>当带限信号满足奈奎斯特采样定律时，从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT</li>
+<li>对于有限长序列，计算DFT就是在逼近计算DTFT函数的一部分值<br>所以综上，我所使用的这本教材前三章的核心目的就是告诉我，可以使用某种手段(比如滤波器等等)，利用FFT就能近似计算一个连续函数的CTFT，至于其他的都是具体的计算时的分支任务。比如设计数字滤波器，本质上就是在给采样后的信号去干连续信号一样的事情</li>
+</ul>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
+      </categories>
+  </entry>
+  <entry>
     <title>曼德勃罗集</title>
     <url>/posts/ebf347fe.html</url>
     <content><![CDATA[<h1 id="曼德勃罗集"><a href="#曼德勃罗集" class="headerlink" title="曼德勃罗集"></a>曼德勃罗集</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>曼德勃罗集是一个经典的分形图样，其是由迭代产生的。迭代就是不断重复某个过程。曼德勃罗集被迭代的是一些最简单的函数</p>
@@ -2263,82 +2339,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>离散与连续傅里叶变换之间的联系</title>
-    <url>/posts/f1193ad8.html</url>
-    <content><![CDATA[<h1 id="离散与连续傅里叶变换之间的联系"><a href="#离散与连续傅里叶变换之间的联系" class="headerlink" title="离散与连续傅里叶变换之间的联系"></a>离散与连续傅里叶变换之间的联系</h1><p>在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干</p>
-<span id="more"></span>
-<blockquote>
-<p>我用到的这本书上说，DTFT在信号与系统中有学，所以略讲，信号与系统里提都没提DTFT 而且我觉得DTFT还非常容易和DFT混，如果不是真去尝试证明真不清楚其中是什么含义</p>
-</blockquote>
-<h2 id="DTFT"><a href="#DTFT" class="headerlink" title="DTFT"></a>DTFT</h2><p>想要理解DTFT得先从实际的采样开始，采样就是每隔采样周期T取一个值，就是把一个连续的信号在时间域上离散化，或者用数学一点的说法，用这种方法把一个定义在$\mathbb{R}$(时间是实数)上的函数映射成一个数列(定义在$\mathbb{Z}$上的函数)</p>
-<blockquote>
-<p>所以这里的连续信号中的连续并不是说的数学上的函数连续，而是指定义域不是$\mathbb{R}$)</p>
-</blockquote>
-<p>其表达式为</p>
-<script type="math/tex; mode=display">x[n]=x_a(nT)</script><p>​很容易就会想知道对$x[n]$进行DTFT和对$x_a(t)$进行CTFT(连续傅里叶变换)之后的结果有什么关系</p>
-<p>我们把两个变换的定义的式子写出来</p>
-<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)]=\int_{-\infty}^{+\infty}x(t)e^{-j\omega t}dt</script><script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\sum_{n=-\infty}^{+\infty}x[n]e^{-j\omega n}</script><p>首先要说明一下我这边的符号，比如$\mathrm{DTFT}[x[n]] (\omega)$的含义是先对$x[n]$进行离散时间的傅里叶变换后的频域函数代入$\omega$，比如$\mathrm{DTFT}[x[n]] (\pi)$就是$x[n]$的频域函数代入$\pi$，这里之所以不使用$X(e^{j\omega})$这种符号是我觉得在数学上不够直观，虽然书上会说写成这种复合函数的形式有工程上的好处，但其实不方便从理论的角度去考虑，多一层不如少一层</p>
-<p>可以看出他俩其实很相似，所以我们很容易就能联想到下面这个等式</p>
-<p><strong>Lemma 1:</strong></p>
-<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\mathrm{DTFT}[x[n]](T\omega)</script><p>其中<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>，这是采样函数，画成图像就是在坐标轴上从原点出发每隔时间T就是一个冲激</p>
-<p><strong>Proof:</strong></p>
-<script type="math/tex; mode=display">\begin{aligned}
-\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
-&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
-&=\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}\delta(t-nT)e^{-j\omega t}dt\\
-&=\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)\delta(t-nT)e^{-j\omega t}dt\\
-&=\sum_{n=-\infty}^{+\infty}x(nT)e^{-j\omega nT}\\
-&=\sum_{n=-\infty}^{+\infty}x[n]e^{-jT\omega n}\\
-&=\mathrm{DTFT}[x[n]](T\omega)
-\end{aligned}</script><p>那么输入的函数关系怎么样已经找出来了，输出的频域函数两个变换又有什么关系呢?<br>首先再来算一个东西</p>
-<p><strong>Lemma 2:</strong></p>
-<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p><strong>Proof:</strong></p>
-<p>首先对<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>进行傅里叶级数展开，得到</p>
-<script type="math/tex; mode=display">\delta_T(t)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}e^{j\frac{2\pi n}{T}t}</script><p>将这个式子代入连续傅里叶变换的定义式，得到</p>
-<script type="math/tex; mode=display">\begin{aligned}
-\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
-&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
-&=\frac{1}{T}\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}e^{jn\omega t}e^{-j\omega t}dt\\
-&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)e^{j(\frac{2\pi n}{T}-\omega) t}dt\\
-&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{2\pi n}{T}-\omega)
-\end{aligned}</script><p>可以看到，对原本的连续信号的采样进行连续傅里叶变换得到的结果是原本信号的傅里叶变换的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有函数的和的$\frac{1}{T}$倍，这就是所谓的周期延拓</p>
-<p>好了，由上面得到的两个小等式联立一下可以证明我们需要的东西了</p>
-<p><strong>Equation:</strong> </p>
-<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]](T\omega)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p>将两边的$\omega$同时换元成$\frac{\omega}{T}$，再把换元后左式多余的$(\omega)$删掉，就是，就能得到最终的式子了</p>
-<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{\omega-2\pi n}{T})</script><ul>
-<li>用人话翻译一下这个句子，对一个离散信号进行DTFT，等价于对它采样前的连续信号进行周期延拓(连续傅里叶变换后的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有的无穷多个函数的叠加的$\frac{1}{T}$倍)后再把整个频谱函数沿着频率轴放大T倍</li>
-<li>或者说你也可以理解为采样前的连续信号先沿频率轴放大T倍在进行周期延拓</li>
-<li>再或者你还能理解为原连续信号的周期延拓完了之后把他沿频率轴放缩到以$2\pi$为周期(DTFT它是关于$2\pi$成周期的，你可以从这个等式里一目了然的看见，也能从DTFT的定义式中证明这个)</li>
-</ul>
-<p>那么你就可以理解DTFT诞生的原因了，本质上它也是一种近似获得连续信号的傅里叶变换的手段，只不过算出来的结果是原本连续傅里叶变换的移位之后又压缩了一下再叠加嘛。</p>
-<p>从这里你就知道什么叫混叠了，在一些比较良好的情况下，比如去DTFT一个带限信号的采样，带限信号是在频率上截止频率为$\omega_c$的信号，就是说$|\omega|\ge\omega_c$时，$X(\omega)=0$，那么，既然DTFT是原函数的周期延拓，对于带限的信号来说，根据上面的等式，你可以看到下图中一个小尖坡的影响范围是$\omega_cT$，而每$2\pi$的范围内，就有两个小尖坡在影响，要想他们不重叠，自然就要求$\omega_c T \le \frac{2 \pi}{2}$，把采样周期写成采样频率即$T=\frac{1}{\omega_s}$，代入就得到了$\omega_s \ge 2\omega_c$，这不就是奈奎斯特采样定律么，在满足这个条件的情况下，DTFT结果的$[-\pi,\pi]$的部分完全就是CTFT做了一些就简单的变换，换言之，你可以通过计算DTFT，在只存储采样后的离散的数据的情况下计算出原本信号的CTFT，这就是DTFT存在的目的，如果不满足这个条件，小尖坡就会变粗，接着叠起来，就不能从DTFT获得CTFT的信息了<br><img src="/images/离散与连续傅里叶变换之间的联系_图1.png" width="100%" height="100%"></p>
-<p>所以你现在明白了所谓奈奎斯特采样定律就是从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT的”约等于”能成立的需要的条件</p>
-<h2 id="DFT-FFT"><a href="#DFT-FFT" class="headerlink" title="DFT/FFT"></a>DFT/FFT</h2><p>FFT本质就是一个DFT的快速算法，就是另一种计算DFT的方法，和DFT完全没有区别，唯一需要注意的是要会用就行了，简单来说就是背下来那个蝶形图是怎么个画法</p>
-<p>而DFT就更有趣了，先看看它的定义式</p>
-<script type="math/tex; mode=display">\mathrm{DFT}[x[n]]=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}，0\le k\le N-1</script><p>这里没有写成$W^{-j(2\pi/N)}$也是出于这样能更加好的看出其原本的数学性质的目的</p>
-<p>它和DTFT只有一点点差别，首先它对$x[n]$有要求，它必须是一个有限长序列，长度为N，在这样的情况下，这个序列进行DTFT，其实求和号上的差别就没了，那剩下的就只有指数上的差别了，那么其实完全满足这样的式子</p>
-<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x[n]](k)&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}\\
-&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N}k)，0\le k\le N-1
-\end{aligned}</script><p>这下看懂了，对一个有限长序列进行DFT就是在对它进行DTFT后$[0,2\pi]$的部分再采样N个点呢</p>
-<p>还没完，如果你给这个长度为N的有限长序列$x[n]$后面再填M个0，让他变成长度为N+M的有限长序列$x’[n]$呢？表达式就变成了如下</p>
-<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x'[n]](k)&=\sum_{n=0}^{N+M-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
-&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
-&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N+M}k)，0\le k\le N+M-1
-\end{aligned}</script><p>好嘛，就是没添加0之前的结果采样的更加密集了一点，只要你M取特别特别大，你就可以用DFT完全逼近这个有限长序列的DTFT了，例子如下</p>
-<p><img src="/images/离散与连续傅里叶变换之间的联系_图2.gif" width="100%" height="100%"></p>
-<p>上图的matlab代码如下<br><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">pic_num = <span class="number">1</span>;   </span><br><span class="line"><span class="keyword">for</span> k=<span class="number">0</span>:<span class="number">4</span>:<span class="number">240</span></span><br><span class="line">    s=<span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line">    N=<span class="number">32</span>;</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>;</span><br><span class="line">    x=<span class="built_in">sin</span>(<span class="number">5</span>*n*<span class="built_in">pi</span>/N);<span class="comment">% 取样计算持续0到pi的sin(5t)信号</span></span><br><span class="line">    x=[x,<span class="built_in">zeros</span>(<span class="number">1</span>,k)];</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>+k;</span><br><span class="line">    w=<span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">2</span>*<span class="built_in">pi</span>,<span class="number">10000</span>);</span><br><span class="line">    y1=x*<span class="built_in">exp</span>(-<span class="built_in">j</span>*n&#x27;*w)/N*<span class="built_in">pi</span>;<span class="comment">% DFT</span></span><br><span class="line">    y2=<span class="built_in">j</span>*<span class="built_in">pi</span>*((<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>))-(<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)))/(<span class="number">2</span>*<span class="built_in">pi</span>);<span class="comment">% DTFT</span></span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>);stem(n,x,<span class="string">&#x27;.&#x27;</span>);ylabel(<span class="string">&#x27;$x(n)$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> N<span class="number">-1</span>+k]);</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y1));<span class="built_in">hold</span> on;</span><br><span class="line">    stem(n*<span class="number">2</span>*(N<span class="number">-2</span>+k)/(N<span class="number">-1</span>+k)/(N<span class="number">-1</span>+k),<span class="built_in">abs</span>(fft(x)/N*<span class="built_in">pi</span>),<span class="string">&#x27;.&#x27;</span>);xlabel(<span class="string">&#x27;$k \&amp; \omega$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|X[k]| \&amp; |X(e^&#123;j\omega&#125;)|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> <span class="number">2</span>]);<span class="built_in">hold</span> off;</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y2));xlabel(<span class="string">&#x27;$\omega/\pi$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|\mathrm&#123;FT&#125;[X]|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);</span><br><span class="line">    drawnow;F=getframe(s);I=frame2im(F);[I,map]=rgb2ind(I,<span class="number">256</span>);</span><br><span class="line">    <span class="keyword">if</span> pic_num == <span class="number">1</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;Loopcount&#x27;</span>,<span class="built_in">inf</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>,<span class="string">&#x27;WriteMode&#x27;</span>,<span class="string">&#x27;append&#x27;</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    pic_num = pic_num + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
-<p>所以，求有限长序列的DFT也是约等于求它的DTFT，这样做的优势就是，DFT还能让结果也变得离散化，方便存储的同时还有FFT这种神奇的算法能给计算加速</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>当带限信号满足奈奎斯特采样定律时，从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT</li>
-<li>对于有限长序列，计算DFT就是在逼近计算DTFT函数的一部分值<br>所以综上，我所使用的这本教材前三章的核心目的就是告诉我，可以使用某种手段(比如滤波器等等)，利用FFT就能近似计算一个连续函数的CTFT，至于其他的都是具体的计算时的分支任务。比如设计数字滤波器，本质上就是在给采样后的信号去干连续信号一样的事情</li>
-</ul>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -2523,39 +2523,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
-    <title>链接、装载与库</title>
-    <url>/posts/8525127.html</url>
-    <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
-<span id="more"></span>
-<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
-<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
-<ul>
-<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
-<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
-<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。</li>
-</ul>
-<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2><p>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>高精度</title>
-    <url>/posts/49c1fbdc.html</url>
-    <content><![CDATA[<h1 id="高精度"><a href="#高精度" class="headerlink" title="高精度"></a>高精度</h1><p>以下给出高精度加法与高精度乘法的模板</p>
-<span id="more"></span>
-<h2 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() &gt; B.<span class="built_in">length</span>() ? A.<span class="built_in">length</span>() : B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;<span class="comment">//必须从低位到高位进行处理，故而j=1，i=l-1；char转int要减0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		c[i] += a[i] + b[i];</span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">if</span> (c[len])len++;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() + B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= A.<span class="built_in">length</span>() - <span class="number">1</span>; j++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= B.<span class="built_in">length</span>() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">			c[j + i] += a[j] * b[i];<span class="comment">//计算贡献，位于i+j上，注意这里的i和j后面都有数组所带的-1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;<span class="comment">//转换到加法就是把贡献放到这里算</span></span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (; !c[len - <span class="number">1</span>] &amp;&amp; len &gt; <span class="number">1</span>; len--);<span class="comment">//加法里只需考虑一次，无需循环</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>DSA</category>
-      </categories>
-  </entry>
-  <entry>
     <title>遨游在内存中的硬件启动过程</title>
     <url>/posts/42db1e6.html</url>
     <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
@@ -2599,6 +2566,39 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>链接、装载与库</title>
+    <url>/posts/8525127.html</url>
+    <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
+<span id="more"></span>
+<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
+<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
+<ul>
+<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
+<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
+<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。</li>
+</ul>
+<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2><p>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>高精度</title>
+    <url>/posts/49c1fbdc.html</url>
+    <content><![CDATA[<h1 id="高精度"><a href="#高精度" class="headerlink" title="高精度"></a>高精度</h1><p>以下给出高精度加法与高精度乘法的模板</p>
+<span id="more"></span>
+<h2 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() &gt; B.<span class="built_in">length</span>() ? A.<span class="built_in">length</span>() : B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;<span class="comment">//必须从低位到高位进行处理，故而j=1，i=l-1；char转int要减0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		c[i] += a[i] + b[i];</span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">if</span> (c[len])len++;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() + B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= A.<span class="built_in">length</span>() - <span class="number">1</span>; j++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= B.<span class="built_in">length</span>() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">			c[j + i] += a[j] * b[i];<span class="comment">//计算贡献，位于i+j上，注意这里的i和j后面都有数组所带的-1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;<span class="comment">//转换到加法就是把贡献放到这里算</span></span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (; !c[len - <span class="number">1</span>] &amp;&amp; len &gt; <span class="number">1</span>; len--);<span class="comment">//加法里只需考虑一次，无需循环</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>DSA</category>
       </categories>
   </entry>
 </search>

@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-12-21T04:25:39.985Z</updated>
+  <updated>2024-12-26T03:56:31.337Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/57f25e7f.html"/>
     <id>https://feipiao594.github.io/posts/57f25e7f.html</id>
     <published>2024-12-21T04:09:09.000Z</published>
-    <updated>2024-12-21T04:25:39.985Z</updated>
+    <updated>2024-12-26T03:56:31.337Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;南京邮电大学交换技术与通信网实验自动执行脚本&quot;&gt;&lt;a href=&quot;#南京邮电大学交换技术与通信网实验自动执行脚本&quot; class=&quot;headerlink&quot; title=&quot;南京邮电大学交换技术与通信网实验自动执行脚本&quot;&gt;&lt;/a&gt;南京邮电大学交换技术与通信网实验自动执行脚本&lt;/h1&gt;&lt;p&gt;这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了&lt;/p&gt;
