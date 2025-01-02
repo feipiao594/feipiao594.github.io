@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2024-12-26T03:56:31.337Z</updated>
+  <updated>2025-01-02T08:34:11.680Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>行星运动方程</title>
+    <link href="https://feipiao594.github.io/posts/d11d8f41.html"/>
+    <id>https://feipiao594.github.io/posts/d11d8f41.html</id>
+    <published>2025-01-01T14:00:36.000Z</published>
+    <updated>2025-01-02T08:34:11.680Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;行星运动方程&quot;&gt;&lt;a href=&quot;#行星运动方程&quot; class=&quot;headerlink&quot; title=&quot;行星运动方程&quot;&gt;&lt;/a&gt;行星运动方程&lt;/h1&gt;&lt;p&gt;这其实是我高中时候好奇算过的一个东西，现在就顺手写出来吧&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Physics" scheme="https://feipiao594.github.io/categories/Physics/"/>
+    
+    <category term="Mechanics" scheme="https://feipiao594.github.io/categories/Physics/Mechanics/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
@@ -396,27 +415,6 @@
     <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
     
     <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>排序</title>
-    <link href="https://feipiao594.github.io/posts/a444b428.html"/>
-    <id>https://feipiao594.github.io/posts/a444b428.html</id>
-    <published>2023-07-23T16:00:00.000Z</published>
-    <updated>2024-10-27T07:56:05.404Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;排序算法&quot;&gt;&lt;a href=&quot;#排序算法&quot; class=&quot;headerlink&quot; title=&quot;排序算法&quot;&gt;&lt;/a&gt;排序算法&lt;/h1&gt;&lt;p&gt;排序算法是最经典的算法知识。其实现代码短，应用广&lt;br&gt;如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="DSA" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/DSA/"/>
     
     
   </entry>
