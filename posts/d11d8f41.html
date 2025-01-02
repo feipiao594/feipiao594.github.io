@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E8%A1%8C%E6%98%9F%E8%BF%90%E5%8A%A8%E6%96%B9%E7%A8%8B_%E5%9B%BE1.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E8%A1%8C%E6%98%9F%E8%BF%90%E5%8A%A8%E6%96%B9%E7%A8%8B_%E5%9B%BE2.png">
 <meta property="article:published_time" content="2025-01-01T14:00:36.000Z">
-<meta property="article:modified_time" content="2025-01-02T08:39:18.024Z">
+<meta property="article:modified_time" content="2025-01-02T08:53:50.223Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E8%A1%8C%E6%98%9F%E8%BF%90%E5%8A%A8%E6%96%B9%E7%A8%8B_%E5%9B%BE1.png">
@@ -229,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-01-02 16:39:18" itemprop="dateModified" datetime="2025-01-02T16:39:18+08:00">2025-01-02</time>
+                <time title="修改时间：2025-01-02 16:53:50" itemprop="dateModified" datetime="2025-01-02T16:53:50+08:00">2025-01-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,7 +251,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.3k</span>
+              <span>2.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -277,10 +277,10 @@
 <script type="math/tex; mode=display">m\frac{v^2}{R}=\frac{GMm}{R^2}</script><p>现在我们不引入匀速圆周模型，尝试只用万有引力公式导出运动方程。<br>设大质量天体质量为 $M$，小质量天体质量为 $m$，以大质量天体为参考系，小质量天体的初速度为$v_0=\begin{bmatrix}v_x\\v_y\end{bmatrix}$，初位置为$r_0=\begin{bmatrix}x_0\\y_0\end{bmatrix}$ ，求小质量天体的运动轨迹。</p>
 <p>大雾中的万有引力公式：</p>
 <script type="math/tex; mode=display">\mathbf{F} = \frac{GMm}{\mathbf{r}^2}\hat{\mathbf{r}}</script><p>计算拉氏量并代入欧拉-拉格朗日方程</p>
-<blockquote>
-<p>TODO</p>
-</blockquote>
-<p>得到微分方程组：</p>
+<script type="math/tex; mode=display">
+T = \frac{1}{2}m(\dot{r}^2+(r\dot{\theta})^2)</script><script type="math/tex; mode=display">
+U = -\frac{G(M+m)m}{r}</script><script type="math/tex; mode=display">
+L = \frac{1}{2}m(\dot{r}^2+(r\dot{\theta})^2)-\frac{G(M+m)m}{r}</script><p>得到微分方程组：</p>
 <script type="math/tex; mode=display">
 \left\{\begin{array}{c}
 \ddot{\mathrm{r}}-\mathrm{r} \ddot{\theta}^{2}=-\frac{\mathrm{G}(\mathrm{M}+\mathrm{m})}{\mathrm{r}^{2}}\\
@@ -300,16 +300,14 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
 \rho=\frac{1}{\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)}</script><p>其中</p>
 <script type="math/tex; mode=display">
 \theta_{0}=\arctan \left(-\frac{\left(\frac{1}{r_{0}}-\frac{G(M+m) m^{2}}{l^{2}}\right)v_x+\frac{G(M+m) m^{2}}{l^{2}}\left(v_{y} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{x} \frac{x_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}{\left(\frac{1}{r_{0}}-\frac{G(M+m) m^{2}}{l^{2}}\right)v_y+\frac{G(M+m) m^{2}}{l^{2}}\left(v_{x} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{y} \frac{y_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}\right)</script><script type="math/tex; mode=display">
-\varepsilon=\frac{1-\frac{G(M+m) m^{2}}{l^{2}} r_{0}}{x_{0} \cos \theta_{0}+y_{0} \sin \theta_{0}}</script><p>其中</p>
+\varepsilon=\frac{1-\frac{G(M+m) m^{2}}{l^{2}} r_{0}}{x_{0} \cos \theta_{0}+y_{0} \sin \theta_{0}}</script><p>在其中的其中</p>
 <ul>
 <li>当$|\varepsilon| &gt; | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为双曲线</li>
 <li>当$|\varepsilon| = | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为抛物线</li>
 <li>当$|\varepsilon| &lt; | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为椭圆</li>
 </ul>
 <p>使用如下的仓库中的代码可以模拟及验证行星运动时的轨迹</p>
-<blockquote>
-<p>TODO</p>
-</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/feipiao594/Simple-Planet-Orbit">https://github.com/feipiao594/Simple-Planet-Orbit</a></p>
 <p><strong>显示双曲线</strong><br><img src="/images/行星运动方程_图1.png" width="100%" height="100%"></p>
 <p><strong>显示椭圆</strong><br><img src="/images/行星运动方程_图2.png" width="100%" height="100%"></p>
 
@@ -462,7 +460,7 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">152k</span>
+      站点总字数：<span title="站点总字数">153k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
