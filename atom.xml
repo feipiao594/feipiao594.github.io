@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-01-02T08:53:50.223Z</updated>
+  <updated>2025-03-01T14:10:51.587Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CelesteMiaoNet自建群服教程</title>
+    <link href="https://feipiao594.github.io/posts/75894d10.html"/>
+    <id>https://feipiao594.github.io/posts/75894d10.html</id>
+    <published>2025-03-01T13:27:59.000Z</published>
+    <updated>2025-03-01T14:10:51.587Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;CelesteMiaoNet自建群服教程&quot;&gt;&lt;a href=&quot;#CelesteMiaoNet自建群服教程&quot; class=&quot;headerlink&quot; title=&quot;CelesteMiaoNet自建群服教程&quot;&gt;&lt;/a&gt;CelesteMiaoNet自建群服教程&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性&lt;/p&gt;
+&lt;/blockquote&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
+    
+    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>行星运动方程</title>
@@ -146,7 +169,7 @@
     <link href="https://feipiao594.github.io/posts/e97bb949.html"/>
     <id>https://feipiao594.github.io/posts/e97bb949.html</id>
     <published>2024-11-10T15:22:09.000Z</published>
-    <updated>2024-11-13T05:59:05.710Z</updated>
+    <updated>2025-02-20T13:45:08.962Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;我的自学小计划&quot;&gt;&lt;a href=&quot;#我的自学小计划&quot; class=&quot;headerlink&quot; title=&quot;我的自学小计划&quot;&gt;&lt;/a&gt;我的自学小计划&lt;/h1&gt;&lt;p&gt;这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划&lt;/p&gt;</summary>
@@ -390,25 +413,6 @@
     
     
     <summary type="html">&lt;h1 id=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;a href=&quot;#广义Fouier变换与Laplace变换&quot; class=&quot;headerlink&quot; title=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;/a&gt;广义Fouier变换与Laplace变换&lt;/h1&gt;&lt;p&gt;这一篇记录广义函数的Fouier变换与Laplace变换的定义&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>对书本中狄拉克函数的诠释</title>
-    <link href="https://feipiao594.github.io/posts/c4ebbeff.html"/>
-    <id>https://feipiao594.github.io/posts/c4ebbeff.html</id>
-    <published>2023-07-31T16:00:00.000Z</published>
-    <updated>2024-10-27T08:06:50.014Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;a href=&quot;#对书本中狄拉克函数的诠释&quot; class=&quot;headerlink&quot; title=&quot;对书本中狄拉克函数的诠释&quot;&gt;&lt;/a&gt;对书本中狄拉克函数的诠释&lt;/h1&gt;&lt;p&gt;当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释&lt;/p&gt;</summary>
     
     
     
