@@ -19,6 +19,20 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -120,20 +134,6 @@
 </ul>
 </li>
 </ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -338,7 +338,7 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
 <p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
 </blockquote>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
-<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.SqliteModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
+<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
 </ol>
 <p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
 <ol>
@@ -840,6 +840,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_3_所有权</title>
     <url>/posts/f75e4487.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
@@ -879,27 +900,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p><strong>slice是对数据类型中一部分值的不可变引用</strong><br>小小用一下书里给的一些例子展示一下</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">len</span> = s.<span class="title function_ invoke__">len</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..len];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[..];</span><br></pre></td></tr></table></figure>
 <p>由于slice本身就是引用，所以在定义了slice后，对原本值的修改都会被 Rust 编译器检查到。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1039,32 +1039,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_8_泛型</title>
-    <url>/posts/bdd7a1b0.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-8-泛型"><a href="#Rust-Chapter-8-泛型" class="headerlink" title="Rust_Chapter_8_泛型"></a>Rust_Chapter_8_泛型</h1><p>泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具</p>
-<span id="more"></span>
-<blockquote>
-<p>关于: 这个系列一开始是帮我学习 Rust 的，但时间拖的有些长了，我也不再是初学者了，但我没有将事情做好一半就停下的习惯，就慢慢把它写完吧，说不定到时候还能在前面的内容添加一些自己的理解，不过短期内还是以学习笔记为主吧</p>
-</blockquote>
-<h2 id="在函数定义中使用泛型"><a href="#在函数定义中使用泛型" class="headerlink" title="在函数定义中使用泛型"></a>在函数定义中使用泛型</h2><p>同 C++ 中的泛型一样，如果要在函数体中使用参数，就必须在函数签名中声明它的名字，好让编译器知道这个名字指代的是什么。同理，当在函数签名中使用一个类型参数时，必须在使用它之前就声明它。类型参数声明位于函数名称与参数列表中间的尖括号 &lt;&gt; </p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">largest</span>&lt;T&gt;(list: &amp;[T]) <span class="punctuation">-&gt;</span> &amp;T &#123;...&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结构体，枚举中的泛型"><a href="#结构体，枚举中的泛型" class="headerlink" title="结构体，枚举中的泛型"></a>结构体，枚举中的泛型</h2><p><strong>结构体&amp;方法的泛型</strong><br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Point&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">x</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;T &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">p</span> = Point &#123; x: <span class="number">5</span>, y: <span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;p.x = &#123;&#125;&quot;</span>, p.<span class="title function_ invoke__">x</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当然定义方法时你也可以针对一个具体的从泛型确定的类型来定义，专业术语为<strong>泛型指定限制</strong></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">Point</span>&lt;<span class="type">f32</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">distance_from_origin</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">f32</span> &#123;</span><br><span class="line">        (<span class="keyword">self</span>.x.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>) + <span class="keyword">self</span>.y.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>)).<span class="title function_ invoke__">sqrt</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>结构体定义中的泛型类型参数并不总是与结构体方法签名中使用的泛型是同一类型。</p>
-</blockquote>
-<p><strong>枚举的泛型</strong></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Result 就是一个很好的例子</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T, E&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="关于实现"><a href="#关于实现" class="headerlink" title="关于实现"></a>关于实现</h2><p>仍然和 C++ 的模板一致，在编译期 Rust 编译器会根据具体使用到的代码，根据泛型实例化一个具体的实现</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_9_Trait</title>
     <url>/posts/fa0fbc5d.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-9-Trait"><a href="#Rust-Chapter-9-Trait" class="headerlink" title="Rust_Chapter_9_Trait"></a>Rust_Chapter_9_Trait</h1><p>Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为<strong>接口</strong>(interfaces)的功能，虽然有一些不同。</p>
@@ -1091,6 +1065,32 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 </blockquote>
 <h2 id="有条件的实现方法"><a href="#有条件的实现方法" class="headerlink" title="有条件的实现方法"></a>有条件的实现方法</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fmt::Display;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Pair</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Pair&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">new</span>(x: T, y: T) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        <span class="keyword">Self</span> &#123; x, y &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T: Display + <span class="built_in">PartialOrd</span>&gt; Pair&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cmp_display</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.x &gt;= <span class="keyword">self</span>.y &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;The largest member is x = &#123;&#125;&quot;</span>, <span class="keyword">self</span>.x);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;The largest member is y = &#123;&#125;&quot;</span>, <span class="keyword">self</span>.y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这有点像 C++ 偏特化，可以对任何实现了特定 trait 的类型有条件地实现 trait。对任何满足特定 trait bound 的类型实现 trait 被称为 blanket implementations，它们被广泛的用于 Rust 标准库中。</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_8_泛型</title>
+    <url>/posts/bdd7a1b0.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-8-泛型"><a href="#Rust-Chapter-8-泛型" class="headerlink" title="Rust_Chapter_8_泛型"></a>Rust_Chapter_8_泛型</h1><p>泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具</p>
+<span id="more"></span>
+<blockquote>
+<p>关于: 这个系列一开始是帮我学习 Rust 的，但时间拖的有些长了，我也不再是初学者了，但我没有将事情做好一半就停下的习惯，就慢慢把它写完吧，说不定到时候还能在前面的内容添加一些自己的理解，不过短期内还是以学习笔记为主吧</p>
+</blockquote>
+<h2 id="在函数定义中使用泛型"><a href="#在函数定义中使用泛型" class="headerlink" title="在函数定义中使用泛型"></a>在函数定义中使用泛型</h2><p>同 C++ 中的泛型一样，如果要在函数体中使用参数，就必须在函数签名中声明它的名字，好让编译器知道这个名字指代的是什么。同理，当在函数签名中使用一个类型参数时，必须在使用它之前就声明它。类型参数声明位于函数名称与参数列表中间的尖括号 &lt;&gt; </p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">largest</span>&lt;T&gt;(list: &amp;[T]) <span class="punctuation">-&gt;</span> &amp;T &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结构体，枚举中的泛型"><a href="#结构体，枚举中的泛型" class="headerlink" title="结构体，枚举中的泛型"></a>结构体，枚举中的泛型</h2><p><strong>结构体&amp;方法的泛型</strong><br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Point&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">x</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;T &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">p</span> = Point &#123; x: <span class="number">5</span>, y: <span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;p.x = &#123;&#125;&quot;</span>, p.<span class="title function_ invoke__">x</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然定义方法时你也可以针对一个具体的从泛型确定的类型来定义，专业术语为<strong>泛型指定限制</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">Point</span>&lt;<span class="type">f32</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">distance_from_origin</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">f32</span> &#123;</span><br><span class="line">        (<span class="keyword">self</span>.x.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>) + <span class="keyword">self</span>.y.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>)).<span class="title function_ invoke__">sqrt</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结构体定义中的泛型类型参数并不总是与结构体方法签名中使用的泛型是同一类型。</p>
+</blockquote>
+<p><strong>枚举的泛型</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Result 就是一个很好的例子</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T, E&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关于实现"><a href="#关于实现" class="headerlink" title="关于实现"></a>关于实现</h2><p>仍然和 C++ 的模板一致，在编译期 Rust 编译器会根据具体使用到的代码，根据泛型实例化一个具体的实现</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1139,76 +1139,6 @@ F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathb
 G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
 <script type="math/tex; mode=display">
 \int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>stokes公式</title>
-    <url>/posts/7fc7eed7.html</url>
-    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
-<span id="more"></span>
-<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
-<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
-<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
-</blockquote>
-<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
-<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
-<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
-<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
-<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
-<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
-<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
-</ul>
-<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
-<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
-<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
-<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
-<blockquote>
-<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
-</blockquote>
-<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
-<ul>
-<li>恰当形式<strong>一定是</strong>闭形式</li>
-<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
-<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
-</blockquote>
-</li>
-</ul>
-<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
-<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
-<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
-<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
-<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
-<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
-<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
-<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
-<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
-<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
-<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
-<ul>
-<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
-<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
-</ul>
-<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
-<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
-<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
-<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
-<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
-<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
-<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
-<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
-<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
-<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
-]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
@@ -1306,6 +1236,76 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>stokes公式</title>
+    <url>/posts/7fc7eed7.html</url>
+    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
+<span id="more"></span>
+<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
+<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+</blockquote>
+<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
+<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
+<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
+<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
+<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
+<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
+<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
+</ul>
+<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
+<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
+<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
+<blockquote>
+<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
+</blockquote>
+<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
+<ul>
+<li>恰当形式<strong>一定是</strong>闭形式</li>
+<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
+<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
+</blockquote>
+</li>
+</ul>
+<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
+<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
+<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
+<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
+<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
+<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
+<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
+<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
+<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
+<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
+<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
+<ul>
+<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
+<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
+</ul>
+<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
+<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
+<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
+<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
+<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
+<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
+<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
+<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
+<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
+<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
     <title>使用说明之qblog批处理</title>
     <url>/posts/64b84f95.html</url>
     <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
@@ -1394,6 +1394,27 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -1433,27 +1454,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
-<span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -2386,6 +2386,43 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>行列式</title>
+    <url>/posts/336095f8.html</url>
+    <content><![CDATA[<h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
+<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
+<script type="math/tex; mode=display">
+\begin{vmatrix}  
+  a_{11}& a_{12}& \cdots  & a_{1n} \\  
+  a_{21}& a_{22}& \cdots  & a_{2n} \\  
+  \vdots & \vdots & \ddots & \vdots \\  
+  a_{m1}& a_{m2}& \cdots  & a_{mn}  
+\end{vmatrix}  
+=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
+<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
+<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
+<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
+<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
+<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
+<ul>
+<li>转置最后结果不变</li>
+<li>行列交换一次，加一个负号</li>
+<li>数乘只算在一行(列)上</li>
+<li>如果有两行(列)整体成比例，则值为0</li>
+<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
+</ul>
+<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
+<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
+<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
+<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
+<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
+<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Linear_algebra</category>
+      </categories>
+  </entry>
+  <entry>
     <title>行星运动方程</title>
     <url>/posts/d11d8f41.html</url>
     <content><![CDATA[<h1 id="行星运动方程"><a href="#行星运动方程" class="headerlink" title="行星运动方程"></a>行星运动方程</h1><p>这其实是我高中很早时候好奇算过的一个东西，现在就顺手写出来吧</p>
@@ -2432,43 +2469,6 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>行列式</title>
-    <url>/posts/336095f8.html</url>
-    <content><![CDATA[<h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
-<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
-<script type="math/tex; mode=display">
-\begin{vmatrix}  
-  a_{11}& a_{12}& \cdots  & a_{1n} \\  
-  a_{21}& a_{22}& \cdots  & a_{2n} \\  
-  \vdots & \vdots & \ddots & \vdots \\  
-  a_{m1}& a_{m2}& \cdots  & a_{mn}  
-\end{vmatrix}  
-=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
-<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
-<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
-<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
-<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
-<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
-<ul>
-<li>转置最后结果不变</li>
-<li>行列交换一次，加一个负号</li>
-<li>数乘只算在一行(列)上</li>
-<li>如果有两行(列)整体成比例，则值为0</li>
-<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
-</ul>
-<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
-<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
-<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
-<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
-<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
-<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Linear_algebra</category>
       </categories>
   </entry>
   <entry>
@@ -2662,19 +2662,6 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       </categories>
   </entry>
   <entry>
-    <title>高精度</title>
-    <url>/posts/49c1fbdc.html</url>
-    <content><![CDATA[<h1 id="高精度"><a href="#高精度" class="headerlink" title="高精度"></a>高精度</h1><p>以下给出高精度加法与高精度乘法的模板</p>
-<span id="more"></span>
-<h2 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() &gt; B.<span class="built_in">length</span>() ? A.<span class="built_in">length</span>() : B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;<span class="comment">//必须从低位到高位进行处理，故而j=1，i=l-1；char转int要减0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		c[i] += a[i] + b[i];</span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">if</span> (c[len])len++;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() + B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= A.<span class="built_in">length</span>() - <span class="number">1</span>; j++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= B.<span class="built_in">length</span>() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">			c[j + i] += a[j] * b[i];<span class="comment">//计算贡献，位于i+j上，注意这里的i和j后面都有数组所带的-1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;<span class="comment">//转换到加法就是把贡献放到这里算</span></span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (; !c[len - <span class="number">1</span>] &amp;&amp; len &gt; <span class="number">1</span>; len--);<span class="comment">//加法里只需考虑一次，无需循环</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>DSA</category>
-      </categories>
-  </entry>
-  <entry>
     <title>链接、装载与库</title>
     <url>/posts/8525127.html</url>
     <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
@@ -2692,6 +2679,19 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>高精度</title>
+    <url>/posts/49c1fbdc.html</url>
+    <content><![CDATA[<h1 id="高精度"><a href="#高精度" class="headerlink" title="高精度"></a>高精度</h1><p>以下给出高精度加法与高精度乘法的模板</p>
+<span id="more"></span>
+<h2 id="加法"><a href="#加法" class="headerlink" title="加法"></a>加法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() &gt; B.<span class="built_in">length</span>() ? A.<span class="built_in">length</span>() : B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;<span class="comment">//必须从低位到高位进行处理，故而j=1，i=l-1；char转int要减0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++) &#123;</span><br><span class="line">		b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		c[i] += a[i] + b[i];</span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">if</span> (c[len])len++;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> N 520</span></span><br><span class="line"><span class="type">int</span> a[N], b[N], c[N] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	string A, B;</span><br><span class="line">	cin &gt;&gt; A &gt;&gt; B;</span><br><span class="line">	<span class="type">int</span> len = A.<span class="built_in">length</span>() + B.<span class="built_in">length</span>();</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = A.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)a[j] = A[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = B.<span class="built_in">length</span>() - <span class="number">1</span>, j = <span class="number">0</span>; i &gt;= <span class="number">0</span>; i--, j++)b[j] = B[i] - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt;= A.<span class="built_in">length</span>() - <span class="number">1</span>; j++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= B.<span class="built_in">length</span>() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">			c[j + i] += a[j] * b[i];<span class="comment">//计算贡献，位于i+j上，注意这里的i和j后面都有数组所带的-1</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;<span class="comment">//for循环不够熟练</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt;= len - <span class="number">1</span>; i++) &#123;<span class="comment">//转换到加法就是把贡献放到这里算</span></span><br><span class="line">		c[i + <span class="number">1</span>] += c[i] / <span class="number">10</span>;</span><br><span class="line">		c[i] %= <span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (; !c[len - <span class="number">1</span>] &amp;&amp; len &gt; <span class="number">1</span>; len--);<span class="comment">//加法里只需考虑一次，无需循环</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		cout &lt;&lt; c[i];</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; endl;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>DSA</category>
       </categories>
   </entry>
 </search>
