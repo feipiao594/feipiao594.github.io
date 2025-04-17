@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-04-17T13:04:16.932Z</updated>
+  <updated>2025-04-17T13:05:05.714Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/1c15da5f.html"/>
     <id>https://feipiao594.github.io/posts/1c15da5f.html</id>
     <published>2025-04-17T07:53:52.000Z</published>
-    <updated>2025-04-17T13:04:16.932Z</updated>
+    <updated>2025-04-17T13:05:05.714Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Pytorch学习-4&quot;&gt;&lt;a href=&quot;#Pytorch学习-4&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_4&quot;&gt;&lt;/a&gt;Pytorch学习_4&lt;/h1&gt;&lt;p&gt;在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装&lt;/p&gt;</summary>
@@ -42,7 +42,7 @@
     <link href="https://feipiao594.github.io/posts/82714ffc.html"/>
     <id>https://feipiao594.github.io/posts/82714ffc.html</id>
     <published>2025-04-17T01:06:54.000Z</published>
-    <updated>2025-04-17T12:43:48.463Z</updated>
+    <updated>2025-04-17T13:05:05.714Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;Pytorch学习-3&quot;&gt;&lt;a href=&quot;#Pytorch学习-3&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_3&quot;&gt;&lt;/a&gt;Pytorch学习_3&lt;/h1&gt;&lt;p&gt;距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习&lt;/p&gt;</summary>
@@ -63,7 +63,7 @@
     <link href="https://feipiao594.github.io/posts/a39b2865.html"/>
     <id>https://feipiao594.github.io/posts/a39b2865.html</id>
     <published>2025-04-12T13:22:27.000Z</published>
-    <updated>2025-04-17T13:04:47.374Z</updated>
+    <updated>2025-04-17T13:05:05.714Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;a href=&quot;#DRI-Linux图形核心概览&quot; class=&quot;headerlink&quot; title=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;/a&gt;DRI-Linux图形核心概览&lt;/h1&gt;&lt;p&gt;在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备&lt;/p&gt;</summary>

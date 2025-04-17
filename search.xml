@@ -128,6 +128,20 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++模板元-质数序列</title>
     <url>/posts/3187765d.html</url>
     <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
@@ -138,20 +152,6 @@
 <p>输出上述数组的长度</p>
 <p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
 <p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -175,91 +175,6 @@
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CelesteMiaoNet自建群服教程</title>
-    <url>/posts/75894d10.html</url>
-    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
-<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
-<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
-<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
-<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
-<p>下载完毕后，直接运行就可以安装编译工具</p>
-<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
-<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
-<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
-<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
-<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
-<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
-<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
-</blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
-<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
-</ol>
-<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
-<ol>
-<li>服务器默认开放端口号为 17230</li>
-</ol>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
-<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -353,6 +268,91 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CelesteMiaoNet自建群服教程</title>
+    <url>/posts/75894d10.html</url>
+    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
+<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
+<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
+<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
+<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
+<p>下载完毕后，直接运行就可以安装编译工具</p>
+<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
+<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
+<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
+<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
+<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
+<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
+<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
+<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
+</ol>
+<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
+<ol>
+<li>服务器默认开放端口号为 17230</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
+<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -920,27 +920,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_3_所有权</title>
     <url>/posts/f75e4487.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
@@ -980,6 +959,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p><strong>slice是对数据类型中一部分值的不可变引用</strong><br>小小用一下书里给的一些例子展示一下</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">len</span> = s.<span class="title function_ invoke__">len</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..len];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[..];</span><br></pre></td></tr></table></figure>
 <p>由于slice本身就是引用，所以在定义了slice后，对原本值的修改都会被 Rust 编译器检查到。</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1474,27 +1474,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
-<span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -1534,6 +1513,39 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -1643,18 +1655,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>初识量子计算</title>
     <url>/posts/fe2da916.html</url>
     <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
@@ -1727,6 +1727,36 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
 <script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
 <h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>圆盘摩擦力矩</title>
+    <url>/posts/8a033795.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
+<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
+<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
+<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
+<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
+<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
+<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
+<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
+<p>首先计算单个圆棒的</p>
+<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
+<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
+<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
+<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
+<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
+<blockquote>
+<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
+</blockquote>
+<p>小小思考，如是而已，愿君共勉。</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -1823,36 +1853,6 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>圆盘摩擦力矩</title>
-    <url>/posts/8a033795.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
-<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
-<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
-<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
-<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
-<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
-<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
-<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
-<p>首先计算单个圆棒的</p>
-<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
-<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
-<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
-<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
-<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
-<blockquote>
-<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
-</blockquote>
-<p>小小思考，如是而已，愿君共勉。</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
       </categories>
   </entry>
   <entry>
@@ -2079,6 +2079,33 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
+<p>18.024 Multivariable Calculus (Finished)</p>
+<p>18.700 Linear Algebra (Finished)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
+<p>18.100 Real Analysis (<strong>working</strong>)</p>
+<p><strong>Third Part</strong><br>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
+<p>南京大学 OS (<strong>Working</strong>)</p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>排序</title>
     <url>/posts/a444b428.html</url>
     <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
@@ -2120,27 +2147,33 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       </categories>
   </entry>
   <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+    <title>日常碎碎念_1</title>
+    <url>/posts/6b49fcb0.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
 <span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
-<p>18.024 Multivariable Calculus (Finished)</p>
-<p>18.700 Linear Algebra (Finished)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
-<p>18.100 Real Analysis (<strong>working</strong>)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-<p>南京大学 OS (<strong>Working</strong>)</p>
+<ul>
+<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
+<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
+<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
+<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
+<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
+<li>人和人的人际关系真是奇异</li>
+<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
+<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
+<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_2</title>
+    <url>/posts/f52d6913.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
+<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2210,39 +2243,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_1</title>
-    <url>/posts/6b49fcb0.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<ul>
-<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
-<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
-<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
-<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
-<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
-<li>人和人的人际关系真是奇异</li>
-<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
-<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
-<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_2</title>
-    <url>/posts/f52d6913.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
-<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
