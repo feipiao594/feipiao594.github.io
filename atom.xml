@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-03-15T14:05:26.252Z</updated>
+  <updated>2025-04-17T13:04:16.932Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,69 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Pytorch学习_4</title>
+    <link href="https://feipiao594.github.io/posts/1c15da5f.html"/>
+    <id>https://feipiao594.github.io/posts/1c15da5f.html</id>
+    <published>2025-04-17T07:53:52.000Z</published>
+    <updated>2025-04-17T13:04:16.932Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Pytorch学习-4&quot;&gt;&lt;a href=&quot;#Pytorch学习-4&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_4&quot;&gt;&lt;/a&gt;Pytorch学习_4&lt;/h1&gt;&lt;p&gt;在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Pytorch学习_3</title>
+    <link href="https://feipiao594.github.io/posts/82714ffc.html"/>
+    <id>https://feipiao594.github.io/posts/82714ffc.html</id>
+    <published>2025-04-17T01:06:54.000Z</published>
+    <updated>2025-04-17T12:43:48.463Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;Pytorch学习-3&quot;&gt;&lt;a href=&quot;#Pytorch学习-3&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_3&quot;&gt;&lt;/a&gt;Pytorch学习_3&lt;/h1&gt;&lt;p&gt;距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
+    
+    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <link href="https://feipiao594.github.io/posts/a39b2865.html"/>
+    <id>https://feipiao594.github.io/posts/a39b2865.html</id>
+    <published>2025-04-12T13:22:27.000Z</published>
+    <updated>2025-04-17T13:04:47.374Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;a href=&quot;#DRI-Linux图形核心概览&quot; class=&quot;headerlink&quot; title=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;/a&gt;DRI-Linux图形核心概览&lt;/h1&gt;&lt;p&gt;在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>CelesteMiaoNet自建群服教程</title>
@@ -358,67 +421,6 @@
     <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
     
     <category term="单片机" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Pytorch学习_2</title>
-    <link href="https://feipiao594.github.io/posts/f5767f6a.html"/>
-    <id>https://feipiao594.github.io/posts/f5767f6a.html</id>
-    <published>2023-10-02T16:00:00.000Z</published>
-    <updated>2024-10-27T07:59:34.607Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Pytorch学习-2&quot;&gt;&lt;a href=&quot;#Pytorch学习-2&quot; class=&quot;headerlink&quot; title=&quot;Pytorch学习_2&quot;&gt;&lt;/a&gt;Pytorch学习_2&lt;/h1&gt;&lt;p&gt;隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>使用说明之qblog批处理</title>
-    <link href="https://feipiao594.github.io/posts/64b84f95.html"/>
-    <id>https://feipiao594.github.io/posts/64b84f95.html</id>
-    <published>2023-09-25T16:00:00.000Z</published>
-    <updated>2024-11-01T08:14:34.565Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;使用说明之qblog批处理&quot;&gt;&lt;a href=&quot;#使用说明之qblog批处理&quot; class=&quot;headerlink&quot; title=&quot;使用说明之qblog批处理&quot;&gt;&lt;/a&gt;使用说明之qblog批处理&lt;/h1&gt;&lt;p&gt;在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以&lt;code&gt;README.md&lt;/code&gt;显示的，在这里再发一遍，写成一篇blog&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Project_Tools" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/"/>
-    
-    <category term="Another" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Another/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <link href="https://feipiao594.github.io/posts/f38b0ecb.html"/>
-    <id>https://feipiao594.github.io/posts/f38b0ecb.html</id>
-    <published>2023-08-07T16:00:00.000Z</published>
-    <updated>2024-10-27T08:07:04.511Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;a href=&quot;#广义Fouier变换与Laplace变换&quot; class=&quot;headerlink&quot; title=&quot;广义Fouier变换与Laplace变换&quot;&gt;&lt;/a&gt;广义Fouier变换与Laplace变换&lt;/h1&gt;&lt;p&gt;这一篇记录广义函数的Fouier变换与Laplace变换的定义&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
     
     
   </entry>

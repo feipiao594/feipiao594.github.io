@@ -19,20 +19,6 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -160,6 +146,20 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++模板元编程</title>
     <url>/posts/9244e40f.html</url>
     <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
@@ -175,6 +175,91 @@
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CelesteMiaoNet自建群服教程</title>
+    <url>/posts/75894d10.html</url>
+    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
+<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
+<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
+<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
+<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
+<p>下载完毕后，直接运行就可以安装编译工具</p>
+<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
+<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
+<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
+<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
+<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
+<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
+<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
+<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
+</ol>
+<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
+<ol>
+<li>服务器默认开放端口号为 17230</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
+<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -271,91 +356,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CelesteMiaoNet自建群服教程</title>
-    <url>/posts/75894d10.html</url>
-    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
-<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
-<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
-<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
-<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
-<p>下载完毕后，直接运行就可以安装编译工具</p>
-<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
-<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
-<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
-<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
-<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
-<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
-<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
-</blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
-<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
-</ol>
-<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
-<ol>
-<li>服务器默认开放端口号为 17230</li>
-</ol>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
-<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -391,6 +391,19 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+<p>TODO，预计3周内完成</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -629,6 +642,73 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_3</title>
+    <url>/posts/82714ffc.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-3"><a href="#Pytorch学习-3" class="headerlink" title="Pytorch学习_3"></a>Pytorch学习_3</h1><p>距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习</p>
+<span id="more"></span>
+<h2 id="一些变化"><a href="#一些变化" class="headerlink" title="一些变化"></a>一些变化</h2><p>我并不是很喜欢 AI ，感觉大家都过于看重 AI 了，其实它也就是一个普普通通的工具罢了，而且使用的技术入门十分容易，并没有大家想象的那么高深，它不是一个万能钥匙，能开世界上任何一扇门<br>中文互联网上有太多 pytorch 的资料了，但是这些资料大多都不止是在讲 pytorch 本身，他们大多有一个”利好初学者”的标签，但是往往这时候意味着他们对 pytorch 本身这个库的诠释完全不足，所以最近我选择了直接去看 pytorch 的官方文档，总算是总结出来了一些东西。</p>
+<h2 id="Tensor-的一些新理解"><a href="#Tensor-的一些新理解" class="headerlink" title="Tensor 的一些新理解"></a>Tensor 的一些新理解</h2><p>pytorch 里面我个人认为最重要的库就是 Tensor 库，它定义了 Tensor 和其他一系列和 Tensor 计算有关的函数。但 Tensor 这个名字很有趣，它来自于数学，它的标准中文译名叫<strong>张量</strong>，在中文互联网(bing)上搜索 Tensor ，你得到的前几条信息都是深度学习 pytorch 里的 Tensor ，但是你如果搜索它的中文名张量，你得到的就是数学和物理里的那个张量，这很有趣了 :)</p>
+<blockquote>
+<p>我个人认为 Tensor 是纯纯的名词污染，我并不认为这个东西它是一个张量在欧式空间上的矩阵表示，即使它确实等价，但你不可以用一个东西的片面去描述一个东西，就像，还有些朋友认为它和 numpy 里的数组之间最大的差别是它可以交给 GPU 去处理所以要取一个和数组不一样的高大上的名字，但我作为一个 C/C++ 程序员，成天能和底层打交道，觉得这个纯是扯了</p>
+</blockquote>
+<p>言归正传，在我看来 Tensor 和普通的n维数组最大的差别是，Tensor 中有一个计算图累加的概念，简单来说，Tensor 这个类中有一个成员变量”存储”了得到这个 Tensor 通过了什么运算，这个就是计算图，你使用的 Tensor 只会调用 pytorch 里的 Tensor 数学运算函数进行运算，原因是这些数学运算函数不止做了 Tensor 的运算，他们同时承担了这个成员变量的计算图计算的内容，而如果你自己实现一个 Tensor 的运算，你就要手动去实现这个计算图拼合的行为。</p>
+<p>懵懵的？举个例子，<code>torch.matmul</code> 是 <code>Tensor</code> 的乘法，在上一章我们讲过，事实上 Tensor 的运算都是<strong>输入(单个或者多个) Tensor 输出 Tensor 的函数</strong>，对于乘法，它实质上会提取输入的两个 <code>Tensor</code> 里面成员变量存储的计算图，用一个乘号把他们相连，同时数值也会被相乘，最后输出的 Tensor 就是一个数值是前两个 Tensor 计算的结果，同时计算图是前两个 Tensor 的计算图加一个乘号拼合的结果</p>
+<h3 id="看看-Tensor-机理"><a href="#看看-Tensor-机理" class="headerlink" title="看看 Tensor 机理"></a>看看 Tensor 机理</h3><p>你也许会好奇，口说无凭，Tensor 在 pytorch 上的原文就是说的不同于 numpy 的 ndarrays 之处就只是可以在 GPU 或其他硬件加速器上运行:</p>
+<blockquote>
+<p>Tensors are similar to NumPy’s ndarrays, <strong>except that Tensors can run on GPUs or other hardware accelerators</strong>. In fact, Tensors and NumPy arrays can often share the same underlying memory, eliminating the need to copy data (see Bridge with NumPy). Tensors are also optimized for automatic differentiation (we’ll see more about that later in the Autograd section). If you’re familiar with ndarrays, you’ll be right at home with the Tensor API. If not, follow along! (<a href="https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html">https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html</a>)</p>
+</blockquote>
+<p>以及看看文档里说的 Tensor 的成员变量</p>
+<blockquote>
+<p>In PyTorch, a regular Tensor is a multi-dimensional array that is defined by the following components:</p>
+<blockquote>
+<p><strong>Storage</strong>: The actual data of the Tensor, stored as a contiguous, one-dimensional array of bytes.<br><strong>dtype</strong>: The data type of the elements in the Tensor, such as torch.float32 or torch.int64.<br><strong>shape</strong>: A tuple indicating the size of the Tensor in each dimension.<br><strong>Stride</strong>: The step size needed to move from one element to the next in each dimension.<br><strong>Offset</strong>: The starting point in the storage from which the Tensor data begins. This will usually be 0 for newly created Tensors.</p>
+</blockquote>
+<p>These components together define the structure and data of a Tensor, with the storage holding the actual data and the rest serving as metadata.<br>(<a href="https://pytorch.org/docs/stable/storage.html">https://pytorch.org/docs/stable/storage.html</a>)</p>
+</blockquote>
+<p>这压根没提到计算图啊，博主你这是给我们干哪来了，这还是 Tensor 么，别急，让我们深入代码看看实际的机理来佐证我们刚刚说的话</p>
+<p>首先看 Python 侧的 Tensor 定义，发现它继承自一个 <code>torch._C.TensorBase</code> ，同时追踪观察 <code>torch.matmul</code> 发现追踪到了一个 <code>.pyi</code> 的文件里，所以其实现明显不是 python 实现的，其实实际上它和 Tensor 都是通过 PyBind11 绑定到 C++ 的。让我们来看看 C++ 里它是怎么实现的</p>
+<p>相关的文件有</p>
+<ul>
+<li><code>aten/src/ATen/core/Tensor.h</code></li>
+<li><code>aten/src/ATen/core/Tensor.cpp</code></li>
+<li><code>aten/src/ATen/core/TensorBase.h</code></li>
+</ul>
+<p>在 TensoBase 里有一个这样的成员变量<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">c10::intrusive_ptr&lt;TensorImpl, UndefinedTensorImpl&gt; impl_;</span><br></pre></td></tr></table></figure></p>
+<p>在这里提到的 <code>TensorImpl</code> 中，有一大段话描述了下面这个成员变量，这就是存储计算图的实际指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;c10::AutogradMetaInterface&gt; autograd_meta_ = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+<p>在上面的注释当中你可以知道 <code>autograd_meta_</code> 指向了和梯度有关的信息，比如 <code>grad_fn</code></p>
+<p>你自己构造的 Tensor 是计算图中的叶子节点，它的grad_fn 为 None</p>
+<p>这就是计算图的存储，可想而知，其实计算的函数会更新这个 Tensor 的计算图，而 Tensor 的核心其实就是这个在 C++ 侧没被文档所写出来的计算图相关的成员变量，当你计算梯度的时候，正是查看了这个成员变量的信息，因而能够计算出梯度来，所以能计算梯度的也是 Tensor</p>
+<blockquote>
+<p>如果要我给 Tensor 下一个定义的话，那么我会说，<strong>Tensor 就是一个保存了历史计算方式的多维数组类，同时其有在 CPU 或其他来加速存储的能力</strong><br>其实在 GPU 上跑个人感觉完全不是一个核心的概念值得多言，难道计算机图形学里的 shaders 算的那些东西都是 Tensor 吗</p>
+</blockquote>
+<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>这篇博客的另一位贡献者 Github@besthope-official ，一开始是他的探索才让我研究这个比较容易，这份博客也有他的一份力</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_4</title>
+    <url>/posts/1c15da5f.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-4"><a href="#Pytorch学习-4" class="headerlink" title="Pytorch学习_4"></a>Pytorch学习_4</h1><p>在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装</p>
+<span id="more"></span>
+<h2 id="相关的概念"><a href="#相关的概念" class="headerlink" title="相关的概念"></a>相关的概念</h2><p><code>nn.Parameter</code>，<code>nn.forward</code>，<code>nn.Module</code><br>我一开始学的时候觉得这些东西好复杂，一点都没有章法，我自己学习的时候时常会想，如果使用 Rust 里的 Trait 概念或者 Haskell 的 TypeClass 是不是能把它描述的更清楚一些，但是初学者友好的文档并不会告诉我这些。<br>在看完 Pytorch 的官方文档后我终于看明白了<br>关于看完 Pytorch 官方文档后一个上午写出来的一个手写数字识别 HelloWorld ：<a href="https://github.com/feipiao594/mnist_numrecg">https://github.com/feipiao594/mnist_numrecg</a></p>
+<h2 id="nn-Module"><a href="#nn-Module" class="headerlink" title="nn.Module"></a><code>nn.Module</code></h2><p>这是一个对 Tensor 的封装与管理函数，你需要实现的函数有两个 <code>__init__</code> 与 <code>forward</code> 函数，继承自 <code>nn.Module</code> 的层或者网络，有一个内秉的 parameter 集合，在 <code>__init__</code> 里面使用 <code>nn.Parameter</code> 就会把这个变量的引用交给这个 parameter 集合，如果你使用 <code>nn.Linear()</code> 里面也有 <code>nn.Parameter</code> 也会自动注册进去，这个函数就是起到这样的一个作用，同时因为他指定的是要被学习的参数，所以他也会把你输入进去的 Tensor 的 <code>require_grad</code> 变成 false。<br><code>forward</code> 函数就是数值前向传播，就把在 <code>__init__</code> 定义的计算方法拿出来对输入的值运算一下 </p>
+<h2 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h2><p>举个例子<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure><br><code>model.parameters()</code> 就是我们刚刚说到的 <code>nn.Module</code> 的子类有一个内秉的 parameter 集合，你可以通过这个方法传给优化器进行注册</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> batch, (X, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">        <span class="comment"># Compute prediction and loss</span></span><br><span class="line">        X, y = X.to(device), y.to(device)</span><br><span class="line">        pred = model(X)</span><br><span class="line">        loss = loss_fn(pred, y)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Backpropagation</span></span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
+<p>具体使用时格式非常固定，loss 函数计算误差最后输出的就还是一个 Tensor ，其实里面还是保留计算图的，<code>loss.backward()</code> 就是用 Tensor 的 backward 把所有要学习的参数的梯度算出来并且存储在那些参数的成员变量里(毕竟参数也是 Tensor 嘛，它有 grad 成员变量作为他的梯度值很正常)，接着调用 <code>optimizer.step()</code> 来读取注册的这些变量的 grad 并执行优化，所以优化器和网络就完全解离，其实核心仍然在 Tensor 的梯度运算上</p>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>听说 pytorch 已经很少有人像这样写网络了，大家都用 lightning ，后面有空我也会尝试一下的</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1039,6 +1119,32 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_8_泛型</title>
+    <url>/posts/bdd7a1b0.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-8-泛型"><a href="#Rust-Chapter-8-泛型" class="headerlink" title="Rust_Chapter_8_泛型"></a>Rust_Chapter_8_泛型</h1><p>泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具</p>
+<span id="more"></span>
+<blockquote>
+<p>关于: 这个系列一开始是帮我学习 Rust 的，但时间拖的有些长了，我也不再是初学者了，但我没有将事情做好一半就停下的习惯，就慢慢把它写完吧，说不定到时候还能在前面的内容添加一些自己的理解，不过短期内还是以学习笔记为主吧</p>
+</blockquote>
+<h2 id="在函数定义中使用泛型"><a href="#在函数定义中使用泛型" class="headerlink" title="在函数定义中使用泛型"></a>在函数定义中使用泛型</h2><p>同 C++ 中的泛型一样，如果要在函数体中使用参数，就必须在函数签名中声明它的名字，好让编译器知道这个名字指代的是什么。同理，当在函数签名中使用一个类型参数时，必须在使用它之前就声明它。类型参数声明位于函数名称与参数列表中间的尖括号 &lt;&gt; </p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">largest</span>&lt;T&gt;(list: &amp;[T]) <span class="punctuation">-&gt;</span> &amp;T &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结构体，枚举中的泛型"><a href="#结构体，枚举中的泛型" class="headerlink" title="结构体，枚举中的泛型"></a>结构体，枚举中的泛型</h2><p><strong>结构体&amp;方法的泛型</strong><br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Point&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">x</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;T &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">p</span> = Point &#123; x: <span class="number">5</span>, y: <span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;p.x = &#123;&#125;&quot;</span>, p.<span class="title function_ invoke__">x</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然定义方法时你也可以针对一个具体的从泛型确定的类型来定义，专业术语为<strong>泛型指定限制</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">Point</span>&lt;<span class="type">f32</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">distance_from_origin</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">f32</span> &#123;</span><br><span class="line">        (<span class="keyword">self</span>.x.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>) + <span class="keyword">self</span>.y.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>)).<span class="title function_ invoke__">sqrt</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>结构体定义中的泛型类型参数并不总是与结构体方法签名中使用的泛型是同一类型。</p>
+</blockquote>
+<p><strong>枚举的泛型</strong></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Result 就是一个很好的例子</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T, E&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关于实现"><a href="#关于实现" class="headerlink" title="关于实现"></a>关于实现</h2><p>仍然和 C++ 的模板一致，在编译期 Rust 编译器会根据具体使用到的代码，根据泛型实例化一个具体的实现</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_9_Trait</title>
     <url>/posts/fa0fbc5d.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-9-Trait"><a href="#Rust-Chapter-9-Trait" class="headerlink" title="Rust_Chapter_9_Trait"></a>Rust_Chapter_9_Trait</h1><p>Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为<strong>接口</strong>(interfaces)的功能，虽然有一些不同。</p>
@@ -1065,32 +1171,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 </blockquote>
 <h2 id="有条件的实现方法"><a href="#有条件的实现方法" class="headerlink" title="有条件的实现方法"></a>有条件的实现方法</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fmt::Display;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Pair</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Pair&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">new</span>(x: T, y: T) <span class="punctuation">-&gt;</span> <span class="keyword">Self</span> &#123;</span><br><span class="line">        <span class="keyword">Self</span> &#123; x, y &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T: Display + <span class="built_in">PartialOrd</span>&gt; Pair&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">cmp_display</span>(&amp;<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.x &gt;= <span class="keyword">self</span>.y &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;The largest member is x = &#123;&#125;&quot;</span>, <span class="keyword">self</span>.x);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;The largest member is y = &#123;&#125;&quot;</span>, <span class="keyword">self</span>.y);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这有点像 C++ 偏特化，可以对任何实现了特定 trait 的类型有条件地实现 trait。对任何满足特定 trait bound 的类型实现 trait 被称为 blanket implementations，它们被广泛的用于 Rust 标准库中。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_8_泛型</title>
-    <url>/posts/bdd7a1b0.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-8-泛型"><a href="#Rust-Chapter-8-泛型" class="headerlink" title="Rust_Chapter_8_泛型"></a>Rust_Chapter_8_泛型</h1><p>泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具</p>
-<span id="more"></span>
-<blockquote>
-<p>关于: 这个系列一开始是帮我学习 Rust 的，但时间拖的有些长了，我也不再是初学者了，但我没有将事情做好一半就停下的习惯，就慢慢把它写完吧，说不定到时候还能在前面的内容添加一些自己的理解，不过短期内还是以学习笔记为主吧</p>
-</blockquote>
-<h2 id="在函数定义中使用泛型"><a href="#在函数定义中使用泛型" class="headerlink" title="在函数定义中使用泛型"></a>在函数定义中使用泛型</h2><p>同 C++ 中的泛型一样，如果要在函数体中使用参数，就必须在函数签名中声明它的名字，好让编译器知道这个名字指代的是什么。同理，当在函数签名中使用一个类型参数时，必须在使用它之前就声明它。类型参数声明位于函数名称与参数列表中间的尖括号 &lt;&gt; </p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">largest</span>&lt;T&gt;(list: &amp;[T]) <span class="punctuation">-&gt;</span> &amp;T &#123;...&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="结构体，枚举中的泛型"><a href="#结构体，枚举中的泛型" class="headerlink" title="结构体，枚举中的泛型"></a>结构体，枚举中的泛型</h2><p><strong>结构体&amp;方法的泛型</strong><br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Point</span>&lt;T&gt; &#123;</span><br><span class="line">    x: T,</span><br><span class="line">    y: T,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span>&lt;T&gt; Point&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">x</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> &amp;T &#123;</span><br><span class="line">        &amp;<span class="keyword">self</span>.x</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">p</span> = Point &#123; x: <span class="number">5</span>, y: <span class="number">10</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;p.x = &#123;&#125;&quot;</span>, p.<span class="title function_ invoke__">x</span>());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当然定义方法时你也可以针对一个具体的从泛型确定的类型来定义，专业术语为<strong>泛型指定限制</strong></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">impl</span> <span class="title class_">Point</span>&lt;<span class="type">f32</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">distance_from_origin</span>(&amp;<span class="keyword">self</span>) <span class="punctuation">-&gt;</span> <span class="type">f32</span> &#123;</span><br><span class="line">        (<span class="keyword">self</span>.x.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>) + <span class="keyword">self</span>.y.<span class="title function_ invoke__">powi</span>(<span class="number">2</span>)).<span class="title function_ invoke__">sqrt</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>结构体定义中的泛型类型参数并不总是与结构体方法签名中使用的泛型是同一类型。</p>
-</blockquote>
-<p><strong>枚举的泛型</strong></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Result 就是一个很好的例子</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T, E&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="关于实现"><a href="#关于实现" class="headerlink" title="关于实现"></a>关于实现</h2><p>仍然和 C++ 的模板一致，在编译期 Rust 编译器会根据具体使用到的代码，根据泛型实例化一个具体的实现</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1139,6 +1219,76 @@ F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathb
 G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
 <script type="math/tex; mode=display">
 \int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>stokes公式</title>
+    <url>/posts/7fc7eed7.html</url>
+    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
+<span id="more"></span>
+<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
+<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+</blockquote>
+<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
+<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
+<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
+<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
+<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
+<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
+<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
+</ul>
+<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
+<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
+<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
+<blockquote>
+<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
+</blockquote>
+<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
+<ul>
+<li>恰当形式<strong>一定是</strong>闭形式</li>
+<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
+<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
+</blockquote>
+</li>
+</ul>
+<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
+<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
+<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
+<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
+<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
+<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
+<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
+<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
+<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
+<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
+<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
+<ul>
+<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
+<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
+</ul>
+<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
+<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
+<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
+<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
+<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
+<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
+<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
+<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
+<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
+<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
+]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
@@ -1233,76 +1383,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>stokes公式</title>
-    <url>/posts/7fc7eed7.html</url>
-    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
-<span id="more"></span>
-<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
-<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
-<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
-</blockquote>
-<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
-<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
-<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
-<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
-<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
-<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
-<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
-</ul>
-<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
-<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
-<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
-<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
-<blockquote>
-<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
-</blockquote>
-<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
-<ul>
-<li>恰当形式<strong>一定是</strong>闭形式</li>
-<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
-<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
-</blockquote>
-</li>
-</ul>
-<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
-<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
-<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
-<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
-<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
-<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
-<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
-<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
-<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
-<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
-<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
-<ul>
-<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
-<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
-</ul>
-<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
-<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
-<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
-<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
-<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
-<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
-<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
-<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
-<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
-<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1654,36 +1734,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>圆盘摩擦力矩</title>
-    <url>/posts/8a033795.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
-<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
-<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
-<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
-<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
-<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
-<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
-<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
-<p>首先计算单个圆棒的</p>
-<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
-<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
-<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
-<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
-<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
-<blockquote>
-<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
-</blockquote>
-<p>小小思考，如是而已，愿君共勉。</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
     <title>在Gentoo上用KVM玩Mac</title>
     <url>/posts/ebefb94c.html</url>
     <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
@@ -1773,6 +1823,77 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>圆盘摩擦力矩</title>
+    <url>/posts/8a033795.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
+<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
+<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
+<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
+<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
+<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
+<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
+<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
+<p>首先计算单个圆棒的</p>
+<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
+<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
+<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
+<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
+<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
+<blockquote>
+<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
+</blockquote>
+<p>小小思考，如是而已，愿君共勉。</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>广义Fouier变换与Laplace变换</title>
+    <url>/posts/f38b0ecb.html</url>
+    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
+<span id="more"></span>
+<hr>
+<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
+<script type="math/tex; mode=display">
+\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
+<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
+</blockquote>
+<p>卷积运算满足结合律，交换律，分配律</p>
+<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
+<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
+<hr>
+<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
+<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
+</blockquote>
+<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
+<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
+<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
+<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
+<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
+\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
+<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
+<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
+<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
+<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
+<script type="math/tex; mode=display">
+\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
+<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
+<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
+<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -1888,47 +2009,6 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <url>/posts/f38b0ecb.html</url>
-    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
-<span id="more"></span>
-<hr>
-<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
-<script type="math/tex; mode=display">
-\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
-<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
-</blockquote>
-<p>卷积运算满足结合律，交换律，分配律</p>
-<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
-<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
-<hr>
-<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
-<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
-</blockquote>
-<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
-<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
-<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
-<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
-<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
-\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
-<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
-<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
-<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
-<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
-<script type="math/tex; mode=display">
-\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
-<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
-<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
-<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
-      </categories>
-  </entry>
-  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -1999,33 +2079,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
-<p>18.024 Multivariable Calculus (Finished)</p>
-<p>18.700 Linear Algebra (Finished)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
-<p>18.100 Real Analysis (<strong>working</strong>)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-<p>南京大学 OS (<strong>Working</strong>)</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
     <title>排序</title>
     <url>/posts/a444b428.html</url>
     <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
@@ -2064,6 +2117,33 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
+<p>18.024 Multivariable Calculus (Finished)</p>
+<p>18.700 Linear Algebra (Finished)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
+<p>18.100 Real Analysis (<strong>working</strong>)</p>
+<p><strong>Third Part</strong><br>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
+<p>南京大学 OS (<strong>Working</strong>)</p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
