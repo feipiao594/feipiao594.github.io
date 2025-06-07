@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-04-17T13:05:05.714Z</updated>
+  <updated>2025-06-07T17:48:16.640Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>日常碎碎念_4</title>
+    <link href="https://feipiao594.github.io/posts/1b23083f.html"/>
+    <id>https://feipiao594.github.io/posts/1b23083f.html</id>
+    <published>2025-06-07T16:43:29.000Z</published>
+    <updated>2025-06-07T17:48:16.640Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;日常碎碎念-4&quot;&gt;&lt;a href=&quot;#日常碎碎念-4&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_4&quot;&gt;&lt;/a&gt;日常碎碎念_4&lt;/h1&gt;&lt;p&gt;好久没更新了，来写点近况吧&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Pytorch学习_4</title>
@@ -63,7 +80,7 @@
     <link href="https://feipiao594.github.io/posts/a39b2865.html"/>
     <id>https://feipiao594.github.io/posts/a39b2865.html</id>
     <published>2025-04-12T13:22:27.000Z</published>
-    <updated>2025-04-17T13:05:05.714Z</updated>
+    <updated>2025-05-02T03:54:59.833Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;a href=&quot;#DRI-Linux图形核心概览&quot; class=&quot;headerlink&quot; title=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;/a&gt;DRI-Linux图形核心概览&lt;/h1&gt;&lt;p&gt;在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备&lt;/p&gt;</summary>
@@ -402,25 +419,6 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>初识stm32</title>
-    <link href="https://feipiao594.github.io/posts/fc4ef914.html"/>
-    <id>https://feipiao594.github.io/posts/fc4ef914.html</id>
-    <published>2023-10-16T16:00:00.000Z</published>
-    <updated>2024-10-27T08:06:19.923Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;初识stm32&quot;&gt;&lt;a href=&quot;#初识stm32&quot; class=&quot;headerlink&quot; title=&quot;初识stm32&quot;&gt;&lt;/a&gt;初识stm32&lt;/h1&gt;&lt;p&gt;其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="单片机" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
     
     
   </entry>
