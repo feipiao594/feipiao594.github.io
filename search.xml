@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+    <title>51单片机初步印象</title>
+    <url>/posts/69d698d4.html</url>
+    <content><![CDATA[<h1 id="51单片机初步印象"><a href="#51单片机初步印象" class="headerlink" title="51单片机初步印象"></a>51单片机初步印象</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少<br>51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点<br><span id="more"></span></p>
+<h2 id="关于51单片机的中断向量表"><a href="#关于51单片机的中断向量表" class="headerlink" title="关于51单片机的中断向量表"></a>关于51单片机的中断向量表</h2><p>对于51单片机来说，中断向量表的映射已经写死在了内置的ROM中，直接<code>org &lt;address&gt;</code>写入中断函数跳转地址就可以使用中断，而stm32则可以支持用户修改中断向量表</p>
+<h2 id="关于C51的语法障碍"><a href="#关于C51的语法障碍" class="headerlink" title="关于C51的语法障碍"></a>关于C51的语法障碍</h2><p>C51编程语言相比于C语言新添加了四种数据类型，<code>bit</code>，<code>sbit</code>等等，其中有些引脚对应的名称<code>P2^1</code>(P2.1管脚)，一开始我只是以为C51中把<code>^</code>当做名称的一部分，但vscode会把它当做异或运算符，所以vscode会爆红</p>
+<p>后来发现问题没有那么简单</p>
+<p><code>sft</code>，<code>sbit</code>这种东西的语法似乎是<strong>特殊的</strong>，<strong>不符合语义</strong>的。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P1 = <span class="number">0x90</span>;</span><br></pre></td></tr></table></figure><br>在这句语句之后，是把<code>P1</code>看作<code>0x90</code>处的8位寄存器，要想修改这个寄存器里的值<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">P1 =<span class="number">0xff</span>;</span><br></pre></td></tr></table></figure><br>此刻<code>P1</code>在声明时是<strong>地址</strong>，但修改时又赋值为<strong>数值</strong><br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>这一句话就更加显得奇怪，为什么这里<code>P1</code>为<strong>地址</strong>而不是<strong>数值</strong>呢，就感觉是狗皮膏药打了个补丁，不过既然它已经被广泛应用了，就直接当做一个特殊情况好了。即<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>类似这样的<strong>特殊声明</strong>会自动修改等号后^的意义，此时不应该再是异或，而是特殊的引脚号的记号，在声明时候的<strong>特殊定义</strong>下，这些P1也是被特殊化为地址。</p>
+<p>只能这样解释这种行为了，这个语义问题也是引起vscode报错的根本原因吧，所以不管怎么改，怎么样把它看成<strong>typedef的嵌套</strong>都会爆红(悲)</p>
+<p>也许这就是为什么周围的人入门都选择的是stm32的原因吧，一来可以使用更优秀的文本编辑器，又不会引起语法上的误解，还能有更强大的功能</p>
+<h2 id="关于VCC、GND的符号"><a href="#关于VCC、GND的符号" class="headerlink" title="关于VCC、GND的符号"></a>关于VCC、GND的符号</h2><p>在电路里，VCC代表电源正极，而GND是逻辑上的接地，其实不一定接地，它是电源负极,直观感受，看上去VCC和GND其实是唯一的？VCC只在中间起供能和”比较”的作用，或者一切的开头起功能作用，端口有一系列的保护措施使得最后电平不易被改写？<br>除了VCC，GND另外的似乎也就是可以<strong>看作</strong>特殊情况下的VCC和GND？现在也只能够这样粗浅的理解了</p>
+<h2 id="关于51单片机的GPIO"><a href="#关于51单片机的GPIO" class="headerlink" title="关于51单片机的GPIO"></a>关于51单片机的GPIO</h2><p>GPIO，对于上图所示的准标准输入输出，和51单片机是一致的，其输出时候是利用了锁存器的功能，锁死了电位，而对于输入的时候，是不写入锁存器的，将锁存器写入1，才能读取，这里用的上拉电阻是默认它那个点位是高电位，但是如果直接连接地的话就可以是低电位了</p>
 ]]></content>
       <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -124,21 +128,17 @@
       </categories>
   </entry>
   <entry>
-    <title>51单片机初步印象</title>
-    <url>/posts/69d698d4.html</url>
-    <content><![CDATA[<h1 id="51单片机初步印象"><a href="#51单片机初步印象" class="headerlink" title="51单片机初步印象"></a>51单片机初步印象</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少<br>51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点<br><span id="more"></span></p>
-<h2 id="关于51单片机的中断向量表"><a href="#关于51单片机的中断向量表" class="headerlink" title="关于51单片机的中断向量表"></a>关于51单片机的中断向量表</h2><p>对于51单片机来说，中断向量表的映射已经写死在了内置的ROM中，直接<code>org &lt;address&gt;</code>写入中断函数跳转地址就可以使用中断，而stm32则可以支持用户修改中断向量表</p>
-<h2 id="关于C51的语法障碍"><a href="#关于C51的语法障碍" class="headerlink" title="关于C51的语法障碍"></a>关于C51的语法障碍</h2><p>C51编程语言相比于C语言新添加了四种数据类型，<code>bit</code>，<code>sbit</code>等等，其中有些引脚对应的名称<code>P2^1</code>(P2.1管脚)，一开始我只是以为C51中把<code>^</code>当做名称的一部分，但vscode会把它当做异或运算符，所以vscode会爆红</p>
-<p>后来发现问题没有那么简单</p>
-<p><code>sft</code>，<code>sbit</code>这种东西的语法似乎是<strong>特殊的</strong>，<strong>不符合语义</strong>的。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P1 = <span class="number">0x90</span>;</span><br></pre></td></tr></table></figure><br>在这句语句之后，是把<code>P1</code>看作<code>0x90</code>处的8位寄存器，要想修改这个寄存器里的值<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">P1 =<span class="number">0xff</span>;</span><br></pre></td></tr></table></figure><br>此刻<code>P1</code>在声明时是<strong>地址</strong>，但修改时又赋值为<strong>数值</strong><br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>这一句话就更加显得奇怪，为什么这里<code>P1</code>为<strong>地址</strong>而不是<strong>数值</strong>呢，就感觉是狗皮膏药打了个补丁，不过既然它已经被广泛应用了，就直接当做一个特殊情况好了。即<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>类似这样的<strong>特殊声明</strong>会自动修改等号后^的意义，此时不应该再是异或，而是特殊的引脚号的记号，在声明时候的<strong>特殊定义</strong>下，这些P1也是被特殊化为地址。</p>
-<p>只能这样解释这种行为了，这个语义问题也是引起vscode报错的根本原因吧，所以不管怎么改，怎么样把它看成<strong>typedef的嵌套</strong>都会爆红(悲)</p>
-<p>也许这就是为什么周围的人入门都选择的是stm32的原因吧，一来可以使用更优秀的文本编辑器，又不会引起语法上的误解，还能有更强大的功能</p>
-<h2 id="关于VCC、GND的符号"><a href="#关于VCC、GND的符号" class="headerlink" title="关于VCC、GND的符号"></a>关于VCC、GND的符号</h2><p>在电路里，VCC代表电源正极，而GND是逻辑上的接地，其实不一定接地，它是电源负极,直观感受，看上去VCC和GND其实是唯一的？VCC只在中间起供能和”比较”的作用，或者一切的开头起功能作用，端口有一系列的保护措施使得最后电平不易被改写？<br>除了VCC，GND另外的似乎也就是可以<strong>看作</strong>特殊情况下的VCC和GND？现在也只能够这样粗浅的理解了</p>
-<h2 id="关于51单片机的GPIO"><a href="#关于51单片机的GPIO" class="headerlink" title="关于51单片机的GPIO"></a>关于51单片机的GPIO</h2><p>GPIO，对于上图所示的准标准输入输出，和51单片机是一致的，其输出时候是利用了锁存器的功能，锁死了电位，而对于输入的时候，是不写入锁存器的，将锁存器写入1，才能读取，这里用的上拉电阻是默认它那个点位是高电位，但是如果直接连接地的话就可以是低电位了</p>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
 ]]></content>
       <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -406,50 +406,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git使用_第2弹</title>
     <url>/posts/2b9af9d8.html</url>
     <content><![CDATA[<h1 id="Git使用-第2弹"><a href="#Git使用-第2弹" class="headerlink" title="Git使用_第2弹"></a>Git使用_第2弹</h1><p>接下来正式进入Git的使用部分，这一弹从 <code>&quot;Pro Git&quot;</code>的第二章开始</p>
@@ -550,6 +506,50 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git last</span></span><br><span class="line">commit 66938dae3329c7aebe598c2246a8e6af90d04646</span><br><span class="line">Author: Josh Goebel &lt;dreamer3@example.com&gt;</span><br><span class="line">Date: Tue Aug 26 19:48:51 2008 +0800</span><br><span class="line">  test for current head</span><br><span class="line">  Signed-off-by: Scott Chacon &lt;schacon@example.com&gt;</span><br></pre></td></tr></table></figure>
 <p>可以看出，Git只是简单地将别名替换为对应的命令。 然而，你可能想要<strong>执行外部命令</strong>，而不是一个 Git 子命令。如果是那样的话，可以在<strong>命令前面加入<code>!</code>符号</strong>。 如果你自己要写一些与Git仓库协作的工具的话，那会很有用。我们现在演示将 git visual 定义为 gitk 的别名：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global alias.visual <span class="string">&#x27;!gitk&#x27;</span></span></span><br></pre></td></tr></table></figure></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一章讲了许多东西，但真正的重头戏还没有开始，下一弹，我们将进入分支模型</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
+<span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -763,6 +763,51 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_2_通用编程概念</title>
+    <url>/posts/896c357a.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
+<span id="more"></span>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
+<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
+<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
+<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
+</ul>
+<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>与C/C++类似，但有几个不同或需要注意的地方</p>
+<ul>
+<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
+<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
+<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
+<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
+</ul>
+<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
+<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
+<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
+<ul>
+<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
+<li>表达式：主要用于计算求值。</li>
+</ul>
+<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
+<ul>
+<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
+<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
+</ul>
+<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
+<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_1_变量</title>
     <url>/posts/2d38ec93.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-1-变量"><a href="#Rust-Chapter-1-变量" class="headerlink" title="Rust_Chapter_1_变量"></a>Rust_Chapter_1_变量</h1><p>这一章节内容主要是Rust的变量</p>
@@ -866,51 +911,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h3 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h3><p>与元组类型不同，数组中的每个值只能够是<strong>相同</strong>的类型，相同的是类型在一开始必须就能推导或者显式声明，而且数组的大小也必须在一开始就确定<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span>:[<span class="type">i32</span>;<span class="number">5</span>] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//显式说明类型以及个数</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//隐式推导</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>特殊用法</strong>，如果想创建一个含有相同值的数组，可以如下简写<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">3</span>;<span class="number">5</span>];<span class="comment">//注意中括号里面是分号</span></span><br></pre></td></tr></table></figure></p>
 <p>访问数组的元素与C/C++一致，即<code>arrayname[index]</code>，如果数组越界访问，也会引起运行时的panic，程序会崩溃退出，十分的<strong>保守与安全</strong>，不像C/C++留下引发一系列的安全问题的隐患</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_2_通用编程概念</title>
-    <url>/posts/896c357a.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
-<span id="more"></span>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
-<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
-<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
-<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
-</ul>
-<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>与C/C++类似，但有几个不同或需要注意的地方</p>
-<ul>
-<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
-<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
-<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
-<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
-</ul>
-<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
-<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
-<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
-<ul>
-<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
-<li>表达式：主要用于计算求值。</li>
-</ul>
-<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
-<ul>
-<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
-<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
-</ul>
-<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
-<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1144,24 +1144,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>CMake的使用</title>
-    <url>/posts/3c5e47f1.html</url>
-    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
-<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
-<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
-<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
-<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
-<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
-<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_9_Trait</title>
     <url>/posts/fa0fbc5d.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-9-Trait"><a href="#Rust-Chapter-9-Trait" class="headerlink" title="Rust_Chapter_9_Trait"></a>Rust_Chapter_9_Trait</h1><p>Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为<strong>接口</strong>(interfaces)的功能，虽然有一些不同。</p>
@@ -1193,6 +1175,94 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CMake的使用</title>
+    <url>/posts/3c5e47f1.html</url>
+    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
+<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
+<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
+<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
+<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
+<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
+<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>stokes公式</title>
+    <url>/posts/7fc7eed7.html</url>
+    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
+<span id="more"></span>
+<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
+<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+</blockquote>
+<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
+<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
+<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
+<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
+<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
+<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
+<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
+</ul>
+<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
+<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
+<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
+<blockquote>
+<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
+</blockquote>
+<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
+<ul>
+<li>恰当形式<strong>一定是</strong>闭形式</li>
+<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
+<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
+</blockquote>
+</li>
+</ul>
+<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
+<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
+<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
+<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
+<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
+<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
+<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
+<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
+<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
+<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
+<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
+<ul>
+<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
+<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
+</ul>
+<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
+<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
+<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
+<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
+<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
+<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
+<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
+<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
+<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
+<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1312,76 +1382,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>stokes公式</title>
-    <url>/posts/7fc7eed7.html</url>
-    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
-<span id="more"></span>
-<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
-<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
-<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
-</blockquote>
-<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
-<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
-<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
-<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
-<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
-<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
-<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
-</ul>
-<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
-<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
-<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
-<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
-<blockquote>
-<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
-</blockquote>
-<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
-<ul>
-<li>恰当形式<strong>一定是</strong>闭形式</li>
-<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
-<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
-</blockquote>
-</li>
-</ul>
-<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
-<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
-<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
-<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
-<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
-<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
-<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
-<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
-<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
-<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
-<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
-<ul>
-<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
-<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
-</ul>
-<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
-<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
-<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
-<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
-<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
-<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
-<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
-<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
-<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
-<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1517,9 +1517,10 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
   <entry>
     <title>关于编译原理的一些哲学想法</title>
     <url>/posts/604cfd1a.html</url>
-    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理失败以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
 <span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2>]]></content>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>TODO</p>
+]]></content>
       <categories>
         <category>CS_计算机</category>
         <category>Basic_principles</category>
@@ -1731,6 +1732,20 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
     <title>圆盘摩擦力矩</title>
     <url>/posts/8a033795.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
@@ -1754,20 +1769,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
 </blockquote>
 <p>小小思考，如是而已，愿君共勉。</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -2436,13 +2437,16 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>所以完全阻塞等待某个资源不行，开个循环询问所有任务的就绪状态也不行那应该怎么办呢</p>
 <h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环。也许你会同早期的我一样，认为这个事情的关键就在于 syscall 阻塞了进程，或者说在这里我更愿意说是线程的活动，那你就绕进了这个局中。</p>
 <p>让我们回来看看我们所需要做到的事情：如果我们要做一个贪吃蛇的小程序，其实最大的点是，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些事情，但是我们忽略了一个事情，那就是计时器事件本身就也是一个IO事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
-<p>如果在 <code>while</code> 里将任务轮询式能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个任务，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理就是，<strong>通过一个阻塞的接口查询所有 IO 任务，如果查询的时候数据已经准备好了，那么就立即返回，如果数据没有准备好就阻塞</strong></p>
+<p>如果在 <code>while</code> 里将任务轮询式能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个任务，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理就是，<strong>通过一个阻塞的接口查询所有 IO 任务，如果查询的时候数据已经准备好了，那么就立即返回，如果数据没有准备好就阻塞</strong>，这一类接口，比较常见的就是 Linux 下的 select/poll/epoll</p>
+<blockquote>
+<p>在我看来，io_uring 这样的接口应该也是如此，但由于我暂时还没研究明白，就先放着当一个特别的例子吧</p>
+</blockquote>
 <p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，这里接口的阻塞并不是程序处理事件意义上的阻塞，接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，必须要让用户态应用程序挂起。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
 <blockquote>
 <p>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</p>
 </blockquote>
 <p>所以看到了么，我们的程序需要高效的处理或者说消费掉任务，这是保证任务不会堆起来，所有任务都能得到处理的前提。所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，而不满足这个条件的程序，一般是那种计算量特别大，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong></p>
-<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>TODO</p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>所以最根本的问题解决了，接下来是要为这个简陋的 <code>while</code> 循环加工一下了，我们需要一个事件分发器来处理这些待加工的任务</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -2586,52 +2590,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>遨游在内存中的硬件启动过程</title>
-    <url>/posts/42db1e6.html</url>
-    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
-<span id="more"></span>
-<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
-<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
-</blockquote>
-<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
-<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
-<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
-<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
-<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
-<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
-<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
-<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
-<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
-<blockquote>
-<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
-</blockquote>
-<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
-<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
-<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
-<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
-<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
-<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
-<ol>
-<li>SEC(安全验证)</li>
-<li>PEI(EFI前期初始化)</li>
-<li>DXE(驱动执行环境)</li>
-<li>BDS(启动设备选择)</li>
-<li>TSL(操作系统加载前期)</li>
-<li>RT(Run Time)</li>
-<li>AL(系统灾难恢复期)</li>
-</ol>
-<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
-<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
-<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -2825,6 +2783,52 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>遨游在内存中的硬件启动过程</title>
+    <url>/posts/42db1e6.html</url>
+    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
+<span id="more"></span>
+<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
+<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
+</blockquote>
+<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
+<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
+<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
+<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
+<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
+<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
+<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
+<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
+<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
+<blockquote>
+<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
+</blockquote>
+<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
+<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
+<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
+<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
+<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
+<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
+<ol>
+<li>SEC(安全验证)</li>
+<li>PEI(EFI前期初始化)</li>
+<li>DXE(驱动执行环境)</li>
+<li>BDS(启动设备选择)</li>
+<li>TSL(操作系统加载前期)</li>
+<li>RT(Run Time)</li>
+<li>AL(系统灾难恢复期)</li>
+</ol>
+<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
+<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
+<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>

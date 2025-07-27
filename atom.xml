@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-07-27T16:19:24.353Z</updated>
+  <updated>2025-07-27T16:23:17.170Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/9b424f3e.html"/>
     <id>https://feipiao594.github.io/posts/9b424f3e.html</id>
     <published>2025-07-26T08:33:39.000Z</published>
-    <updated>2025-07-27T16:19:24.353Z</updated>
+    <updated>2025-07-27T16:23:17.170Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;深入异步与无栈协程通用概念&quot;&gt;&lt;a href=&quot;#深入异步与无栈协程通用概念&quot; class=&quot;headerlink&quot; title=&quot;深入异步与无栈协程通用概念&quot;&gt;&lt;/a&gt;深入异步与无栈协程通用概念&lt;/h1&gt;&lt;p&gt;协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程，而在这里，我们试图从异步最早的历史对协程的工作原理以及协程库要做到什么。&lt;/p&gt;</summary>
@@ -42,10 +42,10 @@
     <link href="https://feipiao594.github.io/posts/604cfd1a.html"/>
     <id>https://feipiao594.github.io/posts/604cfd1a.html</id>
     <published>2025-07-06T14:47:22.000Z</published>
-    <updated>2025-07-06T14:54:58.879Z</updated>
+    <updated>2025-07-27T16:23:54.778Z</updated>
     
     
-    <summary type="html">&lt;h1 id=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;a href=&quot;#关于编译原理的一些哲学想法&quot; class=&quot;headerlink&quot; title=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;/a&gt;关于编译原理的一些哲学想法&lt;/h1&gt;&lt;p&gt;自我学习编译原理失败以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。&lt;/p&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;a href=&quot;#关于编译原理的一些哲学想法&quot; class=&quot;headerlink&quot; title=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;/a&gt;关于编译原理的一些哲学想法&lt;/h1&gt;&lt;p&gt;自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。&lt;/p&gt;</summary>
     
     
     
