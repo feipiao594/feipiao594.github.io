@@ -178,6 +178,48 @@
       </categories>
   </entry>
   <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++模板基础</title>
     <url>/posts/cabf03c1.html</url>
     <content><![CDATA[<h1 id="C-模板基础"><a href="#C-模板基础" class="headerlink" title="C++模板基础"></a>C++模板基础</h1><p>为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容</p>
@@ -271,48 +313,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CelesteMiaoNet自建群服教程</title>
     <url>/posts/75894d10.html</url>
     <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
@@ -356,6 +356,18 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -394,15 +406,47 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <url>/posts/a39b2865.html</url>
-    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
 <span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
       </categories>
   </entry>
   <entry>
@@ -506,50 +550,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git last</span></span><br><span class="line">commit 66938dae3329c7aebe598c2246a8e6af90d04646</span><br><span class="line">Author: Josh Goebel &lt;dreamer3@example.com&gt;</span><br><span class="line">Date: Tue Aug 26 19:48:51 2008 +0800</span><br><span class="line">  test for current head</span><br><span class="line">  Signed-off-by: Scott Chacon &lt;schacon@example.com&gt;</span><br></pre></td></tr></table></figure>
 <p>可以看出，Git只是简单地将别名替换为对应的命令。 然而，你可能想要<strong>执行外部命令</strong>，而不是一个 Git 子命令。如果是那样的话，可以在<strong>命令前面加入<code>!</code>符号</strong>。 如果你自己要写一些与Git仓库协作的工具的话，那会很有用。我们现在演示将 git visual 定义为 gitk 的别名：<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global alias.visual <span class="string">&#x27;!gitk&#x27;</span></span></span><br></pre></td></tr></table></figure></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这一章讲了许多东西，但真正的重头戏还没有开始，下一弹，我们将进入分支模型</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -763,51 +763,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_2_通用编程概念</title>
-    <url>/posts/896c357a.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
-<span id="more"></span>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
-<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
-<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
-<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
-</ul>
-<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>与C/C++类似，但有几个不同或需要注意的地方</p>
-<ul>
-<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
-<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
-<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
-<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
-</ul>
-<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
-<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
-<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
-<ul>
-<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
-<li>表达式：主要用于计算求值。</li>
-</ul>
-<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
-<ul>
-<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
-<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
-</ul>
-<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
-<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_1_变量</title>
     <url>/posts/2d38ec93.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-1-变量"><a href="#Rust-Chapter-1-变量" class="headerlink" title="Rust_Chapter_1_变量"></a>Rust_Chapter_1_变量</h1><p>这一章节内容主要是Rust的变量</p>
@@ -911,6 +866,51 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h3 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h3><p>与元组类型不同，数组中的每个值只能够是<strong>相同</strong>的类型，相同的是类型在一开始必须就能推导或者显式声明，而且数组的大小也必须在一开始就确定<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span>:[<span class="type">i32</span>;<span class="number">5</span>] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//显式说明类型以及个数</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//隐式推导</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>特殊用法</strong>，如果想创建一个含有相同值的数组，可以如下简写<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">3</span>;<span class="number">5</span>];<span class="comment">//注意中括号里面是分号</span></span><br></pre></td></tr></table></figure></p>
 <p>访问数组的元素与C/C++一致，即<code>arrayname[index]</code>，如果数组越界访问，也会引起运行时的panic，程序会崩溃退出，十分的<strong>保守与安全</strong>，不像C/C++留下引发一系列的安全问题的隐患</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_2_通用编程概念</title>
+    <url>/posts/896c357a.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
+<span id="more"></span>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
+<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
+<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
+<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
+</ul>
+<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>与C/C++类似，但有几个不同或需要注意的地方</p>
+<ul>
+<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
+<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
+<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
+<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
+</ul>
+<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
+<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
+<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
+<ul>
+<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
+<li>表达式：主要用于计算求值。</li>
+</ul>
+<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
+<ul>
+<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
+<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
+</ul>
+<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
+<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1196,6 +1196,34 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>n重积分转n次积分问题</title>
+    <url>/posts/622309a6.html</url>
+    <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
+<hr>
+<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
+<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
+<hr>
+<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
+<hr>
+<h2 id="三重积分的“细棒法”和“切片法”"><a href="#三重积分的“细棒法”和“切片法”" class="headerlink" title="三重积分的“细棒法”和“切片法”"></a>三重积分的“细棒法”和“切片法”</h2><p>本质上与上面的n重积分类似，“细棒法”就是说的这种方法，而“切片法”不过就是一下次拍扁两个维度而已。</p>
+<hr>
+<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
+<hr>
+<h2 id="关于n重积分可以拆成n次积分"><a href="#关于n重积分可以拆成n次积分" class="headerlink" title="关于n重积分可以拆成n次积分"></a>关于n重积分可以拆成n次积分</h2><p>这是由<strong>Fubini定理</strong>决定的，定理内容如下：<br>设$f:\mathbb{R}^{2}\rightarrow\mathbb{R}$是绝对可积函数、那么对于几乎每个$y\in\mathbb{R}$，$f(x,y)$是关于$r$在$\mathbb{R}^{2}$上绝对可积的，而且对于几乎每个$z\in\mathbb{R}$，$f(x,y)$是关于，在$\mathbb{R}$上绝对可积的、并且存在绝对可积函数$f:\mathbb{R}\rightarrow\mathbb{R}$以及绝对可积函数$G:\mathbb{R}\rightarrow\mathbb{R}$使得</p>
+<script type="math/tex; mode=display">
+F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathbb{R}$成立，并且</p>
+<script type="math/tex; mode=display">
+G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
+<script type="math/tex; mode=display">
+\int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
     <title>stokes公式</title>
     <url>/posts/7fc7eed7.html</url>
     <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
@@ -1260,34 +1288,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 </ul>
 <p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
 ]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>n重积分转n次积分问题</title>
-    <url>/posts/622309a6.html</url>
-    <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
-<hr>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
-<hr>
-<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
-<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
-<hr>
-<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
-<hr>
-<h2 id="三重积分的“细棒法”和“切片法”"><a href="#三重积分的“细棒法”和“切片法”" class="headerlink" title="三重积分的“细棒法”和“切片法”"></a>三重积分的“细棒法”和“切片法”</h2><p>本质上与上面的n重积分类似，“细棒法”就是说的这种方法，而“切片法”不过就是一下次拍扁两个维度而已。</p>
-<hr>
-<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
-<hr>
-<h2 id="关于n重积分可以拆成n次积分"><a href="#关于n重积分可以拆成n次积分" class="headerlink" title="关于n重积分可以拆成n次积分"></a>关于n重积分可以拆成n次积分</h2><p>这是由<strong>Fubini定理</strong>决定的，定理内容如下：<br>设$f:\mathbb{R}^{2}\rightarrow\mathbb{R}$是绝对可积函数、那么对于几乎每个$y\in\mathbb{R}$，$f(x,y)$是关于$r$在$\mathbb{R}^{2}$上绝对可积的，而且对于几乎每个$z\in\mathbb{R}$，$f(x,y)$是关于，在$\mathbb{R}$上绝对可积的、并且存在绝对可积函数$f:\mathbb{R}\rightarrow\mathbb{R}$以及绝对可积函数$G:\mathbb{R}\rightarrow\mathbb{R}$使得</p>
-<script type="math/tex; mode=display">
-F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathbb{R}$成立，并且</p>
-<script type="math/tex; mode=display">
-G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
-<script type="math/tex; mode=display">
-\int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
@@ -1549,6 +1549,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
     <title>初见流形上的微积分</title>
     <url>/posts/1a81a4ab.html</url>
     <content><![CDATA[<h1 id="初见流形上的微积分"><a href="#初见流形上的微积分" class="headerlink" title="初见流形上的微积分"></a>初见流形上的微积分</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>以本篇笔记记录时我大一的数理能力是无法去完全阅读流形相关的内容的，因此，我只能在此做一个<strong>科普性的导论</strong>。我们会从一个工科生的角度，从流形之前的知识到stokes公式的引出，从而拓展出一个完整的流形上的微积分的概念。<br><span id="more"></span><br>前排提示：文章内容<strong>完全不严谨</strong>，纯粹是出于个人的理解。想要系统学习，建议阅读<strong>Loring W. Tu</strong>的《An Introduction to Manifolds》一书，同时关于本篇文档的排版<strong>措辞仍需修饰</strong>，仍然是一个<strong>不完整</strong>版本</p>
@@ -1652,18 +1664,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -2446,7 +2446,8 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</p>
 </blockquote>
 <p>所以看到了么，我们的程序需要高效的处理或者说消费掉任务，这是保证任务不会堆起来，所有任务都能得到处理的前提。所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，而不满足这个条件的程序，一般是那种计算量特别大，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong></p>
-<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>所以最根本的问题解决了，接下来是要为这个简陋的 <code>while</code> 循环加工一下了，我们需要一个事件分发器来处理这些待加工的任务</p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>所以最根本的问题解决了，接下来是要为这个简陋的 <code>while</code> 循环加工一下了，在这里我们会把我们的程序看成一个在这个循环里接受 OS 回传的事件队列的状态机，我们需要一个机制来处理这些接受并待加工的任务，这时候事件循环的概念就出现了，异步也应运而生。</p>
+<p>TODO</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
