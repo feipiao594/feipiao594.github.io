@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>51单片机初步印象</title>
-    <url>/posts/69d698d4.html</url>
-    <content><![CDATA[<h1 id="51单片机初步印象"><a href="#51单片机初步印象" class="headerlink" title="51单片机初步印象"></a>51单片机初步印象</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少<br>51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点<br><span id="more"></span></p>
-<h2 id="关于51单片机的中断向量表"><a href="#关于51单片机的中断向量表" class="headerlink" title="关于51单片机的中断向量表"></a>关于51单片机的中断向量表</h2><p>对于51单片机来说，中断向量表的映射已经写死在了内置的ROM中，直接<code>org &lt;address&gt;</code>写入中断函数跳转地址就可以使用中断，而stm32则可以支持用户修改中断向量表</p>
-<h2 id="关于C51的语法障碍"><a href="#关于C51的语法障碍" class="headerlink" title="关于C51的语法障碍"></a>关于C51的语法障碍</h2><p>C51编程语言相比于C语言新添加了四种数据类型，<code>bit</code>，<code>sbit</code>等等，其中有些引脚对应的名称<code>P2^1</code>(P2.1管脚)，一开始我只是以为C51中把<code>^</code>当做名称的一部分，但vscode会把它当做异或运算符，所以vscode会爆红</p>
-<p>后来发现问题没有那么简单</p>
-<p><code>sft</code>，<code>sbit</code>这种东西的语法似乎是<strong>特殊的</strong>，<strong>不符合语义</strong>的。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P1 = <span class="number">0x90</span>;</span><br></pre></td></tr></table></figure><br>在这句语句之后，是把<code>P1</code>看作<code>0x90</code>处的8位寄存器，要想修改这个寄存器里的值<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">P1 =<span class="number">0xff</span>;</span><br></pre></td></tr></table></figure><br>此刻<code>P1</code>在声明时是<strong>地址</strong>，但修改时又赋值为<strong>数值</strong><br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>这一句话就更加显得奇怪，为什么这里<code>P1</code>为<strong>地址</strong>而不是<strong>数值</strong>呢，就感觉是狗皮膏药打了个补丁，不过既然它已经被广泛应用了，就直接当做一个特殊情况好了。即<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>类似这样的<strong>特殊声明</strong>会自动修改等号后^的意义，此时不应该再是异或，而是特殊的引脚号的记号，在声明时候的<strong>特殊定义</strong>下，这些P1也是被特殊化为地址。</p>
-<p>只能这样解释这种行为了，这个语义问题也是引起vscode报错的根本原因吧，所以不管怎么改，怎么样把它看成<strong>typedef的嵌套</strong>都会爆红(悲)</p>
-<p>也许这就是为什么周围的人入门都选择的是stm32的原因吧，一来可以使用更优秀的文本编辑器，又不会引起语法上的误解，还能有更强大的功能</p>
-<h2 id="关于VCC、GND的符号"><a href="#关于VCC、GND的符号" class="headerlink" title="关于VCC、GND的符号"></a>关于VCC、GND的符号</h2><p>在电路里，VCC代表电源正极，而GND是逻辑上的接地，其实不一定接地，它是电源负极,直观感受，看上去VCC和GND其实是唯一的？VCC只在中间起供能和”比较”的作用，或者一切的开头起功能作用，端口有一系列的保护措施使得最后电平不易被改写？<br>除了VCC，GND另外的似乎也就是可以<strong>看作</strong>特殊情况下的VCC和GND？现在也只能够这样粗浅的理解了</p>
-<h2 id="关于51单片机的GPIO"><a href="#关于51单片机的GPIO" class="headerlink" title="关于51单片机的GPIO"></a>关于51单片机的GPIO</h2><p>GPIO，对于上图所示的准标准输入输出，和51单片机是一致的，其输出时候是利用了锁存器的功能，锁死了电位，而对于输入的时候，是不写入锁存器的，将锁存器写入1，才能读取，这里用的上拉电阻是默认它那个点位是高电位，但是如果直接连接地的话就可以是低电位了</p>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
 ]]></content>
       <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -128,17 +124,21 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+    <title>51单片机初步印象</title>
+    <url>/posts/69d698d4.html</url>
+    <content><![CDATA[<h1 id="51单片机初步印象"><a href="#51单片机初步印象" class="headerlink" title="51单片机初步印象"></a>51单片机初步印象</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少<br>51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点<br><span id="more"></span></p>
+<h2 id="关于51单片机的中断向量表"><a href="#关于51单片机的中断向量表" class="headerlink" title="关于51单片机的中断向量表"></a>关于51单片机的中断向量表</h2><p>对于51单片机来说，中断向量表的映射已经写死在了内置的ROM中，直接<code>org &lt;address&gt;</code>写入中断函数跳转地址就可以使用中断，而stm32则可以支持用户修改中断向量表</p>
+<h2 id="关于C51的语法障碍"><a href="#关于C51的语法障碍" class="headerlink" title="关于C51的语法障碍"></a>关于C51的语法障碍</h2><p>C51编程语言相比于C语言新添加了四种数据类型，<code>bit</code>，<code>sbit</code>等等，其中有些引脚对应的名称<code>P2^1</code>(P2.1管脚)，一开始我只是以为C51中把<code>^</code>当做名称的一部分，但vscode会把它当做异或运算符，所以vscode会爆红</p>
+<p>后来发现问题没有那么简单</p>
+<p><code>sft</code>，<code>sbit</code>这种东西的语法似乎是<strong>特殊的</strong>，<strong>不符合语义</strong>的。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P1 = <span class="number">0x90</span>;</span><br></pre></td></tr></table></figure><br>在这句语句之后，是把<code>P1</code>看作<code>0x90</code>处的8位寄存器，要想修改这个寄存器里的值<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">P1 =<span class="number">0xff</span>;</span><br></pre></td></tr></table></figure><br>此刻<code>P1</code>在声明时是<strong>地址</strong>，但修改时又赋值为<strong>数值</strong><br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>这一句话就更加显得奇怪，为什么这里<code>P1</code>为<strong>地址</strong>而不是<strong>数值</strong>呢，就感觉是狗皮膏药打了个补丁，不过既然它已经被广泛应用了，就直接当做一个特殊情况好了。即<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>类似这样的<strong>特殊声明</strong>会自动修改等号后^的意义，此时不应该再是异或，而是特殊的引脚号的记号，在声明时候的<strong>特殊定义</strong>下，这些P1也是被特殊化为地址。</p>
+<p>只能这样解释这种行为了，这个语义问题也是引起vscode报错的根本原因吧，所以不管怎么改，怎么样把它看成<strong>typedef的嵌套</strong>都会爆红(悲)</p>
+<p>也许这就是为什么周围的人入门都选择的是stm32的原因吧，一来可以使用更优秀的文本编辑器，又不会引起语法上的误解，还能有更强大的功能</p>
+<h2 id="关于VCC、GND的符号"><a href="#关于VCC、GND的符号" class="headerlink" title="关于VCC、GND的符号"></a>关于VCC、GND的符号</h2><p>在电路里，VCC代表电源正极，而GND是逻辑上的接地，其实不一定接地，它是电源负极,直观感受，看上去VCC和GND其实是唯一的？VCC只在中间起供能和”比较”的作用，或者一切的开头起功能作用，端口有一系列的保护措施使得最后电平不易被改写？<br>除了VCC，GND另外的似乎也就是可以<strong>看作</strong>特殊情况下的VCC和GND？现在也只能够这样粗浅的理解了</p>
+<h2 id="关于51单片机的GPIO"><a href="#关于51单片机的GPIO" class="headerlink" title="关于51单片机的GPIO"></a>关于51单片机的GPIO</h2><p>GPIO，对于上图所示的准标准输入输出，和51单片机是一致的，其输出时候是利用了锁存器的功能，锁死了电位，而对于输入的时候，是不写入锁存器的，将锁存器写入1，才能读取，这里用的上拉电阻是默认它那个点位是高电位，但是如果直接连接地的话就可以是低电位了</p>
 ]]></content>
       <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -450,31 +450,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git使用_第2弹</title>
     <url>/posts/2b9af9d8.html</url>
     <content><![CDATA[<h1 id="Git使用-第2弹"><a href="#Git使用-第2弹" class="headerlink" title="Git使用_第2弹"></a>Git使用_第2弹</h1><p>接下来正式进入Git的使用部分，这一弹从 <code>&quot;Pro Git&quot;</code>的第二章开始</p>
@@ -580,6 +555,31 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -1144,6 +1144,24 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>CMake的使用</title>
+    <url>/posts/3c5e47f1.html</url>
+    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
+<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
+<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
+<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
+<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
+<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
+<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_9_Trait</title>
     <url>/posts/fa0fbc5d.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-9-Trait"><a href="#Rust-Chapter-9-Trait" class="headerlink" title="Rust_Chapter_9_Trait"></a>Rust_Chapter_9_Trait</h1><p>Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为<strong>接口</strong>(interfaces)的功能，虽然有一些不同。</p>
@@ -1178,24 +1196,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>CMake的使用</title>
-    <url>/posts/3c5e47f1.html</url>
-    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
-<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
-<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
-<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
-<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
-<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
-<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>n重积分转n次积分问题</title>
     <url>/posts/622309a6.html</url>
     <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
@@ -1221,6 +1221,97 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>从LFS构建中习得的交叉编译</title>
+    <url>/posts/c858dee6.html</url>
+    <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该blog只适用于基于autoconf的构建系统，autoconf是GNU构建系统的一部分，与Automake、Libtool等工具一起被广泛用于自动化软件的构建和配置。</p>
+<h2 id="简单介绍交叉编译"><a href="#简单介绍交叉编译" class="headerlink" title="简单介绍交叉编译"></a>简单介绍交叉编译</h2><p>和我们平时将本机的源代码通过编译器生成跑在本机上的可执行文件的编译器不同，交叉编译就是在一个平台上生成另一个平台上的可执行代码。例如在x86_64的windows平台利用源代码编译源代码生成arm的linux平台下的可执行文件，这种行为称之为交叉编译，而实现这种编译过程的特殊编译器成为交叉编译器(Cross Complier)，与之相对我们之前常用的即是本地编译器</p>
+<h3 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h3><p>对于交叉编译器有一些常用的术语</p>
+<ul>
+<li><strong>build</strong>: 指构建程序时使用的机器。</li>
+<li><strong>host</strong>: 指将来会运行被构建的程序的机器。</li>
+<li><strong>target</strong>: 编译器为这台机器产生代码。</li>
+</ul>
+<p>对于”在x86_64的windows平台利用源代码编译源代码生成arm的linux平台下的可执行文件”这个例子来说，<strong>build</strong>为x86_64的windows,<strong>host</strong>为arm的linux,<strong>target</strong>为arm的linux。具体来说，我们需要这个最终可执行文件的源代码，以及一个交叉编译器，这个交叉编译器是运行在x86_64的，OS为windows机子上的一个可执行程序，它的作用是将这份源代码编译为在arm的linux运行的可执行程序</p>
+<p>而本地编译器就是build，host和target三个都是相同的，是你本机这个平台的一个特例</p>
+<h3 id="三元组"><a href="#三元组" class="headerlink" title="三元组"></a>三元组</h3><p>我们上面用了一种比较口语化的说法，就是我们将这类平台称为如x86_64的windows，其实平台专业的可以用<strong>三元组</strong>去描述(基于autoconf的构建系统),形如CPU-供应商-内核-操作系统，由于供应商字段<strong>通常无关紧要</strong>，autoconf允许省略它(事实上根据我的使用相当程度上是随意取名的)。<br>例如x86_64-w64-mingw32-gcc即指target为x86_64的windows的编译器</p>
+<h3 id="上面术语与编译器的关系"><a href="#上面术语与编译器的关系" class="headerlink" title="上面术语与编译器的关系"></a>上面术语与编译器的关系</h3><p>搜索gcc官网，进入其中的<a href="https://gcc.gnu.org/install/">Installation部分</a>，选择Configuration，会看到这一步构建有相当多的参数，其中有一个部分<code>Host, Build and Target specification</code>具体阐释了上方所指的三个术语。没错，在gcc自身被编译之时你就可以选择这三个编译参数，就能得到相对应的编译器，而gcc几乎对现代所有的平台都进行了适配</p>
+<blockquote>
+<p><strong>NOTE</strong>: 这里不对GNU构建系统进行进一步的阐释，只是声明可以从gcc的源代码构建出其支持的交叉编译的平台</p>
+</blockquote>
+<p>当然gcc只是交叉编译工具链的其中一个组成部分，其他的工具也有这样的参数，例如binutils(提供了汇编器和链接器等)</p>
+<p>注意这里这三个参数实际上的行为，./configure脚本会根据<code>--build</code>，<code>--host</code>这两个参数去决定使用什么编译器，具体来说，当<code>--build</code>和<code>--host</code>相同时，为本地编译模式，使用本地编译器编译，而当<code>--build</code>和<code>--host</code>不同时，则进入交叉编译模式，此时将调用<code>--host</code>所指向的那个编译器</p>
+<p><code>--target</code>只在gcc这种特定的源码的configure里有实际意义，它即规定编译之后的gcc的平台是什么</p>
+<p>也就是说对于普通软件，这几个参数决定了编译出的结果是跑在哪上的，而对于gcc这类，不仅决定了跑在什么平台，还决定了用它编译的结果跑在哪上，总结下来只有这俩属性</p>
+<h2 id="构建过程"><a href="#构建过程" class="headerlink" title="构建过程"></a>构建过程</h2><p>先来看看下面这张表格(来源于lfs中的工具链技术说明)</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>Build</th>
+<th>Host</th>
+<th>Target</th>
+<th>操作描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A</td>
+<td>A</td>
+<td>B</td>
+<td>在平台A上，使用ccA构建交叉编译器cc1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>A</td>
+<td>B</td>
+<td>B</td>
+<td>在平台A上，使用cc1构建编译器ccB</td>
+</tr>
+<tr>
+<td>3</td>
+<td>B</td>
+<td>B</td>
+<td>B</td>
+<td>在平台B上，使用ccB重新构建并测试其本身</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们来看这个过程，首先这里的A，B均指一个<strong>三元组所描述的一个平台</strong><br>首先阐释一下这个表所描述的过程，我们假设平台B是一个没有编译器的平台，而A是一个有本地编译器ccA，我们的目的是让这个平台B具有编译代码的能力，也就是让它获得本地编译器ccB</p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>看看我们做了什么，首先我们在第一步，通过使用ccA编译交叉工具链(包括gcc，binutils)的源码，通过设定上文提到的gcc构建时的参数，要求其生成参数build为A，host为A，target为B的交叉编译工具，我们将其称之为cc1，推导下来它被A上本地编译器编译，跑在A上，为B生成代码</p>
+<h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><p>那么我们在第二步再次利用cc1编译交叉工具链，规定configure参数build为A，host为B，target为B，就将调用这时候我们得到了ccB，推导下来它被A上(给B生成代码的)交叉编译器(即cc1)编译，跑在B上，为B生成代码，这就是B上的本地编译器</p>
+<h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><p>在第三步再次利用ccB编译gcc，规定configure参数build为B，host为B，target为B，就将调用这时候我们得到了ccB，推导下来它被B上本地编译器(即ccB)编译，跑在B上，为B生成代码，这就是最终验证的B上的本地编译器</p>
+<h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>现在，关于交叉编译，还有更多要处理的问题：C语言并不仅仅是一个编译器；它还规定了一个标准库。在本书中，我们使用GNU C运行库，即glibc(除此之外，还有名为 “musl” 的另一种C运行库实现)。它必须为lfs目标机器使用交叉编译器cc1编译。但是，编译器本身使用一个库，实现汇编指令集并不支持的一些复杂指令。这个内部库称为libgcc，它必须链接到 glibc 库才能实现完整功能。另外，C++标准库(libstdc++)也必须链接到glibc。为了解决这个“先有鸡还是先有蛋”的问题，只能先构建一个降级的cc1，它的libgcc缺失线程和异常等功能，再用这个降级的编译器构建glibc(这不会导致glibc缺失功能)，再构建libstdc++。但是这种方法构建的libstdc++会缺失一些依赖于libgcc的功能。</p>
+<p>可以看到这是一种类似于自举(bootstrap)的过程，这些功能的实现也是如上面调整交叉编译工具链的configure参数实现的</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="LFS"><a href="#LFS" class="headerlink" title="LFS"></a>LFS</h3><p>关于这一部分这里略过，<a href="https://lfs.xry111.site/zh_CN/12.1-systemd/index.html">lfs的手册</a>中相关的命令都详细描述了其中的过程，而且lfs的构建的三元组理论上来说几乎是相同相容的(因为就是在本机已有的系统上新建一个全新的系统)，我当时使用的宿主系统是Debian，最后我实践得到了一个真正的最小操作系统</p>
+<p><img src="/images/从LFS构建中习得的交叉编译_图1.png" width="100%" height="100%"></p>
+<h3 id="Linux-gt-Windows-x86-64"><a href="#Linux-gt-Windows-x86-64" class="headerlink" title="Linux -&gt; Windows (x86_64)"></a>Linux -&gt; Windows (x86_64)</h3><p>由于windows下从源码编译交叉工具链必然遭遇极其麻烦的库，链接等问题，我们略过编译构建的部分，直接使用已有的二进制gcc</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># archlinux:</span></span><br><span class="line">$ sudo pacman -S mingw-w64-toolchain </span><br><span class="line">$ x86_64-w64-mingw32-gcc -o hello.exe hello.c</span><br></pre></td></tr></table></figure>
+<p>成功获得hello.exe，传到windows中，正常运行！</p>
+<p>对于Raspberry Pi这样的也是一致的，我们使用如下的命令，可以得到运行在树莓派上的程序(需要非常注意依赖的版本问题，如glibc，相对来说更加推荐在容器中进行编译)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># archlinux:</span></span><br><span class="line">$ paru arm-none-linux-gnu-gcc </span><br><span class="line">$ arm-none-linux-gnu-gcc -o hello hello.c</span><br></pre></td></tr></table></figure></p>
+<h3 id="Linux-x86-64-gt-Stm32"><a href="#Linux-x86-64-gt-Stm32" class="headerlink" title="Linux(x86_64) -&gt; Stm32"></a>Linux(x86_64) -&gt; Stm32</h3><p>针对这个部分我们略微多提一点，相对来说这个比较特殊，在我周围的嵌入式开发者使用两种工具，一是使用keil/stm32cubeIDE这类闭源的集成开发环境；二是使用arm-none-eabi-gcc。而作为一个开源爱好者，我们更希望使用gcc这样的开源编译器。而且最好了解arm-none-eabi-gcc这个工具的构建过程(当然你也可以像上面那样直接包管理下载交叉编译器)</p>
+<p>一开始考虑这个问题的时候，我遇到了不小的障碍，原因是arm-none-eabi-gcc可以找到的官方资料是来源于arm官网而非来自于gcc官网，而写过嵌入式开发的朋友们都知道stm32的makefile里编译时有极其丰富编译参数，虽然不需要链接到标准库，不过链接到其他的库反而使得这个问题变得更加复杂</p>
+<p>通过互联网搜索与询问学长们，我在一开始尝试去arm官网寻找答案<br><a href="https://developer.arm.com/downloads/-/gnu-rm">https://developer.arm.com/downloads/-/gnu-rm</a></p>
+<p>我发现了网上给出最多次数的这个页面是被废弃的页面，而链接到的新页面确实给出了一些source code，但似乎由于其使用了特殊的构建工具(ABE)，且教程的陈旧，导致了我无法进一步从源码构建</p>
+<p>最终我在下面这个问题中找到了构建arm-none-eabi-gcc的解决方案，关于完整的探索过程我们按下不表，详情留到下一篇文档中继续讨论</p>
+<p><a href="https://stackoverflow.com/questions/72440601/arm-none-eabi-toolchain-compile-from-source">https://stackoverflow.com/questions/72440601/arm-none-eabi-toolchain-compile-from-source</a></p>
+<p>在StackOverflow的这个问题的最后一条回答中Peter Frost给出了<a href="https://gist.github.com/badcf00d/2f6054441375d9c94896aaa8e878ab4f">脚本</a>与使用说明</p>
+<blockquote>
+<p><strong>NOTE</strong>：需要按照回答中的方法更改<code>nano.specs</code></p>
+</blockquote>
+<p>紧接着就可以使用编译得到编译器编译stm32项目了，利用openocd烧录进入stm32，完美运行</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1325,109 +1416,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>从LFS构建中习得的交叉编译</title>
-    <url>/posts/c858dee6.html</url>
-    <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
-<span id="more"></span>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该blog只适用于基于autoconf的构建系统，autoconf是GNU构建系统的一部分，与Automake、Libtool等工具一起被广泛用于自动化软件的构建和配置。</p>
-<h2 id="简单介绍交叉编译"><a href="#简单介绍交叉编译" class="headerlink" title="简单介绍交叉编译"></a>简单介绍交叉编译</h2><p>和我们平时将本机的源代码通过编译器生成跑在本机上的可执行文件的编译器不同，交叉编译就是在一个平台上生成另一个平台上的可执行代码。例如在x86_64的windows平台利用源代码编译源代码生成arm的linux平台下的可执行文件，这种行为称之为交叉编译，而实现这种编译过程的特殊编译器成为交叉编译器(Cross Complier)，与之相对我们之前常用的即是本地编译器</p>
-<h3 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h3><p>对于交叉编译器有一些常用的术语</p>
-<ul>
-<li><strong>build</strong>: 指构建程序时使用的机器。</li>
-<li><strong>host</strong>: 指将来会运行被构建的程序的机器。</li>
-<li><strong>target</strong>: 编译器为这台机器产生代码。</li>
-</ul>
-<p>对于”在x86_64的windows平台利用源代码编译源代码生成arm的linux平台下的可执行文件”这个例子来说，<strong>build</strong>为x86_64的windows,<strong>host</strong>为arm的linux,<strong>target</strong>为arm的linux。具体来说，我们需要这个最终可执行文件的源代码，以及一个交叉编译器，这个交叉编译器是运行在x86_64的，OS为windows机子上的一个可执行程序，它的作用是将这份源代码编译为在arm的linux运行的可执行程序</p>
-<p>而本地编译器就是build，host和target三个都是相同的，是你本机这个平台的一个特例</p>
-<h3 id="三元组"><a href="#三元组" class="headerlink" title="三元组"></a>三元组</h3><p>我们上面用了一种比较口语化的说法，就是我们将这类平台称为如x86_64的windows，其实平台专业的可以用<strong>三元组</strong>去描述(基于autoconf的构建系统),形如CPU-供应商-内核-操作系统，由于供应商字段<strong>通常无关紧要</strong>，autoconf允许省略它(事实上根据我的使用相当程度上是随意取名的)。<br>例如x86_64-w64-mingw32-gcc即指target为x86_64的windows的编译器</p>
-<h3 id="上面术语与编译器的关系"><a href="#上面术语与编译器的关系" class="headerlink" title="上面术语与编译器的关系"></a>上面术语与编译器的关系</h3><p>搜索gcc官网，进入其中的<a href="https://gcc.gnu.org/install/">Installation部分</a>，选择Configuration，会看到这一步构建有相当多的参数，其中有一个部分<code>Host, Build and Target specification</code>具体阐释了上方所指的三个术语。没错，在gcc自身被编译之时你就可以选择这三个编译参数，就能得到相对应的编译器，而gcc几乎对现代所有的平台都进行了适配</p>
-<blockquote>
-<p><strong>NOTE</strong>: 这里不对GNU构建系统进行进一步的阐释，只是声明可以从gcc的源代码构建出其支持的交叉编译的平台</p>
-</blockquote>
-<p>当然gcc只是交叉编译工具链的其中一个组成部分，其他的工具也有这样的参数，例如binutils(提供了汇编器和链接器等)</p>
-<p>注意这里这三个参数实际上的行为，./configure脚本会根据<code>--build</code>，<code>--host</code>这两个参数去决定使用什么编译器，具体来说，当<code>--build</code>和<code>--host</code>相同时，为本地编译模式，使用本地编译器编译，而当<code>--build</code>和<code>--host</code>不同时，则进入交叉编译模式，此时将调用<code>--host</code>所指向的那个编译器</p>
-<p><code>--target</code>只在gcc这种特定的源码的configure里有实际意义，它即规定编译之后的gcc的平台是什么</p>
-<p>也就是说对于普通软件，这几个参数决定了编译出的结果是跑在哪上的，而对于gcc这类，不仅决定了跑在什么平台，还决定了用它编译的结果跑在哪上，总结下来只有这俩属性</p>
-<h2 id="构建过程"><a href="#构建过程" class="headerlink" title="构建过程"></a>构建过程</h2><p>先来看看下面这张表格(来源于lfs中的工具链技术说明)</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>Build</th>
-<th>Host</th>
-<th>Target</th>
-<th>操作描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>A</td>
-<td>A</td>
-<td>B</td>
-<td>在平台A上，使用ccA构建交叉编译器cc1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>A</td>
-<td>B</td>
-<td>B</td>
-<td>在平台A上，使用cc1构建编译器ccB</td>
-</tr>
-<tr>
-<td>3</td>
-<td>B</td>
-<td>B</td>
-<td>B</td>
-<td>在平台B上，使用ccB重新构建并测试其本身</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>我们来看这个过程，首先这里的A，B均指一个<strong>三元组所描述的一个平台</strong><br>首先阐释一下这个表所描述的过程，我们假设平台B是一个没有编译器的平台，而A是一个有本地编译器ccA，我们的目的是让这个平台B具有编译代码的能力，也就是让它获得本地编译器ccB</p>
-<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>看看我们做了什么，首先我们在第一步，通过使用ccA编译交叉工具链(包括gcc，binutils)的源码，通过设定上文提到的gcc构建时的参数，要求其生成参数build为A，host为A，target为B的交叉编译工具，我们将其称之为cc1，推导下来它被A上本地编译器编译，跑在A上，为B生成代码</p>
-<h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><p>那么我们在第二步再次利用cc1编译交叉工具链，规定configure参数build为A，host为B，target为B，就将调用这时候我们得到了ccB，推导下来它被A上(给B生成代码的)交叉编译器(即cc1)编译，跑在B上，为B生成代码，这就是B上的本地编译器</p>
-<h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><p>在第三步再次利用ccB编译gcc，规定configure参数build为B，host为B，target为B，就将调用这时候我们得到了ccB，推导下来它被B上本地编译器(即ccB)编译，跑在B上，为B生成代码，这就是最终验证的B上的本地编译器</p>
-<h3 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h3><p>现在，关于交叉编译，还有更多要处理的问题：C语言并不仅仅是一个编译器；它还规定了一个标准库。在本书中，我们使用GNU C运行库，即glibc(除此之外，还有名为 “musl” 的另一种C运行库实现)。它必须为lfs目标机器使用交叉编译器cc1编译。但是，编译器本身使用一个库，实现汇编指令集并不支持的一些复杂指令。这个内部库称为libgcc，它必须链接到 glibc 库才能实现完整功能。另外，C++标准库(libstdc++)也必须链接到glibc。为了解决这个“先有鸡还是先有蛋”的问题，只能先构建一个降级的cc1，它的libgcc缺失线程和异常等功能，再用这个降级的编译器构建glibc(这不会导致glibc缺失功能)，再构建libstdc++。但是这种方法构建的libstdc++会缺失一些依赖于libgcc的功能。</p>
-<p>可以看到这是一种类似于自举(bootstrap)的过程，这些功能的实现也是如上面调整交叉编译工具链的configure参数实现的</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="LFS"><a href="#LFS" class="headerlink" title="LFS"></a>LFS</h3><p>关于这一部分这里略过，<a href="https://lfs.xry111.site/zh_CN/12.1-systemd/index.html">lfs的手册</a>中相关的命令都详细描述了其中的过程，而且lfs的构建的三元组理论上来说几乎是相同相容的(因为就是在本机已有的系统上新建一个全新的系统)，我当时使用的宿主系统是Debian，最后我实践得到了一个真正的最小操作系统</p>
-<p><img src="/images/从LFS构建中习得的交叉编译_图1.png" width="100%" height="100%"></p>
-<h3 id="Linux-gt-Windows-x86-64"><a href="#Linux-gt-Windows-x86-64" class="headerlink" title="Linux -&gt; Windows (x86_64)"></a>Linux -&gt; Windows (x86_64)</h3><p>由于windows下从源码编译交叉工具链必然遭遇极其麻烦的库，链接等问题，我们略过编译构建的部分，直接使用已有的二进制gcc</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># archlinux:</span></span><br><span class="line">$ sudo pacman -S mingw-w64-toolchain </span><br><span class="line">$ x86_64-w64-mingw32-gcc -o hello.exe hello.c</span><br></pre></td></tr></table></figure>
-<p>成功获得hello.exe，传到windows中，正常运行！</p>
-<p>对于Raspberry Pi这样的也是一致的，我们使用如下的命令，可以得到运行在树莓派上的程序(需要非常注意依赖的版本问题，如glibc，相对来说更加推荐在容器中进行编译)<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># archlinux:</span></span><br><span class="line">$ paru arm-none-linux-gnu-gcc </span><br><span class="line">$ arm-none-linux-gnu-gcc -o hello hello.c</span><br></pre></td></tr></table></figure></p>
-<h3 id="Linux-x86-64-gt-Stm32"><a href="#Linux-x86-64-gt-Stm32" class="headerlink" title="Linux(x86_64) -&gt; Stm32"></a>Linux(x86_64) -&gt; Stm32</h3><p>针对这个部分我们略微多提一点，相对来说这个比较特殊，在我周围的嵌入式开发者使用两种工具，一是使用keil/stm32cubeIDE这类闭源的集成开发环境；二是使用arm-none-eabi-gcc。而作为一个开源爱好者，我们更希望使用gcc这样的开源编译器。而且最好了解arm-none-eabi-gcc这个工具的构建过程(当然你也可以像上面那样直接包管理下载交叉编译器)</p>
-<p>一开始考虑这个问题的时候，我遇到了不小的障碍，原因是arm-none-eabi-gcc可以找到的官方资料是来源于arm官网而非来自于gcc官网，而写过嵌入式开发的朋友们都知道stm32的makefile里编译时有极其丰富编译参数，虽然不需要链接到标准库，不过链接到其他的库反而使得这个问题变得更加复杂</p>
-<p>通过互联网搜索与询问学长们，我在一开始尝试去arm官网寻找答案<br><a href="https://developer.arm.com/downloads/-/gnu-rm">https://developer.arm.com/downloads/-/gnu-rm</a></p>
-<p>我发现了网上给出最多次数的这个页面是被废弃的页面，而链接到的新页面确实给出了一些source code，但似乎由于其使用了特殊的构建工具(ABE)，且教程的陈旧，导致了我无法进一步从源码构建</p>
-<p>最终我在下面这个问题中找到了构建arm-none-eabi-gcc的解决方案，关于完整的探索过程我们按下不表，详情留到下一篇文档中继续讨论</p>
-<p><a href="https://stackoverflow.com/questions/72440601/arm-none-eabi-toolchain-compile-from-source">https://stackoverflow.com/questions/72440601/arm-none-eabi-toolchain-compile-from-source</a></p>
-<p>在StackOverflow的这个问题的最后一条回答中Peter Frost给出了<a href="https://gist.github.com/badcf00d/2f6054441375d9c94896aaa8e878ab4f">脚本</a>与使用说明</p>
-<blockquote>
-<p><strong>NOTE</strong>：需要按照回答中的方法更改<code>nano.specs</code></p>
-</blockquote>
-<p>紧接着就可以使用编译得到编译器编译stm32项目了，利用openocd烧录进入stm32，完美运行</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -1446,6 +1434,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>EE_电子工程</category>
         <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
+<span id="more"></span>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -1512,6 +1512,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <url>/posts/604cfd1a.html</url>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理失败以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -1719,20 +1731,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
     <title>圆盘摩擦力矩</title>
     <url>/posts/8a033795.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
@@ -1760,6 +1758,62 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Gentoo上用KVM玩Mac</title>
+    <url>/posts/ebefb94c.html</url>
+    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
+<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
+<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
+<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
+<blockquote>
+<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
+</blockquote>
+<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
+<p>使用它的 python 脚本下载 Mac 官方镜像</p>
+<blockquote>
+<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
+<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
+<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
+<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
+<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
+<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
+<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
+</blockquote>
+<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
+<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
+<blockquote>
+<p>注意该项目实测可以安装较新版本的 MacOS</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1810,48 +1864,6 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>在Gentoo上用KVM玩Mac</title>
-    <url>/posts/ebefb94c.html</url>
-    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
-<span id="more"></span>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
-<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
-<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
-<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
-<blockquote>
-<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
-</blockquote>
-<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
-<p>使用它的 python 脚本下载 Mac 官方镜像</p>
-<blockquote>
-<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
-<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
-<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
-<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
-<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
-<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
-<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
-<blockquote>
-<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
-</blockquote>
-<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
-<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
-<blockquote>
-<p>注意该项目实测可以安装较新版本的 MacOS</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -2008,33 +2020,6 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
-<p>18.024 Multivariable Calculus (Finished)</p>
-<p>18.700 Linear Algebra (Finished)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
-<p>18.100 Real Analysis (<strong>working</strong>)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-<p>南京大学 OS (<strong>Working</strong>)</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -2102,6 +2087,33 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
+<p>18.024 Multivariable Calculus (Finished)</p>
+<p>18.700 Linear Algebra (Finished)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
+<p>18.100 Real Analysis (<strong>working</strong>)</p>
+<p><strong>Third Part</strong><br>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
+<p>南京大学 OS (<strong>Working</strong>)</p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
@@ -2212,25 +2224,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
-    <title>日常碎碎念_3</title>
-    <url>/posts/85479d9c.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-3"><a href="#日常碎碎念-3" class="headerlink" title="日常碎碎念_3"></a>日常碎碎念_3</h1><p>日常碎碎念_3，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<ul>
-<li>重新整理了一下已经有的博客，标记了原本时间戳全部消失的文件，但是修改日期是回不来了</li>
-<li>删除了原本有的加密功能，以及原本所有的加密博客，有的改成公开，有的直接删除了</li>
-<li>打算把qblog这个工具重新改一改重写了，暂时这个博客就手动维护吧</li>
-</ul>
-<p><code>qblog.py</code> 这个说了好久的东西，咕咕咕了这么久也是终于搞定了，其实写一个脚本再正常不过了，我也没想到这个我居然因为这个东西停了这么久，可能是因为 bat 并不是一个很令人舒服的脚本吧，bash 要更舒服一点。不管怎么说，这下也可以继续愉快的写博客了</p>
-<p>前段时间有同学找到我告诉我说，”我是看您博客长大的”，啊？这有点夸张了吧，其实我因为 qblog 以及 hexo 这个工具始终不合我心意，已经很少更新博客了，基本上只在 2022 年写的多一点，那时候我也才接触技术不久</p>
-<p>不过我很感动的是，居然真的能有后人看我的博客，甚至能给他们带来一点点的作用，但是我好像确实也没写什么有用的东西啊喂</p>
-<p>接下来也不知道能不能有空接着写下去，如果可以的话，一定会写出相对曾经更精彩的东西吧</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
     <title>日常碎碎念_1</title>
     <url>/posts/6b49fcb0.html</url>
     <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
@@ -2258,6 +2251,25 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <span id="more"></span>
 <p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
 <p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_3</title>
+    <url>/posts/85479d9c.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-3"><a href="#日常碎碎念-3" class="headerlink" title="日常碎碎念_3"></a>日常碎碎念_3</h1><p>日常碎碎念_3，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<ul>
+<li>重新整理了一下已经有的博客，标记了原本时间戳全部消失的文件，但是修改日期是回不来了</li>
+<li>删除了原本有的加密功能，以及原本所有的加密博客，有的改成公开，有的直接删除了</li>
+<li>打算把qblog这个工具重新改一改重写了，暂时这个博客就手动维护吧</li>
+</ul>
+<p><code>qblog.py</code> 这个说了好久的东西，咕咕咕了这么久也是终于搞定了，其实写一个脚本再正常不过了，我也没想到这个我居然因为这个东西停了这么久，可能是因为 bat 并不是一个很令人舒服的脚本吧，bash 要更舒服一点。不管怎么说，这下也可以继续愉快的写博客了</p>
+<p>前段时间有同学找到我告诉我说，”我是看您博客长大的”，啊？这有点夸张了吧，其实我因为 qblog 以及 hexo 这个工具始终不合我心意，已经很少更新博客了，基本上只在 2022 年写的多一点，那时候我也才接触技术不久</p>
+<p>不过我很感动的是，居然真的能有后人看我的博客，甚至能给他们带来一点点的作用，但是我好像确实也没写什么有用的东西啊喂</p>
+<p>接下来也不知道能不能有空接着写下去，如果可以的话，一定会写出相对曾经更精彩的东西吧</p>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2400,6 +2412,45 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>深入异步与无栈协程通用概念</title>
+    <url>/posts/9b424f3e.html</url>
+    <content><![CDATA[<h1 id="深入异步与无栈协程通用概念"><a href="#深入异步与无栈协程通用概念" class="headerlink" title="深入异步与无栈协程通用概念"></a>深入异步与无栈协程通用概念</h1><p>协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程，而在这里，我们试图从异步最早的历史对协程的工作原理以及协程库要做到什么。</p>
+<span id="more"></span>
+<blockquote>
+<p>前言: 本文试图将 I/O 多路复用、异步 I/O、事件循环、协程、async/await 等概念串联起来，其中涉及到的 syscall 以 Linux 为主</p>
+</blockquote>
+<h2 id="在异步之旅开始之前"><a href="#在异步之旅开始之前" class="headerlink" title="在异步之旅开始之前"></a>在异步之旅开始之前</h2><p>相信任何一个朋友在一开始接触编程的时候都会编写类似下面这样的 C++ 代码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inlcude <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="type">int</span> input;</span><br><span class="line">  std::cin &gt;&gt; input;</span><br><span class="line">  std::cout &lt;&lt; input &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样的一段程序的行为非常的显然，在第五行会阻塞起来等待输入，实质上在这一段代码背后实际上是调用了阻塞的 syscall read()，当你通过标准库具体的实现调用了这个系统调用时，会从用户态陷入内核态，等待内核将输入交给程序，才会继续下去。这是程序最简单的形态，以至于如果你参加任何算法竞赛的时候，要写的程序都是这样的形态。而这种系统调用称为阻塞的，<strong>阻塞IO</strong></p>
+<p>但这太简单了，程序可能还要处理更多更加复杂的情况，程序可能是一个 UI 程序，或者说这个程序是一个需要监听用户输入即时进行反馈的一段程序，比如你想做一个最基本的贪吃蛇程序，用户还没输入的时候程序始终是阻塞的无法变化的，那么这种模式就不成了</p>
+<p>对于一个程序来说，它本身自己所蕴含的信息自己已经全部知道了，但它在运行的时候仍然会有外来的信息，这些信息全部来自于操作系统，它运行的环境完全是操作系统提供的，操作系统本身的信息来源本就具有异步的性质，因为硬件运行的机理就是并行的，操作系统完全掌握中断的管理权，因此它可以高效的获取信息，而我们的用户态程序要做的事情，其实就是高效的从操作系统里获取我们所要的信息罢了。</p>
+<p>那么我们可以说同操作系统实际做的事情一样创建一个巨大的 while 循环，不断询问操作系统，对应的按钮是否被按下，这些询问本身并不花时间，只是问一问操作系统当前这个 IO 任务是否被完成，如果完成，我程序就可以从操作系统里取，如果没完成，那我就不管了，等到 while 下一次询问。这种类型的系统调用被称为非阻塞的，<strong>非阻塞IO</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonW</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonA</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonS</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonD</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要说的是，这样，配以一个合理编排的 handler 其实是最高效的处理这些 IO 事件的方式，事实上某些单片机程序就是这么做的，这种循环查询某个事件是否就绪的模式称为轮询(polling)。</p>
+<blockquote>
+<p>这样的方式可以进行的原因是：操作系统通过中断以及各种调度算法处理并存储来自硬件的各种信息，本身 <strong>OS 就作为一个巨大 Buffer 为程序提供信息</strong>，所以程序本身无需在意数据是怎么被具体准备出来的，你只需要向操作系统提起任务，操作系统就为你在缓冲区里准备好数据，你自己去取，因此数据其实短期内不会丢失的，只等你的应用去响应并消费。</p>
+</blockquote>
+<p>但是这种方式最大的问题是，我们在初学编程的时候知道，<code>while(1)</code> 出现在你的程序里，导致死循环，会大量占用 CPU 资源。但我们有时候也许会忽略一个问题：什么叫大量占用 CPU 资源。</p>
+<p>有的朋友会说大量占用 CPU 资源就是 CPU 占用率高，但是这种说法并不全面，因为没有解释到底 CPU 占用率是什么，这个数值是操作系统告诉你的，但你有没有想过这个数字是怎么来的。CPU 占用率是通过对比忙碌时间和总时间得出的百分比，而总时间减去忙碌时间是空闲时间，其实操作系统完成了对 CPU 的调度，操作系统在运行时可以告诉 CPU，你要在某一个时间周期里工作多久，然后这个时间周期里的 CPU 还能休息一会，停止工作，而这段时间就是空闲时间。</p>
+<p>对于死循环最大的问题是，死循环程序会导致它试图最大程度请求 CPU 去做无用的轮询，操作系统为了最大满足它索要的计算资源，不允许 CPU 停止休息，因此占用率便提高了。</p>
+<p>所以完全阻塞等待某个资源不行，开个循环询问所有任务的就绪状态也不行那应该怎么办呢</p>
+<h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环。也许你会同早期的我一样，认为这个事情的关键就在于 syscall 阻塞了进程，或者说在这里我更愿意说是线程的活动，那你就绕进了这个局中。</p>
+<p>让我们回来看看我们所需要做到的事情：如果我们要做一个贪吃蛇的小程序，其实最大的点是，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些事情，但是我们忽略了一个事情，那就是计时器事件本身就也是一个IO事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
+<p>如果在 <code>while</code> 里将任务轮询式能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个任务，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理就是，<strong>通过一个阻塞的接口查询所有 IO 任务，如果查询的时候数据已经准备好了，那么就立即返回，如果数据没有准备好就阻塞</strong></p>
+<p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，这里接口的阻塞并不是程序处理事件意义上的阻塞，接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，必须要让用户态应用程序挂起。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
+<blockquote>
+<p>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</p>
+</blockquote>
+<p>所以看到了么，我们的程序需要高效的处理或者说消费掉任务，这是保证任务不会堆起来，所有任务都能得到处理的前提。所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，而不满足这个条件的程序，一般是那种计算量特别大，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong></p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>TODO</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>离散与连续傅里叶变换之间的联系</title>
     <url>/posts/f1193ad8.html</url>
     <content><![CDATA[<h1 id="离散与连续傅里叶变换之间的联系"><a href="#离散与连续傅里叶变换之间的联系" class="headerlink" title="离散与连续傅里叶变换之间的联系"></a>离散与连续傅里叶变换之间的联系</h1><p>在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干</p>
@@ -2535,6 +2586,52 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>遨游在内存中的硬件启动过程</title>
+    <url>/posts/42db1e6.html</url>
+    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
+<span id="more"></span>
+<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
+<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
+</blockquote>
+<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
+<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
+<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
+<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
+<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
+<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
+<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
+<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
+<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
+<blockquote>
+<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
+</blockquote>
+<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
+<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
+<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
+<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
+<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
+<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
+<ol>
+<li>SEC(安全验证)</li>
+<li>PEI(EFI前期初始化)</li>
+<li>DXE(驱动执行环境)</li>
+<li>BDS(启动设备选择)</li>
+<li>TSL(操作系统加载前期)</li>
+<li>RT(Run Time)</li>
+<li>AL(系统灾难恢复期)</li>
+</ol>
+<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
+<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
+<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -2728,52 +2825,6 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>遨游在内存中的硬件启动过程</title>
-    <url>/posts/42db1e6.html</url>
-    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
-<span id="more"></span>
-<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
-<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
-</blockquote>
-<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
-<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
-<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
-<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
-<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
-<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
-<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
-<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
-<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
-<blockquote>
-<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
-</blockquote>
-<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
-<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
-<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
-<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
-<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
-<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
-<ol>
-<li>SEC(安全验证)</li>
-<li>PEI(EFI前期初始化)</li>
-<li>DXE(驱动执行环境)</li>
-<li>BDS(启动设备选择)</li>
-<li>TSL(操作系统加载前期)</li>
-<li>RT(Run Time)</li>
-<li>AL(系统灾难恢复期)</li>
-</ol>
-<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
-<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
-<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>

@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-07-06T14:45:46.661Z</updated>
+  <updated>2025-07-27T16:19:24.353Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,11 +17,53 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>深入异步与无栈协程通用概念</title>
+    <link href="https://feipiao594.github.io/posts/9b424f3e.html"/>
+    <id>https://feipiao594.github.io/posts/9b424f3e.html</id>
+    <published>2025-07-26T08:33:39.000Z</published>
+    <updated>2025-07-27T16:19:24.353Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;深入异步与无栈协程通用概念&quot;&gt;&lt;a href=&quot;#深入异步与无栈协程通用概念&quot; class=&quot;headerlink&quot; title=&quot;深入异步与无栈协程通用概念&quot;&gt;&lt;/a&gt;深入异步与无栈协程通用概念&lt;/h1&gt;&lt;p&gt;协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程，而在这里，我们试图从异步最早的历史对协程的工作原理以及协程库要做到什么。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <link href="https://feipiao594.github.io/posts/604cfd1a.html"/>
+    <id>https://feipiao594.github.io/posts/604cfd1a.html</id>
+    <published>2025-07-06T14:47:22.000Z</published>
+    <updated>2025-07-06T14:54:58.879Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;a href=&quot;#关于编译原理的一些哲学想法&quot; class=&quot;headerlink&quot; title=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;/a&gt;关于编译原理的一些哲学想法&lt;/h1&gt;&lt;p&gt;自我学习编译原理失败以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>移动端开发初探_1</title>
     <link href="https://feipiao594.github.io/posts/9b96febe.html"/>
     <id>https://feipiao594.github.io/posts/9b96febe.html</id>
     <published>2025-07-06T08:34:27.000Z</published>
-    <updated>2025-07-06T14:45:46.661Z</updated>
+    <updated>2025-07-06T14:46:14.621Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;移动端开发初探-1&quot;&gt;&lt;a href=&quot;#移动端开发初探-1&quot; class=&quot;headerlink&quot; title=&quot;移动端开发初探_1&quot;&gt;&lt;/a&gt;移动端开发初探_1&lt;/h1&gt;&lt;p&gt;因为一些巧合，现在一直接触 C++ 的我开始了移动端的学习与开发，这篇文档稍微记录一下自己的学习过程，但其实这不是一个笔记记录，算是一点小小感悟吧&lt;/p&gt;</summary>
@@ -375,48 +417,6 @@
     <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
     
     <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Rust_Chapter_5_枚举与模式匹配</title>
-    <link href="https://feipiao594.github.io/posts/28bcc6be.html"/>
-    <id>https://feipiao594.github.io/posts/28bcc6be.html</id>
-    <published>2024-04-15T16:00:00.000Z</published>
-    <updated>2024-10-27T08:01:55.363Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;Rust-Chapter-5-枚举与模式匹配&quot;&gt;&lt;a href=&quot;#Rust-Chapter-5-枚举与模式匹配&quot; class=&quot;headerlink&quot; title=&quot;Rust_Chapter_5_枚举与模式匹配&quot;&gt;&lt;/a&gt;Rust_Chapter_5_枚举与模式匹配&lt;/h1&gt;&lt;p&gt;&lt;code&gt;enums&lt;/code&gt;，一个很有用的东西，使用枚举可以简化很多东西&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
-    
-    <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>从LFS构建中习得的交叉编译</title>
-    <link href="https://feipiao594.github.io/posts/c858dee6.html"/>
-    <id>https://feipiao594.github.io/posts/c858dee6.html</id>
-    <published>2024-03-23T16:00:00.000Z</published>
-    <updated>2024-10-27T07:56:21.328Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;a href=&quot;#从LFS构建中习得的交叉编译&quot; class=&quot;headerlink&quot; title=&quot;从LFS构建中习得的交叉编译&quot;&gt;&lt;/a&gt;从LFS构建中习得的交叉编译&lt;/h1&gt;&lt;p&gt;在2024年寒假的过程中，我构建了LFS(&lt;strong&gt;L&lt;/strong&gt;inux &lt;strong&gt;F&lt;/strong&gt;rom &lt;strong&gt;S&lt;/strong&gt;cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
     
     
   </entry>

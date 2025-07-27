@@ -20,21 +20,19 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="CSAPP章节二中的数学公式整理这一章偏向理论，有时候能利用编码知识大大简化计算之类的">
+  <meta name="description" content="深入异步与无栈协程通用概念协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程，而在这里，我们试图从异步最早的历史对协程的工作原理以及协程库要做到什么。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CSAPP章节二中的数学公式整理">
-<meta property="og:url" content="https://feipiao594.github.io/posts/f1f78c10.html">
+<meta property="og:title" content="深入异步与无栈协程通用概念">
+<meta property="og:url" content="https://feipiao594.github.io/posts/9b424f3e.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="CSAPP章节二中的数学公式整理这一章偏向理论，有时候能利用编码知识大大简化计算之类的">
+<meta property="og:description" content="深入异步与无栈协程通用概念协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程，而在这里，我们试图从异步最早的历史对协程的工作原理以及协程库要做到什么。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://feipiao594.github.io/images/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE1.png">
-<meta property="article:published_time" content="2023-03-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-10-27T07:54:56.177Z">
+<meta property="article:published_time" content="2025-07-26T08:33:39.000Z">
+<meta property="article:modified_time" content="2025-07-27T16:19:24.353Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://feipiao594.github.io/images/CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86_%E5%9B%BE1.png">
 
-<link rel="canonical" href="https://feipiao594.github.io/posts/f1f78c10.html">
+<link rel="canonical" href="https://feipiao594.github.io/posts/9b424f3e.html">
 
 
 <script id="page-configurations">
@@ -47,7 +45,7 @@
   };
 </script>
 
-  <title>CSAPP章节二中的数学公式整理 | 594飞飘的个人博客</title>
+  <title>深入异步与无栈协程通用概念 | 594飞飘的个人博客</title>
   
 
 
@@ -198,7 +196,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/f1f78c10.html">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/9b424f3e.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/feipiao.gif">
@@ -211,7 +209,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CSAPP章节二中的数学公式整理
+          深入异步与无栈协程通用概念
         </h1>
 
         <div class="post-meta">
@@ -221,14 +219,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2023-03-23 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-23T00:00:00+08:00">2023-03-23</time>
+              <time title="创建时间：2025-07-26 16:33:39" itemprop="dateCreated datePublished" datetime="2025-07-26T16:33:39+08:00">2025-07-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-27 15:54:56" itemprop="dateModified" datetime="2024-10-27T15:54:56+08:00">2024-10-27</time>
+                <time title="修改时间：2025-07-28 00:19:24" itemprop="dateModified" datetime="2025-07-28T00:19:24+08:00">2025-07-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,14 +252,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -273,38 +271,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+        <h1 id="深入异步与无栈协程通用概念"><a href="#深入异步与无栈协程通用概念" class="headerlink" title="深入异步与无栈协程通用概念"></a>深入异步与无栈协程通用概念</h1><p>协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程，而在这里，我们试图从异步最早的历史对协程的工作原理以及协程库要做到什么。</p>
 <span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
+<blockquote>
+<p>前言: 本文试图将 I/O 多路复用、异步 I/O、事件循环、协程、async/await 等概念串联起来，其中涉及到的 syscall 以 Linux 为主</p>
+</blockquote>
+<h2 id="在异步之旅开始之前"><a href="#在异步之旅开始之前" class="headerlink" title="在异步之旅开始之前"></a>在异步之旅开始之前</h2><p>相信任何一个朋友在一开始接触编程的时候都会编写类似下面这样的 C++ 代码</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#inlcude <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="type">int</span> input;</span><br><span class="line">  std::cin &gt;&gt; input;</span><br><span class="line">  std::cout &lt;&lt; input &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样的一段程序的行为非常的显然，在第五行会阻塞起来等待输入，实质上在这一段代码背后实际上是调用了阻塞的 syscall read()，当你通过标准库具体的实现调用了这个系统调用时，会从用户态陷入内核态，等待内核将输入交给程序，才会继续下去。这是程序最简单的形态，以至于如果你参加任何算法竞赛的时候，要写的程序都是这样的形态。而这种系统调用称为阻塞的，<strong>阻塞IO</strong></p>
+<p>但这太简单了，程序可能还要处理更多更加复杂的情况，程序可能是一个 UI 程序，或者说这个程序是一个需要监听用户输入即时进行反馈的一段程序，比如你想做一个最基本的贪吃蛇程序，用户还没输入的时候程序始终是阻塞的无法变化的，那么这种模式就不成了</p>
+<p>对于一个程序来说，它本身自己所蕴含的信息自己已经全部知道了，但它在运行的时候仍然会有外来的信息，这些信息全部来自于操作系统，它运行的环境完全是操作系统提供的，操作系统本身的信息来源本就具有异步的性质，因为硬件运行的机理就是并行的，操作系统完全掌握中断的管理权，因此它可以高效的获取信息，而我们的用户态程序要做的事情，其实就是高效的从操作系统里获取我们所要的信息罢了。</p>
+<p>那么我们可以说同操作系统实际做的事情一样创建一个巨大的 while 循环，不断询问操作系统，对应的按钮是否被按下，这些询问本身并不花时间，只是问一问操作系统当前这个 IO 任务是否被完成，如果完成，我程序就可以从操作系统里取，如果没完成，那我就不管了，等到 while 下一次询问。这种类型的系统调用被称为非阻塞的，<strong>非阻塞IO</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonW</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonA</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonS</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonD</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要说的是，这样，配以一个合理编排的 handler 其实是最高效的处理这些 IO 事件的方式，事实上某些单片机程序就是这么做的，这种循环查询某个事件是否就绪的模式称为轮询(polling)。</p>
+<blockquote>
+<p>这样的方式可以进行的原因是：操作系统通过中断以及各种调度算法处理并存储来自硬件的各种信息，本身 <strong>OS 就作为一个巨大 Buffer 为程序提供信息</strong>，所以程序本身无需在意数据是怎么被具体准备出来的，你只需要向操作系统提起任务，操作系统就为你在缓冲区里准备好数据，你自己去取，因此数据其实短期内不会丢失的，只等你的应用去响应并消费。</p>
+</blockquote>
+<p>但是这种方式最大的问题是，我们在初学编程的时候知道，<code>while(1)</code> 出现在你的程序里，导致死循环，会大量占用 CPU 资源。但我们有时候也许会忽略一个问题：什么叫大量占用 CPU 资源。</p>
+<p>有的朋友会说大量占用 CPU 资源就是 CPU 占用率高，但是这种说法并不全面，因为没有解释到底 CPU 占用率是什么，这个数值是操作系统告诉你的，但你有没有想过这个数字是怎么来的。CPU 占用率是通过对比忙碌时间和总时间得出的百分比，而总时间减去忙碌时间是空闲时间，其实操作系统完成了对 CPU 的调度，操作系统在运行时可以告诉 CPU，你要在某一个时间周期里工作多久，然后这个时间周期里的 CPU 还能休息一会，停止工作，而这段时间就是空闲时间。</p>
+<p>对于死循环最大的问题是，死循环程序会导致它试图最大程度请求 CPU 去做无用的轮询，操作系统为了最大满足它索要的计算资源，不允许 CPU 停止休息，因此占用率便提高了。</p>
+<p>所以完全阻塞等待某个资源不行，开个循环询问所有任务的就绪状态也不行那应该怎么办呢</p>
+<h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环。也许你会同早期的我一样，认为这个事情的关键就在于 syscall 阻塞了进程，或者说在这里我更愿意说是线程的活动，那你就绕进了这个局中。</p>
+<p>让我们回来看看我们所需要做到的事情：如果我们要做一个贪吃蛇的小程序，其实最大的点是，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些事情，但是我们忽略了一个事情，那就是计时器事件本身就也是一个IO事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
+<p>如果在 <code>while</code> 里将任务轮询式能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个任务，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理就是，<strong>通过一个阻塞的接口查询所有 IO 任务，如果查询的时候数据已经准备好了，那么就立即返回，如果数据没有准备好就阻塞</strong></p>
+<p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，这里接口的阻塞并不是程序处理事件意义上的阻塞，接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，必须要让用户态应用程序挂起。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
+<blockquote>
+<p>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</p>
+</blockquote>
+<p>所以看到了么，我们的程序需要高效的处理或者说消费掉任务，这是保证任务不会堆起来，所有任务都能得到处理的前提。所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，而不满足这个条件的程序，一般是那种计算量特别大，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong></p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>TODO</p>
 
     </div>
 
@@ -320,13 +315,10 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/572ad35a.html" rel="prev" title="关于51单片机移植u8g2失败经历">
-      <i class="fa fa-chevron-left"></i> 关于51单片机移植u8g2失败经历
+    <a href="/posts/604cfd1a.html" rel="prev" title="关于编译原理的一些哲学想法">
+      <i class="fa fa-chevron-left"></i> 关于编译原理的一些哲学想法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/posts/15db3d47.html" rel="next" title="关于多元复合函数的困惑与思考">
-      关于多元复合函数的困惑与思考 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -386,7 +378,7 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CSAPP%E7%AB%A0%E8%8A%82%E4%BA%8C%E4%B8%AD%E7%9A%84%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E6%95%B4%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">CSAPP章节二中的数学公式整理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E8%BF%99%E4%B8%80%E7%AB%A0%E7%9A%84%E7%AC%A6%E5%8F%B7%E8%AF%B4%E6%98%8E"><span class="nav-number">1.1.</span> <span class="nav-text">关于这一章的符号说明:</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E4%B8%8E%E6%97%A0%E6%A0%88%E5%8D%8F%E7%A8%8B%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">深入异步与无栈协程通用概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E5%BC%82%E6%AD%A5%E4%B9%8B%E6%97%85%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="nav-number">1.1.</span> <span class="nav-text">在异步之旅开始之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E5%B1%80%E4%B9%8B%E6%B3%95%E4%B9%8B%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">破局之法之多路复用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.3.</span> <span class="nav-text">事件循环</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -525,59 +517,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
@@ -592,7 +531,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'feipiao594.github.io',
       owner       : 'feipiao594',
       admin       : ['feipiao594'],
-      id          : '43713f3a2b382c80d9083c5b37584bfa',
+      id          : '67093cc95491e6195b1c9ddc6501b4e5',
         language: 'zh-CN',
       distractionFreeMode: true
     });
