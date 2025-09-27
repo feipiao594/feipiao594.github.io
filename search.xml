@@ -649,55 +649,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Pytorch学习_3</title>
-    <url>/posts/82714ffc.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-3"><a href="#Pytorch学习-3" class="headerlink" title="Pytorch学习_3"></a>Pytorch学习_3</h1><p>距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习</p>
-<span id="more"></span>
-<h2 id="一些变化"><a href="#一些变化" class="headerlink" title="一些变化"></a>一些变化</h2><p>我并不是很喜欢 AI ，感觉大家都过于看重 AI 了，其实它也就是一个普普通通的工具罢了，而且使用的技术入门十分容易，并没有大家想象的那么高深，它不是一个万能钥匙，能开世界上任何一扇门<br>中文互联网上有太多 pytorch 的资料了，但是这些资料大多都不止是在讲 pytorch 本身，他们大多有一个”利好初学者”的标签，但是往往这时候意味着他们对 pytorch 本身这个库的诠释完全不足，所以最近我选择了直接去看 pytorch 的官方文档，总算是总结出来了一些东西。</p>
-<h2 id="Tensor-的一些新理解"><a href="#Tensor-的一些新理解" class="headerlink" title="Tensor 的一些新理解"></a>Tensor 的一些新理解</h2><p>pytorch 里面我个人认为最重要的库就是 Tensor 库，它定义了 Tensor 和其他一系列和 Tensor 计算有关的函数。但 Tensor 这个名字很有趣，它来自于数学，它的标准中文译名叫<strong>张量</strong>，在中文互联网(bing)上搜索 Tensor ，你得到的前几条信息都是深度学习 pytorch 里的 Tensor ，但是你如果搜索它的中文名张量，你得到的就是数学和物理里的那个张量，这很有趣了 :)</p>
-<blockquote>
-<p>我个人认为 Tensor 是纯纯的名词污染，我并不认为这个东西它是一个张量在欧式空间上的矩阵表示，即使它确实等价，但你不可以用一个东西的片面去描述一个东西，就像，还有些朋友认为它和 numpy 里的数组之间最大的差别是它可以交给 GPU 去处理所以要取一个和数组不一样的高大上的名字，但我作为一个 C/C++ 程序员，成天能和底层打交道，觉得这个纯是扯了</p>
-</blockquote>
-<p>言归正传，在我看来 Tensor 和普通的n维数组最大的差别是，Tensor 中有一个计算图累加的概念，简单来说，Tensor 这个类中有一个成员变量”存储”了得到这个 Tensor 通过了什么运算，这个就是计算图，你使用的 Tensor 只会调用 pytorch 里的 Tensor 数学运算函数进行运算，原因是这些数学运算函数不止做了 Tensor 的运算，他们同时承担了这个成员变量的计算图计算的内容，而如果你自己实现一个 Tensor 的运算，你就要手动去实现这个计算图拼合的行为。</p>
-<p>懵懵的？举个例子，<code>torch.matmul</code> 是 <code>Tensor</code> 的乘法，在上一章我们讲过，事实上 Tensor 的运算都是<strong>输入(单个或者多个) Tensor 输出 Tensor 的函数</strong>，对于乘法，它实质上会提取输入的两个 <code>Tensor</code> 里面成员变量存储的计算图，用一个乘号把他们相连，同时数值也会被相乘，最后输出的 Tensor 就是一个数值是前两个 Tensor 计算的结果，同时计算图是前两个 Tensor 的计算图加一个乘号拼合的结果</p>
-<h3 id="看看-Tensor-机理"><a href="#看看-Tensor-机理" class="headerlink" title="看看 Tensor 机理"></a>看看 Tensor 机理</h3><p>你也许会好奇，口说无凭，Tensor 在 pytorch 上的原文就是说的不同于 numpy 的 ndarrays 之处就只是可以在 GPU 或其他硬件加速器上运行:</p>
-<blockquote>
-<p>Tensors are similar to NumPy’s ndarrays, <strong>except that Tensors can run on GPUs or other hardware accelerators</strong>. In fact, Tensors and NumPy arrays can often share the same underlying memory, eliminating the need to copy data (see Bridge with NumPy). Tensors are also optimized for automatic differentiation (we’ll see more about that later in the Autograd section). If you’re familiar with ndarrays, you’ll be right at home with the Tensor API. If not, follow along! (<a href="https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html">https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html</a>)</p>
-</blockquote>
-<p>以及看看文档里说的 Tensor 的成员变量</p>
-<blockquote>
-<p>In PyTorch, a regular Tensor is a multi-dimensional array that is defined by the following components:</p>
-<blockquote>
-<p><strong>Storage</strong>: The actual data of the Tensor, stored as a contiguous, one-dimensional array of bytes.<br><strong>dtype</strong>: The data type of the elements in the Tensor, such as torch.float32 or torch.int64.<br><strong>shape</strong>: A tuple indicating the size of the Tensor in each dimension.<br><strong>Stride</strong>: The step size needed to move from one element to the next in each dimension.<br><strong>Offset</strong>: The starting point in the storage from which the Tensor data begins. This will usually be 0 for newly created Tensors.</p>
-</blockquote>
-<p>These components together define the structure and data of a Tensor, with the storage holding the actual data and the rest serving as metadata.<br>(<a href="https://pytorch.org/docs/stable/storage.html">https://pytorch.org/docs/stable/storage.html</a>)</p>
-</blockquote>
-<p>这压根没提到计算图啊，博主你这是给我们干哪来了，这还是 Tensor 么，别急，让我们深入代码看看实际的机理来佐证我们刚刚说的话</p>
-<p>首先看 Python 侧的 Tensor 定义，发现它继承自一个 <code>torch._C.TensorBase</code> ，同时追踪观察 <code>torch.matmul</code> 发现追踪到了一个 <code>.pyi</code> 的文件里，所以其实现明显不是 python 实现的，其实实际上它和 Tensor 都是通过 PyBind11 绑定到 C++ 的。让我们来看看 C++ 里它是怎么实现的</p>
-<p>相关的文件有</p>
-<ul>
-<li><code>aten/src/ATen/core/Tensor.h</code></li>
-<li><code>aten/src/ATen/core/Tensor.cpp</code></li>
-<li><code>aten/src/ATen/core/TensorBase.h</code></li>
-</ul>
-<p>在 TensoBase 里有一个这样的成员变量<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">c10::intrusive_ptr&lt;TensorImpl, UndefinedTensorImpl&gt; impl_;</span><br></pre></td></tr></table></figure></p>
-<p>在这里提到的 <code>TensorImpl</code> 中，有一大段话描述了下面这个成员变量，这就是存储计算图的实际指针</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;c10::AutogradMetaInterface&gt; autograd_meta_ = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
-<p>在上面的注释当中你可以知道 <code>autograd_meta_</code> 指向了和梯度有关的信息，比如 <code>grad_fn</code></p>
-<p>你自己构造的 Tensor 是计算图中的叶子节点，它的grad_fn 为 None</p>
-<p>这就是计算图的存储，可想而知，其实计算的函数会更新这个 Tensor 的计算图，而 Tensor 的核心其实就是这个在 C++ 侧没被文档所写出来的计算图相关的成员变量，当你计算梯度的时候，正是查看了这个成员变量的信息，因而能够计算出梯度来，所以能计算梯度的也是 Tensor</p>
-<blockquote>
-<p>如果要我给 Tensor 下一个定义的话，那么我会说，<strong>Tensor 就是一个保存了历史计算方式的多维数组类，同时其有在 CPU 或其他来加速存储的能力</strong><br>其实在 GPU 上跑个人感觉完全不是一个核心的概念值得多言，难道计算机图形学里的 shaders 算的那些东西都是 Tensor 吗</p>
-</blockquote>
-<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>这篇博客的另一位贡献者 Github@besthope-official ，一开始是他的探索才让我研究这个比较容易，这份博客也有他的一份力</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Pytorch学习_4</title>
     <url>/posts/1c15da5f.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-4"><a href="#Pytorch学习-4" class="headerlink" title="Pytorch学习_4"></a>Pytorch学习_4</h1><p>在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装</p>
@@ -760,6 +711,55 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_3</title>
+    <url>/posts/82714ffc.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-3"><a href="#Pytorch学习-3" class="headerlink" title="Pytorch学习_3"></a>Pytorch学习_3</h1><p>距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习</p>
+<span id="more"></span>
+<h2 id="一些变化"><a href="#一些变化" class="headerlink" title="一些变化"></a>一些变化</h2><p>我并不是很喜欢 AI ，感觉大家都过于看重 AI 了，其实它也就是一个普普通通的工具罢了，而且使用的技术入门十分容易，并没有大家想象的那么高深，它不是一个万能钥匙，能开世界上任何一扇门<br>中文互联网上有太多 pytorch 的资料了，但是这些资料大多都不止是在讲 pytorch 本身，他们大多有一个”利好初学者”的标签，但是往往这时候意味着他们对 pytorch 本身这个库的诠释完全不足，所以最近我选择了直接去看 pytorch 的官方文档，总算是总结出来了一些东西。</p>
+<h2 id="Tensor-的一些新理解"><a href="#Tensor-的一些新理解" class="headerlink" title="Tensor 的一些新理解"></a>Tensor 的一些新理解</h2><p>pytorch 里面我个人认为最重要的库就是 Tensor 库，它定义了 Tensor 和其他一系列和 Tensor 计算有关的函数。但 Tensor 这个名字很有趣，它来自于数学，它的标准中文译名叫<strong>张量</strong>，在中文互联网(bing)上搜索 Tensor ，你得到的前几条信息都是深度学习 pytorch 里的 Tensor ，但是你如果搜索它的中文名张量，你得到的就是数学和物理里的那个张量，这很有趣了 :)</p>
+<blockquote>
+<p>我个人认为 Tensor 是纯纯的名词污染，我并不认为这个东西它是一个张量在欧式空间上的矩阵表示，即使它确实等价，但你不可以用一个东西的片面去描述一个东西，就像，还有些朋友认为它和 numpy 里的数组之间最大的差别是它可以交给 GPU 去处理所以要取一个和数组不一样的高大上的名字，但我作为一个 C/C++ 程序员，成天能和底层打交道，觉得这个纯是扯了</p>
+</blockquote>
+<p>言归正传，在我看来 Tensor 和普通的n维数组最大的差别是，Tensor 中有一个计算图累加的概念，简单来说，Tensor 这个类中有一个成员变量”存储”了得到这个 Tensor 通过了什么运算，这个就是计算图，你使用的 Tensor 只会调用 pytorch 里的 Tensor 数学运算函数进行运算，原因是这些数学运算函数不止做了 Tensor 的运算，他们同时承担了这个成员变量的计算图计算的内容，而如果你自己实现一个 Tensor 的运算，你就要手动去实现这个计算图拼合的行为。</p>
+<p>懵懵的？举个例子，<code>torch.matmul</code> 是 <code>Tensor</code> 的乘法，在上一章我们讲过，事实上 Tensor 的运算都是<strong>输入(单个或者多个) Tensor 输出 Tensor 的函数</strong>，对于乘法，它实质上会提取输入的两个 <code>Tensor</code> 里面成员变量存储的计算图，用一个乘号把他们相连，同时数值也会被相乘，最后输出的 Tensor 就是一个数值是前两个 Tensor 计算的结果，同时计算图是前两个 Tensor 的计算图加一个乘号拼合的结果</p>
+<h3 id="看看-Tensor-机理"><a href="#看看-Tensor-机理" class="headerlink" title="看看 Tensor 机理"></a>看看 Tensor 机理</h3><p>你也许会好奇，口说无凭，Tensor 在 pytorch 上的原文就是说的不同于 numpy 的 ndarrays 之处就只是可以在 GPU 或其他硬件加速器上运行:</p>
+<blockquote>
+<p>Tensors are similar to NumPy’s ndarrays, <strong>except that Tensors can run on GPUs or other hardware accelerators</strong>. In fact, Tensors and NumPy arrays can often share the same underlying memory, eliminating the need to copy data (see Bridge with NumPy). Tensors are also optimized for automatic differentiation (we’ll see more about that later in the Autograd section). If you’re familiar with ndarrays, you’ll be right at home with the Tensor API. If not, follow along! (<a href="https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html">https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html</a>)</p>
+</blockquote>
+<p>以及看看文档里说的 Tensor 的成员变量</p>
+<blockquote>
+<p>In PyTorch, a regular Tensor is a multi-dimensional array that is defined by the following components:</p>
+<blockquote>
+<p><strong>Storage</strong>: The actual data of the Tensor, stored as a contiguous, one-dimensional array of bytes.<br><strong>dtype</strong>: The data type of the elements in the Tensor, such as torch.float32 or torch.int64.<br><strong>shape</strong>: A tuple indicating the size of the Tensor in each dimension.<br><strong>Stride</strong>: The step size needed to move from one element to the next in each dimension.<br><strong>Offset</strong>: The starting point in the storage from which the Tensor data begins. This will usually be 0 for newly created Tensors.</p>
+</blockquote>
+<p>These components together define the structure and data of a Tensor, with the storage holding the actual data and the rest serving as metadata.<br>(<a href="https://pytorch.org/docs/stable/storage.html">https://pytorch.org/docs/stable/storage.html</a>)</p>
+</blockquote>
+<p>这压根没提到计算图啊，博主你这是给我们干哪来了，这还是 Tensor 么，别急，让我们深入代码看看实际的机理来佐证我们刚刚说的话</p>
+<p>首先看 Python 侧的 Tensor 定义，发现它继承自一个 <code>torch._C.TensorBase</code> ，同时追踪观察 <code>torch.matmul</code> 发现追踪到了一个 <code>.pyi</code> 的文件里，所以其实现明显不是 python 实现的，其实实际上它和 Tensor 都是通过 PyBind11 绑定到 C++ 的。让我们来看看 C++ 里它是怎么实现的</p>
+<p>相关的文件有</p>
+<ul>
+<li><code>aten/src/ATen/core/Tensor.h</code></li>
+<li><code>aten/src/ATen/core/Tensor.cpp</code></li>
+<li><code>aten/src/ATen/core/TensorBase.h</code></li>
+</ul>
+<p>在 TensoBase 里有一个这样的成员变量<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">c10::intrusive_ptr&lt;TensorImpl, UndefinedTensorImpl&gt; impl_;</span><br></pre></td></tr></table></figure></p>
+<p>在这里提到的 <code>TensorImpl</code> 中，有一大段话描述了下面这个成员变量，这就是存储计算图的实际指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;c10::AutogradMetaInterface&gt; autograd_meta_ = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+<p>在上面的注释当中你可以知道 <code>autograd_meta_</code> 指向了和梯度有关的信息，比如 <code>grad_fn</code></p>
+<p>你自己构造的 Tensor 是计算图中的叶子节点，它的grad_fn 为 None</p>
+<p>这就是计算图的存储，可想而知，其实计算的函数会更新这个 Tensor 的计算图，而 Tensor 的核心其实就是这个在 C++ 侧没被文档所写出来的计算图相关的成员变量，当你计算梯度的时候，正是查看了这个成员变量的信息，因而能够计算出梯度来，所以能计算梯度的也是 Tensor</p>
+<blockquote>
+<p>如果要我给 Tensor 下一个定义的话，那么我会说，<strong>Tensor 就是一个保存了历史计算方式的多维数组类，同时其有在 CPU 或其他来加速存储的能力</strong><br>其实在 GPU 上跑个人感觉完全不是一个核心的概念值得多言，难道计算机图形学里的 shaders 算的那些东西都是 Tensor 吗</p>
+</blockquote>
+<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>这篇博客的另一位贡献者 Github@besthope-official ，一开始是他的探索才让我研究这个比较容易，这份博客也有他的一份力</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -966,27 +966,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_5_枚举与模式匹配</title>
     <url>/posts/28bcc6be.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
@@ -1118,6 +1097,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_8_泛型</title>
     <url>/posts/bdd7a1b0.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-8-泛型"><a href="#Rust-Chapter-8-泛型" class="headerlink" title="Rust_Chapter_8_泛型"></a>Rust_Chapter_8_泛型</h1><p>泛型是用来缩减重复书写的代码的优良工具，Rust 如同 C++ 一样引入了这样的一个工具</p>
@@ -1196,6 +1196,34 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>n重积分转n次积分问题</title>
+    <url>/posts/622309a6.html</url>
+    <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
+<hr>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
+<hr>
+<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
+<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
+<hr>
+<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
+<hr>
+<h2 id="三重积分的“细棒法”和“切片法”"><a href="#三重积分的“细棒法”和“切片法”" class="headerlink" title="三重积分的“细棒法”和“切片法”"></a>三重积分的“细棒法”和“切片法”</h2><p>本质上与上面的n重积分类似，“细棒法”就是说的这种方法，而“切片法”不过就是一下次拍扁两个维度而已。</p>
+<hr>
+<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
+<hr>
+<h2 id="关于n重积分可以拆成n次积分"><a href="#关于n重积分可以拆成n次积分" class="headerlink" title="关于n重积分可以拆成n次积分"></a>关于n重积分可以拆成n次积分</h2><p>这是由<strong>Fubini定理</strong>决定的，定理内容如下：<br>设$f:\mathbb{R}^{2}\rightarrow\mathbb{R}$是绝对可积函数、那么对于几乎每个$y\in\mathbb{R}$，$f(x,y)$是关于$r$在$\mathbb{R}^{2}$上绝对可积的，而且对于几乎每个$z\in\mathbb{R}$，$f(x,y)$是关于，在$\mathbb{R}$上绝对可积的、并且存在绝对可积函数$f:\mathbb{R}\rightarrow\mathbb{R}$以及绝对可积函数$G:\mathbb{R}\rightarrow\mathbb{R}$使得</p>
+<script type="math/tex; mode=display">
+F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathbb{R}$成立，并且</p>
+<script type="math/tex; mode=display">
+G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
+<script type="math/tex; mode=display">
+\int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
     <title>stokes公式</title>
     <url>/posts/7fc7eed7.html</url>
     <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
@@ -1260,34 +1288,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 </ul>
 <p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
 ]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>n重积分转n次积分问题</title>
-    <url>/posts/622309a6.html</url>
-    <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
-<hr>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>在$ \mathbb{R^n} $中，n重积分转n次积分直观上是把<strong>一个维度拍扁</strong>，其上的值通过一重积分拍扁在投影上的一个过程<br>我们需要研究的是拍扁所形成的<strong>投影上的积分区域</strong>，以及被拍扁那维的<strong>一次积分的积分上下限</strong></p>
-<hr>
-<h2 id="一次积分的上下限"><a href="#一次积分的上下限" class="headerlink" title="一次积分的上下限"></a>一次积分的上下限</h2><p>由于是把一个维拍扁，其实我们可以想象有无穷个与$x_n=0$这个坐标轴<strong>平行</strong>的直线与积分区域<strong>截交</strong>，交出来的，处在积分区域内部就是我们要积分的区域啦。</p>
-<p>可以想见这个区域是x的一个区间，<strong>广义的</strong>，我们这边说的上下限可以<strong>包括区间之并</strong>，具体落实在计算中可能要写成两个<strong>积分的和式</strong></p>
-<hr>
-<h2 id="投影上的积分区域"><a href="#投影上的积分区域" class="headerlink" title="投影上的积分区域"></a>投影上的积分区域</h2><p>留下的积分区域是指拍扁这个被拍扁的维度后剩下的投影，可以想见投影比定义域的约束会少一些咯</p>
-<hr>
-<h2 id="三重积分的“细棒法”和“切片法”"><a href="#三重积分的“细棒法”和“切片法”" class="headerlink" title="三重积分的“细棒法”和“切片法”"></a>三重积分的“细棒法”和“切片法”</h2><p>本质上与上面的n重积分类似，“细棒法”就是说的这种方法，而“切片法”不过就是一下次拍扁两个维度而已。</p>
-<hr>
-<h2 id="任意坐标系"><a href="#任意坐标系" class="headerlink" title="任意坐标系"></a>任意坐标系</h2><p>可以把原空间中的坐标映射到曲纹坐标系的伴生的$ \mathbb{E^n} $的笛卡尔坐标系上的函数，再进行计算(其实就是把图形也就是点集进行转换)</p>
-<hr>
-<h2 id="关于n重积分可以拆成n次积分"><a href="#关于n重积分可以拆成n次积分" class="headerlink" title="关于n重积分可以拆成n次积分"></a>关于n重积分可以拆成n次积分</h2><p>这是由<strong>Fubini定理</strong>决定的，定理内容如下：<br>设$f:\mathbb{R}^{2}\rightarrow\mathbb{R}$是绝对可积函数、那么对于几乎每个$y\in\mathbb{R}$，$f(x,y)$是关于$r$在$\mathbb{R}^{2}$上绝对可积的，而且对于几乎每个$z\in\mathbb{R}$，$f(x,y)$是关于，在$\mathbb{R}$上绝对可积的、并且存在绝对可积函数$f:\mathbb{R}\rightarrow\mathbb{R}$以及绝对可积函数$G:\mathbb{R}\rightarrow\mathbb{R}$使得</p>
-<script type="math/tex; mode=display">
-F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathbb{R}$成立，并且</p>
-<script type="math/tex; mode=display">
-G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
-<script type="math/tex; mode=display">
-\int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
@@ -1473,6 +1473,41 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <url>/posts/604cfd1a.html</url>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -1512,41 +1547,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于编译原理的一些哲学想法</title>
-    <url>/posts/604cfd1a.html</url>
-    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
-<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
-<span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1777,45 +1777,115 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>在Gentoo上用KVM玩Mac</title>
-    <url>/posts/ebefb94c.html</url>
-    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
+    <title>对书本中狄拉克函数的诠释</title>
+    <url>/posts/c4ebbeff.html</url>
+    <content><![CDATA[<h1 id="对书本中狄拉克函数的诠释"><a href="#对书本中狄拉克函数的诠释" class="headerlink" title="对书本中狄拉克函数的诠释"></a>对书本中狄拉克函数的诠释</h1><p>当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释</p>
 <span id="more"></span>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
-<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
-<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
-<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
-<blockquote>
-<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
+<h2 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a>WARNING</h2><blockquote>
+<p>前排提示:本文只是记录记录某一些定理，方便我进行理解，但不作为严谨的推导，所以看看就行，不必当真<br>文章的定义摘抄自<strong>知乎@我烂了 专栏</strong>:<a href="https://www.zhihu.com/column/c_1462378232960466945">广义函数论与函数空间</a><br>只是摘抄了些定义用作笔记应该不会有什么问题吧QAQ</p>
 </blockquote>
-<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
-<p>使用它的 python 脚本下载 Mac 官方镜像</p>
+<h2 id="写这篇文档的原因"><a href="#写这篇文档的原因" class="headerlink" title="写这篇文档的原因"></a>写这篇文档的原因</h2><p>主要是在看《信号与系统分析》这本书的时候发现了一个奇怪的东西，即$\int_{0^-}^{0^+}$这个积分符号，我们可以理解它其实是</p>
+<script type="math/tex; mode=display">\lim_{a \to 0} \int_{a^-}^{a^+}</script><p>但我个人第一次看的时候觉得书中对线性系统的冲激响应求法说明不够正确(<strong>实质上还是挺对的</strong>)，于是就有了接下来的内容</p>
+<h2 id="广义函数的定义"><a href="#广义函数的定义" class="headerlink" title="广义函数的定义"></a>广义函数的定义</h2><p>$(\mathcal{D}^{\prime}(\Omega)$<strong>广义函数</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，$\mathcal{D}^{\prime}(\Omega)$广义函数是 指$\mathcal{D}(\Omega)$ 上的有界连续线性泛函所组成的集合。亦即对于任意$T\in\mathcal{D}^{\prime}(\Omega)$，$T:\mathcal{D}^{\prime}(\Omega)\to\mathbb{C}$是$\mathcal{D}(\Omega)$上的线性泛函，且满足下面的连续性条件:</p>
+<p>对任意$\{\varphi_\nu\}\subset\mathcal{D}(\Omega)$，$\varphi_\nu\to0\:(\mathcal{D}(\Omega))$，则成立$\lim_{\nu\to\infty}T[\varphi_\nu]=0$</p>
+<p>注意这里的$\mathcal{D}(\Omega)$定义如下<br>(<strong>紧支集的光滑函数空间</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，则$\mathcal{D}(\Omega)$定义如下</p>
+<script type="math/tex; mode=display">
+\mathcal{D}(\Omega)\stackrel{\text{def}}{=}\begin{Bmatrix}\varphi\in C^\infty(\Omega),\text{supp}\varphi\text{ 是紧集}\end{Bmatrix}</script><p>需要注意的是，$\mathbb{R}^n$不是紧致的，这意味着如果$\Omega$就是$\mathbb{R}^n$，那么函数在无穷远处都是0<br>而$\mathcal{D}^{\prime}(\Omega)$指的则是构建在其上的泛函空间</p>
+<h3 id="关于-Omega-subset-mathbb-R-n"><a href="#关于-Omega-subset-mathbb-R-n" class="headerlink" title="关于$\Omega\subset\mathbb{R}^n$"></a>关于$\Omega\subset\mathbb{R}^n$</h3><p>在这里$R^n$可以推广到任意<strong>光滑流形</strong>，这意味着闭集这种紧流形上的函数，在自己这个流形内讨论也可以把整个流形作为开集，也就符合了定义在闭区间上函数的定义，下面讨论的这些也就自然而然满足了闭集了</p>
+<h3 id="Dirac函数"><a href="#Dirac函数" class="headerlink" title="Dirac函数"></a>Dirac函数</h3><p>任意试验函数$\varphi(x)$与它在$x=0$上的函数值$\varphi(0)$对应的广义函数称为$\delta$函数，即$\delta$函数满足</p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \varphi(0),\varphi(x)\in\mathcal{D}(\Omega)</script><p>注意这里的$\Omega$，这说明了其实如果写成积分形式(看下文)， 积分上下限可以不是无穷</p>
+<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数乘以除上下限包围的区域以外为1都为0的常义函数(广义函数是有更加广泛的乘法定义的，这样说明没有问题)，再对$f(x)=1$进行内积，虽然在奇异点上不能使用，不过除了这种无法讨论的情况，对于大部分情况都成立</p>
+<h3 id="对于局部绝对可积函数"><a href="#对于局部绝对可积函数" class="headerlink" title="对于局部绝对可积函数"></a>对于局部绝对可积函数</h3><p>设$f(x)$是 $\mathbb{R}$上的局部绝对可积函数，即在任何有限区间$(a,b)$上积分$\int_{a}^{b}|f(x)|dx$均存在，则试验函数$\varphi(x)$与积分值 $\int_{-\infty}^{\infty}f(x)\varphi(x)dx$的对应是一个广义函数，即$f(x)$对应着一个广义函数</p>
+<script type="math/tex; mode=display">
+\langle f,\varphi\rangle = \int_{-\infty}^{\infty}f(x)\varphi(x)\mathrm{d}x</script><h2 id="广义函数的导数"><a href="#广义函数的导数" class="headerlink" title="广义函数的导数"></a>广义函数的导数</h2><p>(<strong>广义函数的导数</strong>)对 $T\in\mathcal{D}^{\prime}(\Omega)$，分布导数 $\frac{\partial T}{\partial x_k}\in\mathcal{D}’(\Omega)$ 定义为</p>
+<script type="math/tex; mode=display">
+\Big\langle\frac{\partial T}{\partial x_{k}},\varphi\Big\rangle\stackrel{\mathrm{def}}{=}-\Big\langle T,\frac{\partial\varphi}{\partial x_{k}}\Big\rangle,\quad\forall\:\varphi\in\mathcal{D}(\Omega).</script><p>由于广义导数的存在，使得含有广义函数的<strong>微分方程</strong>有了良好的定义，但也只是微分方程有定义，积分方程就不一定了</p>
 <blockquote>
-<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
+<p>显然，广义函数的导数和广义函数本身一般是不同的泛函</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
-<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
-<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
-<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
-<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
-<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
-<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
+<h2 id="广义函数的乘法"><a href="#广义函数的乘法" class="headerlink" title="广义函数的乘法"></a>广义函数的乘法</h2><p>(<strong>广义函数的乘法</strong>)对$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，定义他俩的乘法$\psi f\in\mathcal{D}^{\prime}(\Omega)$为</p>
+<script type="math/tex; mode=display">
+\langle f\psi,\varphi\rangle=\langle\psi f,\varphi\rangle=\langle f,\psi\varphi\rangle,\quad(\forall\varphi\in\mathcal{D}(\Omega))</script><h3 id="定理-导数运算法则-乘法"><a href="#定理-导数运算法则-乘法" class="headerlink" title="定理_导数运算法则(乘法)"></a>定理_导数运算法则(乘法)</h3><p>广义函数满足导数的运算法则，即若$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，则</p>
+<script type="math/tex; mode=display">
+(\psi f)'=\psi'f+\psi f'</script><p><strong>proof.</strong><br>即证</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>首先</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=-\langle \psi f,\varphi'\rangle=-\langle f,\psi\varphi'\rangle=\langle f,-\psi\varphi'\rangle</script><p>然后</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\langle\psi' f + \psi f',\varphi\rangle &= \langle f,\psi'\varphi\rangle + \langle f',\psi\varphi\rangle \\&=\langle f,\psi'\varphi\rangle - \langle f,(\psi\varphi)'\rangle \\& = \langle f,\psi'\varphi\rangle - \langle f,\psi'\varphi + \psi\varphi'\rangle \\& = \langle f,\psi'\varphi-\psi'\varphi-\psi\varphi'\rangle\\& = \langle f,-\psi\varphi'\rangle\end{aligned}</script><p>最后</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=\langle f,-\psi\varphi'\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>得证，<strong>Q.E.D</strong></p>
+<h2 id="关于-delta-函数"><a href="#关于-delta-函数" class="headerlink" title="关于$\delta$函数"></a>关于$\delta$函数</h2><p><strong>e.g</strong>.考虑Heaviside函数</p>
+<script type="math/tex; mode=display">
+H(x)=\left\{\begin{array}{ll}1,&\text{若 }x>0,\\0,&\text{若 }x<0.\end{array}\right.</script><p>则 $\frac{\mathrm{d}H(x)}{\mathrm{d}x}=\delta.$</p>
+<p>证明，对任意$g\in\mathcal{D}(\Omega)$，成立</p>
+<script type="math/tex; mode=display">
+\Big\langle\frac{\mathrm{d}H}{\mathrm{d}x},\varphi\Big\rangle=-\Big\langle H,\frac{\mathrm{d}\varphi}{\mathrm{d}x}\Big\rangle=-\int_0^\infty\frac{\mathrm{d}\varphi(x)}{\mathrm{d}x}=\varphi(0)=\langle\delta,\varphi\rangle</script><p>证毕</p>
+<p>由上述式子可以从逻辑上得到$\delta$函数的积分结果，但实际上，$\delta$函数的积分是得从它的定义来的，<strong>而广义函数应该并不能定义实际上的积分</strong></p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \varphi(0)</script><p>历史原因，使得其可以写成</p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \int_{-\infty}^{\infty}\delta(x)\varphi(x)\mathrm{d}x = \int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x=\varphi(0)</script><p>那么取一个极限，也可以得到最开始的问题的解决方案</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\langle \delta,\varphi\rangle &= \lim_{a\to\infty}\int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x\\&=\int_{0^-}^{0^+}\delta(x)\varphi(x)\mathrm{d}x\\&=\varphi(0)\end{aligned}</script><p>假设$\varphi(x) = 1$，则$\varphi\in\mathcal{D}(\Omega)$，那么我们就可以得到</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}\delta(x)\mathrm{d}x =\int_{0^-}^{0^+}\delta(x)\mathrm{d}x= 1</script><p>其实事实上对于$\delta$函数来说，<strong>根本就没有定义黎曼积分或勒贝格积分</strong>，这只是一种写法而已，完全可以不用这种写法，转而使用严格的泛函的写法</p>
+<h2 id="关于-delta’-函数"><a href="#关于-delta’-函数" class="headerlink" title="关于$\delta’$函数"></a>关于$\delta’$函数</h2><p>根据上面的逻辑可以导出$\delta’$，即Dirac Delta函数的导函数，称为冲激偶函数</p>
+<p>冲激偶$\delta’$函数是<strong>奇函数</strong>，即$-\delta’(x)=\delta’(-x)$</p>
+<p>冲激偶函数是从正向逼近$0$为$-\infty$，从负向逼近$0$为$+\infty$的奇异函数，其定义的另一种形式如下</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}f(x)\delta'(x-x_0)\mathrm{d}x = -f'(x_0)</script><p>如此也可以定义delta函数的任意n阶导函数</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}f(x)\delta^{(n)}(x-x_0)\mathrm{d}x = (-1)^nf^{(n)}(x_0)</script><p>根据定义、冲激函数$f(x)\delta(x)=f(0)$的性质与上面有提到的导数运算法则(乘法)和可以得到如下等式</p>
+<script type="math/tex; mode=display">
+f(t)\delta'(t)=f(0)\delta'(t)-f'(0)\delta(t)</script><p>从而</p>
+<script type="math/tex; mode=display">
+x\delta'(x)=-\delta(x)\qquad x^2\delta''(x)=2\delta(x)</script><h2 id="求解线性系统的冲激响应"><a href="#求解线性系统的冲激响应" class="headerlink" title="求解线性系统的冲激响应"></a>求解线性系统的冲激响应</h2><script type="math/tex; mode=display">
+a_{n}h^{(n)}(t)+a_{n-1}h^{(n-1)}(t)+\cdots+a_{1}h^{\prime}(t)+a_{0}h(t)=\delta(t)</script><p>对于这个方程，我们观察到，从逻辑上讲，解得的$h(t)$一定是一个<strong>常义函数</strong>，根据冲激函数的物理意义是一个瞬间的无穷大信号而言，我也可以推得在小于0的时候信号一定为0，而在大于0的时候才是我们真正需要考量的函数，因此最终在<strong>物理意义的辅助</strong>下我们得到了微分方程解的形式，拆解为$h(x)=f(x)u(x)$(这里的$u(x)$就是上面说的<strong>Heaviside函数</strong>)，而因为$h(x)$在大于0上是连续可导的函数(在大于0的部分微分方程的基本要求，这是这里的特殊要求，原因是防止产生冲激偶，也正是因为这样，在这里$0^-$和$0$没啥区别)，那么在小于0的部分也可以延拓出一个连续的$f(x)$，所以$f(x)$是连续可导的</p>
+<p>求解微分方程可以先把这个形式代入进去看看，我们来看看对$h(x)$求多次导的结果(用上面的那些公式就都可以计算出来了)</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+h(x)=f(x)u(x)\\\\
+h'(x)=f'(x)u(x)+f(0)\delta(x)\\\\
+h''(x)=f''(x)u(x)+f'(0)\delta(x)+f(0)\delta'(x)\\\\
+h'''(x)=f'''(x)u(x)+f(0)''\delta(x)+f'(0)\delta'(x)+f(0)\delta''(x)\\\\
+\cdots\cdots\cdots\cdots
+\end{cases}</script><p>可以看到，对于上面这些式子乘以原本式子里$a_k$累加的结果，如下</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^{n} a_kh^{(k)}(x)=(\sum_{k=0}^{n}a_kf^{(k)}(x))u(x)+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)+\\(\sum_{k=0}^{n-2}a_{(k+2)}f^{(k)}(0))\delta'(x)+\cdots+a_nf(0)\delta^{(n-1)}(x)</script><p>好了，我们观察一下这个式子，这个就<strong>是微分方程等式的左端</strong>，而等式右端只是单独的一个$\delta(x)$，所以这个式子<strong>从第三项开始全是0</strong>，即第三项开始到最后那些大和式都是0<br>知道了这点，我们直接去看最后一项，这里只有一项 $a_nf(0)$，想要它为0，即$f(0)=0$，然后再看最后第二项$a_{(n-1)}f(0)+a_nf’(0)$，因为从后一项推得$f(0)=0$，要想$a_{(n-1)}f(0)+a_nf’(0)=0$，只需要$f’(0)=0$。同理再看前一项得到$f’’(x)=0$，<strong>以此类推</strong>，便得到了</p>
+<script type="math/tex; mode=display">f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0</script><p>然后我们看第二项，和原微分方程等式右端组成式子如下</p>
+<script type="math/tex; mode=display">
+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)=\delta(x)</script><p>由上面推导的等于0的等式就可以化简得</p>
+<script type="math/tex; mode=display">
+f^{(n-1)}(0)=\frac{1}{a_n}</script><p>剩下的第一个项也应该为0</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^{n}a_kf^{(k)}=0</script><p>综合起来就得到了和这个微分方程通解的式子，即</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+h(x)=f(x)u(x)\\\\
+f^{(n)}(0)+f^{(n-1)}(0)+\cdots+f'(x)+f(x)=0\\\\
+f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0\\\\
+f^{(n-1)}(0)=\frac{1}{a_n}
+\end{cases}</script><p>核心的等价的微分方程就是上面这个方程组的第二式，是一个<strong>高阶齐次线性微分方程</strong>，第三、四式是第二式的边界条件，由这三个式子可以唯一确定一个$f(x)$，进而唯一确定一个$h(x)$，从而求得我们所要的冲激响应</p>
+<h2 id="另一种解释方法"><a href="#另一种解释方法" class="headerlink" title="另一种解释方法"></a>另一种解释方法</h2><p>关于Dirac函数本身，其具有的积分性质仍然是难以表达的，我们可以使用另一种方法去说明函数，即将极限解释成弱极限的方法</p>
+<p>首先对于$\mathscr{D}’(\Omega)$来说，可以将广义函数的微商完全使用弱极限去书写<br>其中$h_i$为向量的第$i$个分量</p>
+<script type="math/tex; mode=display">
+\lim_{h_i\to0}\frac{f(x+h)-f(x)}{h_i} = \frac{\partial f}{\partial x_i}</script><p>围绕Dirac函数的积分的一切内容其实都是未定义的行为，上面已有的东西解释清楚了除了积分以外的东西，而积分我们可以给它补充定义，就像工科书中说的那样，但是光有定义不能保证其与原本积分的相容性，定义本身应该满足原有的积分性质</p>
+<p>其实Dirac函数也有其它的定义，例如它是由函数列求极限得来(事实上，对于$f\in\mathscr{D}’(\Omega)$，其一定可以找到某种函数列$f_i\in C^\infty$弱收敛逼近的)，只要把原先的极限承认为弱极限。</p>
+<script type="math/tex; mode=display">
+f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，就定义为先算序列的积分再进行弱极限，即</p>
+<script type="math/tex; mode=display">
+\int_a^b f(x)dx=\int_a^b \lim_{i\to 0}f_i(x)dx:=\lim_{i\to 0}\int_a^b f_i(x)dx</script><p>这种记法天生支持原先积分的所有性质，因为极限随时可以先算，我完全可以把函数列当成逼近后的结果，反正随时都可以先算极限</p>
+<p>而对于傅里叶变换这种积分变换当中也存在一个极限，是对于广义积分的上下限而言的，如果那个求极限也认为是弱极限的话，也可以得到算出来是广义函数的结果</p>
 <blockquote>
-<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
-</blockquote>
-<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
-<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
-<blockquote>
-<p>注意该项目实测可以安装较新版本的 MacOS</p>
+<p>虽然弱极限很有用，但是普遍定义下的积分肯定是不存在的，对于课程而言，最根本的还是求解微分方程和本身被特化了的积分变换，我们要做的就是用泛函的语言去得到相同的结果罢了，而不应该注意它是否应该和原本的常规函数性质相同，这没有意义，因为我们并不能创造什么定义<br>事实上对冲激函数及其导数进行积分根本就不会在实际工程中遇到，特别赋予它含义只是工程感性说明的过程罢了，更多的讨论还是集中在$L^2$空间上<br>如果需要更加明确的定义，可以考虑将distribution视作被包含的特例的hyperfunction</p>
 </blockquote>
 ]]></content>
       <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -1866,6 +1936,48 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Gentoo上用KVM玩Mac</title>
+    <url>/posts/ebefb94c.html</url>
+    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
+<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
+<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
+<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
+<blockquote>
+<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
+</blockquote>
+<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
+<p>使用它的 python 脚本下载 Mac 官方镜像</p>
+<blockquote>
+<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
+<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
+<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
+<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
+<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
+<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
+<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
+</blockquote>
+<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
+<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
+<blockquote>
+<p>注意该项目实测可以安装较新版本的 MacOS</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1980,115 +2092,15 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>对书本中狄拉克函数的诠释</title>
-    <url>/posts/c4ebbeff.html</url>
-    <content><![CDATA[<h1 id="对书本中狄拉克函数的诠释"><a href="#对书本中狄拉克函数的诠释" class="headerlink" title="对书本中狄拉克函数的诠释"></a>对书本中狄拉克函数的诠释</h1><p>当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释</p>
+    <title>排序</title>
+    <url>/posts/a444b428.html</url>
+    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
 <span id="more"></span>
-<h2 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a>WARNING</h2><blockquote>
-<p>前排提示:本文只是记录记录某一些定理，方便我进行理解，但不作为严谨的推导，所以看看就行，不必当真<br>文章的定义摘抄自<strong>知乎@我烂了 专栏</strong>:<a href="https://www.zhihu.com/column/c_1462378232960466945">广义函数论与函数空间</a><br>只是摘抄了些定义用作笔记应该不会有什么问题吧QAQ</p>
-</blockquote>
-<h2 id="写这篇文档的原因"><a href="#写这篇文档的原因" class="headerlink" title="写这篇文档的原因"></a>写这篇文档的原因</h2><p>主要是在看《信号与系统分析》这本书的时候发现了一个奇怪的东西，即$\int_{0^-}^{0^+}$这个积分符号，我们可以理解它其实是</p>
-<script type="math/tex; mode=display">\lim_{a \to 0} \int_{a^-}^{a^+}</script><p>但我个人第一次看的时候觉得书中对线性系统的冲激响应求法说明不够正确(<strong>实质上还是挺对的</strong>)，于是就有了接下来的内容</p>
-<h2 id="广义函数的定义"><a href="#广义函数的定义" class="headerlink" title="广义函数的定义"></a>广义函数的定义</h2><p>$(\mathcal{D}^{\prime}(\Omega)$<strong>广义函数</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，$\mathcal{D}^{\prime}(\Omega)$广义函数是 指$\mathcal{D}(\Omega)$ 上的有界连续线性泛函所组成的集合。亦即对于任意$T\in\mathcal{D}^{\prime}(\Omega)$，$T:\mathcal{D}^{\prime}(\Omega)\to\mathbb{C}$是$\mathcal{D}(\Omega)$上的线性泛函，且满足下面的连续性条件:</p>
-<p>对任意$\{\varphi_\nu\}\subset\mathcal{D}(\Omega)$，$\varphi_\nu\to0\:(\mathcal{D}(\Omega))$，则成立$\lim_{\nu\to\infty}T[\varphi_\nu]=0$</p>
-<p>注意这里的$\mathcal{D}(\Omega)$定义如下<br>(<strong>紧支集的光滑函数空间</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，则$\mathcal{D}(\Omega)$定义如下</p>
-<script type="math/tex; mode=display">
-\mathcal{D}(\Omega)\stackrel{\text{def}}{=}\begin{Bmatrix}\varphi\in C^\infty(\Omega),\text{supp}\varphi\text{ 是紧集}\end{Bmatrix}</script><p>需要注意的是，$\mathbb{R}^n$不是紧致的，这意味着如果$\Omega$就是$\mathbb{R}^n$，那么函数在无穷远处都是0<br>而$\mathcal{D}^{\prime}(\Omega)$指的则是构建在其上的泛函空间</p>
-<h3 id="关于-Omega-subset-mathbb-R-n"><a href="#关于-Omega-subset-mathbb-R-n" class="headerlink" title="关于$\Omega\subset\mathbb{R}^n$"></a>关于$\Omega\subset\mathbb{R}^n$</h3><p>在这里$R^n$可以推广到任意<strong>光滑流形</strong>，这意味着闭集这种紧流形上的函数，在自己这个流形内讨论也可以把整个流形作为开集，也就符合了定义在闭区间上函数的定义，下面讨论的这些也就自然而然满足了闭集了</p>
-<h3 id="Dirac函数"><a href="#Dirac函数" class="headerlink" title="Dirac函数"></a>Dirac函数</h3><p>任意试验函数$\varphi(x)$与它在$x=0$上的函数值$\varphi(0)$对应的广义函数称为$\delta$函数，即$\delta$函数满足</p>
-<script type="math/tex; mode=display">
-\langle \delta,\varphi\rangle = \varphi(0),\varphi(x)\in\mathcal{D}(\Omega)</script><p>注意这里的$\Omega$，这说明了其实如果写成积分形式(看下文)， 积分上下限可以不是无穷</p>
-<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数乘以除上下限包围的区域以外为1都为0的常义函数(广义函数是有更加广泛的乘法定义的，这样说明没有问题)，再对$f(x)=1$进行内积，虽然在奇异点上不能使用，不过除了这种无法讨论的情况，对于大部分情况都成立</p>
-<h3 id="对于局部绝对可积函数"><a href="#对于局部绝对可积函数" class="headerlink" title="对于局部绝对可积函数"></a>对于局部绝对可积函数</h3><p>设$f(x)$是 $\mathbb{R}$上的局部绝对可积函数，即在任何有限区间$(a,b)$上积分$\int_{a}^{b}|f(x)|dx$均存在，则试验函数$\varphi(x)$与积分值 $\int_{-\infty}^{\infty}f(x)\varphi(x)dx$的对应是一个广义函数，即$f(x)$对应着一个广义函数</p>
-<script type="math/tex; mode=display">
-\langle f,\varphi\rangle = \int_{-\infty}^{\infty}f(x)\varphi(x)\mathrm{d}x</script><h2 id="广义函数的导数"><a href="#广义函数的导数" class="headerlink" title="广义函数的导数"></a>广义函数的导数</h2><p>(<strong>广义函数的导数</strong>)对 $T\in\mathcal{D}^{\prime}(\Omega)$，分布导数 $\frac{\partial T}{\partial x_k}\in\mathcal{D}’(\Omega)$ 定义为</p>
-<script type="math/tex; mode=display">
-\Big\langle\frac{\partial T}{\partial x_{k}},\varphi\Big\rangle\stackrel{\mathrm{def}}{=}-\Big\langle T,\frac{\partial\varphi}{\partial x_{k}}\Big\rangle,\quad\forall\:\varphi\in\mathcal{D}(\Omega).</script><p>由于广义导数的存在，使得含有广义函数的<strong>微分方程</strong>有了良好的定义，但也只是微分方程有定义，积分方程就不一定了</p>
-<blockquote>
-<p>显然，广义函数的导数和广义函数本身一般是不同的泛函</p>
-</blockquote>
-<h2 id="广义函数的乘法"><a href="#广义函数的乘法" class="headerlink" title="广义函数的乘法"></a>广义函数的乘法</h2><p>(<strong>广义函数的乘法</strong>)对$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，定义他俩的乘法$\psi f\in\mathcal{D}^{\prime}(\Omega)$为</p>
-<script type="math/tex; mode=display">
-\langle f\psi,\varphi\rangle=\langle\psi f,\varphi\rangle=\langle f,\psi\varphi\rangle,\quad(\forall\varphi\in\mathcal{D}(\Omega))</script><h3 id="定理-导数运算法则-乘法"><a href="#定理-导数运算法则-乘法" class="headerlink" title="定理_导数运算法则(乘法)"></a>定理_导数运算法则(乘法)</h3><p>广义函数满足导数的运算法则，即若$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，则</p>
-<script type="math/tex; mode=display">
-(\psi f)'=\psi'f+\psi f'</script><p><strong>proof.</strong><br>即证</p>
-<script type="math/tex; mode=display">
-\langle (\psi f)',\varphi\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>首先</p>
-<script type="math/tex; mode=display">
-\langle (\psi f)',\varphi\rangle=-\langle \psi f,\varphi'\rangle=-\langle f,\psi\varphi'\rangle=\langle f,-\psi\varphi'\rangle</script><p>然后</p>
-<script type="math/tex; mode=display">
-\begin{aligned}\langle\psi' f + \psi f',\varphi\rangle &= \langle f,\psi'\varphi\rangle + \langle f',\psi\varphi\rangle \\&=\langle f,\psi'\varphi\rangle - \langle f,(\psi\varphi)'\rangle \\& = \langle f,\psi'\varphi\rangle - \langle f,\psi'\varphi + \psi\varphi'\rangle \\& = \langle f,\psi'\varphi-\psi'\varphi-\psi\varphi'\rangle\\& = \langle f,-\psi\varphi'\rangle\end{aligned}</script><p>最后</p>
-<script type="math/tex; mode=display">
-\langle (\psi f)',\varphi\rangle=\langle f,-\psi\varphi'\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>得证，<strong>Q.E.D</strong></p>
-<h2 id="关于-delta-函数"><a href="#关于-delta-函数" class="headerlink" title="关于$\delta$函数"></a>关于$\delta$函数</h2><p><strong>e.g</strong>.考虑Heaviside函数</p>
-<script type="math/tex; mode=display">
-H(x)=\left\{\begin{array}{ll}1,&\text{若 }x>0,\\0,&\text{若 }x<0.\end{array}\right.</script><p>则 $\frac{\mathrm{d}H(x)}{\mathrm{d}x}=\delta.$</p>
-<p>证明，对任意$g\in\mathcal{D}(\Omega)$，成立</p>
-<script type="math/tex; mode=display">
-\Big\langle\frac{\mathrm{d}H}{\mathrm{d}x},\varphi\Big\rangle=-\Big\langle H,\frac{\mathrm{d}\varphi}{\mathrm{d}x}\Big\rangle=-\int_0^\infty\frac{\mathrm{d}\varphi(x)}{\mathrm{d}x}=\varphi(0)=\langle\delta,\varphi\rangle</script><p>证毕</p>
-<p>由上述式子可以从逻辑上得到$\delta$函数的积分结果，但实际上，$\delta$函数的积分是得从它的定义来的，<strong>而广义函数应该并不能定义实际上的积分</strong></p>
-<script type="math/tex; mode=display">
-\langle \delta,\varphi\rangle = \varphi(0)</script><p>历史原因，使得其可以写成</p>
-<script type="math/tex; mode=display">
-\langle \delta,\varphi\rangle = \int_{-\infty}^{\infty}\delta(x)\varphi(x)\mathrm{d}x = \int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x=\varphi(0)</script><p>那么取一个极限，也可以得到最开始的问题的解决方案</p>
-<script type="math/tex; mode=display">
-\begin{aligned}\langle \delta,\varphi\rangle &= \lim_{a\to\infty}\int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x\\&=\int_{0^-}^{0^+}\delta(x)\varphi(x)\mathrm{d}x\\&=\varphi(0)\end{aligned}</script><p>假设$\varphi(x) = 1$，则$\varphi\in\mathcal{D}(\Omega)$，那么我们就可以得到</p>
-<script type="math/tex; mode=display">
-\int_{-\infty}^{\infty}\delta(x)\mathrm{d}x =\int_{0^-}^{0^+}\delta(x)\mathrm{d}x= 1</script><p>其实事实上对于$\delta$函数来说，<strong>根本就没有定义黎曼积分或勒贝格积分</strong>，这只是一种写法而已，完全可以不用这种写法，转而使用严格的泛函的写法</p>
-<h2 id="关于-delta’-函数"><a href="#关于-delta’-函数" class="headerlink" title="关于$\delta’$函数"></a>关于$\delta’$函数</h2><p>根据上面的逻辑可以导出$\delta’$，即Dirac Delta函数的导函数，称为冲激偶函数</p>
-<p>冲激偶$\delta’$函数是<strong>奇函数</strong>，即$-\delta’(x)=\delta’(-x)$</p>
-<p>冲激偶函数是从正向逼近$0$为$-\infty$，从负向逼近$0$为$+\infty$的奇异函数，其定义的另一种形式如下</p>
-<script type="math/tex; mode=display">
-\int_{-\infty}^{\infty}f(x)\delta'(x-x_0)\mathrm{d}x = -f'(x_0)</script><p>如此也可以定义delta函数的任意n阶导函数</p>
-<script type="math/tex; mode=display">
-\int_{-\infty}^{\infty}f(x)\delta^{(n)}(x-x_0)\mathrm{d}x = (-1)^nf^{(n)}(x_0)</script><p>根据定义、冲激函数$f(x)\delta(x)=f(0)$的性质与上面有提到的导数运算法则(乘法)和可以得到如下等式</p>
-<script type="math/tex; mode=display">
-f(t)\delta'(t)=f(0)\delta'(t)-f'(0)\delta(t)</script><p>从而</p>
-<script type="math/tex; mode=display">
-x\delta'(x)=-\delta(x)\qquad x^2\delta''(x)=2\delta(x)</script><h2 id="求解线性系统的冲激响应"><a href="#求解线性系统的冲激响应" class="headerlink" title="求解线性系统的冲激响应"></a>求解线性系统的冲激响应</h2><script type="math/tex; mode=display">
-a_{n}h^{(n)}(t)+a_{n-1}h^{(n-1)}(t)+\cdots+a_{1}h^{\prime}(t)+a_{0}h(t)=\delta(t)</script><p>对于这个方程，我们观察到，从逻辑上讲，解得的$h(t)$一定是一个<strong>常义函数</strong>，根据冲激函数的物理意义是一个瞬间的无穷大信号而言，我也可以推得在小于0的时候信号一定为0，而在大于0的时候才是我们真正需要考量的函数，因此最终在<strong>物理意义的辅助</strong>下我们得到了微分方程解的形式，拆解为$h(x)=f(x)u(x)$(这里的$u(x)$就是上面说的<strong>Heaviside函数</strong>)，而因为$h(x)$在大于0上是连续可导的函数(在大于0的部分微分方程的基本要求，这是这里的特殊要求，原因是防止产生冲激偶，也正是因为这样，在这里$0^-$和$0$没啥区别)，那么在小于0的部分也可以延拓出一个连续的$f(x)$，所以$f(x)$是连续可导的</p>
-<p>求解微分方程可以先把这个形式代入进去看看，我们来看看对$h(x)$求多次导的结果(用上面的那些公式就都可以计算出来了)</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-h(x)=f(x)u(x)\\\\
-h'(x)=f'(x)u(x)+f(0)\delta(x)\\\\
-h''(x)=f''(x)u(x)+f'(0)\delta(x)+f(0)\delta'(x)\\\\
-h'''(x)=f'''(x)u(x)+f(0)''\delta(x)+f'(0)\delta'(x)+f(0)\delta''(x)\\\\
-\cdots\cdots\cdots\cdots
-\end{cases}</script><p>可以看到，对于上面这些式子乘以原本式子里$a_k$累加的结果，如下</p>
-<script type="math/tex; mode=display">
-\sum_{k=0}^{n} a_kh^{(k)}(x)=(\sum_{k=0}^{n}a_kf^{(k)}(x))u(x)+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)+\\(\sum_{k=0}^{n-2}a_{(k+2)}f^{(k)}(0))\delta'(x)+\cdots+a_nf(0)\delta^{(n-1)}(x)</script><p>好了，我们观察一下这个式子，这个就<strong>是微分方程等式的左端</strong>，而等式右端只是单独的一个$\delta(x)$，所以这个式子<strong>从第三项开始全是0</strong>，即第三项开始到最后那些大和式都是0<br>知道了这点，我们直接去看最后一项，这里只有一项 $a_nf(0)$，想要它为0，即$f(0)=0$，然后再看最后第二项$a_{(n-1)}f(0)+a_nf’(0)$，因为从后一项推得$f(0)=0$，要想$a_{(n-1)}f(0)+a_nf’(0)=0$，只需要$f’(0)=0$。同理再看前一项得到$f’’(x)=0$，<strong>以此类推</strong>，便得到了</p>
-<script type="math/tex; mode=display">f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0</script><p>然后我们看第二项，和原微分方程等式右端组成式子如下</p>
-<script type="math/tex; mode=display">
-(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)=\delta(x)</script><p>由上面推导的等于0的等式就可以化简得</p>
-<script type="math/tex; mode=display">
-f^{(n-1)}(0)=\frac{1}{a_n}</script><p>剩下的第一个项也应该为0</p>
-<script type="math/tex; mode=display">
-\sum_{k=0}^{n}a_kf^{(k)}=0</script><p>综合起来就得到了和这个微分方程通解的式子，即</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-h(x)=f(x)u(x)\\\\
-f^{(n)}(0)+f^{(n-1)}(0)+\cdots+f'(x)+f(x)=0\\\\
-f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0\\\\
-f^{(n-1)}(0)=\frac{1}{a_n}
-\end{cases}</script><p>核心的等价的微分方程就是上面这个方程组的第二式，是一个<strong>高阶齐次线性微分方程</strong>，第三、四式是第二式的边界条件，由这三个式子可以唯一确定一个$f(x)$，进而唯一确定一个$h(x)$，从而求得我们所要的冲激响应</p>
-<h2 id="另一种解释方法"><a href="#另一种解释方法" class="headerlink" title="另一种解释方法"></a>另一种解释方法</h2><p>关于Dirac函数本身，其具有的积分性质仍然是难以表达的，我们可以使用另一种方法去说明函数，即将极限解释成弱极限的方法</p>
-<p>首先对于$\mathscr{D}’(\Omega)$来说，可以将广义函数的微商完全使用弱极限去书写<br>其中$h_i$为向量的第$i$个分量</p>
-<script type="math/tex; mode=display">
-\lim_{h_i\to0}\frac{f(x+h)-f(x)}{h_i} = \frac{\partial f}{\partial x_i}</script><p>围绕Dirac函数的积分的一切内容其实都是未定义的行为，上面已有的东西解释清楚了除了积分以外的东西，而积分我们可以给它补充定义，就像工科书中说的那样，但是光有定义不能保证其与原本积分的相容性，定义本身应该满足原有的积分性质</p>
-<p>其实Dirac函数也有其它的定义，例如它是由函数列求极限得来(事实上，对于$f\in\mathscr{D}’(\Omega)$，其一定可以找到某种函数列$f_i\in C^\infty$弱收敛逼近的)，只要把原先的极限承认为弱极限。</p>
-<script type="math/tex; mode=display">
-f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，就定义为先算序列的积分再进行弱极限，即</p>
-<script type="math/tex; mode=display">
-\int_a^b f(x)dx=\int_a^b \lim_{i\to 0}f_i(x)dx:=\lim_{i\to 0}\int_a^b f_i(x)dx</script><p>这种记法天生支持原先积分的所有性质，因为极限随时可以先算，我完全可以把函数列当成逼近后的结果，反正随时都可以先算极限</p>
-<p>而对于傅里叶变换这种积分变换当中也存在一个极限，是对于广义积分的上下限而言的，如果那个求极限也认为是弱极限的话，也可以得到算出来是广义函数的结果</p>
-<blockquote>
-<p>虽然弱极限很有用，但是普遍定义下的积分肯定是不存在的，对于课程而言，最根本的还是求解微分方程和本身被特化了的积分变换，我们要做的就是用泛函的语言去得到相同的结果罢了，而不应该注意它是否应该和原本的常规函数性质相同，这没有意义，因为我们并不能创造什么定义<br>事实上对冲激函数及其导数进行积分根本就不会在实际工程中遇到，特别赋予它含义只是工程感性说明的过程罢了，更多的讨论还是集中在$L^2$空间上<br>如果需要更加明确的定义，可以考虑将distribution视作被包含的特例的hyperfunction</p>
-</blockquote>
-]]></content>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>DSA</category>
       </categories>
   </entry>
   <entry>
@@ -2119,18 +2131,6 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
-    <title>排序</title>
-    <url>/posts/a444b428.html</url>
-    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
-<span id="more"></span>
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>DSA</category>
-      </categories>
-  </entry>
-  <entry>
     <title>数学实验综合练习</title>
     <url>/posts/93a8bfd0.html</url>
     <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
@@ -2157,27 +2157,6 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_1</title>
-    <url>/posts/6b49fcb0.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<ul>
-<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
-<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
-<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
-<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
-<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
-<li>人和人的人际关系真是奇异</li>
-<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
-<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
-<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
@@ -2244,6 +2223,27 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_1</title>
+    <url>/posts/6b49fcb0.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<ul>
+<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
+<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
+<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
+<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
+<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
+<li>人和人的人际关系真是奇异</li>
+<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
+<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
+<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
@@ -2456,7 +2456,7 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 </blockquote>
 <p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
 <p>实则不然。这正是 <code>async/await</code> 的巧妙之处，也是理解其非阻塞本质的关键。<code>await</code> 的”等待”，是一种<strong>主动的让步，而非被动的阻塞</strong>。</p>
-<h4 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h4><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
+<h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
 <p>一个普通的同步函数从开始到结束，其执行路径是唯一的、连续的。而一个 <code>async</code> 函数内部因为有了 <code>await</code> 点，它的执行可以被分割成多个阶段。每一个 <code>await</code> 都是一个潜在的中断点。</p>
 <p>让我们用一个例子来将这个状态机可视化：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 0: 开始</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url1)); <span class="comment">// &lt;- 等待点 1 (await 1)</span></span><br><span class="line">    <span class="comment">// 阶段 1: 收到 data1 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url2)); <span class="comment">// &lt;- 等待点 2 (await 2)</span></span><br><span class="line">    <span class="comment">// 阶段 2: 收到 data2 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 3: 结束</span></span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -2470,14 +2470,14 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>诶，调度器，事件的概念又被提及了，是不是事件循环是 async/await 的重要实现方式之一呢？</p>
 <p>你猜的没有错，事实上，你可以从事件循环上很容易的构建出一个 async/await 系统来：如果所有的 async 状态机都是一个对象，当某个 <code>async</code> 函数运行到 <code>await</code> 状态的时候，就是把一个任务注册到事件循环，这个任务是，监听到” await 的状态机运行完毕”这个事件时，事件循环的调度器回调 poll 函数来推动自己进行下一步，而正是因为回调函数都会坍缩为 poll ，所以 async/await 实现也有可能不依赖事件循环。</p>
 <p>所以，<code>await</code> 的关键在于：<strong>当任务需要等待（比如 I/O 未就绪）时，它不是傻傻地占着线程不放，而是通过返回 <code>Pending</code> 来释放线程的控制权。这个线程此时就可以掉头去执行其他已经就绪的任务（比如另一个完成的 HTTP 请求）。</strong> 这正是异步编程高并发能力的根源。</p>
-<h4 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h4><p>首先，想象一下，对于ui框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
+<h3 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h3><p>首先，想象一下，对于ui框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
 <p>其所有叶子节点都是 await 函数的尽头，即具体等待一个任务，树的下方是调度器，当事件发生时，调度器将会在事件列表中挑选一个事件，poll 这个事件对应的叶子节点，是一个 async 函数/协程，让它执行至挂起或结束，控制权回到调度器，处理下一个事件，如果事件消费完毕，则继续挂起，这样的循环构成了异步模式下，无栈协程组成程序的图景。</p>
 <p>我们可以从刚刚那个 <code>fetch_data_and_process()</code> 为例子来画一下这棵树的样子：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url1));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url2));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>等待补充图片 TODO</p>
 </blockquote>
-<h4 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h4><p>理解了上述机制，我们就能明白为什么 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
+<h3 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h3><p>理解了上述机制，我们就能明白为什么 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
 <p>这是因为，<code>await</code> 的语义依赖于其所在的上下文是一个可以被挂起和恢复的状态机。一个普通的同步函数不具备这种能力。它一旦开始执行，就必须运行到结束，中间无法被”挂起”并将线程控制权交还给调度器。</p>
 <p>因此，<strong>异步模式是构建在同步模式之上的一种特殊环境</strong>。当你选择踏入这个环境（调用一个 <code>async</code> 函数），你就必须遵守它的规则。这种”鸿沟”是异步编程模型本身的性质所决定的，而非 Rust 或其他语言的设计缺陷。</p>
 <blockquote>
@@ -2823,26 +2823,6 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       </categories>
   </entry>
   <entry>
-    <title>链接、装载与库</title>
-    <url>/posts/8525127.html</url>
-    <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
-<span id="more"></span>
-<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
-<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
-<ul>
-<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
-<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
-<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。</li>
-</ul>
-<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2><p>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
     <title>遨游在内存中的硬件启动过程</title>
     <url>/posts/42db1e6.html</url>
     <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
@@ -2899,6 +2879,26 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>DSA</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>链接、装载与库</title>
+    <url>/posts/8525127.html</url>
+    <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
+<span id="more"></span>
+<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
+<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
+<ul>
+<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
+<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
+<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。</li>
+</ul>
+<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2><p>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
 </search>
