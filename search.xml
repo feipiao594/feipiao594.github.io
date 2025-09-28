@@ -178,91 +178,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CelesteMiaoNet自建群服教程</title>
-    <url>/posts/75894d10.html</url>
-    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
-<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
-<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
-<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
-<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
-<p>下载完毕后，直接运行就可以安装编译工具</p>
-<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
-<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
-<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
-<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
-<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
-<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
-<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
-</blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
-<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
-</ol>
-<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
-<ol>
-<li>服务器默认开放端口号为 17230</li>
-</ol>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
-<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++模板基础</title>
     <url>/posts/cabf03c1.html</url>
     <content><![CDATA[<h1 id="C-模板基础"><a href="#C-模板基础" class="headerlink" title="C++模板基础"></a>C++模板基础</h1><p>为了我们能在接下来书写模板元编程前有一个良好的基础，我们必须先得了解C++模板的相关内容</p>
@@ -353,6 +268,91 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CelesteMiaoNet自建群服教程</title>
+    <url>/posts/75894d10.html</url>
+    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
+<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
+<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
+<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
+<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
+<p>下载完毕后，直接运行就可以安装编译工具</p>
+<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
+<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
+<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
+<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
+<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
+<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
+<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
+<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
+</ol>
+<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
+<ol>
+<li>服务器默认开放端口号为 17230</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
+<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -447,6 +447,70 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_1</title>
+    <url>/posts/6c7f2ed0.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
+<span id="more"></span>
+<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
+<ul>
+<li><code>:</code>表示一整行</li>
+<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
+<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
+<li><code>-1</code>表示最后一个元素</li>
+</ul>
+<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
+<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
+<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
+<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
+<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
+<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
+<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
+<script type="math/tex; mode=display">
+l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
+<script type="math/tex; mode=display">
+L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
+<script type="math/tex; mode=display">
+\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
+<blockquote>
+<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
+</blockquote>
+<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
+<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
+<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -555,70 +619,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_1</title>
-    <url>/posts/6c7f2ed0.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
-<span id="more"></span>
-<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
-<ul>
-<li><code>:</code>表示一整行</li>
-<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
-<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
-<li><code>-1</code>表示最后一个元素</li>
-</ul>
-<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
-<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
-<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
-<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
-<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
-<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
-<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
-<script type="math/tex; mode=display">
-L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
-<script type="math/tex; mode=display">
-\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
-<blockquote>
-<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
-</blockquote>
-<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
-<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
-<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -919,53 +919,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_3_所有权</title>
-    <url>/posts/f75e4487.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
-<span id="more"></span>
-<h2 id="简述所有权"><a href="#简述所有权" class="headerlink" title="简述所有权"></a>简述所有权</h2><p>Rust采用了所有权这种机制，在编译器就避开各种阻碍，精确调控垃圾回收机制，从而在不需要类似C/C++手动回收垃圾的机制和类似Java自动GC的机制下，保留高性能，又内存安全。</p>
-<h2 id="所有权规则"><a href="#所有权规则" class="headerlink" title="所有权规则"></a>所有权规则</h2><ul>
-<li>Rust中的每一个值都有一个对应的变量作为它的所有者</li>
-<li>在同一时间内，值有且仅有一个所有者</li>
-<li>当所有者离开自己的作用域时，它持有的值就会被释放掉</li>
-</ul>
-<p>这三条概念需要慢慢体悟</p>
-<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>变量从声明的位置开始直到当前作用域结束都是有效的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">//由于变量s在这里还没有声明，所以它是不可用的</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s</span> = <span class="string">&quot;Hello&quot;</span>;<span class="comment">//从这里变量s开始变得可用</span></span><br><span class="line">    <span class="comment">//执行与s相关的操作</span></span><br><span class="line">&#125;<span class="comment">//作用域到这里结束，变量s变得不可用</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h2><p>同C++类型一致，String类型所指向的数据必然要创建在堆上，那这势必会引发”析构”的问题，当然在rust里我们不这么称呼<br>与C/C++不同，Rust提供了另一套解决方案：<strong>内存会自动地在拥有它的变量离开作用域后进行释放</strong></p>
-<p>审视上面的代码，有一个很适合用来回收内存给操作系统的地方：变量s离开作用域的地方。Rust在变量离开作用域时，会调用一个叫作drop的特殊函数。String类型的<strong>作者</strong>可以在这个函数中编写释放内存的代码(仍然是要手动书写drop函数的)。记住，Rust会在作用域结束的地方（即“}”处）自动调用drop函数。</p>
-<p>其实<code>String</code>本身就是智能指针，这将在本blog的第14章讲解，对于结构体而言，自身被析构时会调用自己内部成员的drop，这和cpp也没啥区别，当然结构体也是后话了，主要是目前我们没有cpp指针的概念，这些而<strong>默认智能指针的存在，使得析构一个栈对象和堆对象差别不大了</strong>(智能指针这个栈对象drop时，堆对象也会随之drop)</p>
-<h2 id="变量和数据交互的方式-移动"><a href="#变量和数据交互的方式-移动" class="headerlink" title="变量和数据交互的方式:移动"></a>变量和数据交互的方式:移动</h2><p>为保证重复释放内存不会出现，rust采用一种方法，即默认状态下赋值语句是<strong>移动</strong>而非拷贝赋值<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s2</span> = s1;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;, world!&quot;</span>, s1);</span><br></pre></td></tr></table></figure><br>像这样的代码，最终会输出一个错误，s1已经是无效的了<br>当移动发生时，值的所有权已经不在原本的所有者手上了，这意味着原本的s1不是任何数据的所有者，故而不在作用域结束时调用drop，而s2接管了s1的数据，成为了所有者，就会在出作用域的时候进行drop<br>只对所有者(具有所有权的变量)进行drop，是通过编译器在编译时检查与推导实现的，一个变量是否在作用域结束时触发drop，在编译期就能够知道</p>
-<h2 id="变量和数据交互的方式-克隆"><a href="#变量和数据交互的方式-克隆" class="headerlink" title="变量和数据交互的方式:克隆"></a>变量和数据交互的方式:克隆</h2><p>当你确实需要去<strong>深度拷贝</strong>String堆上的数据，而不仅仅是栈数据时，就可以使用一个名为clone的方法<br>下面是一个实际使用clone方法的例子：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s2</span> = s1.<span class="title function_ invoke__">clone</span>();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;s1 = &#123;&#125;, s2 = &#123;&#125;&quot;</span>, s1, s2);</span><br></pre></td></tr></table></figure><br>这段代码在Rust中完全合法，它显式复制了堆上的数据</p>
-<h2 id="trait-COPY"><a href="#trait-COPY" class="headerlink" title="trait: COPY"></a>trait: COPY</h2><p>Rust提供了一个名为Copy的trait，它可以用于整数这类完全存储在栈上的数据类型（我们会在第10章详细地介绍trait）。一旦某种类型拥有了Copy这种trait，那么它的变量就可以在赋值给其他变量之后保持可用性。<strong>如果一种类型本身或这种类型的任意成员实现了Drop这种trait，那么Rust就不允许其实现Copy这种trait</strong>。尝试给某个需要在离开作用域时执行特殊指令的类型实现Copy这种trait会导致编译时错误</p>
-<h2 id="所有权与函数"><a href="#所有权与函数" class="headerlink" title="所有权与函数"></a>所有权与函数</h2><p>将值传递给函数在语义上<strong>类似于对变量进行赋值</strong>。将变量传递给函数将会触发移动或复制，就像是赋值语句一样</p>
-<p>可以通过函数的返回值的移动来转移所有权，可以直接将实参返回来将其所有权重新移交给原变量。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">    a: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Drop</span> <span class="keyword">for</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">drop</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="keyword">self</span>.a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">test</span>() <span class="punctuation">-&gt;</span> Foo &#123;</span><br><span class="line">    Foo &#123;</span><br><span class="line">        a: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;test&quot;</span>),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">test</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Running!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果如下：</span></span><br><span class="line"><span class="comment">//test</span></span><br><span class="line"><span class="comment">//Running!</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>根据上面这个例子，如果说函数返回值没被接受，所有权没被转移，则在被调用者函数末尾被析构</p>
-</blockquote>
-<p>当然这种返回参数的所有权的方法是不推荐的，由于函数参数的移动问题，就产生了引用。</p>
-<h2 id="和C-的对比"><a href="#和C-的对比" class="headerlink" title="和C++的对比"></a>和C++的对比</h2><p>其实在作用域结束后发生drop和C++的析构函数没有什么区别，只是由于Rust存在所有权机制，可以在编译期就检查出它为你添加的drop函数应该放在何处<br>C++对于析构函数的态度是，每个局部变量在出作用域之后都会发生语义上的析构，而Rust利用所有权机制，同一时刻只存在一个所有者具有值的所有权，同时只有所有者出作用域时drop，使得不会发生额外的析构。这意味着编译器检查时不会出现drop俩两次，释放两次内存的情况<br>C++对于变量处理的态度是一致的，而Rust区分是否具有所有权，是否为所有者。事实上即使是对于C++11添加的<strong>移动语义</strong>，其也只是在移动构造函数等地方把移动的对象内部的指针变成<code>nullptr</code>，实质上在作用域最后<strong>仍然需要对移动后的对象进行析构</strong>，只不过C++允许delete nullptr罢了<br>对于C++中指针/引用空悬等问题，是交由后面会提到的Rust的<strong>生命周期</strong>来解决的</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>这个概念应该是来自于C/C++</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">len</span> = <span class="title function_ invoke__">calculate_length</span>(&amp;s1);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The length of &#x27;&#123;&#125;&#x27; is &#123;&#125;.&quot;</span>, s1, len);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">calculate_length</span>(s: &amp;<span class="type">String</span>) <span class="punctuation">-&gt;</span> <span class="type">usize</span> &#123;</span><br><span class="line">    s.<span class="title function_ invoke__">len</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>引用是获取变量使用权但不获取其所有权的一种方式，引用指向的是被引用变量的地址，而不是内存中数据的地址，实际上我们拥有的是引用的所有权，所以 Drop 的也是引用变量而已。和C++一致可以用&amp;引用，用*解引用。</p>
-<p>借用是指：当没有定义引用变量，而是直接使用&amp;var，将变量的引用作为参数传入函数时，此时就发生了借用。</p>
-<p>我们可以声明可变引用，但可变引用在使用上有一个很大的限制：<strong>对于特定作用域中的特定数据来说，一次只能声明一个可变引用</strong>，利用这个性质，我们可以避免数据竞争，安全的写入原本的数据</p>
-<h2 id="引用的规则"><a href="#引用的规则" class="headerlink" title="引用的规则"></a>引用的规则</h2><p>让我们简要地概括一下本节对引用的讨论：</p>
-<ul>
-<li>在任何一段给定的时间里，你要么只能拥有一个可变引用，要<br>么只能拥有任意数量的不可变引用。</li>
-<li>引用总是有效的。</li>
-</ul>
-<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p><strong>slice是对数据类型中一部分值的不可变引用</strong><br>小小用一下书里给的一些例子展示一下</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">len</span> = s.<span class="title function_ invoke__">len</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..len];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[..];</span><br></pre></td></tr></table></figure>
-<p>由于slice本身就是引用，所以在定义了slice后，对原本值的修改都会被 Rust 编译器检查到。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_4_结构体</title>
     <url>/posts/ae9548c.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
@@ -1019,6 +972,53 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>很合理对吧</p>
 <h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_3_所有权</title>
+    <url>/posts/f75e4487.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
+<span id="more"></span>
+<h2 id="简述所有权"><a href="#简述所有权" class="headerlink" title="简述所有权"></a>简述所有权</h2><p>Rust采用了所有权这种机制，在编译器就避开各种阻碍，精确调控垃圾回收机制，从而在不需要类似C/C++手动回收垃圾的机制和类似Java自动GC的机制下，保留高性能，又内存安全。</p>
+<h2 id="所有权规则"><a href="#所有权规则" class="headerlink" title="所有权规则"></a>所有权规则</h2><ul>
+<li>Rust中的每一个值都有一个对应的变量作为它的所有者</li>
+<li>在同一时间内，值有且仅有一个所有者</li>
+<li>当所有者离开自己的作用域时，它持有的值就会被释放掉</li>
+</ul>
+<p>这三条概念需要慢慢体悟</p>
+<h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>变量从声明的位置开始直到当前作用域结束都是有效的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;<span class="comment">//由于变量s在这里还没有声明，所以它是不可用的</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s</span> = <span class="string">&quot;Hello&quot;</span>;<span class="comment">//从这里变量s开始变得可用</span></span><br><span class="line">    <span class="comment">//执行与s相关的操作</span></span><br><span class="line">&#125;<span class="comment">//作用域到这里结束，变量s变得不可用</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h2><p>同C++类型一致，String类型所指向的数据必然要创建在堆上，那这势必会引发”析构”的问题，当然在rust里我们不这么称呼<br>与C/C++不同，Rust提供了另一套解决方案：<strong>内存会自动地在拥有它的变量离开作用域后进行释放</strong></p>
+<p>审视上面的代码，有一个很适合用来回收内存给操作系统的地方：变量s离开作用域的地方。Rust在变量离开作用域时，会调用一个叫作drop的特殊函数。String类型的<strong>作者</strong>可以在这个函数中编写释放内存的代码(仍然是要手动书写drop函数的)。记住，Rust会在作用域结束的地方（即“}”处）自动调用drop函数。</p>
+<p>其实<code>String</code>本身就是智能指针，这将在本blog的第14章讲解，对于结构体而言，自身被析构时会调用自己内部成员的drop，这和cpp也没啥区别，当然结构体也是后话了，主要是目前我们没有cpp指针的概念，这些而<strong>默认智能指针的存在，使得析构一个栈对象和堆对象差别不大了</strong>(智能指针这个栈对象drop时，堆对象也会随之drop)</p>
+<h2 id="变量和数据交互的方式-移动"><a href="#变量和数据交互的方式-移动" class="headerlink" title="变量和数据交互的方式:移动"></a>变量和数据交互的方式:移动</h2><p>为保证重复释放内存不会出现，rust采用一种方法，即默认状态下赋值语句是<strong>移动</strong>而非拷贝赋值<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s2</span> = s1;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;, world!&quot;</span>, s1);</span><br></pre></td></tr></table></figure><br>像这样的代码，最终会输出一个错误，s1已经是无效的了<br>当移动发生时，值的所有权已经不在原本的所有者手上了，这意味着原本的s1不是任何数据的所有者，故而不在作用域结束时调用drop，而s2接管了s1的数据，成为了所有者，就会在出作用域的时候进行drop<br>只对所有者(具有所有权的变量)进行drop，是通过编译器在编译时检查与推导实现的，一个变量是否在作用域结束时触发drop，在编译期就能够知道</p>
+<h2 id="变量和数据交互的方式-克隆"><a href="#变量和数据交互的方式-克隆" class="headerlink" title="变量和数据交互的方式:克隆"></a>变量和数据交互的方式:克隆</h2><p>当你确实需要去<strong>深度拷贝</strong>String堆上的数据，而不仅仅是栈数据时，就可以使用一个名为clone的方法<br>下面是一个实际使用clone方法的例子：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">s2</span> = s1.<span class="title function_ invoke__">clone</span>();</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">&quot;s1 = &#123;&#125;, s2 = &#123;&#125;&quot;</span>, s1, s2);</span><br></pre></td></tr></table></figure><br>这段代码在Rust中完全合法，它显式复制了堆上的数据</p>
+<h2 id="trait-COPY"><a href="#trait-COPY" class="headerlink" title="trait: COPY"></a>trait: COPY</h2><p>Rust提供了一个名为Copy的trait，它可以用于整数这类完全存储在栈上的数据类型（我们会在第10章详细地介绍trait）。一旦某种类型拥有了Copy这种trait，那么它的变量就可以在赋值给其他变量之后保持可用性。<strong>如果一种类型本身或这种类型的任意成员实现了Drop这种trait，那么Rust就不允许其实现Copy这种trait</strong>。尝试给某个需要在离开作用域时执行特殊指令的类型实现Copy这种trait会导致编译时错误</p>
+<h2 id="所有权与函数"><a href="#所有权与函数" class="headerlink" title="所有权与函数"></a>所有权与函数</h2><p>将值传递给函数在语义上<strong>类似于对变量进行赋值</strong>。将变量传递给函数将会触发移动或复制，就像是赋值语句一样</p>
+<p>可以通过函数的返回值的移动来转移所有权，可以直接将实参返回来将其所有权重新移交给原变量。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">    a: <span class="type">String</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">impl</span> <span class="title class_">Drop</span> <span class="keyword">for</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">drop</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>, <span class="keyword">self</span>.a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">test</span>() <span class="punctuation">-&gt;</span> Foo &#123;</span><br><span class="line">    Foo &#123;</span><br><span class="line">        a: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;test&quot;</span>),</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">test</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Running!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果如下：</span></span><br><span class="line"><span class="comment">//test</span></span><br><span class="line"><span class="comment">//Running!</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>根据上面这个例子，如果说函数返回值没被接受，所有权没被转移，则在被调用者函数末尾被析构</p>
+</blockquote>
+<p>当然这种返回参数的所有权的方法是不推荐的，由于函数参数的移动问题，就产生了引用。</p>
+<h2 id="和C-的对比"><a href="#和C-的对比" class="headerlink" title="和C++的对比"></a>和C++的对比</h2><p>其实在作用域结束后发生drop和C++的析构函数没有什么区别，只是由于Rust存在所有权机制，可以在编译期就检查出它为你添加的drop函数应该放在何处<br>C++对于析构函数的态度是，每个局部变量在出作用域之后都会发生语义上的析构，而Rust利用所有权机制，同一时刻只存在一个所有者具有值的所有权，同时只有所有者出作用域时drop，使得不会发生额外的析构。这意味着编译器检查时不会出现drop俩两次，释放两次内存的情况<br>C++对于变量处理的态度是一致的，而Rust区分是否具有所有权，是否为所有者。事实上即使是对于C++11添加的<strong>移动语义</strong>，其也只是在移动构造函数等地方把移动的对象内部的指针变成<code>nullptr</code>，实质上在作用域最后<strong>仍然需要对移动后的对象进行析构</strong>，只不过C++允许delete nullptr罢了<br>对于C++中指针/引用空悬等问题，是交由后面会提到的Rust的<strong>生命周期</strong>来解决的</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>这个概念应该是来自于C/C++</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">s1</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">len</span> = <span class="title function_ invoke__">calculate_length</span>(&amp;s1);</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The length of &#x27;&#123;&#125;&#x27; is &#123;&#125;.&quot;</span>, s1, len);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">calculate_length</span>(s: &amp;<span class="type">String</span>) <span class="punctuation">-&gt;</span> <span class="type">usize</span> &#123;</span><br><span class="line">    s.<span class="title function_ invoke__">len</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>引用是获取变量使用权但不获取其所有权的一种方式，引用指向的是被引用变量的地址，而不是内存中数据的地址，实际上我们拥有的是引用的所有权，所以 Drop 的也是引用变量而已。和C++一致可以用&amp;引用，用*解引用。</p>
+<p>借用是指：当没有定义引用变量，而是直接使用&amp;var，将变量的引用作为参数传入函数时，此时就发生了借用。</p>
+<p>我们可以声明可变引用，但可变引用在使用上有一个很大的限制：<strong>对于特定作用域中的特定数据来说，一次只能声明一个可变引用</strong>，利用这个性质，我们可以避免数据竞争，安全的写入原本的数据</p>
+<h2 id="引用的规则"><a href="#引用的规则" class="headerlink" title="引用的规则"></a>引用的规则</h2><p>让我们简要地概括一下本节对引用的讨论：</p>
+<ul>
+<li>在任何一段给定的时间里，你要么只能拥有一个可变引用，要<br>么只能拥有任意数量的不可变引用。</li>
+<li>引用总是有效的。</li>
+</ul>
+<h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p><strong>slice是对数据类型中一部分值的不可变引用</strong><br>小小用一下书里给的一些例子展示一下</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">len</span> = s.<span class="title function_ invoke__">len</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..len];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[..];</span><br></pre></td></tr></table></figure>
+<p>由于slice本身就是引用，所以在定义了slice后，对原本值的修改都会被 Rust 编译器检查到。</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1294,37 +1294,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>从LFS构建中习得的交叉编译</title>
     <url>/posts/c858dee6.html</url>
     <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
@@ -1413,6 +1382,37 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1733,20 +1733,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
     <title>圆盘摩擦力矩</title>
     <url>/posts/8a033795.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
@@ -1770,6 +1756,20 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
 </blockquote>
 <p>小小思考，如是而已，愿君共勉。</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -2131,6 +2131,35 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
+    <title>数学实验综合练习</title>
+    <url>/posts/93a8bfd0.html</url>
+    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
+<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
+<span id="more"></span>
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
+<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
+<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>后半部分为logist模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
+<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
     <title>日常困惑之梯度的换元</title>
     <url>/posts/10d711a6.html</url>
     <content><![CDATA[<h1 id="日常困惑之梯度的换元"><a href="#日常困惑之梯度的换元" class="headerlink" title="日常困惑之梯度的换元"></a>日常困惑之梯度的换元</h1><p>又是上物理课的突发奇想，造就了一些关于梯度的疑惑<br><span id="more"></span></p>
@@ -2194,35 +2223,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>数学实验综合练习</title>
-    <url>/posts/93a8bfd0.html</url>
-    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
-<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
-<span id="more"></span>
-<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
-<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
-<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
-<script type="math/tex; mode=display">
-N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>后半部分为logist模型<br>模型公式如下</p>
-<script type="math/tex; mode=display">
-N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
-<script type="math/tex; mode=display">
-A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
-<script type="math/tex; mode=display">
-A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
-<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
-<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Math_modeling</category>
       </categories>
   </entry>
   <entry>
@@ -2451,10 +2451,7 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
 <p><img src="/images/深入异步通用概念_图1.png" width="50%" height="50%"></p>
 <p>哎哎，这不就是一模一样，所以说自 IO 多路复用出现后，事件循环也很自然的就出现了</p>
 <p>然而大量使用回调引发了回调地狱的问题，异步最大的问题就是难以阅读，当代码量一旦庞大起来，很有可能函数要成为一等公民在函数里作为参数反复传递，最终放到一个对象某个行为的回调中。同时异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap 为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
-<h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><blockquote>
-<p>未完待续 TODO<br>问题：await 是等待某个任务结束后运行下去，那这不就是阻塞么，实则不然<br>大纲：async 函数是状态机。await 可以等待多个，可以是多个里有一个结束就 await 结束，可以是完全等待多个一起结束而结束，因此 async/await 构成一棵可以被可视化的树，其所有叶子节点都是 await 函数的尽头，即具体等待一个任务，树的下方是调度器，当事件发生时，调度器将会在事件列表中挑选一个事件，poll 这个事件对应的叶子节点，是一个 async 函数/协程，让它执行至挂起或结束，控制权回到调度器，处理下一个事件，如果事件消费完毕，则继续挂起，这样的循环构成了异步模式下，无栈协程组成程序的图景。其实 async/await 的一种实现是在事件循环里将状态机监听的事件的回调统一化成推动状态机运行的 poll<br>小点：异步模式与同步模式具有鸿沟，异步模式是基于同步模式的一种特殊环境，所以 async 函数具有传染性，这是异步模式本身的性质所决定的<br>目前我们讨论的话题局限于单线程，实则多线程条件下协程也能发挥其它作用，以及有一些别的应用，要说的是，协程从不与异步强绑定，实际协程只是一个代码块而已，代表了程序本身最本质的概念：状态机(jyy os课)</p>
-</blockquote>
-<p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
+<h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
 <p>实则不然。这正是 <code>async/await</code> 的巧妙之处，也是理解其非阻塞本质的关键。<code>await</code> 的”等待”，是一种<strong>主动的让步，而非被动的阻塞</strong>。</p>
 <h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
 <p>一个普通的同步函数从开始到结束，其执行路径是唯一的、连续的。而一个 <code>async</code> 函数内部因为有了 <code>await</code> 点，它的执行可以被分割成多个阶段。每一个 <code>await</code> 都是一个潜在的中断点。</p>
@@ -2670,101 +2667,6 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       </categories>
   </entry>
   <entry>
-    <title>行星运动方程</title>
-    <url>/posts/d11d8f41.html</url>
-    <content><![CDATA[<h1 id="行星运动方程"><a href="#行星运动方程" class="headerlink" title="行星运动方程"></a>行星运动方程</h1><p>这其实是我高中很早时候好奇算过的一个东西，现在就顺手写出来吧</p>
-<span id="more"></span>
-<p>在高中学习万有引力定律时，我们采用的是一种简化的模型：将其考虑为匀速圆周运动，但我们仍对现实中行星运动真实的运动轨迹产生了浓厚的兴趣，因此我们小组对此开始了研究。<br>高中课本上使用的模型为,把一个大质量行星看做是固定的，另一个小质量天体是运动的，它们之间存在作用力：</p>
-<script type="math/tex; mode=display">F = \frac{GMm}{R^2}</script><p>因此由匀速圆周运动模型得到：</p>
-<script type="math/tex; mode=display">m\frac{v^2}{R}=\frac{GMm}{R^2}</script><p>现在我们不引入匀速圆周模型，尝试只用万有引力公式导出运动方程。<br>设大质量天体质量为 $M$，小质量天体质量为 $m$，以大质量天体为参考系，小质量天体的初速度为$v_0=\begin{bmatrix}v_x\\v_y\end{bmatrix}$，初位置为$r_0=\begin{bmatrix}x_0\\y_0\end{bmatrix}$ ，求小质量天体的运动轨迹。</p>
-<p>大雾中的万有引力公式：</p>
-<script type="math/tex; mode=display">\mathbf{F} = \frac{GMm}{\mathbf{r}^2}\hat{\mathbf{r}}</script><p>计算拉氏量并代入欧拉-拉格朗日方程</p>
-<script type="math/tex; mode=display">
-T = \frac{1}{2}m(\dot{r}^2+(r\dot{\theta})^2)</script><script type="math/tex; mode=display">
-U = -\frac{G(M+m)m}{r}</script><script type="math/tex; mode=display">
-L = \frac{1}{2}m(\dot{r}^2+(r\dot{\theta})^2)-\frac{G(M+m)m}{r}</script><p>得到微分方程组：</p>
-<script type="math/tex; mode=display">
-\left\{\begin{array}{c}
-\ddot{\mathrm{r}}-\mathrm{r} \ddot{\theta}^{2}=-\frac{\mathrm{G}(\mathrm{M}+\mathrm{m})}{\mathrm{r}^{2}}\\
-\mathrm{r} \ddot{\theta}+2 \dot{\mathrm{r}} \dot{\theta}=0
-\end{array}\right.</script><p>设 $l=mr^2\dot{\theta}$，则求导后 $\dot{l}=mr(r\ddot{\theta}+2\dot{r}\dot{\theta})=0$，显然角动量守恒</p>
-<p>下面求解方程组，令 $u=\frac{1}{r}$ 换元得到</p>
-<script type="math/tex; mode=display">\frac{\mathrm{d}^{2} u}{\mathrm{d} x^{2}}+u=\frac{G(M+m) m^{2}}{l^{2}}</script><p>这是常系数非齐次线性微分方程，解之得：</p>
-<script type="math/tex; mode=display">
-u=\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)</script><script type="math/tex; mode=display">
-r=\frac{1}{\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)}</script><p>其中 $\varepsilon$，$\theta_0$ 均为任意常数。所以运动轨迹是圆锥曲线。设:</p>
-<script type="math/tex; mode=display">c=\frac{G(M+m) m^{2}}{l^{2}}</script><script type="math/tex; mode=display">
-r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
-<script type="math/tex; mode=display">
-\theta_{0}=\arctan \left(-\frac{\left(\frac{1}{r_{0}}-c\right)v_x+c\left(v_{y} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{x} \frac{x_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}{\left(\frac{1}{r_{0}}-c\right)v_y+c\left(v_{x} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{y} \frac{y_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}\right)</script><script type="math/tex; mode=display">
-\varepsilon=\frac{1-c r_{0}}{x_{0} \cos \theta_{0}+y_{0} \sin \theta_{0}}</script><p>整理得到最后的式子：</p>
-<script type="math/tex; mode=display">
-\rho=\frac{1}{\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)}</script><p>其中</p>
-<script type="math/tex; mode=display">
-\theta_{0}=\arctan \left(-\frac{\left(\frac{1}{r_{0}}-\frac{G(M+m) m^{2}}{l^{2}}\right)v_x+\frac{G(M+m) m^{2}}{l^{2}}\left(v_{y} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{x} \frac{x_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}{\left(\frac{1}{r_{0}}-\frac{G(M+m) m^{2}}{l^{2}}\right)v_y+\frac{G(M+m) m^{2}}{l^{2}}\left(v_{x} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{y} \frac{y_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}\right)</script><script type="math/tex; mode=display">
-\varepsilon=\frac{1-\frac{G(M+m) m^{2}}{l^{2}} r_{0}}{x_{0} \cos \theta_{0}+y_{0} \sin \theta_{0}}</script><p>在其中的其中</p>
-<ul>
-<li>当$|\varepsilon| &gt; | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为双曲线</li>
-<li>当$|\varepsilon| = | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为抛物线</li>
-<li>当$|\varepsilon| &lt; | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为椭圆</li>
-</ul>
-<p>使用如下的仓库中的代码可以模拟及验证行星运动时的轨迹</p>
-<p><a href="https://github.com/feipiao594/Simple-Planet-Orbit">https://github.com/feipiao594/Simple-Planet-Orbit</a></p>
-<p><strong>显示双曲线</strong><br><img src="/images/行星运动方程_图1.png" width="100%" height="100%"></p>
-<p><strong>显示椭圆</strong><br><img src="/images/行星运动方程_图2.png" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>遨游在内存中的硬件启动过程</title>
-    <url>/posts/42db1e6.html</url>
-    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
-<span id="more"></span>
-<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
-<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
-</blockquote>
-<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
-<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
-<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
-<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
-<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
-<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
-<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
-<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
-<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
-<blockquote>
-<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
-</blockquote>
-<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
-<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
-<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
-<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
-<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
-<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
-<ol>
-<li>SEC(安全验证)</li>
-<li>PEI(EFI前期初始化)</li>
-<li>DXE(驱动执行环境)</li>
-<li>BDS(启动设备选择)</li>
-<li>TSL(操作系统加载前期)</li>
-<li>RT(Run Time)</li>
-<li>AL(系统灾难恢复期)</li>
-</ol>
-<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
-<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
-<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
     <title>贝塞尔曲线</title>
     <url>/posts/cc351245.html</url>
     <content><![CDATA[<h1 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h1><p>平滑的曲线，计算机图形学的天堂，线性代数的产物<br>同时这篇文章也是关于嵌入html与js的测试</p>
@@ -2906,6 +2808,101 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>行星运动方程</title>
+    <url>/posts/d11d8f41.html</url>
+    <content><![CDATA[<h1 id="行星运动方程"><a href="#行星运动方程" class="headerlink" title="行星运动方程"></a>行星运动方程</h1><p>这其实是我高中很早时候好奇算过的一个东西，现在就顺手写出来吧</p>
+<span id="more"></span>
+<p>在高中学习万有引力定律时，我们采用的是一种简化的模型：将其考虑为匀速圆周运动，但我们仍对现实中行星运动真实的运动轨迹产生了浓厚的兴趣，因此我们小组对此开始了研究。<br>高中课本上使用的模型为,把一个大质量行星看做是固定的，另一个小质量天体是运动的，它们之间存在作用力：</p>
+<script type="math/tex; mode=display">F = \frac{GMm}{R^2}</script><p>因此由匀速圆周运动模型得到：</p>
+<script type="math/tex; mode=display">m\frac{v^2}{R}=\frac{GMm}{R^2}</script><p>现在我们不引入匀速圆周模型，尝试只用万有引力公式导出运动方程。<br>设大质量天体质量为 $M$，小质量天体质量为 $m$，以大质量天体为参考系，小质量天体的初速度为$v_0=\begin{bmatrix}v_x\\v_y\end{bmatrix}$，初位置为$r_0=\begin{bmatrix}x_0\\y_0\end{bmatrix}$ ，求小质量天体的运动轨迹。</p>
+<p>大雾中的万有引力公式：</p>
+<script type="math/tex; mode=display">\mathbf{F} = \frac{GMm}{\mathbf{r}^2}\hat{\mathbf{r}}</script><p>计算拉氏量并代入欧拉-拉格朗日方程</p>
+<script type="math/tex; mode=display">
+T = \frac{1}{2}m(\dot{r}^2+(r\dot{\theta})^2)</script><script type="math/tex; mode=display">
+U = -\frac{G(M+m)m}{r}</script><script type="math/tex; mode=display">
+L = \frac{1}{2}m(\dot{r}^2+(r\dot{\theta})^2)-\frac{G(M+m)m}{r}</script><p>得到微分方程组：</p>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{c}
+\ddot{\mathrm{r}}-\mathrm{r} \ddot{\theta}^{2}=-\frac{\mathrm{G}(\mathrm{M}+\mathrm{m})}{\mathrm{r}^{2}}\\
+\mathrm{r} \ddot{\theta}+2 \dot{\mathrm{r}} \dot{\theta}=0
+\end{array}\right.</script><p>设 $l=mr^2\dot{\theta}$，则求导后 $\dot{l}=mr(r\ddot{\theta}+2\dot{r}\dot{\theta})=0$，显然角动量守恒</p>
+<p>下面求解方程组，令 $u=\frac{1}{r}$ 换元得到</p>
+<script type="math/tex; mode=display">\frac{\mathrm{d}^{2} u}{\mathrm{d} x^{2}}+u=\frac{G(M+m) m^{2}}{l^{2}}</script><p>这是常系数非齐次线性微分方程，解之得：</p>
+<script type="math/tex; mode=display">
+u=\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)</script><script type="math/tex; mode=display">
+r=\frac{1}{\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)}</script><p>其中 $\varepsilon$，$\theta_0$ 均为任意常数。所以运动轨迹是圆锥曲线。设:</p>
+<script type="math/tex; mode=display">c=\frac{G(M+m) m^{2}}{l^{2}}</script><script type="math/tex; mode=display">
+r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
+<script type="math/tex; mode=display">
+\theta_{0}=\arctan \left(-\frac{\left(\frac{1}{r_{0}}-c\right)v_x+c\left(v_{y} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{x} \frac{x_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}{\left(\frac{1}{r_{0}}-c\right)v_y+c\left(v_{x} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{y} \frac{y_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}\right)</script><script type="math/tex; mode=display">
+\varepsilon=\frac{1-c r_{0}}{x_{0} \cos \theta_{0}+y_{0} \sin \theta_{0}}</script><p>整理得到最后的式子：</p>
+<script type="math/tex; mode=display">
+\rho=\frac{1}{\frac{G(M+m) m^{2}}{l^{2}}+\varepsilon \cos \left(\theta-\theta_{0}\right)}</script><p>其中</p>
+<script type="math/tex; mode=display">
+\theta_{0}=\arctan \left(-\frac{\left(\frac{1}{r_{0}}-\frac{G(M+m) m^{2}}{l^{2}}\right)v_x+\frac{G(M+m) m^{2}}{l^{2}}\left(v_{y} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{x} \frac{x_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}{\left(\frac{1}{r_{0}}-\frac{G(M+m) m^{2}}{l^{2}}\right)v_y+\frac{G(M+m) m^{2}}{l^{2}}\left(v_{x} \frac{x_{0} y_{0}}{r_{0}{ }^{2}}+v_{y} \frac{y_{0}{ }^{2}}{r_{0}{ }^{2}}\right)}\right)</script><script type="math/tex; mode=display">
+\varepsilon=\frac{1-\frac{G(M+m) m^{2}}{l^{2}} r_{0}}{x_{0} \cos \theta_{0}+y_{0} \sin \theta_{0}}</script><p>在其中的其中</p>
+<ul>
+<li>当$|\varepsilon| &gt; | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为双曲线</li>
+<li>当$|\varepsilon| = | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为抛物线</li>
+<li>当$|\varepsilon| &lt; | \frac{G(M+m) m^{2}}{l^{2}} |$，轨迹为椭圆</li>
+</ul>
+<p>使用如下的仓库中的代码可以模拟及验证行星运动时的轨迹</p>
+<p><a href="https://github.com/feipiao594/Simple-Planet-Orbit">https://github.com/feipiao594/Simple-Planet-Orbit</a></p>
+<p><strong>显示双曲线</strong><br><img src="/images/行星运动方程_图1.png" width="100%" height="100%"></p>
+<p><strong>显示椭圆</strong><br><img src="/images/行星运动方程_图2.png" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>遨游在内存中的硬件启动过程</title>
+    <url>/posts/42db1e6.html</url>
+    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
+<span id="more"></span>
+<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
+<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
+</blockquote>
+<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
+<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
+<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
+<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
+<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
+<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
+<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
+<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
+<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
+<blockquote>
+<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
+</blockquote>
+<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
+<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
+<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
+<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
+<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
+<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
+<ol>
+<li>SEC(安全验证)</li>
+<li>PEI(EFI前期初始化)</li>
+<li>DXE(驱动执行环境)</li>
+<li>BDS(启动设备选择)</li>
+<li>TSL(操作系统加载前期)</li>
+<li>RT(Run Time)</li>
+<li>AL(系统灾难恢复期)</li>
+</ol>
+<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
+<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
+<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
