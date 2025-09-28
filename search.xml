@@ -19,24 +19,6 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-质数序列</title>
-    <url>/posts/3187765d.html</url>
-    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
-<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
-<p>输出上述数组的长度</p>
-<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
-<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -146,6 +128,38 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++模板元-质数序列</title>
+    <url>/posts/3187765d.html</url>
+    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
+<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
+<p>输出上述数组的长度</p>
+<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
+<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++模板元编程</title>
     <url>/posts/9244e40f.html</url>
     <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
@@ -164,17 +178,88 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CelesteMiaoNet自建群服教程</title>
+    <url>/posts/75894d10.html</url>
+    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
+<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
+<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
+<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
+<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
+<p>下载完毕后，直接运行就可以安装编译工具</p>
+<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
+<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
+<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
+<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
+<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
+<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
+<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
+<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
+</ol>
+<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
+<ol>
+<li>服务器默认开放端口号为 17230</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
+<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -271,91 +356,6 @@
       </categories>
   </entry>
   <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CelesteMiaoNet自建群服教程</title>
-    <url>/posts/75894d10.html</url>
-    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
-<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
-<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
-<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
-<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
-<p>下载完毕后，直接运行就可以安装编译工具</p>
-<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
-<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
-<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
-<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
-<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
-<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
-<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
-</blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
-<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
-</ol>
-<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
-<ol>
-<li>服务器默认开放端口号为 17230</li>
-</ol>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
-<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -447,31 +447,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -580,6 +555,31 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -1178,6 +1178,24 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>CMake的使用</title>
+    <url>/posts/3c5e47f1.html</url>
+    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
+<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
+<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
+<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
+<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
+<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
+<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
     <title>n重积分转n次积分问题</title>
     <url>/posts/622309a6.html</url>
     <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
@@ -1203,24 +1221,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CMake的使用</title>
-    <url>/posts/3c5e47f1.html</url>
-    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
-<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
-<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
-<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
-<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
-<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
-<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1291,6 +1291,37 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1382,37 +1413,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1550,18 +1550,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>初见流形上的微积分</title>
     <url>/posts/1a81a4ab.html</url>
     <content><![CDATA[<h1 id="初见流形上的微积分"><a href="#初见流形上的微积分" class="headerlink" title="初见流形上的微积分"></a>初见流形上的微积分</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>以本篇笔记记录时我大一的数理能力是无法去完全阅读流形相关的内容的，因此，我只能在此做一个<strong>科普性的导论</strong>。我们会从一个工科生的角度，从流形之前的知识到stokes公式的引出，从而拓展出一个完整的流形上的微积分的概念。<br><span id="more"></span><br>前排提示：文章内容<strong>完全不严谨</strong>，纯粹是出于个人的理解。想要系统学习，建议阅读<strong>Loring W. Tu</strong>的《An Introduction to Manifolds》一书，同时关于本篇文档的排版<strong>措辞仍需修饰</strong>，仍然是一个<strong>不完整</strong>版本</p>
@@ -1665,6 +1653,18 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -2131,35 +2131,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>数学实验综合练习</title>
-    <url>/posts/93a8bfd0.html</url>
-    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
-<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
-<span id="more"></span>
-<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
-<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
-<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
-<script type="math/tex; mode=display">
-N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>后半部分为logist模型<br>模型公式如下</p>
-<script type="math/tex; mode=display">
-N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
-<script type="math/tex; mode=display">
-A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
-<script type="math/tex; mode=display">
-A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
-<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
-<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Math_modeling</category>
-      </categories>
-  </entry>
-  <entry>
     <title>日常困惑之梯度的换元</title>
     <url>/posts/10d711a6.html</url>
     <content><![CDATA[<h1 id="日常困惑之梯度的换元"><a href="#日常困惑之梯度的换元" class="headerlink" title="日常困惑之梯度的换元"></a>日常困惑之梯度的换元</h1><p>又是上物理课的突发奇想，造就了一些关于梯度的疑惑<br><span id="more"></span></p>
@@ -2223,6 +2194,35 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数学实验综合练习</title>
+    <url>/posts/93a8bfd0.html</url>
+    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
+<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
+<span id="more"></span>
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
+<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
+<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>后半部分为logist模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
+<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Math_modeling</category>
       </categories>
   </entry>
   <entry>
@@ -2448,7 +2448,7 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>首先，既然要监听事件，必须有一个监听器，在这里是 <code>EventFetcher</code>，你需要在 <code>initTask</code> 这个初始任务里完成注册，紧接着是事件发生后分发任务的函数 <code>EventDispatcher</code>，它将事件按照注册时留下的函数，将发生事件后处理事件的任务扔给 <code>taskList</code>，并一个一个跟着处理，<code>taskList</code> 这样的容器可能是按照优先级优先弹出的优先队列或者其他什么算法，用以高效的分配任务，这样的任务我们给它一个名字，叫做<strong>回调函数</strong></p>
 <p>要注意的是，输入 <code>taskList</code> 的是一个闭包，如果假使说这个任务是一个计时器，也许你会需要循环往复的计时，此时你必须在回调函数里将计时器重新启动，启动的过程就是向 <code>EventFetcher</code> 再注册一遍计时器，向 <code>EventDispatcher</code> 再把自己的任务和自己当前正在执行的这个回调组成的一对数据再次传入，以此实现无限计时的效果</p>
 <p>回调式的写法在现代的 UI 框架里相当常见，例如 Qt 的信号槽机制，本质上就是这样的东西，我们来看看下面 Dart 的事件循环实现</p>
-<p><img src="/images/深入异步与无栈协程通用概念_图1.png" width="50%" height="50%"></p>
+<p><img src="/images/深入异步通用概念_图1.png" width="50%" height="50%"></p>
 <p>哎哎，这不就是一模一样，所以说自 IO 多路复用出现后，事件循环也很自然的就出现了</p>
 <p>然而大量使用回调引发了回调地狱的问题，异步最大的问题就是难以阅读，当代码量一旦庞大起来，很有可能函数要成为一等公民在函数里作为参数反复传递，最终放到一个对象某个行为的回调中。同时异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap 为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
 <h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><blockquote>
@@ -2459,28 +2459,64 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
 <p>一个普通的同步函数从开始到结束，其执行路径是唯一的、连续的。而一个 <code>async</code> 函数内部因为有了 <code>await</code> 点，它的执行可以被分割成多个阶段。每一个 <code>await</code> 都是一个潜在的中断点。</p>
 <p>让我们用一个例子来将这个状态机可视化：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 0: 开始</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url1)); <span class="comment">// &lt;- 等待点 1 (await 1)</span></span><br><span class="line">    <span class="comment">// 阶段 1: 收到 data1 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url2)); <span class="comment">// &lt;- 等待点 2 (await 2)</span></span><br><span class="line">    <span class="comment">// 阶段 2: 收到 data2 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 3: 结束</span></span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 0: 开始</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = <span class="title function_ invoke__">fetch_url</span>(url1).<span class="keyword">await</span>?; <span class="comment">// &lt;- 等待点 1 (await 1)</span></span><br><span class="line">    <span class="comment">// 阶段 1: 收到 data1 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = <span class="title function_ invoke__">fetch_url</span>(url2).<span class="keyword">await</span>?; <span class="comment">// &lt;- 等待点 2 (await 2)</span></span><br><span class="line">    <span class="comment">// 阶段 2: 收到 data2 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 3: 结束</span></span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编译器会将这个 <code>async fn</code> 编译成一个实现了 <code>Future</code> trait 的状态机。这个状态机大致长这样：</p>
 <ul>
-<li><strong>状态 0 (State 0):</strong> 刚被轮询时，启动 <code>fetch_url(url1)</code> 这个 Future，然后<strong>立即返回 <code>Poll::Pending</code></strong>。同时，它记录下自己的状态：”我现在正卡在 <code>await 1</code> 这里”。</li>
+<li><strong>基本概念</strong> 首先编译器会把 async 函数编译成状态机，在 await 发生的时候，状态机整个休眠，在外部，通过 <code>poll</code> 唤醒状态机，<code>poll</code> 的语义是<strong>尽可能催促状态机执行的更远</strong></li>
+<li><strong>状态 0 (State 0):</strong> 刚被调用 <code>poll</code> 试图推动状态机时，启动 <code>fetch_url(url1)</code> 这个 Future，然后<strong>立即返回 <code>Poll::Pending</code></strong>。同时，它记录下自己的状态：”我现在正卡在 <code>await 1</code> 这里”。</li>
 <li><strong>事件与唤醒：</strong> 当 <code>fetch_url(url1)</code> 的 I/O 操作在后台完成时（例如，通过操作系统的 epoll/kqueue 等机制通知），一个事件被触发。调度器会知道：”哦，<code>fetch_url(url1)</code> 这个 Future 准备好了”。然后，调度器会找到正在等待它的 <code>fetch_data_and_process</code> 状态机，并再次调用它的 <code>poll</code> 方法。</li>
 <li><strong>状态 1 (State 1):</strong> 状态机从上次中断的地方恢复。它发现自己是处于”状态 1”，于是从 <code>fetch_url(url1)</code> 中拿到结果 <code>data1</code>，执行 <code>println!</code>，然后启动 <code>fetch_url(url2)</code>，接着再次返回 <code>Poll::Pending</code>，并将状态更新为”卡在 <code>await 2</code>“。</li>
 <li><strong>状态 2 (State 2):</strong> 同理，当 <code>fetch_url(url2)</code> 完成时，调度器再次唤醒它。状态机恢复，拿到 <code>data2</code>，执行最后的逻辑，最终返回 <code>Poll::Ready(result)</code>，标志着整个异步任务的完成。</li>
 </ul>
 <p>诶，调度器，事件的概念又被提及了，是不是事件循环是 async/await 的重要实现方式之一呢？</p>
-<p>你猜的没有错，事实上，你可以从事件循环上很容易的构建出一个 async/await 系统来：如果所有的 async 状态机都是一个对象，当某个 <code>async</code> 函数运行到 <code>await</code> 状态的时候，就是把一个任务注册到事件循环，这个任务是，监听到” await 的状态机运行完毕”这个事件时，事件循环的调度器回调 poll 函数来推动自己进行下一步，而正是因为回调函数都会坍缩为 poll ，所以 async/await 实现也有可能不依赖事件循环。</p>
+<p>你猜的没有错，事实上，你可以从事件循环上很容易的构建出一个 async/await 系统来：如果所有的 async 状态机都是一个对象，当某个 <code>async</code> 函数运行到 <code>await</code> 状态的时候，就是把一个任务注册到事件循环，这个任务是，监听到” await 等待的状态机运行完毕”这个事件时，事件循环的调度器回调 poll 函数来推动自己进行下一步。而正是因为回调函数都会坍缩为 poll ，这就使得在一定程度上事件循环的任务列表里基本都是相同的 poll 函数，简化一下可以省略调任务列表，直接把发送” await 等待的状态机运行完毕”事件改成 poll ，所以 async/await 实现也有可能不需要依赖事件循环。</p>
 <p>所以，<code>await</code> 的关键在于：<strong>当任务需要等待（比如 I/O 未就绪）时，它不是傻傻地占着线程不放，而是通过返回 <code>Pending</code> 来释放线程的控制权。这个线程此时就可以掉头去执行其他已经就绪的任务（比如另一个完成的 HTTP 请求）。</strong> 这正是异步编程高并发能力的根源。</p>
 <h3 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h3><p>首先，想象一下，对于ui框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)，只有使用这种特制的 await，实际上是让事件循环用不同的监听模式来 poll，才能实现让一组任务异步进行。单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
 <blockquote>
-<p>注意：<strong>异步任务树</strong>是本文自创的概念，实际上怎么称呼这样的结构我并不知道。同样的，可能存在更复杂的数据结构能更高效的解决这样的问题，但下面我所提及的应该是一种实现。</p>
+<p>注意：<strong>异步任务树</strong>实为本文自创的概念，实际上怎么称呼这样的结构我并不知道。同样的，可能存在更复杂的数据结构能更高效的解决这样的问题，但下面我所提及的应该是一种实现。</p>
 </blockquote>
 <p>其所有叶子节点都是 await 函数的尽头，即具体等待一个任务，树的下方是调度器，当事件发生时，调度器将会在事件列表中挑选一个事件，poll 这个事件对应的叶子节点，是一个 async 函数/协程，让它执行至挂起或结束，控制权回到调度器，处理下一个事件，如果事件消费完毕，则继续挂起，这样的循环构成了异步模式下，无栈协程组成程序的图景。</p>
-<p>我们可以从刚刚那个 <code>fetch_data_and_process()</code> 为例子来画一下这棵树的样子：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url1));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = await!(<span class="title function_ invoke__">fetch_url</span>(url2));</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>等待补充图片 TODO</p>
-</blockquote>
-<p>通过这个例子你也可以自然的发现，如果你的应用只是启动一个 async/await 环境，然后只是普通的 await function 组合，没有特制的等待好几个任务的 await，那你的<strong>异步任务树</strong>就是<strong>异步任务链表</strong>，在这种情况下，实际上和同步毫无区别</p>
+<p>我们可以从刚刚那个 <code>fetch_data_and_process()</code> 为例子来画一下这棵树具体可以如何工作的其中一种样子：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = <span class="title function_ invoke__">fetch_url</span>(url1).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = <span class="title function_ invoke__">fetch_url</span>(url2).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先是 <code>fetch_data_and_process()</code> 被 await 之前，先是有一棵树</p>
+<p><img src="/images/深入异步通用概念_图2.png" width="100%" height="100%"></p>
+<p>然后紧接着，调用者开始 await，实际上<strong>干了4件事情</strong></p>
+<ol>
+<li>初始化 <code>fetch_data_and_process</code> 的状态机，同时包括分配返回值所放置区域等行为</li>
+<li>把推动 <code>fetch_data_and_process</code> 的状态机的 poll 函数放进事件循环的任务队列</li>
+<li>把监听 <code>fetch_data_and_process</code> 的状态机完成的事件注册到事件循环，回调是 poll 调用者自己</li>
+<li>调用者挂起自己</li>
+</ol>
+<p>于是便得到了</p>
+<p><img src="/images/深入异步通用概念_图3.png" width="100%" height="100%"></p>
+<p>记录一下此时此刻事件循环的状态(省略无关项，同时<strong>列表的内容是伪代码</strong>，下同)：</p>
+<ul>
+<li>任务列表：<code>fetch_data_and_process.poll()</code></li>
+<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
+</ul>
+<p>接着等待事件循环调度，直到调用 poll 推动<code>fetch_data_and_process</code> 的状态机，运行下来就到了 <code>let data1 = fetch_url(url1).await?;</code> 这一行了，也是同理，做这四件事情</p>
+<p><img src="/images/深入异步通用概念_图4.png" width="100%" height="100%"></p>
+<p>事件循环的状态：</p>
+<ul>
+<li>任务列表：<code>fetch_url.poll()</code></li>
+<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>, <code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
+</ul>
+<p>我们假定 <code>fetch_url</code> 要直接做一个获取资源的基础 API，那么它和上述的 await 实际上理应是有差别的，因为它不能再把任务推给别人了自己只是等待了，必须自己处理，所以这个异步函数的函数体里只会干两件事</p>
+<ol>
+<li>创建获取 url 资源的事件，注册到事件循环，回调是 poll <code>fetch_url</code> 自己</li>
+<li>挂起自己，等待数据完成</li>
+</ol>
+<p><img src="/images/深入异步通用概念_图5.png" width="100%" height="100%"></p>
+<p>此时此刻事件循环的状态：</p>
+<ul>
+<li>任务列表：空</li>
+<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>, <code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>, <code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
+</ul>
+<p>好了，接下来任务简单了，等待回调，<code>Event&lt;API_getUrl.finish()&gt;</code> 发生时，<code>fetch_url</code> 会被推动到结束，在结尾的时候，也会挂起自己这个状态机，运行过程回到调度器里，从而从这棵树上脱落。在此之前释放一个 <code>Event&lt;fetch_url.finish()&gt;</code> 的事件信息，告诉事件循环 <code>fetch_data_and_process.poll()</code> 该被放进队列里运行了。</p>
+<p><img src="/images/深入异步通用概念_图6.png" width="100%" height="100%"></p>
+<p>然后 <code>fetch_data_and_process.poll()</code> 让 async 函数 <code>fetch_data_and_process</code> 继续运行，碰到第二个 await <code>let data2 = fetch_url(url2).await?;</code>，逻辑是一样的。直到最后 <code>fetch_data_and_process</code> 也执行到最后，挂起自己交给调度器，脱落，也便回到 <code>caller</code> 了。</p>
+<p><img src="/images/深入异步通用概念_图7.png" width="100%" height="100%"></p>
+<p>通过这个小例子你也可以自然的发现，如果你的应用只是普通的 await function 组合，没有特制的等待好几个任务的 await，那你的<strong>异步任务树</strong>就是<strong>异步任务链表</strong>，在这种情况下，实际上和同步毫无区别，而如果你可以同时 await 好几个任务，那由于任务是递交给事件循环穿插运行的，也便实现了所谓的异步：最简单的例子，你可以同时异步高效的 fetch 好几个 url 的内容了。</p>
 <h3 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h3><p>理解了上述机制，我们就能明白为什么 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
 <p>这是因为，<code>await</code> 的语义依赖于其所在的上下文是一个可以被挂起和恢复的状态机。一个普通的同步函数不具备这种能力。它一旦开始执行，就必须运行到结束，中间无法被”挂起”并将线程控制权交还给调度器。</p>
 <p>因此，<strong>异步模式是构建在同步模式之上的一种特殊环境</strong>。当你选择踏入这个环境（调用一个 <code>async</code> 函数），你就必须遵守它的规则。这种”鸿沟”是异步编程模型本身的性质所决定的，而非 Rust 或其他语言的设计缺陷。</p>
@@ -2683,6 +2719,52 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       </categories>
   </entry>
   <entry>
+    <title>遨游在内存中的硬件启动过程</title>
+    <url>/posts/42db1e6.html</url>
+    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
+<span id="more"></span>
+<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
+<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
+</blockquote>
+<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
+<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
+<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
+<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
+<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
+<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
+<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
+<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
+<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
+<blockquote>
+<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
+</blockquote>
+<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
+<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
+<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
+<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
+<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
+<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
+<ol>
+<li>SEC(安全验证)</li>
+<li>PEI(EFI前期初始化)</li>
+<li>DXE(驱动执行环境)</li>
+<li>BDS(启动设备选择)</li>
+<li>TSL(操作系统加载前期)</li>
+<li>RT(Run Time)</li>
+<li>AL(系统灾难恢复期)</li>
+</ol>
+<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
+<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
+<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>贝塞尔曲线</title>
     <url>/posts/cc351245.html</url>
     <content><![CDATA[<h1 id="贝塞尔曲线"><a href="#贝塞尔曲线" class="headerlink" title="贝塞尔曲线"></a>贝塞尔曲线</h1><p>平滑的曲线，计算机图形学的天堂，线性代数的产物<br>同时这篇文章也是关于嵌入html与js的测试</p>
@@ -2824,52 +2906,6 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       <categories>
         <category>Mathematic</category>
         <category>Linear_algebra</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>遨游在内存中的硬件启动过程</title>
-    <url>/posts/42db1e6.html</url>
-    <content><![CDATA[<h1 id="遨游在内存中的硬件启动过程"><a href="#遨游在内存中的硬件启动过程" class="headerlink" title="遨游在内存中的硬件启动过程"></a>遨游在内存中的硬件启动过程</h1><p>2024.9.28 <code>.NET Conf</code> 介绍话题，话题来自我之前对硬件启动过程的好奇</p>
-<span id="more"></span>
-<h2 id="叠甲"><a href="#叠甲" class="headerlink" title="叠甲"></a>叠甲</h2><blockquote>
-<p><strong>NOTE</strong>: 我并非一个专于底层设计的开发者，对计算机的底层结构仍然有很多的不解与困惑，因而本文可能包含不少问题，如果发现了错误，请一定要在联系我/评论区发送你的修改意见</p>
-</blockquote>
-<h2 id="一时兴起"><a href="#一时兴起" class="headerlink" title="一时兴起"></a>一时兴起</h2><p>相比大家学习计算机时可能会产生这样的困惑：计算机是怎么被拉起启动的，也许学习”计算机组成原理”能回答你的一部分问题，它会告诉你计算机上电后会进行一系列的检查，接着调用 BIOS，进入 Bootloader 阶段，最终拉起 OS ，进入熟悉的页面</p>
-<p>但是在这之中仍然有很多未知的事情，例如，计算机进行的这一系列检查的过程理论上讲也是一种过程，这种检查的逻辑在没有软件的阶段是谁来解决的？在内存被初始化前，其无法存储信息，此时此刻 BIOS 是怎么被执行的？</p>
-<p>接下来的文章内容会对解决这些<del>对你们毫无用处的</del>问题提供一些<del>可能解释不清楚的</del>帮助</p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>照顾到大家有些同学可能对 计算机组成原理/体系结构 并没有太多的了解，我们来简单讲一讲计算机的基础概念</p>
-<p>CPU在加电后，它首先会调用 BIOS/UEFI 会进行一系列操作，比如 上电检查，切换保护模式等等。这些操作目的是检查硬件，训练内存，为下一阶段提供环境，最后会调用你磁盘上的下一段程序，一般是 Bootloader 常见的有 Windows 下的 Windows Boot Manager ，Linux 下的 SystemBoot/Grub 等等，而 Bootloader 会拉起 OS ，OS 在启动阶段将接过 BIOS/UEFI 与 Bootloader 为你准备的所有前置环境，由操作系统掌管权力开启新的天地</p>
-<p>通常我们简单讲讲就会这么解释。对于开发者来说，再底层也不过就是 Bootloader 级别的，在裸机上写 OS 等等的操作。但其实这个裸机一点都不”裸”，它具有相当完善的环境，以至于你可以进一步开天辟地，从而有了 OS。</p>
-<p>我们今天就讨论一些比 Bootloader/OS 还要底层的 BIOS</p>
-<h2 id="RAM-amp-ROM-在-CPU-看来都是-Memory"><a href="#RAM-amp-ROM-在-CPU-看来都是-Memory" class="headerlink" title="RAM &amp; ROM 在 CPU 看来都是 Memory"></a>RAM &amp; ROM 在 CPU 看来都是 Memory</h2><p>如果说大家写代码写多了，会时常觉得 Memory 貌似是一种可读可写的东西，但是我们要指出 Memory 并不是那么简单的东西，事实上 ROM 也是一种 Memory</p>
-<p>我们常说 BIOS/UEFI 是 ROM ，所以它也是内存，内存要怎么访问？当然是通过地址，CPU 才不管你是内存条还是一个 BIOS 芯片，CPU 只是需要像读取普通的 DRAM 一样读取数据就行了，而作为从属于 CPU 完全听从其指导的芯片就考虑的多了</p>
-<p>也许大家很难理解，但是事实上是，存储器前都不是直连 CPU 的地址总线的，而是通过了一个 <strong>内存控制器</strong>(Memory Controller，简称 MC)的东西，它的真身本体是在北桥当中的。而在现在的 CPU 中，北桥已经被完全封装在 CPU 内部的，内存控制器会将 地址总线 分别映射到输出总线，连接到实际的设备上(比较常见的是通过PCIe总线)</p>
-<blockquote>
-<p>但上古时期的 8086 确实是通过地址总线直连内存颗粒的</p>
-</blockquote>
-<h2 id="揭秘启动过程"><a href="#揭秘启动过程" class="headerlink" title="揭秘启动过程"></a>揭秘启动过程</h2><p>在计算机启动到 Reset Vector 所指向的第一条指令被 CPU 运行之间的各种硬件安全检查这些纯硬件的专业部分我们先按下不表，我们来看计算机怎么获取到 BIOS 里的信息的</p>
-<h3 id="第一条指令"><a href="#第一条指令" class="headerlink" title="第一条指令"></a>第一条指令</h3><p>首先，CPU 核会发出一个取指的指令，这个指令会传递给北桥，北桥此时此刻也是一个被 reset ，北桥内有一个被成为 PAM 的寄存器，每个 PAM 寄存器分为两个半字节，半字节有两个保留位，一个读使能和写使能位。每个半字节对应 16k 的 内存空间，但 PAM[0] 对应的是 32k。</p>
-<p>通过设置 PAM 寄存器的值可以规定某一块 CPU 核的内存空间所对应的是实际真正的 RAM ，还是转发到 PCI 域中，Reset Vector 所在的地址空间对应的 PAM 寄存器缺省的值就是将 CPU 取指的指令转发到 PCI 域中，那么取指的信号就从 DMI 总线(这其实是基于 PCIe 总线的)，发送到南桥，南桥芯片组又会把这个取指信号处理发给下一级，最终到达 BIOS ROM 芯片上，原路返回，这样 CPU 就能获取到第一条命令了，接下来的事情就都简单起来了</p>
-<p>顺带一提，在 BIOS ROM 是一种支持在线运行的存储器，这意味着指令直接读取就运行，但是对 BIOS ROM 的一切写指令都将被中间过程给拒绝掉</p>
-<p>在 BIOS ROM 运行的同时，机器会将 BIOS ROM 的内容复制到 RAM 中，在内存控制器给与这一块 RAM 只读的属性，更改 PAM 的值，让它从转发到 PCI 域的状态切换成直接访问 RAM，提高 ROM 运行的效率</p>
-<h3 id="简单认识一下-UEFI"><a href="#简单认识一下-UEFI" class="headerlink" title="简单认识一下 UEFI"></a>简单认识一下 UEFI</h3><p>UEFI 的七个阶段</p>
-<ol>
-<li>SEC(安全验证)</li>
-<li>PEI(EFI前期初始化)</li>
-<li>DXE(驱动执行环境)</li>
-<li>BDS(启动设备选择)</li>
-<li>TSL(操作系统加载前期)</li>
-<li>RT(Run Time)</li>
-<li>AL(系统灾难恢复期)</li>
-</ol>
-<p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
-<p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
-<h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
