@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-09-29T14:54:32.980Z</updated>
+  <updated>2025-09-29T15:04:26.170Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/9b424f3e.html"/>
     <id>https://feipiao594.github.io/posts/9b424f3e.html</id>
     <published>2025-07-26T08:33:39.000Z</published>
-    <updated>2025-09-29T14:54:32.980Z</updated>
+    <updated>2025-09-29T15:04:26.170Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;深入异步通用概念&quot;&gt;&lt;a href=&quot;#深入异步通用概念&quot; class=&quot;headerlink&quot; title=&quot;深入异步通用概念&quot;&gt;&lt;/a&gt;深入异步通用概念&lt;/h1&gt;&lt;p&gt;协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程。这些东西曾经困扰了我许久，我饱读各种相关的资料却始终不得其解，因此我写下了这篇博客&lt;/p&gt;</summary>

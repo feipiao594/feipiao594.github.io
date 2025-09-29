@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE6.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE7.png">
 <meta property="article:published_time" content="2025-07-26T08:33:39.000Z">
-<meta property="article:modified_time" content="2025-09-29T14:54:32.980Z">
+<meta property="article:modified_time" content="2025-09-29T15:04:26.170Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE1.png">
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-29 22:54:32" itemprop="dateModified" datetime="2025-09-29T22:54:32+08:00">2025-09-29</time>
+                <time title="修改时间：2025-09-29 23:04:26" itemprop="dateModified" datetime="2025-09-29T23:04:26+08:00">2025-09-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,7 +260,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>10k</span>
+              <span>9.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -314,7 +314,8 @@
 <p><img src="/images/深入异步通用概念_图1.png" width="50%" height="50%"></p>
 <p>哎哎，这不就是一模一样，所以说自 IO 多路复用出现后，事件循环也很自然的就出现了</p>
 <p>然而大量使用回调引发了回调地狱的问题。异步最大的问题就是难以阅读。异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap，为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
-<h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
+<h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><p>想出协程，async/await 这套东西的人绝对是个天才，我无缘思考出是什么样的心路历程能够想到这一套东西，但我们仍然可以看看它是怎么工作的</p>
+<p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
 <p>实则不然。这正是 <code>async/await</code> 的巧妙之处，也是理解其非阻塞本质的关键。<code>await</code> 的”等待”，是一种<strong>主动的让步，而非被动的阻塞</strong>。</p>
 <h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
 <p>一个普通的同步函数从开始到结束，其执行路径是唯一的、连续的。而一个 <code>async</code> 函数内部因为有了 <code>await</code> 点，它的执行可以被分割成多个阶段。每一个 <code>await</code> 都是一个潜在的中断点。</p>
@@ -328,16 +329,15 @@
 <li><strong>状态 1 (State 1):</strong> 状态机从上次中断的地方恢复。它发现自己是处于”状态 1”，于是从 <code>fetch_url(url1)</code> 中拿到结果 <code>data1</code>，执行 <code>println!</code>，然后启动 <code>fetch_url(url2)</code>，接着再次返回 <code>Poll::Pending</code>，并将状态更新为”卡在 <code>await 2</code>“。</li>
 <li><strong>状态 2 (State 2):</strong> 同理，当 <code>fetch_url(url2)</code> 完成时，调度器再次唤醒它。状态机恢复，拿到 <code>data2</code>，执行最后的逻辑，最终返回 <code>Poll::Ready(result)</code>，标志着整个异步任务的完成。</li>
 </ul>
-<p>诶，调度器，事件的概念又被提及了，是不是事件循环是 async/await 的重要实现方式之一呢？</p>
+<p>哦？调度器，事件的概念又被提及了，是不是事件循环是 async/await 的重要实现方式之一呢？</p>
 <p>你猜的没有错，事实上，你可以从事件循环上很容易的构建出一个 async/await 系统来：如果所有的 async 状态机都是一个对象，当某个 <code>async</code> 函数运行到 <code>await</code> 状态的时候，就是把一个任务注册到事件循环，这个任务是，监听到” await 等待的状态机运行完毕”这个事件时，事件循环的调度器回调 poll 函数来推动自己进行下一步。而正是因为回调函数都会坍缩为 poll ，这就使得在一定程度上事件循环的任务列表里基本都是相同的 poll 函数，简化一下可以省略调任务列表，直接把发送” await 等待的状态机运行完毕”事件改成 poll ，所以 async/await 实现也有可能不需要依赖事件循环。</p>
 <p>所以，<code>await</code> 的关键在于：<strong>当任务需要等待（比如 I/O 未就绪）时，它不是傻傻地占着线程不放，而是通过返回 <code>Pending</code> 来释放线程的控制权。这个线程此时就可以掉头去执行其他已经就绪的任务（比如另一个完成的 HTTP 请求）。</strong> 这正是异步编程高并发能力的根源。</p>
-<h3 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h3><p>首先，想象一下，对于ui框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)，只有使用这种特制的 await，实际上是让事件循环用不同的监听模式来 poll，才能实现让一组任务异步进行。单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
+<h3 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h3><p>想象一下，对于ui框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)，只有使用这种特制的 await，实际上是让事件循环用不同的监听模式来 poll，才能实现让一组任务异步进行。单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
 <blockquote>
 <p>注意：<strong>异步任务树</strong>实为本文自创的概念，实际上怎么称呼这样的结构我并不知道。同样的，可能存在更复杂的数据结构能更高效的解决这样的问题，但下面我所提及的应该是一种实现。</p>
 </blockquote>
 <p>其所有叶子节点都是 await 函数的尽头，即具体等待一个任务，树的下方是调度器，当事件发生时，调度器将会在事件列表中挑选一个事件，poll 这个事件对应的叶子节点，是一个 async 函数/协程，让它执行至挂起或结束，控制权回到调度器，处理下一个事件，如果事件消费完毕，则继续挂起，这样的循环构成了异步模式下，无栈协程组成程序的图景。</p>
 <p>我们可以从刚刚那个 <code>fetch_data_and_process()</code> 为例子来画一下这棵树具体可以如何工作的其中一种样子：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = <span class="title function_ invoke__">fetch_url</span>(url1).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = <span class="title function_ invoke__">fetch_url</span>(url2).<span class="keyword">await</span>?;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>首先是 <code>fetch_data_and_process()</code> 被 await 之前，先是有一棵树</p>
 <p><img src="/images/深入异步通用概念_图2.png" width="100%" height="100%"></p>
 <p>然后紧接着，调用者开始 await，实际上<strong>干了4件事情</strong></p>
@@ -377,7 +377,7 @@
 <p>然后 <code>fetch_data_and_process.poll()</code> 让 async 函数 <code>fetch_data_and_process</code> 继续运行，碰到第二个 await <code>let data2 = fetch_url(url2).await?;</code>，逻辑是一样的。直到最后 <code>fetch_data_and_process</code> 也执行到最后，挂起自己交给调度器，脱落，也便回到 <code>caller</code> 了。</p>
 <p><img src="/images/深入异步通用概念_图7.png" width="100%" height="100%"></p>
 <p>通过这个小例子你也可以自然的发现，如果你的应用只是普通的 await function 组合，没有特制的等待好几个任务的 await，那你的<strong>异步任务树</strong>就是<strong>异步任务链表</strong>，在这种情况下，实际上和同步毫无区别，而如果你可以同时 await 好几个任务，那由于任务是递交给事件循环穿插运行的，也便实现了所谓的异步：最简单的例子，你可以同时异步高效的 fetch 好几个 url 的内容了。</p>
-<h3 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h3><p>理解了上述机制，我们就能明白为什么 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
+<h3 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h3><p>理解了上述机制，我们也就能明白为什么说 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
 <p>这是因为，<code>await</code> 的语义依赖于其所在的上下文是一个可以被挂起和恢复的状态机。一个普通的同步函数不具备这种能力。它一旦开始执行，就必须运行到结束，中间无法被”挂起”并将线程控制权交还给调度器。</p>
 <p>因此，<strong>异步模式是构建在同步模式之上的一种特殊环境</strong>。当你选择踏入这个环境（调用一个 <code>async</code> 函数），你就必须遵守它的规则。这种”鸿沟”是异步编程模型本身的性质所决定的，而非 Rust 或其他语言的设计缺陷。</p>
 <blockquote>
@@ -534,13 +534,13 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">174k</span>
+      站点总字数：<span title="站点总字数">173k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
         <i class="fa fa-coffee"></i>
       </span>
-      站点阅读时长：<span title="站点阅读时长">5:16</span>
+      站点阅读时长：<span title="站点阅读时长">5:15</span>
 </div>
 
 
