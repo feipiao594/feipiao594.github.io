@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE6.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE7.png">
 <meta property="article:published_time" content="2025-07-26T08:33:39.000Z">
-<meta property="article:modified_time" content="2025-09-28T10:31:06.900Z">
+<meta property="article:modified_time" content="2025-09-29T14:54:32.980Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE1.png">
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-28 18:31:06" itemprop="dateModified" datetime="2025-09-28T18:31:06+08:00">2025-09-28</time>
+                <time title="修改时间：2025-09-29 22:54:32" itemprop="dateModified" datetime="2025-09-29T22:54:32+08:00">2025-09-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,14 +260,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9.5k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>17 分钟</span>
+              <span>18 分钟</span>
             </span>
 
         </div>
@@ -286,34 +286,34 @@
 </blockquote>
 <h2 id="在异步之旅开始之前"><a href="#在异步之旅开始之前" class="headerlink" title="在异步之旅开始之前"></a>在异步之旅开始之前</h2><p>相信任何一个朋友在一开始接触编程的时候都会编写类似下面这样的 C++ 代码</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#inlcude <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="type">int</span> input;</span><br><span class="line">  std::cin &gt;&gt; input;</span><br><span class="line">  std::cout &lt;&lt; input &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>这样的一段程序的行为非常的显然，在第五行会阻塞起来等待输入，实质上在这一段代码背后实际上是调用了阻塞的 syscall <code>read()</code>，当你通过标准库具体的实现调用了这个系统调用时，会从用户态陷入内核态，等待内核将输入交给程序，才会继续下去。这是程序最简单的形态，以至于如果你参加任何算法竞赛的时候，要写的程序都是这样的形态。而这种系统调用称为阻塞的，<strong>阻塞IO</strong></p>
-<p>但这太简单了，初学者一定会好奇，这样一些从上到下顺序执行的代码，如何拼凑出一个带 UI 的程序。比如他们可能会使用 Qt 去做一个贪吃蛇程序，他们做到了，但始终觉得隔靴搔痒，因为他们会听说，他们所做的 Qt 程序运行在一个事件循环上，而这个事件循环，完全是一个单线程程序，单线程怎么可能做到这个事情呢，它怎么能做到等待你输入的时候还能保证软件被渲染，这个程序不使用多线程简直是个魔法嘛</p>
-<p>是的，我当年就是这么想的，在当时的我看来，阻塞完全是一个 debuff，应该需要一个不阻塞的接口，如果没有按下，也能正常执行后面的程序。那么我们就可以说同操作系统实际做的事情一样创建一个巨大的 <code>while</code> 循环，不断询问操作系统，对应的按钮是否被按下，这些询问本身并不花时间，只是问一问操作系统当前这个 IO 任务是否被完成，如果完成，我程序就可以从操作系统里取，如果没完成，那我就不管了，等到 while 下一次询问。这种类型的系统调用被称为非阻塞的，<strong>非阻塞IO</strong>，就像下面这样：</p>
+<p>作为一个 Hello world 级别的程序，大家都知道在第五行会阻塞起来等待输入，但等待输入的行为实际上并没有那么简单，在学习了操作系统之后，我们知道在这一段代码背后是调用了阻塞的 syscall <code>read()</code>，当你通过标准库对这个系统调用的封装调用到它时，会从用户态陷入内核态，等待内核将输入交给程序，才会继续下去。这是程序最简单的形态，以至于如果你参加任何算法竞赛的时候，要写的程序都是这样的形态。而这种系统调用称为阻塞的，<strong>阻塞IO</strong>。而在等待内核将输入的信息传递给程序之前，程序处于一个休眠状态，对于操作系统来说，也就是不把运行的时间片分配给它，这种行为我们也称为把程序<strong>挂起</strong>了。</p>
+<p>但这太简单了，初学者一定会好奇，这样一些从上到下顺序执行的代码，如何拼凑出一个带 UI 的程序。比如初学者可能会使用 Qt 去做一个贪吃蛇程序，在当下的这个年代，各种成熟的 UI 库层出不穷，很容易就能做到这一点。在做完这些刚刚入门编程的时候，他们略深入一些便会听说，他们所做的 Qt 程序运行在一个事件循环上，而 Qt 默认居然是单个线程就可以运行的。单线程怎么可能做到这个事情呢，它怎么能做到等待你输入，等待你点击 UI 的时候还能保证软件其他部分被渲染，动画似乎是完全与你的行为无关，一点也不像在 cli 中会阻塞，这种行为在多线程的前提下简直是个魔法嘛。</p>
+<p>是的，我当年就是这么想的。在当时的我看来，阻塞完全是一个 debuff，应该需要一个不阻塞的接口。如果没有按下，也能正常执行后面的程序。那么我们就可以说，在这种情况下，我们的程序同操作系统实际做的事情一样，那就是创建一个巨大的 <code>while</code> 循环，不断询问操作系统对应的按钮是否被按下，这些询问本身并不花时间，只是问一问操作系统当前这个 IO 任务是否被完成。如果完成，我程序就可以从操作系统里取，如果没完成，那我就不管了，等到 while 下一次询问。这种类型的系统调用确实存在，他们被被称为非阻塞的，<strong>非阻塞IO</strong>，就像下面这样：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设这里的isClickedButtonX()就是一个不阻塞的询问</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonW</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonA</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonS</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonD</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要说的是，这样，配以一个合理编排的 handler 其实是最高效的处理这些 IO 事件的方式，事实上某些单片机程序就是这么做的，这种循环查询某个事件是否就绪的模式称为轮询(polling)。</p>
+<p>我们可以把所有的输入，包括这边代码中的 <code>isClickedButtonX()</code>，以及更为统一的鼠标指针，键盘输入，网络请求，甚至是外设(蓝牙，LED)这种在冯诺依曼结构里被称为输入输出设备向系统内部传递信息并交给操作系统，进而交由应用程序的所有信息称之为 <strong>IO</strong> 或者说 <strong>IO 事件</strong>。在上述的代码中，我们进行循环查询，并合理的把它们处理：也就是注释所说的 do something，不同的事件有不同处理，处理的方式在下文被称为<strong>任务</strong>，这是所谓的事件分发。这其实是最高效的处理这些 IO 事件的方式，事实上某些单片机程序就是这么做的，这种循环查询某个事件是否就绪的模式称为轮询(polling)。</p>
 <blockquote>
-<p>这样的方式可以进行的原因是：我们必须理解程序的运行，程序的信息来自于两处，一个是来自操作系统，一个是程序自身已经编入的信息，它在运行时的额外信息完全来自于操作系统，而操作系统的信息来自于硬件的交互。操作系统本身是异步的，因为硬件是并行处理的，操作系统通过中断以及各种调度算法处理并存储来自硬件的各种信息，本身 <strong>OS 就作为一个巨大 Buffer 为程序提供信息</strong>，所以程序本身无需在意数据是怎么被具体准备出来的，你只需要向操作系统提起任务，操作系统就为你在缓冲区里准备好数据，你自己去取，因此数据其实短期内不会丢失的，只等你的应用去响应并消费。</p>
+<p>这样的方式可以进行的原因是：我们必须理解程序的运行，程序的信息来自于两处，一个是来自操作系统，一个是程序自身已经编入的信息，它在运行时的额外信息完全来自于操作系统，而操作系统的信息来自于硬件的交互。操作系统本身是异步的，因为硬件是并行处理的，操作系统通过中断以及各种调度算法处理并存储来自硬件的各种信息，本身 <strong>OS 就作为一个巨大 Buffer 为程序提供信息</strong>，所以程序本身无需在意数据是怎么被具体准备出来的，你只需要向操作系统注册需要的 IO 事件，操作系统就为你在缓冲区里准备好 IO 事件发生时拿到的数据，你自己去取，因此数据其实短期内不会丢失的，只等你的应用去响应并消费。</p>
 </blockquote>
-<p>但是这种方式最大的问题是，当裸的 <code>while(1)</code> 出现在你的程序里，导致死循环，会大量占用 CPU 资源，CPU 占用率高。在这里我们需要知道这个值的具体定义：CPU 占用率是通过对比忙碌时间和总时间得出的百分比，而总时间减去忙碌时间是空闲时间，其实操作系统完成了对 CPU 的调度，操作系统在运行时可以告诉 CPU，你要在某一个时间周期里工作多久，然后这个时间周期里的 CPU 还能休息一会，停止工作，而这段时间就是空闲时间。</p>
-<p>对于死循环最大的问题是，死循环程序会导致它试图最大程度请求 CPU 去做无用的轮询，操作系统为了最大满足它索要的计算资源，不允许 CPU 停止休息，因此占用率便提高了。</p>
+<p>但是这种方式最大的问题是，这样的行为意味着你的 while 代码块中的代码会一往无前的运行，每次循环都不带停的。当裸的 <code>while(1)</code> 出现在你的程序里，导致死循环，会大量占用 CPU 资源，使 CPU 占用率增高。</p>
+<p>这里需要复习一下 CPU 占用率是什么。它的定义是通过对比忙碌时间和总时间得出的百分比，而总时间减去忙碌时间是空闲时间，其实操作系统完成了对 CPU 的调度，操作系统在运行时可以告诉 CPU，你要在某一个时间周期里工作多久，然后这个时间周期里的 CPU 还能休息一会，停止工作，而这段时间就是空闲时间。</p>
+<p>而死循环程序会导致它试图最大程度请求 CPU 去做无用的轮询，操作系统为了最大满足它索要的计算资源，不允许 CPU 停止休息，因此占用率便提高了。</p>
 <p>所以完全阻塞等待某个资源不行，开个循环询问所有任务的就绪状态也有问题，那应该怎么办呢?</p>
-<h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环，但问题就在于程序此时此刻就只能做一件事情了，也许你会同早期的我一样，认为这个关键就在于 syscall 阻塞了线程的活动，应该彻底抛开可能导致阻塞的系统调用，也许存在一个可以天降信息的超级接口可以传递信息，那你就绕进了这个局中，很不幸，事实证明这样的接口并不存在。</p>
-<p>让我们回来看看我们所需要做到的事情：如果我们要做一个单线程的贪吃蛇的小程序，其实最大的点是，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些事情，但是我们忽略了一个事情，那就是计时器事件本身就也是一个IO事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
-<p>如果在 <code>while</code> 里将任务轮询式能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个任务，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理是，<strong>在一个线程里通过有且仅有一个接口去获取所有IO任务，如果查询的时候存在准备好的数据，则立即返回并处理，如果查询时没有准备好的数据，则立即阻塞，等待操作系统准备好数据立即将其唤醒</strong>，这一类接口，比较常见的就是 Linux 下的 select/poll/epoll，将这样的接口置于while循环下，如果你处理IO数据的速度高于IO数据产生的速度，你就可以及时解决所有IO任务</p>
-<p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，这里接口的阻塞并不是程序处理事件意义上的阻塞，接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，必须要让用户态应用程序挂起，所以从这个意义上来说，阻塞是必然的，所有这类要谦让资源的程序都应当是阻塞的程序。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
-<blockquote>
-<p>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</p>
-</blockquote>
-<p>所以，我们的程序需要高效的处理或者说消费掉任务，这是保证任务不会堆起来，所有任务都能得到处理的前提，从具体参数上看就是处理IO数据的速度高于IO数据产生的速度，所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，适合这种模式。而不满足这个条件的程序，一种是计算量特别大的程序，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong>，一般选择多线程方式，还有一种是现代设备IO速度越来越快，此时可能直接轮询，试图达到速率上限能获得更高的收益(比如 io_uring 就是在做这里的极致优化)。</p>
-<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>所以最根本的问题解决了，接下来是要为这个简陋的 <code>while(1)</code> 循环加工一下了，我们需要一个在这个循环体进行一次时能够彻底消费掉这些操作系统里出现的数据的代码，其实这是一个 handler，是一个调度器。在绝大部分的实现中，它都以一些我们耳熟能详的名字出现：事件驱动的模式，或者说事件循环。</p>
+<h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环。但问题就在于程序此时此刻就只能做一件事情了。也许你会同早期的我一样，认为这个关键就在于 syscall 阻塞了线程的活动，应该彻底抛开可能导致阻塞的系统调用，也许存在一个可以天降信息的超级接口可以传递信息，很不幸，事实证明这样的接口并不存在。</p>
+<p>让我们回看一下令我们困惑的例子：如果我们要做一个单线程的贪吃蛇的小程序，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些渲染与计算的工作。但是我们在这个问题上往往忽略了一个事情，那就是计时器事件本身就也是一个 IO 事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
+<p>如果在 <code>while</code> 里将轮询事件能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个事件，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理是，<strong>在一个线程里通过有且仅有一个接口去获取所有 IO 事件，如果查询的时候存在准备好的数据，则立即返回并处理，如果查询时没有准备好的数据，则立即阻塞，等待操作系统准备好数据立即将其唤醒</strong>，这一类接口，比较常见的就是 Linux 下的 select/poll/epoll，将这样的接口置于while循环下，如果你处理 IO 事件的速度高于 IO 事件产生的速度，你就可以及时解决所有IO事件</p>
+<p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，如我程序读写一个文件的时候，只是等在那，不会读取别的比如按钮点击事件等这样程序处理事件意义上的阻塞和接口的阻塞这两个阻塞说的并不是同样的概念。接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，是必须要让用户态应用程序挂起的。所以从这个意义上来说，阻塞是必然的，所有这类要把 CPU 资源谦让出来的程序都应当是阻塞的程序。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
+<p><strong>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</strong></p>
+<p>所以，我们的程序需要高效的处理或者说消费掉 IO 事件，这是保证任务不会堆起来，所有任务都能得到处理的前提。从具体参数上看就是处理 IO 事件的速度高于 IO 事件产生的速度，所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，适合这种模式。而不满足这个条件的程序，一种是计算量特别大的程序，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong>，一般选择多线程方式，还有一种是现代设备 IO 速度越来越快，此时可能直接轮询，试图达到速率上限能获得更高的收益(比如 io_uring 就是在做这里的极致优化)。</p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>最根本的问题解决了，接下来是要为这个简陋的 <code>while(1)</code> 循环加工一下了，我们需要一个在这个循环体进行一次时能够彻底消费掉这些操作系统里出现的数据的代码，其实这是一个调度器。在绝大部分的实现中，它都以一些我们刚刚提到的另一个耳熟能详的名字出现：事件驱动的模式，或者说事件循环。</p>
 <p>来看下面这段给出的伪代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> *task_list = TaskList.<span class="built_in">getInstance</span>()-&gt;<span class="built_in">add</span>(InitTask);</span><br><span class="line"><span class="comment">//你需要在这里的InitTask注册监听的事件，否则程序立即退出</span></span><br><span class="line"><span class="keyword">auto</span> *event_fetcher = EventFetcher.<span class="built_in">getInstance</span>();</span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> task: *task_list)</span><br><span class="line">        <span class="built_in">task</span>();</span><br><span class="line">    task_list.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="keyword">auto</span> events = EventFetcher.<span class="built_in">getInstance</span>()-&gt;<span class="built_in">getEvents</span>();</span><br><span class="line">    <span class="comment">// 这里如果获取不到会阻塞等待</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> event: events)</span><br><span class="line">        <span class="built_in">EventDispatcher</span>(event); </span><br><span class="line">    <span class="comment">// 分发后，后续任务也就是回调用闭包形式传入序列</span></span><br><span class="line">    <span class="comment">// 倘若监听的事件和任务队列全无，则程序退出</span></span><br><span class="line">    <span class="keyword">if</span>(!events.<span class="built_in">length</span>() &amp;&amp; task_list.<span class="built_in">length</span>())</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>首先，既然要监听事件，必须有一个监听器，在这里是 <code>EventFetcher</code>，你需要在 <code>initTask</code> 这个初始任务里完成注册，紧接着是事件发生后分发任务的函数 <code>EventDispatcher</code>，它将事件按照注册时留下的函数，将发生事件后处理事件的任务扔给 <code>taskList</code>，并一个一个跟着处理，<code>taskList</code> 这样的容器可能是按照优先级优先弹出的优先队列或者其他什么算法，用以高效的分配任务，这样的任务我们给它一个名字，叫做<strong>回调函数</strong></p>
+<p>回调函数何时执行是由调度器决定的，原本把他放到 <code>taskList</code> 的函数早就已经执行下去了，并不会管它什么时候运行，或者说对于程序员来说，它何时运行逻辑都必须正确，这种逻辑上他俩执行没什么关系的行为就是所谓异步。</p>
 <p>要注意的是，输入 <code>taskList</code> 的是一个闭包，如果假使说这个任务是一个计时器，也许你会需要循环往复的计时，此时你必须在回调函数里将计时器重新启动，启动的过程就是向 <code>EventFetcher</code> 再注册一遍计时器，向 <code>EventDispatcher</code> 再把自己的任务和自己当前正在执行的这个回调组成的一对数据再次传入，以此实现无限计时的效果</p>
 <p>回调式的写法在现代的 UI 框架里相当常见，例如 Qt 的信号槽机制，本质上就是这样的东西，我们来看看下面 Dart 的事件循环实现</p>
 <p><img src="/images/深入异步通用概念_图1.png" width="50%" height="50%"></p>
 <p>哎哎，这不就是一模一样，所以说自 IO 多路复用出现后，事件循环也很自然的就出现了</p>
-<p>然而大量使用回调引发了回调地狱的问题，异步最大的问题就是难以阅读，当代码量一旦庞大起来，很有可能函数要成为一等公民在函数里作为参数反复传递，最终放到一个对象某个行为的回调中。同时异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap 为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
+<p>然而大量使用回调引发了回调地狱的问题。异步最大的问题就是难以阅读。异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap，为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
 <h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
 <p>实则不然。这正是 <code>async/await</code> 的巧妙之处，也是理解其非阻塞本质的关键。<code>await</code> 的”等待”，是一种<strong>主动的让步，而非被动的阻塞</strong>。</p>
 <h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
@@ -534,13 +534,13 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">173k</span>
+      站点总字数：<span title="站点总字数">174k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
         <i class="fa fa-coffee"></i>
       </span>
-      站点阅读时长：<span title="站点阅读时长">5:15</span>
+      站点阅读时长：<span title="站点阅读时长">5:16</span>
 </div>
 
 
