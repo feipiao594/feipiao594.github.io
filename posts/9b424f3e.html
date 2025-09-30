@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE6.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE7.png">
 <meta property="article:published_time" content="2025-07-26T08:33:39.000Z">
-<meta property="article:modified_time" content="2025-09-29T15:23:00.980Z">
+<meta property="article:modified_time" content="2025-09-30T03:43:44.449Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E6%B7%B1%E5%85%A5%E5%BC%82%E6%AD%A5%E9%80%9A%E7%94%A8%E6%A6%82%E5%BF%B5_%E5%9B%BE1.png">
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-29 23:23:00" itemprop="dateModified" datetime="2025-09-29T23:23:00+08:00">2025-09-29</time>
+                <time title="修改时间：2025-09-30 11:43:44" itemprop="dateModified" datetime="2025-09-30T11:43:44+08:00">2025-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -352,14 +352,14 @@
 <p>记录一下此时此刻事件循环的状态(省略无关项，同时<strong>列表的内容是伪代码</strong>，下同)：</p>
 <ul>
 <li>任务列表：<code>fetch_data_and_process.poll()</code></li>
-<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
 </ul>
 <p>接着等待事件循环调度，直到调用 poll 推动<code>fetch_data_and_process</code> 的状态机，运行下来就到了 <code>let data1 = fetch_url(url1).await?;</code> 这一行了，也是同理，做这四件事情</p>
 <p><img src="/images/深入异步通用概念_图4.png" width="100%" height="100%"></p>
 <p>事件循环的状态：</p>
 <ul>
 <li>任务列表：<code>fetch_url.poll()</code></li>
-<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>, <code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
 </ul>
 <p>我们假定 <code>fetch_url</code> 要直接做一个获取资源的基础 API，那么它和上述的 await 实际上理应是有差别的，因为它不能再把任务推给别人了自己只是等待了，必须自己处理，所以这个异步函数的函数体里只会干两件事</p>
 <ol>
@@ -370,7 +370,7 @@
 <p>此时此刻事件循环的状态：</p>
 <ul>
 <li>任务列表：空</li>
-<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>, <code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>, <code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>,<br><code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
 </ul>
 <p>好了，接下来任务简单了，等待回调，<code>Event&lt;API_getUrl.finish()&gt;</code> 发生时，<code>fetch_url</code> 会被推动到结束，在结尾的时候，也会挂起自己这个状态机，运行过程回到调度器里，从而从这棵树上脱落。在此之前释放一个 <code>Event&lt;fetch_url.finish()&gt;</code> 的事件信息，告诉事件循环 <code>fetch_data_and_process.poll()</code> 该被放进队列里运行了。</p>
 <p><img src="/images/深入异步通用概念_图6.png" width="100%" height="100%"></p>

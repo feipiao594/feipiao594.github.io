@@ -19,6 +19,56 @@
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++模板元-质数序列</title>
+    <url>/posts/3187765d.html</url>
+    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
+<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
+<p>输出上述数组的长度</p>
+<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
+<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++模板元编程</title>
+    <url>/posts/9244e40f.html</url>
+    <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
+<span id="more"></span>
+<h2 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h2><p>推荐一个<a href="https://zhuanlan.zhihu.com/p/378355217">知乎链接</a>，作者的讲述非常优秀<br>模板元编程是一个庞大的课题，我打算慢慢写它</p>
+<h2 id="一些零碎的理解"><a href="#一些零碎的理解" class="headerlink" title="一些零碎的理解"></a>一些零碎的理解</h2><p>由于本人也学艺不精，所以这个板块先写一些临时的感悟啥的，以及学习时候使用的一些例子</p>
+<h3 id="std-enable-if的一种用法"><a href="#std-enable-if的一种用法" class="headerlink" title="std::enable_if的一种用法"></a>std::enable_if的一种用法</h3><p>学习时候用到测试代码如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> N = <span class="type">void</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> test</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span>&lt;T, std::<span class="type">enable_if_t</span>&lt;std::is_same_v&lt;T, <span class="type">int</span>&gt;, <span class="type">void</span>&gt;&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">int</span>&gt;::value;<span class="comment">//1</span></span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">char</span>&gt;::value;<span class="comment">//0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过一个迂回的方式来判断一个类型是不是int类型，当然我只是想叙述<code>std::enable_if</code>应该怎么用，这个模板是输入两个参数，第一个是<code>bool</code>类型，第二个是当输入<code>true</code>时，其<code>type</code>是什么类型，由于<code>std::enable_if</code>所返回的类型任意，且利用偏特化进行分支选择时，其主模板，和<code>std::enable_if</code>所处同样位置必须时模板<code>typename T</code>，且由于一般不会写上<code>enable_if</code>这一个位置的类型，主模板必须缺省，缺省<code>void</code>就是一个好选择</p>
+<p>注意特化和函数的默认参数不同，可以特化任意位置的参数，如我们可以特化如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTemplateType</span>&lt;<span class="type">float</span>, N&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//content</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>利用上述特化的性质，<code>enable_if</code>可以塞在模板参数中间，但以我之见，在其等价位置的后方应该只存在形参包或者有缺省值的模板参数</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -120,56 +170,6 @@
 </ul>
 </li>
 </ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元-质数序列</title>
-    <url>/posts/3187765d.html</url>
-    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
-<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
-<p>输出上述数组的长度</p>
-<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
-<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元编程</title>
-    <url>/posts/9244e40f.html</url>
-    <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
-<span id="more"></span>
-<h2 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h2><p>推荐一个<a href="https://zhuanlan.zhihu.com/p/378355217">知乎链接</a>，作者的讲述非常优秀<br>模板元编程是一个庞大的课题，我打算慢慢写它</p>
-<h2 id="一些零碎的理解"><a href="#一些零碎的理解" class="headerlink" title="一些零碎的理解"></a>一些零碎的理解</h2><p>由于本人也学艺不精，所以这个板块先写一些临时的感悟啥的，以及学习时候使用的一些例子</p>
-<h3 id="std-enable-if的一种用法"><a href="#std-enable-if的一种用法" class="headerlink" title="std::enable_if的一种用法"></a>std::enable_if的一种用法</h3><p>学习时候用到测试代码如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> N = <span class="type">void</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> test</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span>&lt;T, std::<span class="type">enable_if_t</span>&lt;std::is_same_v&lt;T, <span class="type">int</span>&gt;, <span class="type">void</span>&gt;&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">int</span>&gt;::value;<span class="comment">//1</span></span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">char</span>&gt;::value;<span class="comment">//0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过一个迂回的方式来判断一个类型是不是int类型，当然我只是想叙述<code>std::enable_if</code>应该怎么用，这个模板是输入两个参数，第一个是<code>bool</code>类型，第二个是当输入<code>true</code>时，其<code>type</code>是什么类型，由于<code>std::enable_if</code>所返回的类型任意，且利用偏特化进行分支选择时，其主模板，和<code>std::enable_if</code>所处同样位置必须时模板<code>typename T</code>，且由于一般不会写上<code>enable_if</code>这一个位置的类型，主模板必须缺省，缺省<code>void</code>就是一个好选择</p>
-<p>注意特化和函数的默认参数不同，可以特化任意位置的参数，如我们可以特化如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTemplateType</span>&lt;<span class="type">float</span>, N&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//content</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>利用上述特化的性质，<code>enable_if</code>可以塞在模板参数中间，但以我之见，在其等价位置的后方应该只存在形参包或者有缺省值的模板参数</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -356,6 +356,18 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -391,18 +403,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <url>/posts/a39b2865.html</url>
-    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -558,31 +558,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Pytorch学习_1</title>
     <url>/posts/6c7f2ed0.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
@@ -622,6 +597,31 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Pytorch学习_2</title>
     <url>/posts/f5767f6a.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
@@ -641,6 +641,55 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_3</title>
+    <url>/posts/82714ffc.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-3"><a href="#Pytorch学习-3" class="headerlink" title="Pytorch学习_3"></a>Pytorch学习_3</h1><p>距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习</p>
+<span id="more"></span>
+<h2 id="一些变化"><a href="#一些变化" class="headerlink" title="一些变化"></a>一些变化</h2><p>我并不是很喜欢 AI ，感觉大家都过于看重 AI 了，其实它也就是一个普普通通的工具罢了，而且使用的技术入门十分容易，并没有大家想象的那么高深，它不是一个万能钥匙，能开世界上任何一扇门<br>中文互联网上有太多 pytorch 的资料了，但是这些资料大多都不止是在讲 pytorch 本身，他们大多有一个”利好初学者”的标签，但是往往这时候意味着他们对 pytorch 本身这个库的诠释完全不足，所以最近我选择了直接去看 pytorch 的官方文档，总算是总结出来了一些东西。</p>
+<h2 id="Tensor-的一些新理解"><a href="#Tensor-的一些新理解" class="headerlink" title="Tensor 的一些新理解"></a>Tensor 的一些新理解</h2><p>pytorch 里面我个人认为最重要的库就是 Tensor 库，它定义了 Tensor 和其他一系列和 Tensor 计算有关的函数。但 Tensor 这个名字很有趣，它来自于数学，它的标准中文译名叫<strong>张量</strong>，在中文互联网(bing)上搜索 Tensor ，你得到的前几条信息都是深度学习 pytorch 里的 Tensor ，但是你如果搜索它的中文名张量，你得到的就是数学和物理里的那个张量，这很有趣了 :)</p>
+<blockquote>
+<p>我个人认为 Tensor 是纯纯的名词污染，我并不认为这个东西它是一个张量在欧式空间上的矩阵表示，即使它确实等价，但你不可以用一个东西的片面去描述一个东西，就像，还有些朋友认为它和 numpy 里的数组之间最大的差别是它可以交给 GPU 去处理所以要取一个和数组不一样的高大上的名字，但我作为一个 C/C++ 程序员，成天能和底层打交道，觉得这个纯是扯了</p>
+</blockquote>
+<p>言归正传，在我看来 Tensor 和普通的n维数组最大的差别是，Tensor 中有一个计算图累加的概念，简单来说，Tensor 这个类中有一个成员变量”存储”了得到这个 Tensor 通过了什么运算，这个就是计算图，你使用的 Tensor 只会调用 pytorch 里的 Tensor 数学运算函数进行运算，原因是这些数学运算函数不止做了 Tensor 的运算，他们同时承担了这个成员变量的计算图计算的内容，而如果你自己实现一个 Tensor 的运算，你就要手动去实现这个计算图拼合的行为。</p>
+<p>懵懵的？举个例子，<code>torch.matmul</code> 是 <code>Tensor</code> 的乘法，在上一章我们讲过，事实上 Tensor 的运算都是<strong>输入(单个或者多个) Tensor 输出 Tensor 的函数</strong>，对于乘法，它实质上会提取输入的两个 <code>Tensor</code> 里面成员变量存储的计算图，用一个乘号把他们相连，同时数值也会被相乘，最后输出的 Tensor 就是一个数值是前两个 Tensor 计算的结果，同时计算图是前两个 Tensor 的计算图加一个乘号拼合的结果</p>
+<h3 id="看看-Tensor-机理"><a href="#看看-Tensor-机理" class="headerlink" title="看看 Tensor 机理"></a>看看 Tensor 机理</h3><p>你也许会好奇，口说无凭，Tensor 在 pytorch 上的原文就是说的不同于 numpy 的 ndarrays 之处就只是可以在 GPU 或其他硬件加速器上运行:</p>
+<blockquote>
+<p>Tensors are similar to NumPy’s ndarrays, <strong>except that Tensors can run on GPUs or other hardware accelerators</strong>. In fact, Tensors and NumPy arrays can often share the same underlying memory, eliminating the need to copy data (see Bridge with NumPy). Tensors are also optimized for automatic differentiation (we’ll see more about that later in the Autograd section). If you’re familiar with ndarrays, you’ll be right at home with the Tensor API. If not, follow along! (<a href="https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html">https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html</a>)</p>
+</blockquote>
+<p>以及看看文档里说的 Tensor 的成员变量</p>
+<blockquote>
+<p>In PyTorch, a regular Tensor is a multi-dimensional array that is defined by the following components:</p>
+<blockquote>
+<p><strong>Storage</strong>: The actual data of the Tensor, stored as a contiguous, one-dimensional array of bytes.<br><strong>dtype</strong>: The data type of the elements in the Tensor, such as torch.float32 or torch.int64.<br><strong>shape</strong>: A tuple indicating the size of the Tensor in each dimension.<br><strong>Stride</strong>: The step size needed to move from one element to the next in each dimension.<br><strong>Offset</strong>: The starting point in the storage from which the Tensor data begins. This will usually be 0 for newly created Tensors.</p>
+</blockquote>
+<p>These components together define the structure and data of a Tensor, with the storage holding the actual data and the rest serving as metadata.<br>(<a href="https://pytorch.org/docs/stable/storage.html">https://pytorch.org/docs/stable/storage.html</a>)</p>
+</blockquote>
+<p>这压根没提到计算图啊，博主你这是给我们干哪来了，这还是 Tensor 么，别急，让我们深入代码看看实际的机理来佐证我们刚刚说的话</p>
+<p>首先看 Python 侧的 Tensor 定义，发现它继承自一个 <code>torch._C.TensorBase</code> ，同时追踪观察 <code>torch.matmul</code> 发现追踪到了一个 <code>.pyi</code> 的文件里，所以其实现明显不是 python 实现的，其实实际上它和 Tensor 都是通过 PyBind11 绑定到 C++ 的。让我们来看看 C++ 里它是怎么实现的</p>
+<p>相关的文件有</p>
+<ul>
+<li><code>aten/src/ATen/core/Tensor.h</code></li>
+<li><code>aten/src/ATen/core/Tensor.cpp</code></li>
+<li><code>aten/src/ATen/core/TensorBase.h</code></li>
+</ul>
+<p>在 TensoBase 里有一个这样的成员变量<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">c10::intrusive_ptr&lt;TensorImpl, UndefinedTensorImpl&gt; impl_;</span><br></pre></td></tr></table></figure></p>
+<p>在这里提到的 <code>TensorImpl</code> 中，有一大段话描述了下面这个成员变量，这就是存储计算图的实际指针</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;c10::AutogradMetaInterface&gt; autograd_meta_ = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+<p>在上面的注释当中你可以知道 <code>autograd_meta_</code> 指向了和梯度有关的信息，比如 <code>grad_fn</code></p>
+<p>你自己构造的 Tensor 是计算图中的叶子节点，它的grad_fn 为 None</p>
+<p>这就是计算图的存储，可想而知，其实计算的函数会更新这个 Tensor 的计算图，而 Tensor 的核心其实就是这个在 C++ 侧没被文档所写出来的计算图相关的成员变量，当你计算梯度的时候，正是查看了这个成员变量的信息，因而能够计算出梯度来，所以能计算梯度的也是 Tensor</p>
+<blockquote>
+<p>如果要我给 Tensor 下一个定义的话，那么我会说，<strong>Tensor 就是一个保存了历史计算方式的多维数组类，同时其有在 CPU 或其他来加速存储的能力</strong><br>其实在 GPU 上跑个人感觉完全不是一个核心的概念值得多言，难道计算机图形学里的 shaders 算的那些东西都是 Tensor 吗</p>
+</blockquote>
+<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>这篇博客的另一位贡献者 Github@besthope-official ，一开始是他的探索才让我研究这个比较容易，这份博客也有他的一份力</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -711,55 +760,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_3</title>
-    <url>/posts/82714ffc.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-3"><a href="#Pytorch学习-3" class="headerlink" title="Pytorch学习_3"></a>Pytorch学习_3</h1><p>距离上次写 pytorch 相关的东西已经过了很久，也是看了另一些去学习</p>
-<span id="more"></span>
-<h2 id="一些变化"><a href="#一些变化" class="headerlink" title="一些变化"></a>一些变化</h2><p>我并不是很喜欢 AI ，感觉大家都过于看重 AI 了，其实它也就是一个普普通通的工具罢了，而且使用的技术入门十分容易，并没有大家想象的那么高深，它不是一个万能钥匙，能开世界上任何一扇门<br>中文互联网上有太多 pytorch 的资料了，但是这些资料大多都不止是在讲 pytorch 本身，他们大多有一个”利好初学者”的标签，但是往往这时候意味着他们对 pytorch 本身这个库的诠释完全不足，所以最近我选择了直接去看 pytorch 的官方文档，总算是总结出来了一些东西。</p>
-<h2 id="Tensor-的一些新理解"><a href="#Tensor-的一些新理解" class="headerlink" title="Tensor 的一些新理解"></a>Tensor 的一些新理解</h2><p>pytorch 里面我个人认为最重要的库就是 Tensor 库，它定义了 Tensor 和其他一系列和 Tensor 计算有关的函数。但 Tensor 这个名字很有趣，它来自于数学，它的标准中文译名叫<strong>张量</strong>，在中文互联网(bing)上搜索 Tensor ，你得到的前几条信息都是深度学习 pytorch 里的 Tensor ，但是你如果搜索它的中文名张量，你得到的就是数学和物理里的那个张量，这很有趣了 :)</p>
-<blockquote>
-<p>我个人认为 Tensor 是纯纯的名词污染，我并不认为这个东西它是一个张量在欧式空间上的矩阵表示，即使它确实等价，但你不可以用一个东西的片面去描述一个东西，就像，还有些朋友认为它和 numpy 里的数组之间最大的差别是它可以交给 GPU 去处理所以要取一个和数组不一样的高大上的名字，但我作为一个 C/C++ 程序员，成天能和底层打交道，觉得这个纯是扯了</p>
-</blockquote>
-<p>言归正传，在我看来 Tensor 和普通的n维数组最大的差别是，Tensor 中有一个计算图累加的概念，简单来说，Tensor 这个类中有一个成员变量”存储”了得到这个 Tensor 通过了什么运算，这个就是计算图，你使用的 Tensor 只会调用 pytorch 里的 Tensor 数学运算函数进行运算，原因是这些数学运算函数不止做了 Tensor 的运算，他们同时承担了这个成员变量的计算图计算的内容，而如果你自己实现一个 Tensor 的运算，你就要手动去实现这个计算图拼合的行为。</p>
-<p>懵懵的？举个例子，<code>torch.matmul</code> 是 <code>Tensor</code> 的乘法，在上一章我们讲过，事实上 Tensor 的运算都是<strong>输入(单个或者多个) Tensor 输出 Tensor 的函数</strong>，对于乘法，它实质上会提取输入的两个 <code>Tensor</code> 里面成员变量存储的计算图，用一个乘号把他们相连，同时数值也会被相乘，最后输出的 Tensor 就是一个数值是前两个 Tensor 计算的结果，同时计算图是前两个 Tensor 的计算图加一个乘号拼合的结果</p>
-<h3 id="看看-Tensor-机理"><a href="#看看-Tensor-机理" class="headerlink" title="看看 Tensor 机理"></a>看看 Tensor 机理</h3><p>你也许会好奇，口说无凭，Tensor 在 pytorch 上的原文就是说的不同于 numpy 的 ndarrays 之处就只是可以在 GPU 或其他硬件加速器上运行:</p>
-<blockquote>
-<p>Tensors are similar to NumPy’s ndarrays, <strong>except that Tensors can run on GPUs or other hardware accelerators</strong>. In fact, Tensors and NumPy arrays can often share the same underlying memory, eliminating the need to copy data (see Bridge with NumPy). Tensors are also optimized for automatic differentiation (we’ll see more about that later in the Autograd section). If you’re familiar with ndarrays, you’ll be right at home with the Tensor API. If not, follow along! (<a href="https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html">https://pytorch.org/tutorials/beginner/basics/Tensorqs_tutorial.html</a>)</p>
-</blockquote>
-<p>以及看看文档里说的 Tensor 的成员变量</p>
-<blockquote>
-<p>In PyTorch, a regular Tensor is a multi-dimensional array that is defined by the following components:</p>
-<blockquote>
-<p><strong>Storage</strong>: The actual data of the Tensor, stored as a contiguous, one-dimensional array of bytes.<br><strong>dtype</strong>: The data type of the elements in the Tensor, such as torch.float32 or torch.int64.<br><strong>shape</strong>: A tuple indicating the size of the Tensor in each dimension.<br><strong>Stride</strong>: The step size needed to move from one element to the next in each dimension.<br><strong>Offset</strong>: The starting point in the storage from which the Tensor data begins. This will usually be 0 for newly created Tensors.</p>
-</blockquote>
-<p>These components together define the structure and data of a Tensor, with the storage holding the actual data and the rest serving as metadata.<br>(<a href="https://pytorch.org/docs/stable/storage.html">https://pytorch.org/docs/stable/storage.html</a>)</p>
-</blockquote>
-<p>这压根没提到计算图啊，博主你这是给我们干哪来了，这还是 Tensor 么，别急，让我们深入代码看看实际的机理来佐证我们刚刚说的话</p>
-<p>首先看 Python 侧的 Tensor 定义，发现它继承自一个 <code>torch._C.TensorBase</code> ，同时追踪观察 <code>torch.matmul</code> 发现追踪到了一个 <code>.pyi</code> 的文件里，所以其实现明显不是 python 实现的，其实实际上它和 Tensor 都是通过 PyBind11 绑定到 C++ 的。让我们来看看 C++ 里它是怎么实现的</p>
-<p>相关的文件有</p>
-<ul>
-<li><code>aten/src/ATen/core/Tensor.h</code></li>
-<li><code>aten/src/ATen/core/Tensor.cpp</code></li>
-<li><code>aten/src/ATen/core/TensorBase.h</code></li>
-</ul>
-<p>在 TensoBase 里有一个这样的成员变量<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">c10::intrusive_ptr&lt;TensorImpl, UndefinedTensorImpl&gt; impl_;</span><br></pre></td></tr></table></figure></p>
-<p>在这里提到的 <code>TensorImpl</code> 中，有一大段话描述了下面这个成员变量，这就是存储计算图的实际指针</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">std::unique_ptr&lt;c10::AutogradMetaInterface&gt; autograd_meta_ = <span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
-<p>在上面的注释当中你可以知道 <code>autograd_meta_</code> 指向了和梯度有关的信息，比如 <code>grad_fn</code></p>
-<p>你自己构造的 Tensor 是计算图中的叶子节点，它的grad_fn 为 None</p>
-<p>这就是计算图的存储，可想而知，其实计算的函数会更新这个 Tensor 的计算图，而 Tensor 的核心其实就是这个在 C++ 侧没被文档所写出来的计算图相关的成员变量，当你计算梯度的时候，正是查看了这个成员变量的信息，因而能够计算出梯度来，所以能计算梯度的也是 Tensor</p>
-<blockquote>
-<p>如果要我给 Tensor 下一个定义的话，那么我会说，<strong>Tensor 就是一个保存了历史计算方式的多维数组类，同时其有在 CPU 或其他来加速存储的能力</strong><br>其实在 GPU 上跑个人感觉完全不是一个核心的概念值得多言，难道计算机图形学里的 shaders 算的那些东西都是 Tensor 吗</p>
-</blockquote>
-<h2 id="鸣谢"><a href="#鸣谢" class="headerlink" title="鸣谢"></a>鸣谢</h2><p>这篇博客的另一位贡献者 Github@besthope-official ，一开始是他的探索才让我研究这个比较容易，这份博客也有他的一份力</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -966,27 +966,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_5_枚举与模式匹配</title>
     <url>/posts/28bcc6be.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
@@ -1019,6 +998,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>很合理对吧</p>
 <h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1294,6 +1294,37 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
     <title>从LFS构建中习得的交叉编译</title>
     <url>/posts/c858dee6.html</url>
     <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
@@ -1385,37 +1416,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -1473,6 +1473,41 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <url>/posts/604cfd1a.html</url>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初入Linux的一些感想</title>
+    <url>/posts/13c32592.html</url>
+    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
+<span id="more"></span>
+<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
+<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
+<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
+<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
+<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
+<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
+<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
+<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
+<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -1512,41 +1547,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于编译原理的一些哲学想法</title>
-    <url>/posts/604cfd1a.html</url>
-    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
-<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初入Linux的一些感想</title>
-    <url>/posts/13c32592.html</url>
-    <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
-<span id="more"></span>
-<h2 id="使用Linux的契机"><a href="#使用Linux的契机" class="headerlink" title="使用Linux的契机"></a>使用Linux的契机</h2><p>想我一开始使用Linux直接就是使用的虚拟机，而不是使用WSL，作为以C/C++为主要语言的我来说，我发现有太多太多的东西环境硬性要求Linux平台了，逐渐我发现单纯的Windows完全是不可能满足我的需求的。一些比赛和项目促使我使用了Ubuntu</p>
-<h2 id="尝试各种发行版"><a href="#尝试各种发行版" class="headerlink" title="尝试各种发行版"></a>尝试各种发行版</h2><p>我一开始借由做csapp的几个lab的契机，认识到了linux，并且一开始我使用的发行版也是Ubuntu，但是经过一段时间的使用，我发现Ubuntu是真的容易崩溃，而且让我不满的是，虽然是一个面向搜索引擎的系统，但是其实ubuntu的资料并不是那么的充足，基于lts的ubuntu能搜到的很多都是一些相当过时的资料，当它在搜索引擎里以一大堆和你所问的问题毫无关系的形态展现在你的面前的时候，你还兴高采烈的点进去查看，结果发现，要么版本不对应，要么怎么改镜像源apt install都没这个包，更何况互相抄来抄去的现状，简直太乱了有没有，对于当时需要“菜就多练”的我来说，其实反而就没有那么美好(当然对于现在的我来说，即使是ubuntu也不会像当初一样狼狈了(枯)，不管何时使用合适的搜索引擎，合适的网站查找信息都是相当重要的事情)</p>
-<p>后来我使用了Debian，作为Ubuntu的祖宗，Debian确实让我省心了不少，Debian的稳定版本如同其名，不过这种稳定完全基于它经过长期验证的软件源，或者换句话来说，它的软件也太老了一点，完全不能满足我的日常使用好不好，现在看来我还是属于激进的，而Debian更加适合用来当server跑服务</p>
-<p>后来我换到了ArchLinux，Arch的软件是我用过最丰富最便于获取的，pacman的包管理也是相当好用，除了有一次一不小心把它滚挂了，其他都是不错的体验</p>
-<p>就在这篇博客写的这两天(2024.2.10)，我正在构建Linux From Scratch，从中我学会了交叉编译，个人感觉整个过程还是挺有意思的，首先是搭建一个交叉编译的环境，这个过程需要我们以一种自举的方式去获得在目标机器上完整的gcc功能。然后一个一个包从源码编译，搭建起最基本的系统应用。chroot(change root directory)进系统之后，接着完成基本应用的搭建，直到最后通过配置内核选项进行内核裁剪，手动配置Grub2，整体的过程都让我学到了不少</p>
-<h2 id="经验的积累"><a href="#经验的积累" class="headerlink" title="经验的积累"></a>经验的积累</h2><p>就我个人而言，我至今为止使用linux的都在于我经验的积累，比如了解到各种各样的工具，arch wiki和周围的朋友们为我提供了许多的帮助。</p>
-<p>我觉得首先你得了解linux底下那些系统级的基础软件，像gcc，binutils两个与我主要研究的c/c++相关的自不必说，还要熟悉vim，nano等相关的文本编辑器，还有例如archlinux要学会自己打快照。</p>
-<p>没有社区环境等的帮助，了解这些相关的软件其实也是很缓慢的过程，作为从常年用Windows转到使用linux，本身就是跳出了舒适圈，要接受一定的考验</p>
-<h2 id="长期使用linux作为开发环境后"><a href="#长期使用linux作为开发环境后" class="headerlink" title="长期使用linux作为开发环境后"></a>长期使用linux作为开发环境后</h2><p>在包管理，cmake等的帮助下，c/c++的开发确实变得容易很多，而且linux api也更加容易调用，能搜到的资料也会变多，这都是开源带给我的。正式学习两年c++，也使过不少其他语言，我现在看来，对于真正要做什么的场景，也许把复杂性完整的展现出来更加有利于我们真正的习得有用的东西，而不是一味的逃避，一味的封装</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1668,6 +1668,31 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
+    <url>/posts/57f25e7f.html</url>
+    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
+<blockquote>
+<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
+<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
+<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
+<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，而且路由器一定要是 R1、R2…这样的命名(即默认命名)，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
+<blockquote>
+<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
+</blockquote>
+<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
+<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
+<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Computer_network</category>
+      </categories>
+  </entry>
+  <entry>
     <title>初识量子计算</title>
     <url>/posts/fe2da916.html</url>
     <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
@@ -1708,31 +1733,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
-    <url>/posts/57f25e7f.html</url>
-    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
-<blockquote>
-<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
-<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
-<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
-<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，而且路由器一定要是 R1、R2…这样的命名(即默认命名)，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
-<blockquote>
-<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
-</blockquote>
-<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
-<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
-<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Computer_network</category>
-      </categories>
-  </entry>
-  <entry>
     <title>含水滚筒的水平面</title>
     <url>/posts/6b2e6898.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
@@ -1740,36 +1740,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
 <script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
 <h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>圆盘摩擦力矩</title>
-    <url>/posts/8a033795.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
-<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
-<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
-<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
-<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
-<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
-<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
-<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
-<p>首先计算单个圆棒的</p>
-<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
-<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
-<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
-<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
-<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
-<blockquote>
-<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
-</blockquote>
-<p>小小思考，如是而已，愿君共勉。</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -1866,118 +1836,6 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>对书本中狄拉克函数的诠释</title>
-    <url>/posts/c4ebbeff.html</url>
-    <content><![CDATA[<h1 id="对书本中狄拉克函数的诠释"><a href="#对书本中狄拉克函数的诠释" class="headerlink" title="对书本中狄拉克函数的诠释"></a>对书本中狄拉克函数的诠释</h1><p>当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释</p>
-<span id="more"></span>
-<h2 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a>WARNING</h2><blockquote>
-<p>前排提示:本文只是记录记录某一些定理，方便我进行理解，但不作为严谨的推导，所以看看就行，不必当真<br>文章的定义摘抄自<strong>知乎@我烂了 专栏</strong>:<a href="https://www.zhihu.com/column/c_1462378232960466945">广义函数论与函数空间</a><br>只是摘抄了些定义用作笔记应该不会有什么问题吧QAQ</p>
-</blockquote>
-<h2 id="写这篇文档的原因"><a href="#写这篇文档的原因" class="headerlink" title="写这篇文档的原因"></a>写这篇文档的原因</h2><p>主要是在看《信号与系统分析》这本书的时候发现了一个奇怪的东西，即$\int_{0^-}^{0^+}$这个积分符号，我们可以理解它其实是</p>
-<script type="math/tex; mode=display">\lim_{a \to 0} \int_{a^-}^{a^+}</script><p>但我个人第一次看的时候觉得书中对线性系统的冲激响应求法说明不够正确(<strong>实质上还是挺对的</strong>)，于是就有了接下来的内容</p>
-<h2 id="广义函数的定义"><a href="#广义函数的定义" class="headerlink" title="广义函数的定义"></a>广义函数的定义</h2><p>$(\mathcal{D}^{\prime}(\Omega)$<strong>广义函数</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，$\mathcal{D}^{\prime}(\Omega)$广义函数是 指$\mathcal{D}(\Omega)$ 上的有界连续线性泛函所组成的集合。亦即对于任意$T\in\mathcal{D}^{\prime}(\Omega)$，$T:\mathcal{D}^{\prime}(\Omega)\to\mathbb{C}$是$\mathcal{D}(\Omega)$上的线性泛函，且满足下面的连续性条件:</p>
-<p>对任意$\{\varphi_\nu\}\subset\mathcal{D}(\Omega)$，$\varphi_\nu\to0\:(\mathcal{D}(\Omega))$，则成立$\lim_{\nu\to\infty}T[\varphi_\nu]=0$</p>
-<p>注意这里的$\mathcal{D}(\Omega)$定义如下<br>(<strong>紧支集的光滑函数空间</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，则$\mathcal{D}(\Omega)$定义如下</p>
-<script type="math/tex; mode=display">
-\mathcal{D}(\Omega)\stackrel{\text{def}}{=}\begin{Bmatrix}\varphi\in C^\infty(\Omega),\text{supp}\varphi\text{ 是紧集}\end{Bmatrix}</script><p>需要注意的是，$\mathbb{R}^n$不是紧致的，这意味着如果$\Omega$就是$\mathbb{R}^n$，那么函数在无穷远处都是0<br>而$\mathcal{D}^{\prime}(\Omega)$指的则是构建在其上的泛函空间</p>
-<h3 id="关于-Omega-subset-mathbb-R-n"><a href="#关于-Omega-subset-mathbb-R-n" class="headerlink" title="关于$\Omega\subset\mathbb{R}^n$"></a>关于$\Omega\subset\mathbb{R}^n$</h3><p>在这里$R^n$可以推广到任意<strong>光滑流形</strong>，这意味着闭集这种紧流形上的函数，在自己这个流形内讨论也可以把整个流形作为开集，也就符合了定义在闭区间上函数的定义，下面讨论的这些也就自然而然满足了闭集了</p>
-<h3 id="Dirac函数"><a href="#Dirac函数" class="headerlink" title="Dirac函数"></a>Dirac函数</h3><p>任意试验函数$\varphi(x)$与它在$x=0$上的函数值$\varphi(0)$对应的广义函数称为$\delta$函数，即$\delta$函数满足</p>
-<script type="math/tex; mode=display">
-\langle \delta,\varphi\rangle = \varphi(0),\varphi(x)\in\mathcal{D}(\Omega)</script><p>注意这里的$\Omega$，这说明了其实如果写成积分形式(看下文)， 积分上下限可以不是无穷</p>
-<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数乘以除上下限包围的区域以外为1都为0的常义函数(广义函数是有更加广泛的乘法定义的，这样说明没有问题)，再对$f(x)=1$进行内积，虽然在奇异点上不能使用，不过除了这种无法讨论的情况，对于大部分情况都成立</p>
-<h3 id="对于局部绝对可积函数"><a href="#对于局部绝对可积函数" class="headerlink" title="对于局部绝对可积函数"></a>对于局部绝对可积函数</h3><p>设$f(x)$是 $\mathbb{R}$上的局部绝对可积函数，即在任何有限区间$(a,b)$上积分$\int_{a}^{b}|f(x)|dx$均存在，则试验函数$\varphi(x)$与积分值 $\int_{-\infty}^{\infty}f(x)\varphi(x)dx$的对应是一个广义函数，即$f(x)$对应着一个广义函数</p>
-<script type="math/tex; mode=display">
-\langle f,\varphi\rangle = \int_{-\infty}^{\infty}f(x)\varphi(x)\mathrm{d}x</script><h2 id="广义函数的导数"><a href="#广义函数的导数" class="headerlink" title="广义函数的导数"></a>广义函数的导数</h2><p>(<strong>广义函数的导数</strong>)对 $T\in\mathcal{D}^{\prime}(\Omega)$，分布导数 $\frac{\partial T}{\partial x_k}\in\mathcal{D}’(\Omega)$ 定义为</p>
-<script type="math/tex; mode=display">
-\Big\langle\frac{\partial T}{\partial x_{k}},\varphi\Big\rangle\stackrel{\mathrm{def}}{=}-\Big\langle T,\frac{\partial\varphi}{\partial x_{k}}\Big\rangle,\quad\forall\:\varphi\in\mathcal{D}(\Omega).</script><p>由于广义导数的存在，使得含有广义函数的<strong>微分方程</strong>有了良好的定义，但也只是微分方程有定义，积分方程就不一定了</p>
-<blockquote>
-<p>显然，广义函数的导数和广义函数本身一般是不同的泛函</p>
-</blockquote>
-<h2 id="广义函数的乘法"><a href="#广义函数的乘法" class="headerlink" title="广义函数的乘法"></a>广义函数的乘法</h2><p>(<strong>广义函数的乘法</strong>)对$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，定义他俩的乘法$\psi f\in\mathcal{D}^{\prime}(\Omega)$为</p>
-<script type="math/tex; mode=display">
-\langle f\psi,\varphi\rangle=\langle\psi f,\varphi\rangle=\langle f,\psi\varphi\rangle,\quad(\forall\varphi\in\mathcal{D}(\Omega))</script><h3 id="定理-导数运算法则-乘法"><a href="#定理-导数运算法则-乘法" class="headerlink" title="定理_导数运算法则(乘法)"></a>定理_导数运算法则(乘法)</h3><p>广义函数满足导数的运算法则，即若$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，则</p>
-<script type="math/tex; mode=display">
-(\psi f)'=\psi'f+\psi f'</script><p><strong>proof.</strong><br>即证</p>
-<script type="math/tex; mode=display">
-\langle (\psi f)',\varphi\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>首先</p>
-<script type="math/tex; mode=display">
-\langle (\psi f)',\varphi\rangle=-\langle \psi f,\varphi'\rangle=-\langle f,\psi\varphi'\rangle=\langle f,-\psi\varphi'\rangle</script><p>然后</p>
-<script type="math/tex; mode=display">
-\begin{aligned}\langle\psi' f + \psi f',\varphi\rangle &= \langle f,\psi'\varphi\rangle + \langle f',\psi\varphi\rangle \\&=\langle f,\psi'\varphi\rangle - \langle f,(\psi\varphi)'\rangle \\& = \langle f,\psi'\varphi\rangle - \langle f,\psi'\varphi + \psi\varphi'\rangle \\& = \langle f,\psi'\varphi-\psi'\varphi-\psi\varphi'\rangle\\& = \langle f,-\psi\varphi'\rangle\end{aligned}</script><p>最后</p>
-<script type="math/tex; mode=display">
-\langle (\psi f)',\varphi\rangle=\langle f,-\psi\varphi'\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>得证，<strong>Q.E.D</strong></p>
-<h2 id="关于-delta-函数"><a href="#关于-delta-函数" class="headerlink" title="关于$\delta$函数"></a>关于$\delta$函数</h2><p><strong>e.g</strong>.考虑Heaviside函数</p>
-<script type="math/tex; mode=display">
-H(x)=\left\{\begin{array}{ll}1,&\text{若 }x>0,\\0,&\text{若 }x<0.\end{array}\right.</script><p>则 $\frac{\mathrm{d}H(x)}{\mathrm{d}x}=\delta.$</p>
-<p>证明，对任意$g\in\mathcal{D}(\Omega)$，成立</p>
-<script type="math/tex; mode=display">
-\Big\langle\frac{\mathrm{d}H}{\mathrm{d}x},\varphi\Big\rangle=-\Big\langle H,\frac{\mathrm{d}\varphi}{\mathrm{d}x}\Big\rangle=-\int_0^\infty\frac{\mathrm{d}\varphi(x)}{\mathrm{d}x}=\varphi(0)=\langle\delta,\varphi\rangle</script><p>证毕</p>
-<p>由上述式子可以从逻辑上得到$\delta$函数的积分结果，但实际上，$\delta$函数的积分是得从它的定义来的，<strong>而广义函数应该并不能定义实际上的积分</strong></p>
-<script type="math/tex; mode=display">
-\langle \delta,\varphi\rangle = \varphi(0)</script><p>历史原因，使得其可以写成</p>
-<script type="math/tex; mode=display">
-\langle \delta,\varphi\rangle = \int_{-\infty}^{\infty}\delta(x)\varphi(x)\mathrm{d}x = \int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x=\varphi(0)</script><p>那么取一个极限，也可以得到最开始的问题的解决方案</p>
-<script type="math/tex; mode=display">
-\begin{aligned}\langle \delta,\varphi\rangle &= \lim_{a\to\infty}\int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x\\&=\int_{0^-}^{0^+}\delta(x)\varphi(x)\mathrm{d}x\\&=\varphi(0)\end{aligned}</script><p>假设$\varphi(x) = 1$，则$\varphi\in\mathcal{D}(\Omega)$，那么我们就可以得到</p>
-<script type="math/tex; mode=display">
-\int_{-\infty}^{\infty}\delta(x)\mathrm{d}x =\int_{0^-}^{0^+}\delta(x)\mathrm{d}x= 1</script><p>其实事实上对于$\delta$函数来说，<strong>根本就没有定义黎曼积分或勒贝格积分</strong>，这只是一种写法而已，完全可以不用这种写法，转而使用严格的泛函的写法</p>
-<h2 id="关于-delta’-函数"><a href="#关于-delta’-函数" class="headerlink" title="关于$\delta’$函数"></a>关于$\delta’$函数</h2><p>根据上面的逻辑可以导出$\delta’$，即Dirac Delta函数的导函数，称为冲激偶函数</p>
-<p>冲激偶$\delta’$函数是<strong>奇函数</strong>，即$-\delta’(x)=\delta’(-x)$</p>
-<p>冲激偶函数是从正向逼近$0$为$-\infty$，从负向逼近$0$为$+\infty$的奇异函数，其定义的另一种形式如下</p>
-<script type="math/tex; mode=display">
-\int_{-\infty}^{\infty}f(x)\delta'(x-x_0)\mathrm{d}x = -f'(x_0)</script><p>如此也可以定义delta函数的任意n阶导函数</p>
-<script type="math/tex; mode=display">
-\int_{-\infty}^{\infty}f(x)\delta^{(n)}(x-x_0)\mathrm{d}x = (-1)^nf^{(n)}(x_0)</script><p>根据定义、冲激函数$f(x)\delta(x)=f(0)$的性质与上面有提到的导数运算法则(乘法)和可以得到如下等式</p>
-<script type="math/tex; mode=display">
-f(t)\delta'(t)=f(0)\delta'(t)-f'(0)\delta(t)</script><p>从而</p>
-<script type="math/tex; mode=display">
-x\delta'(x)=-\delta(x)\qquad x^2\delta''(x)=2\delta(x)</script><h2 id="求解线性系统的冲激响应"><a href="#求解线性系统的冲激响应" class="headerlink" title="求解线性系统的冲激响应"></a>求解线性系统的冲激响应</h2><script type="math/tex; mode=display">
-a_{n}h^{(n)}(t)+a_{n-1}h^{(n-1)}(t)+\cdots+a_{1}h^{\prime}(t)+a_{0}h(t)=\delta(t)</script><p>对于这个方程，我们观察到，从逻辑上讲，解得的$h(t)$一定是一个<strong>常义函数</strong>，根据冲激函数的物理意义是一个瞬间的无穷大信号而言，我也可以推得在小于0的时候信号一定为0，而在大于0的时候才是我们真正需要考量的函数，因此最终在<strong>物理意义的辅助</strong>下我们得到了微分方程解的形式，拆解为$h(x)=f(x)u(x)$(这里的$u(x)$就是上面说的<strong>Heaviside函数</strong>)，而因为$h(x)$在大于0上是连续可导的函数(在大于0的部分微分方程的基本要求，这是这里的特殊要求，原因是防止产生冲激偶，也正是因为这样，在这里$0^-$和$0$没啥区别)，那么在小于0的部分也可以延拓出一个连续的$f(x)$，所以$f(x)$是连续可导的</p>
-<p>求解微分方程可以先把这个形式代入进去看看，我们来看看对$h(x)$求多次导的结果(用上面的那些公式就都可以计算出来了)</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-h(x)=f(x)u(x)\\\\
-h'(x)=f'(x)u(x)+f(0)\delta(x)\\\\
-h''(x)=f''(x)u(x)+f'(0)\delta(x)+f(0)\delta'(x)\\\\
-h'''(x)=f'''(x)u(x)+f(0)''\delta(x)+f'(0)\delta'(x)+f(0)\delta''(x)\\\\
-\cdots\cdots\cdots\cdots
-\end{cases}</script><p>可以看到，对于上面这些式子乘以原本式子里$a_k$累加的结果，如下</p>
-<script type="math/tex; mode=display">
-\sum_{k=0}^{n} a_kh^{(k)}(x)=(\sum_{k=0}^{n}a_kf^{(k)}(x))u(x)+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)+\\(\sum_{k=0}^{n-2}a_{(k+2)}f^{(k)}(0))\delta'(x)+\cdots+a_nf(0)\delta^{(n-1)}(x)</script><p>好了，我们观察一下这个式子，这个就<strong>是微分方程等式的左端</strong>，而等式右端只是单独的一个$\delta(x)$，所以这个式子<strong>从第三项开始全是0</strong>，即第三项开始到最后那些大和式都是0<br>知道了这点，我们直接去看最后一项，这里只有一项 $a_nf(0)$，想要它为0，即$f(0)=0$，然后再看最后第二项$a_{(n-1)}f(0)+a_nf’(0)$，因为从后一项推得$f(0)=0$，要想$a_{(n-1)}f(0)+a_nf’(0)=0$，只需要$f’(0)=0$。同理再看前一项得到$f’’(x)=0$，<strong>以此类推</strong>，便得到了</p>
-<script type="math/tex; mode=display">f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0</script><p>然后我们看第二项，和原微分方程等式右端组成式子如下</p>
-<script type="math/tex; mode=display">
-(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)=\delta(x)</script><p>由上面推导的等于0的等式就可以化简得</p>
-<script type="math/tex; mode=display">
-f^{(n-1)}(0)=\frac{1}{a_n}</script><p>剩下的第一个项也应该为0</p>
-<script type="math/tex; mode=display">
-\sum_{k=0}^{n}a_kf^{(k)}=0</script><p>综合起来就得到了和这个微分方程通解的式子，即</p>
-<script type="math/tex; mode=display">
-\begin{cases}
-h(x)=f(x)u(x)\\\\
-f^{(n)}(0)+f^{(n-1)}(0)+\cdots+f'(x)+f(x)=0\\\\
-f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0\\\\
-f^{(n-1)}(0)=\frac{1}{a_n}
-\end{cases}</script><p>核心的等价的微分方程就是上面这个方程组的第二式，是一个<strong>高阶齐次线性微分方程</strong>，第三、四式是第二式的边界条件，由这三个式子可以唯一确定一个$f(x)$，进而唯一确定一个$h(x)$，从而求得我们所要的冲激响应</p>
-<h2 id="另一种解释方法"><a href="#另一种解释方法" class="headerlink" title="另一种解释方法"></a>另一种解释方法</h2><p>关于Dirac函数本身，其具有的积分性质仍然是难以表达的，我们可以使用另一种方法去说明函数，即将极限解释成弱极限的方法</p>
-<p>首先对于$\mathscr{D}’(\Omega)$来说，可以将广义函数的微商完全使用弱极限去书写<br>其中$h_i$为向量的第$i$个分量</p>
-<script type="math/tex; mode=display">
-\lim_{h_i\to0}\frac{f(x+h)-f(x)}{h_i} = \frac{\partial f}{\partial x_i}</script><p>围绕Dirac函数的积分的一切内容其实都是未定义的行为，上面已有的东西解释清楚了除了积分以外的东西，而积分我们可以给它补充定义，就像工科书中说的那样，但是光有定义不能保证其与原本积分的相容性，定义本身应该满足原有的积分性质</p>
-<p>其实Dirac函数也有其它的定义，例如它是由函数列求极限得来(事实上，对于$f\in\mathscr{D}’(\Omega)$，其一定可以找到某种函数列$f_i\in C^\infty$弱收敛逼近的)，只要把原先的极限承认为弱极限。</p>
-<script type="math/tex; mode=display">
-f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，就定义为先算序列的积分再进行弱极限，即</p>
-<script type="math/tex; mode=display">
-\int_a^b f(x)dx=\int_a^b \lim_{i\to 0}f_i(x)dx:=\lim_{i\to 0}\int_a^b f_i(x)dx</script><p>这种记法天生支持原先积分的所有性质，因为极限随时可以先算，我完全可以把函数列当成逼近后的结果，反正随时都可以先算极限</p>
-<p>而对于傅里叶变换这种积分变换当中也存在一个极限，是对于广义积分的上下限而言的，如果那个求极限也认为是弱极限的话，也可以得到算出来是广义函数的结果</p>
-<blockquote>
-<p>虽然弱极限很有用，但是普遍定义下的积分肯定是不存在的，对于课程而言，最根本的还是求解微分方程和本身被特化了的积分变换，我们要做的就是用泛函的语言去得到相同的结果罢了，而不应该注意它是否应该和原本的常规函数性质相同，这没有意义，因为我们并不能创造什么定义<br>事实上对冲激函数及其导数进行积分根本就不会在实际工程中遇到，特别赋予它含义只是工程感性说明的过程罢了，更多的讨论还是集中在$L^2$空间上<br>如果需要更加明确的定义，可以考虑将distribution视作被包含的特例的hyperfunction</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -2131,32 +1989,115 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>数学实验综合练习</title>
-    <url>/posts/93a8bfd0.html</url>
-    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
-<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
+    <title>对书本中狄拉克函数的诠释</title>
+    <url>/posts/c4ebbeff.html</url>
+    <content><![CDATA[<h1 id="对书本中狄拉克函数的诠释"><a href="#对书本中狄拉克函数的诠释" class="headerlink" title="对书本中狄拉克函数的诠释"></a>对书本中狄拉克函数的诠释</h1><p>当我第一次看见冲激函数的时候，我整个人是震惊的，你管这玩意叫函数，吃设定呢吧，但鉴于它的实际用处，只能对它进行一定的解释</p>
 <span id="more"></span>
-<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
-<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
-<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
+<h2 id="WARNING"><a href="#WARNING" class="headerlink" title="WARNING"></a>WARNING</h2><blockquote>
+<p>前排提示:本文只是记录记录某一些定理，方便我进行理解，但不作为严谨的推导，所以看看就行，不必当真<br>文章的定义摘抄自<strong>知乎@我烂了 专栏</strong>:<a href="https://www.zhihu.com/column/c_1462378232960466945">广义函数论与函数空间</a><br>只是摘抄了些定义用作笔记应该不会有什么问题吧QAQ</p>
+</blockquote>
+<h2 id="写这篇文档的原因"><a href="#写这篇文档的原因" class="headerlink" title="写这篇文档的原因"></a>写这篇文档的原因</h2><p>主要是在看《信号与系统分析》这本书的时候发现了一个奇怪的东西，即$\int_{0^-}^{0^+}$这个积分符号，我们可以理解它其实是</p>
+<script type="math/tex; mode=display">\lim_{a \to 0} \int_{a^-}^{a^+}</script><p>但我个人第一次看的时候觉得书中对线性系统的冲激响应求法说明不够正确(<strong>实质上还是挺对的</strong>)，于是就有了接下来的内容</p>
+<h2 id="广义函数的定义"><a href="#广义函数的定义" class="headerlink" title="广义函数的定义"></a>广义函数的定义</h2><p>$(\mathcal{D}^{\prime}(\Omega)$<strong>广义函数</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，$\mathcal{D}^{\prime}(\Omega)$广义函数是 指$\mathcal{D}(\Omega)$ 上的有界连续线性泛函所组成的集合。亦即对于任意$T\in\mathcal{D}^{\prime}(\Omega)$，$T:\mathcal{D}^{\prime}(\Omega)\to\mathbb{C}$是$\mathcal{D}(\Omega)$上的线性泛函，且满足下面的连续性条件:</p>
+<p>对任意$\{\varphi_\nu\}\subset\mathcal{D}(\Omega)$，$\varphi_\nu\to0\:(\mathcal{D}(\Omega))$，则成立$\lim_{\nu\to\infty}T[\varphi_\nu]=0$</p>
+<p>注意这里的$\mathcal{D}(\Omega)$定义如下<br>(<strong>紧支集的光滑函数空间</strong>)若$\Omega\subset\mathbb{R}^n$为一个非空开集，则$\mathcal{D}(\Omega)$定义如下</p>
 <script type="math/tex; mode=display">
-N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>后半部分为logist模型<br>模型公式如下</p>
+\mathcal{D}(\Omega)\stackrel{\text{def}}{=}\begin{Bmatrix}\varphi\in C^\infty(\Omega),\text{supp}\varphi\text{ 是紧集}\end{Bmatrix}</script><p>需要注意的是，$\mathbb{R}^n$不是紧致的，这意味着如果$\Omega$就是$\mathbb{R}^n$，那么函数在无穷远处都是0<br>而$\mathcal{D}^{\prime}(\Omega)$指的则是构建在其上的泛函空间</p>
+<h3 id="关于-Omega-subset-mathbb-R-n"><a href="#关于-Omega-subset-mathbb-R-n" class="headerlink" title="关于$\Omega\subset\mathbb{R}^n$"></a>关于$\Omega\subset\mathbb{R}^n$</h3><p>在这里$R^n$可以推广到任意<strong>光滑流形</strong>，这意味着闭集这种紧流形上的函数，在自己这个流形内讨论也可以把整个流形作为开集，也就符合了定义在闭区间上函数的定义，下面讨论的这些也就自然而然满足了闭集了</p>
+<h3 id="Dirac函数"><a href="#Dirac函数" class="headerlink" title="Dirac函数"></a>Dirac函数</h3><p>任意试验函数$\varphi(x)$与它在$x=0$上的函数值$\varphi(0)$对应的广义函数称为$\delta$函数，即$\delta$函数满足</p>
 <script type="math/tex; mode=display">
-N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
+\langle \delta,\varphi\rangle = \varphi(0),\varphi(x)\in\mathcal{D}(\Omega)</script><p>注意这里的$\Omega$，这说明了其实如果写成积分形式(看下文)， 积分上下限可以不是无穷</p>
+<p>考虑到书中有对Dirac的定积分，我理解为Dirac函数乘以除上下限包围的区域以外为1都为0的常义函数(广义函数是有更加广泛的乘法定义的，这样说明没有问题)，再对$f(x)=1$进行内积，虽然在奇异点上不能使用，不过除了这种无法讨论的情况，对于大部分情况都成立</p>
+<h3 id="对于局部绝对可积函数"><a href="#对于局部绝对可积函数" class="headerlink" title="对于局部绝对可积函数"></a>对于局部绝对可积函数</h3><p>设$f(x)$是 $\mathbb{R}$上的局部绝对可积函数，即在任何有限区间$(a,b)$上积分$\int_{a}^{b}|f(x)|dx$均存在，则试验函数$\varphi(x)$与积分值 $\int_{-\infty}^{\infty}f(x)\varphi(x)dx$的对应是一个广义函数，即$f(x)$对应着一个广义函数</p>
 <script type="math/tex; mode=display">
-A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
+\langle f,\varphi\rangle = \int_{-\infty}^{\infty}f(x)\varphi(x)\mathrm{d}x</script><h2 id="广义函数的导数"><a href="#广义函数的导数" class="headerlink" title="广义函数的导数"></a>广义函数的导数</h2><p>(<strong>广义函数的导数</strong>)对 $T\in\mathcal{D}^{\prime}(\Omega)$，分布导数 $\frac{\partial T}{\partial x_k}\in\mathcal{D}’(\Omega)$ 定义为</p>
 <script type="math/tex; mode=display">
-A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
-<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
-<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
+\Big\langle\frac{\partial T}{\partial x_{k}},\varphi\Big\rangle\stackrel{\mathrm{def}}{=}-\Big\langle T,\frac{\partial\varphi}{\partial x_{k}}\Big\rangle,\quad\forall\:\varphi\in\mathcal{D}(\Omega).</script><p>由于广义导数的存在，使得含有广义函数的<strong>微分方程</strong>有了良好的定义，但也只是微分方程有定义，积分方程就不一定了</p>
+<blockquote>
+<p>显然，广义函数的导数和广义函数本身一般是不同的泛函</p>
+</blockquote>
+<h2 id="广义函数的乘法"><a href="#广义函数的乘法" class="headerlink" title="广义函数的乘法"></a>广义函数的乘法</h2><p>(<strong>广义函数的乘法</strong>)对$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，定义他俩的乘法$\psi f\in\mathcal{D}^{\prime}(\Omega)$为</p>
+<script type="math/tex; mode=display">
+\langle f\psi,\varphi\rangle=\langle\psi f,\varphi\rangle=\langle f,\psi\varphi\rangle,\quad(\forall\varphi\in\mathcal{D}(\Omega))</script><h3 id="定理-导数运算法则-乘法"><a href="#定理-导数运算法则-乘法" class="headerlink" title="定理_导数运算法则(乘法)"></a>定理_导数运算法则(乘法)</h3><p>广义函数满足导数的运算法则，即若$\psi\in C^{\infty}(\Omega)$，$f\in\mathcal{D}^{\prime}(\Omega)$，则</p>
+<script type="math/tex; mode=display">
+(\psi f)'=\psi'f+\psi f'</script><p><strong>proof.</strong><br>即证</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>首先</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=-\langle \psi f,\varphi'\rangle=-\langle f,\psi\varphi'\rangle=\langle f,-\psi\varphi'\rangle</script><p>然后</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\langle\psi' f + \psi f',\varphi\rangle &= \langle f,\psi'\varphi\rangle + \langle f',\psi\varphi\rangle \\&=\langle f,\psi'\varphi\rangle - \langle f,(\psi\varphi)'\rangle \\& = \langle f,\psi'\varphi\rangle - \langle f,\psi'\varphi + \psi\varphi'\rangle \\& = \langle f,\psi'\varphi-\psi'\varphi-\psi\varphi'\rangle\\& = \langle f,-\psi\varphi'\rangle\end{aligned}</script><p>最后</p>
+<script type="math/tex; mode=display">
+\langle (\psi f)',\varphi\rangle=\langle f,-\psi\varphi'\rangle=\langle\psi' f + \psi f',\varphi\rangle</script><p>得证，<strong>Q.E.D</strong></p>
+<h2 id="关于-delta-函数"><a href="#关于-delta-函数" class="headerlink" title="关于$\delta$函数"></a>关于$\delta$函数</h2><p><strong>e.g</strong>.考虑Heaviside函数</p>
+<script type="math/tex; mode=display">
+H(x)=\left\{\begin{array}{ll}1,&\text{若 }x>0,\\0,&\text{若 }x<0.\end{array}\right.</script><p>则 $\frac{\mathrm{d}H(x)}{\mathrm{d}x}=\delta.$</p>
+<p>证明，对任意$g\in\mathcal{D}(\Omega)$，成立</p>
+<script type="math/tex; mode=display">
+\Big\langle\frac{\mathrm{d}H}{\mathrm{d}x},\varphi\Big\rangle=-\Big\langle H,\frac{\mathrm{d}\varphi}{\mathrm{d}x}\Big\rangle=-\int_0^\infty\frac{\mathrm{d}\varphi(x)}{\mathrm{d}x}=\varphi(0)=\langle\delta,\varphi\rangle</script><p>证毕</p>
+<p>由上述式子可以从逻辑上得到$\delta$函数的积分结果，但实际上，$\delta$函数的积分是得从它的定义来的，<strong>而广义函数应该并不能定义实际上的积分</strong></p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \varphi(0)</script><p>历史原因，使得其可以写成</p>
+<script type="math/tex; mode=display">
+\langle \delta,\varphi\rangle = \int_{-\infty}^{\infty}\delta(x)\varphi(x)\mathrm{d}x = \int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x=\varphi(0)</script><p>那么取一个极限，也可以得到最开始的问题的解决方案</p>
+<script type="math/tex; mode=display">
+\begin{aligned}\langle \delta,\varphi\rangle &= \lim_{a\to\infty}\int_{-a}^{a}\delta(x)\varphi(x)\mathrm{d}x\\&=\int_{0^-}^{0^+}\delta(x)\varphi(x)\mathrm{d}x\\&=\varphi(0)\end{aligned}</script><p>假设$\varphi(x) = 1$，则$\varphi\in\mathcal{D}(\Omega)$，那么我们就可以得到</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}\delta(x)\mathrm{d}x =\int_{0^-}^{0^+}\delta(x)\mathrm{d}x= 1</script><p>其实事实上对于$\delta$函数来说，<strong>根本就没有定义黎曼积分或勒贝格积分</strong>，这只是一种写法而已，完全可以不用这种写法，转而使用严格的泛函的写法</p>
+<h2 id="关于-delta’-函数"><a href="#关于-delta’-函数" class="headerlink" title="关于$\delta’$函数"></a>关于$\delta’$函数</h2><p>根据上面的逻辑可以导出$\delta’$，即Dirac Delta函数的导函数，称为冲激偶函数</p>
+<p>冲激偶$\delta’$函数是<strong>奇函数</strong>，即$-\delta’(x)=\delta’(-x)$</p>
+<p>冲激偶函数是从正向逼近$0$为$-\infty$，从负向逼近$0$为$+\infty$的奇异函数，其定义的另一种形式如下</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}f(x)\delta'(x-x_0)\mathrm{d}x = -f'(x_0)</script><p>如此也可以定义delta函数的任意n阶导函数</p>
+<script type="math/tex; mode=display">
+\int_{-\infty}^{\infty}f(x)\delta^{(n)}(x-x_0)\mathrm{d}x = (-1)^nf^{(n)}(x_0)</script><p>根据定义、冲激函数$f(x)\delta(x)=f(0)$的性质与上面有提到的导数运算法则(乘法)和可以得到如下等式</p>
+<script type="math/tex; mode=display">
+f(t)\delta'(t)=f(0)\delta'(t)-f'(0)\delta(t)</script><p>从而</p>
+<script type="math/tex; mode=display">
+x\delta'(x)=-\delta(x)\qquad x^2\delta''(x)=2\delta(x)</script><h2 id="求解线性系统的冲激响应"><a href="#求解线性系统的冲激响应" class="headerlink" title="求解线性系统的冲激响应"></a>求解线性系统的冲激响应</h2><script type="math/tex; mode=display">
+a_{n}h^{(n)}(t)+a_{n-1}h^{(n-1)}(t)+\cdots+a_{1}h^{\prime}(t)+a_{0}h(t)=\delta(t)</script><p>对于这个方程，我们观察到，从逻辑上讲，解得的$h(t)$一定是一个<strong>常义函数</strong>，根据冲激函数的物理意义是一个瞬间的无穷大信号而言，我也可以推得在小于0的时候信号一定为0，而在大于0的时候才是我们真正需要考量的函数，因此最终在<strong>物理意义的辅助</strong>下我们得到了微分方程解的形式，拆解为$h(x)=f(x)u(x)$(这里的$u(x)$就是上面说的<strong>Heaviside函数</strong>)，而因为$h(x)$在大于0上是连续可导的函数(在大于0的部分微分方程的基本要求，这是这里的特殊要求，原因是防止产生冲激偶，也正是因为这样，在这里$0^-$和$0$没啥区别)，那么在小于0的部分也可以延拓出一个连续的$f(x)$，所以$f(x)$是连续可导的</p>
+<p>求解微分方程可以先把这个形式代入进去看看，我们来看看对$h(x)$求多次导的结果(用上面的那些公式就都可以计算出来了)</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+h(x)=f(x)u(x)\\\\
+h'(x)=f'(x)u(x)+f(0)\delta(x)\\\\
+h''(x)=f''(x)u(x)+f'(0)\delta(x)+f(0)\delta'(x)\\\\
+h'''(x)=f'''(x)u(x)+f(0)''\delta(x)+f'(0)\delta'(x)+f(0)\delta''(x)\\\\
+\cdots\cdots\cdots\cdots
+\end{cases}</script><p>可以看到，对于上面这些式子乘以原本式子里$a_k$累加的结果，如下</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^{n} a_kh^{(k)}(x)=(\sum_{k=0}^{n}a_kf^{(k)}(x))u(x)+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)+\\(\sum_{k=0}^{n-2}a_{(k+2)}f^{(k)}(0))\delta'(x)+\cdots+a_nf(0)\delta^{(n-1)}(x)</script><p>好了，我们观察一下这个式子，这个就<strong>是微分方程等式的左端</strong>，而等式右端只是单独的一个$\delta(x)$，所以这个式子<strong>从第三项开始全是0</strong>，即第三项开始到最后那些大和式都是0<br>知道了这点，我们直接去看最后一项，这里只有一项 $a_nf(0)$，想要它为0，即$f(0)=0$，然后再看最后第二项$a_{(n-1)}f(0)+a_nf’(0)$，因为从后一项推得$f(0)=0$，要想$a_{(n-1)}f(0)+a_nf’(0)=0$，只需要$f’(0)=0$。同理再看前一项得到$f’’(x)=0$，<strong>以此类推</strong>，便得到了</p>
+<script type="math/tex; mode=display">f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0</script><p>然后我们看第二项，和原微分方程等式右端组成式子如下</p>
+<script type="math/tex; mode=display">
+(\sum_{k=0}^{n-1}a_{(k+1)}f^{(k)}(0))\delta(x)=\delta(x)</script><p>由上面推导的等于0的等式就可以化简得</p>
+<script type="math/tex; mode=display">
+f^{(n-1)}(0)=\frac{1}{a_n}</script><p>剩下的第一个项也应该为0</p>
+<script type="math/tex; mode=display">
+\sum_{k=0}^{n}a_kf^{(k)}=0</script><p>综合起来就得到了和这个微分方程通解的式子，即</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+h(x)=f(x)u(x)\\\\
+f^{(n)}(0)+f^{(n-1)}(0)+\cdots+f'(x)+f(x)=0\\\\
+f^{(n-2)}(0)=f^{(n-3)}(0)=\cdots=f'(x)=f(x)=0\\\\
+f^{(n-1)}(0)=\frac{1}{a_n}
+\end{cases}</script><p>核心的等价的微分方程就是上面这个方程组的第二式，是一个<strong>高阶齐次线性微分方程</strong>，第三、四式是第二式的边界条件，由这三个式子可以唯一确定一个$f(x)$，进而唯一确定一个$h(x)$，从而求得我们所要的冲激响应</p>
+<h2 id="另一种解释方法"><a href="#另一种解释方法" class="headerlink" title="另一种解释方法"></a>另一种解释方法</h2><p>关于Dirac函数本身，其具有的积分性质仍然是难以表达的，我们可以使用另一种方法去说明函数，即将极限解释成弱极限的方法</p>
+<p>首先对于$\mathscr{D}’(\Omega)$来说，可以将广义函数的微商完全使用弱极限去书写<br>其中$h_i$为向量的第$i$个分量</p>
+<script type="math/tex; mode=display">
+\lim_{h_i\to0}\frac{f(x+h)-f(x)}{h_i} = \frac{\partial f}{\partial x_i}</script><p>围绕Dirac函数的积分的一切内容其实都是未定义的行为，上面已有的东西解释清楚了除了积分以外的东西，而积分我们可以给它补充定义，就像工科书中说的那样，但是光有定义不能保证其与原本积分的相容性，定义本身应该满足原有的积分性质</p>
+<p>其实Dirac函数也有其它的定义，例如它是由函数列求极限得来(事实上，对于$f\in\mathscr{D}’(\Omega)$，其一定可以找到某种函数列$f_i\in C^\infty$弱收敛逼近的)，只要把原先的极限承认为弱极限。</p>
+<script type="math/tex; mode=display">
+f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，就定义为先算序列的积分再进行弱极限，即</p>
+<script type="math/tex; mode=display">
+\int_a^b f(x)dx=\int_a^b \lim_{i\to 0}f_i(x)dx:=\lim_{i\to 0}\int_a^b f_i(x)dx</script><p>这种记法天生支持原先积分的所有性质，因为极限随时可以先算，我完全可以把函数列当成逼近后的结果，反正随时都可以先算极限</p>
+<p>而对于傅里叶变换这种积分变换当中也存在一个极限，是对于广义积分的上下限而言的，如果那个求极限也认为是弱极限的话，也可以得到算出来是广义函数的结果</p>
+<blockquote>
+<p>虽然弱极限很有用，但是普遍定义下的积分肯定是不存在的，对于课程而言，最根本的还是求解微分方程和本身被特化了的积分变换，我们要做的就是用泛函的语言去得到相同的结果罢了，而不应该注意它是否应该和原本的常规函数性质相同，这没有意义，因为我们并不能创造什么定义<br>事实上对冲激函数及其导数进行积分根本就不会在实际工程中遇到，特别赋予它含义只是工程感性说明的过程罢了，更多的讨论还是集中在$L^2$空间上<br>如果需要更加明确的定义，可以考虑将distribution视作被包含的特例的hyperfunction</p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>Mathematic</category>
-        <category>Math_modeling</category>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -2226,6 +2167,77 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>数学实验综合练习</title>
+    <url>/posts/93a8bfd0.html</url>
+    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
+<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
+<span id="more"></span>
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
+<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
+<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>后半部分为logist模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
+<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>圆盘摩擦力矩</title>
+    <url>/posts/8a033795.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
+<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
+<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
+<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
+<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
+<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
+<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
+<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
+<p>首先计算单个圆棒的</p>
+<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
+<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
+<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
+<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
+<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
+<blockquote>
+<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
+</blockquote>
+<p>小小思考，如是而已，愿君共勉。</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_2</title>
+    <url>/posts/f52d6913.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
+<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>日常碎碎念_1</title>
     <url>/posts/6b49fcb0.html</url>
     <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
@@ -2241,18 +2253,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
 <li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
 </ul>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_2</title>
-    <url>/posts/f52d6913.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
-<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2489,14 +2489,14 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>记录一下此时此刻事件循环的状态(省略无关项，同时<strong>列表的内容是伪代码</strong>，下同)：</p>
 <ul>
 <li>任务列表：<code>fetch_data_and_process.poll()</code></li>
-<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
 </ul>
 <p>接着等待事件循环调度，直到调用 poll 推动<code>fetch_data_and_process</code> 的状态机，运行下来就到了 <code>let data1 = fetch_url(url1).await?;</code> 这一行了，也是同理，做这四件事情</p>
 <p><img src="/images/深入异步通用概念_图4.png" width="100%" height="100%"></p>
 <p>事件循环的状态：</p>
 <ul>
 <li>任务列表：<code>fetch_url.poll()</code></li>
-<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>, <code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
 </ul>
 <p>我们假定 <code>fetch_url</code> 要直接做一个获取资源的基础 API，那么它和上述的 await 实际上理应是有差别的，因为它不能再把任务推给别人了自己只是等待了，必须自己处理，所以这个异步函数的函数体里只会干两件事</p>
 <ol>
@@ -2507,7 +2507,7 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>此时此刻事件循环的状态：</p>
 <ul>
 <li>任务列表：空</li>
-<li>注册的事件：<code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>, <code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>, <code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>,<br><code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
 </ul>
 <p>好了，接下来任务简单了，等待回调，<code>Event&lt;API_getUrl.finish()&gt;</code> 发生时，<code>fetch_url</code> 会被推动到结束，在结尾的时候，也会挂起自己这个状态机，运行过程回到调度器里，从而从这棵树上脱落。在此之前释放一个 <code>Event&lt;fetch_url.finish()&gt;</code> 的事件信息，告诉事件循环 <code>fetch_data_and_process.poll()</code> 该被放进队列里运行了。</p>
 <p><img src="/images/深入异步通用概念_图6.png" width="100%" height="100%"></p>
