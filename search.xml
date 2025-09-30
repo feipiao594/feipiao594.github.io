@@ -356,6 +356,18 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -391,18 +403,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <url>/posts/a39b2865.html</url>
-    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -447,97 +447,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_1</title>
-    <url>/posts/6c7f2ed0.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
-<span id="more"></span>
-<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
-<ul>
-<li><code>:</code>表示一整行</li>
-<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
-<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
-<li><code>-1</code>表示最后一个元素</li>
-</ul>
-<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
-<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
-<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
-<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
-<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
-<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
-<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
-<script type="math/tex; mode=display">
-L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
-<script type="math/tex; mode=display">
-\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
-<blockquote>
-<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
-</blockquote>
-<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
-<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
-<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_2</title>
-    <url>/posts/f5767f6a.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
-<span id="more"></span>
-<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
-<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
-<li>矢量化使数学表达上更简洁，同时运行的更快</li>
-<li>最小化目标函数和执行极大似然估计等价</li>
-<li>线性回归模型也是一个简单的神经网络</li>
-</ul>
-<h2 id="线性回归的从零开始实现"><a href="#线性回归的从零开始实现" class="headerlink" title="线性回归的从零开始实现"></a>线性回归的从零开始实现</h2><p>先把包引入一下<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure><br>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大</p>
-<p>首先为了简单起见，我们用带有噪声的线性模型手动构造一个人造数据集。首先生成一个包含1000个样本的数据集，每个样本包含从标准正态分布<br>我们使用线性模型参数$\mathbf{w}=[2,-3.4]^T$、$b=4.2$和噪声项$\epsilon$生成数据集及其标签：</p>
-<script type="math/tex; mode=display">
-\mathbf{y}=\mathbf{Xw}+b+\epsilon</script><p>$\epsilon$可以被视作模型预测和标签时的潜在观测误差。在这里我们认为标准假设成立，即$\epsilon$服从均值为0的正态分布。为了简化问题，我们将标准差设为0.01.下面的代码生成数据集</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, num_examples</span>): <span class="comment">#@save</span></span><br><span class="line"><span class="comment"># 生成y=Xw+b噪声</span></span><br><span class="line">  X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(w)))</span><br><span class="line">  y = torch.matmul(X, w) + b</span><br><span class="line">  y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">  <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -649,16 +558,89 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Pytorch学习_4</title>
-    <url>/posts/1c15da5f.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-4"><a href="#Pytorch学习-4" class="headerlink" title="Pytorch学习_4"></a>Pytorch学习_4</h1><p>在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装</p>
+    <title>Pytorch学习_1</title>
+    <url>/posts/6c7f2ed0.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
 <span id="more"></span>
-<h2 id="相关的概念"><a href="#相关的概念" class="headerlink" title="相关的概念"></a>相关的概念</h2><p><code>nn.Parameter</code>，<code>nn.forward</code>，<code>nn.Module</code><br>我一开始学的时候觉得这些东西好复杂，一点都没有章法，我自己学习的时候时常会想，如果使用 Rust 里的 Trait 概念或者 Haskell 的 TypeClass 是不是能把它描述的更清楚一些，但是初学者友好的文档并不会告诉我这些。<br>在看完 Pytorch 的官方文档后我终于看明白了<br>关于看完 Pytorch 官方文档后一个上午写出来的一个手写数字识别 HelloWorld ：<a href="https://github.com/feipiao594/mnist_numrecg">https://github.com/feipiao594/mnist_numrecg</a></p>
-<h2 id="nn-Module"><a href="#nn-Module" class="headerlink" title="nn.Module"></a><code>nn.Module</code></h2><p>这是一个对 Tensor 的封装与管理函数，你需要实现的函数有两个 <code>__init__</code> 与 <code>forward</code> 函数，继承自 <code>nn.Module</code> 的层或者网络，有一个内秉的 parameter 集合，在 <code>__init__</code> 里面使用 <code>nn.Parameter</code> 就会把这个变量的引用交给这个 parameter 集合，如果你使用 <code>nn.Linear()</code> 里面也有 <code>nn.Parameter</code> 也会自动注册进去，这个函数就是起到这样的一个作用，同时因为他指定的是要被学习的参数，所以他也会把你输入进去的 Tensor 的 <code>require_grad</code> 变成 false。<br><code>forward</code> 函数就是数值前向传播，就把在 <code>__init__</code> 定义的计算方法拿出来对输入的值运算一下 </p>
-<h2 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h2><p>举个例子<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure><br><code>model.parameters()</code> 就是我们刚刚说到的 <code>nn.Module</code> 的子类有一个内秉的 parameter 集合，你可以通过这个方法传给优化器进行注册</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> batch, (X, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">        <span class="comment"># Compute prediction and loss</span></span><br><span class="line">        X, y = X.to(device), y.to(device)</span><br><span class="line">        pred = model(X)</span><br><span class="line">        loss = loss_fn(pred, y)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Backpropagation</span></span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
-<p>具体使用时格式非常固定，loss 函数计算误差最后输出的就还是一个 Tensor ，其实里面还是保留计算图的，<code>loss.backward()</code> 就是用 Tensor 的 backward 把所有要学习的参数的梯度算出来并且存储在那些参数的成员变量里(毕竟参数也是 Tensor 嘛，它有 grad 成员变量作为他的梯度值很正常)，接着调用 <code>optimizer.step()</code> 来读取注册的这些变量的 grad 并执行优化，所以优化器和网络就完全解离，其实核心仍然在 Tensor 的梯度运算上</p>
-<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>听说 pytorch 已经很少有人像这样写网络了，大家都用 lightning ，后面有空我也会尝试一下的</p>
+<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
+<ul>
+<li><code>:</code>表示一整行</li>
+<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
+<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
+<li><code>-1</code>表示最后一个元素</li>
+</ul>
+<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
+<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
+<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
+<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
+<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
+<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
+<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
+<script type="math/tex; mode=display">
+l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
+<script type="math/tex; mode=display">
+L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
+<script type="math/tex; mode=display">
+\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
+<blockquote>
+<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
+</blockquote>
+<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
+<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
+<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_2</title>
+    <url>/posts/f5767f6a.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
+<span id="more"></span>
+<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
+<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
+<li>矢量化使数学表达上更简洁，同时运行的更快</li>
+<li>最小化目标函数和执行极大似然估计等价</li>
+<li>线性回归模型也是一个简单的神经网络</li>
+</ul>
+<h2 id="线性回归的从零开始实现"><a href="#线性回归的从零开始实现" class="headerlink" title="线性回归的从零开始实现"></a>线性回归的从零开始实现</h2><p>先把包引入一下<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure><br>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大</p>
+<p>首先为了简单起见，我们用带有噪声的线性模型手动构造一个人造数据集。首先生成一个包含1000个样本的数据集，每个样本包含从标准正态分布<br>我们使用线性模型参数$\mathbf{w}=[2,-3.4]^T$、$b=4.2$和噪声项$\epsilon$生成数据集及其标签：</p>
+<script type="math/tex; mode=display">
+\mathbf{y}=\mathbf{Xw}+b+\epsilon</script><p>$\epsilon$可以被视作模型预测和标签时的潜在观测误差。在这里我们认为标准假设成立，即$\epsilon$服从均值为0的正态分布。为了简化问题，我们将标准差设为0.01.下面的代码生成数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, num_examples</span>): <span class="comment">#@save</span></span><br><span class="line"><span class="comment"># 生成y=Xw+b噪声</span></span><br><span class="line">  X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(w)))</span><br><span class="line">  y = torch.matmul(X, w) + b</span><br><span class="line">  y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">  <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -760,6 +742,24 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_4</title>
+    <url>/posts/1c15da5f.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-4"><a href="#Pytorch学习-4" class="headerlink" title="Pytorch学习_4"></a>Pytorch学习_4</h1><p>在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装</p>
+<span id="more"></span>
+<h2 id="相关的概念"><a href="#相关的概念" class="headerlink" title="相关的概念"></a>相关的概念</h2><p><code>nn.Parameter</code>，<code>nn.forward</code>，<code>nn.Module</code><br>我一开始学的时候觉得这些东西好复杂，一点都没有章法，我自己学习的时候时常会想，如果使用 Rust 里的 Trait 概念或者 Haskell 的 TypeClass 是不是能把它描述的更清楚一些，但是初学者友好的文档并不会告诉我这些。<br>在看完 Pytorch 的官方文档后我终于看明白了<br>关于看完 Pytorch 官方文档后一个上午写出来的一个手写数字识别 HelloWorld ：<a href="https://github.com/feipiao594/mnist_numrecg">https://github.com/feipiao594/mnist_numrecg</a></p>
+<h2 id="nn-Module"><a href="#nn-Module" class="headerlink" title="nn.Module"></a><code>nn.Module</code></h2><p>这是一个对 Tensor 的封装与管理函数，你需要实现的函数有两个 <code>__init__</code> 与 <code>forward</code> 函数，继承自 <code>nn.Module</code> 的层或者网络，有一个内秉的 parameter 集合，在 <code>__init__</code> 里面使用 <code>nn.Parameter</code> 就会把这个变量的引用交给这个 parameter 集合，如果你使用 <code>nn.Linear()</code> 里面也有 <code>nn.Parameter</code> 也会自动注册进去，这个函数就是起到这样的一个作用，同时因为他指定的是要被学习的参数，所以他也会把你输入进去的 Tensor 的 <code>require_grad</code> 变成 false。<br><code>forward</code> 函数就是数值前向传播，就把在 <code>__init__</code> 定义的计算方法拿出来对输入的值运算一下 </p>
+<h2 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h2><p>举个例子<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure><br><code>model.parameters()</code> 就是我们刚刚说到的 <code>nn.Module</code> 的子类有一个内秉的 parameter 集合，你可以通过这个方法传给优化器进行注册</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> batch, (X, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">        <span class="comment"># Compute prediction and loss</span></span><br><span class="line">        X, y = X.to(device), y.to(device)</span><br><span class="line">        pred = model(X)</span><br><span class="line">        loss = loss_fn(pred, y)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Backpropagation</span></span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
+<p>具体使用时格式非常固定，loss 函数计算误差最后输出的就还是一个 Tensor ，其实里面还是保留计算图的，<code>loss.backward()</code> 就是用 Tensor 的 backward 把所有要学习的参数的梯度算出来并且存储在那些参数的成员变量里(毕竟参数也是 Tensor 嘛，它有 grad 成员变量作为他的梯度值很正常)，接着调用 <code>optimizer.step()</code> 来读取注册的这些变量的 grad 并执行优化，所以优化器和网络就完全解离，其实核心仍然在 Tensor 的梯度运算上</p>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>听说 pytorch 已经很少有人像这样写网络了，大家都用 lightning ，后面有空我也会尝试一下的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -874,6 +874,51 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_2_通用编程概念</title>
+    <url>/posts/896c357a.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
+<span id="more"></span>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
+<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
+<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
+<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
+</ul>
+<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>与C/C++类似，但有几个不同或需要注意的地方</p>
+<ul>
+<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
+<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
+<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
+<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
+</ul>
+<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
+<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
+<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
+<ul>
+<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
+<li>表达式：主要用于计算求值。</li>
+</ul>
+<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
+<ul>
+<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
+<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
+</ul>
+<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
+<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_3_所有权</title>
     <url>/posts/f75e4487.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
@@ -913,51 +958,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h2 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h2><p><strong>slice是对数据类型中一部分值的不可变引用</strong><br>小小用一下书里给的一些例子展示一下</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> <span class="variable">len</span> = s.<span class="title function_ invoke__">len</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..len];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[<span class="number">3</span>..];</span><br><span class="line"><span class="keyword">let</span> <span class="variable">slice</span> = &amp;s[..];</span><br></pre></td></tr></table></figure>
 <p>由于slice本身就是引用，所以在定义了slice后，对原本值的修改都会被 Rust 编译器检查到。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_2_通用编程概念</title>
-    <url>/posts/896c357a.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
-<span id="more"></span>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
-<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
-<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
-<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
-</ul>
-<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>与C/C++类似，但有几个不同或需要注意的地方</p>
-<ul>
-<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
-<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
-<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
-<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
-</ul>
-<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
-<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
-<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
-<ul>
-<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
-<li>表达式：主要用于计算求值。</li>
-</ul>
-<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
-<ul>
-<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
-<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
-</ul>
-<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
-<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1294,6 +1294,58 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于51单片机移植u8g2失败经历</title>
+    <url>/posts/572ad35a.html</url>
+    <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
+<blockquote>
+<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
+<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
+<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
+<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
+</blockquote>
+<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br>图中使用的开发板是普中的51开发板<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
     <title>从LFS构建中习得的交叉编译</title>
     <url>/posts/c858dee6.html</url>
     <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
@@ -1385,70 +1437,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于51单片机移植u8g2失败经历</title>
-    <url>/posts/572ad35a.html</url>
-    <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
-<blockquote>
-<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
-<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
-<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
-<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
-</blockquote>
-<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br>图中使用的开发板是普中的51开发板<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于多元复合函数的困惑与思考</title>
     <url>/posts/15db3d47.html</url>
     <content><![CDATA[<h1 id="关于多元复合函数的困惑与思考"><a href="#关于多元复合函数的困惑与思考" class="headerlink" title="关于多元复合函数的困惑与思考"></a>关于多元复合函数的困惑与思考</h1><p>导读:偏导数是相对某个具体的坐标系才有意义的。</p>
@@ -1466,6 +1454,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
 <li>它的函数名没有显式的给出</li>
 </ul>
 <p>至于偏导数还有没有可能会有更多的歧义之类的事情，要等我的物理学的更多，在下次对两边求偏导这件事再度发生时候，再考虑这个问题吧</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
+<span id="more"></span>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
 ]]></content>
       <categories>
         <category>Mathematic</category>
@@ -1547,6 +1547,18 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -1696,18 +1708,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
     <url>/posts/57f25e7f.html</url>
     <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
@@ -1774,6 +1774,48 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Gentoo上用KVM玩Mac</title>
+    <url>/posts/ebefb94c.html</url>
+    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
+<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
+<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
+<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
+<blockquote>
+<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
+</blockquote>
+<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
+<p>使用它的 python 脚本下载 Mac 官方镜像</p>
+<blockquote>
+<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
+<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
+<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
+<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
+<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
+<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
+<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
+</blockquote>
+<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
+<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
+<blockquote>
+<p>注意该项目实测可以安装较新版本的 MacOS</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -1980,48 +2022,6 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
-    <title>在Gentoo上用KVM玩Mac</title>
-    <url>/posts/ebefb94c.html</url>
-    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
-<span id="more"></span>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
-<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
-<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
-<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
-<blockquote>
-<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
-</blockquote>
-<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
-<p>使用它的 python 脚本下载 Mac 官方镜像</p>
-<blockquote>
-<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
-<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
-<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
-<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
-<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
-<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
-<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
-<blockquote>
-<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
-</blockquote>
-<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
-<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
-<blockquote>
-<p>注意该项目实测可以安装较新版本的 MacOS</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -2160,6 +2160,39 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       </categories>
   </entry>
   <entry>
+    <title>日常碎碎念_1</title>
+    <url>/posts/6b49fcb0.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<ul>
+<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
+<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
+<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
+<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
+<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
+<li>人和人的人际关系真是奇异</li>
+<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
+<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
+<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_2</title>
+    <url>/posts/f52d6913.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
+<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>日常困惑之梯度的换元</title>
     <url>/posts/10d711a6.html</url>
     <content><![CDATA[<h1 id="日常困惑之梯度的换元"><a href="#日常困惑之梯度的换元" class="headerlink" title="日常困惑之梯度的换元"></a>日常困惑之梯度的换元</h1><p>又是上物理课的突发奇想，造就了一些关于梯度的疑惑<br><span id="more"></span></p>
@@ -2226,18 +2259,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
-    <title>日常碎碎念_2</title>
-    <url>/posts/f52d6913.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
-<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
     <title>日常碎碎念_3</title>
     <url>/posts/85479d9c.html</url>
     <content><![CDATA[<h1 id="日常碎碎念-3"><a href="#日常碎碎念-3" class="headerlink" title="日常碎碎念_3"></a>日常碎碎念_3</h1><p>日常碎碎念_3，日常碎碎念，生人勿进</p>
@@ -2251,27 +2272,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
 <p>前段时间有同学找到我告诉我说，”我是看您博客长大的”，啊？这有点夸张了吧，其实我因为 qblog 以及 hexo 这个工具始终不合我心意，已经很少更新博客了，基本上只在 2022 年写的多一点，那时候我也才接触技术不久</p>
 <p>不过我很感动的是，居然真的能有后人看我的博客，甚至能给他们带来一点点的作用，但是我好像确实也没写什么有用的东西啊喂</p>
 <p>接下来也不知道能不能有空接着写下去，如果可以的话，一定会写出相对曾经更精彩的东西吧</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_1</title>
-    <url>/posts/6b49fcb0.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<ul>
-<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
-<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
-<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
-<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
-<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
-<li>人和人的人际关系真是奇异</li>
-<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
-<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
-<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
-</ul>
 ]]></content>
       <categories>
         <category>Life_生活</category>
@@ -2411,6 +2411,122 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>深入异步通用概念</title>
+    <url>/posts/9b424f3e.html</url>
+    <content><![CDATA[<h1 id="深入异步通用概念"><a href="#深入异步通用概念" class="headerlink" title="深入异步通用概念"></a>深入异步通用概念</h1><p>协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程。这些东西曾经困扰了我许久，我饱读各种相关的资料却始终不得其解，因此我写下了这篇博客</p>
+<span id="more"></span>
+<blockquote>
+<p> 前言: 本文所说的异步为单线程情况下的异步 IO。我将试图把 IO 多路复用、异步 IO、事件循环、协程、async/await 等分散的概念串联起来，方便理解其前因后果。注意其中涉及到的 syscall 以 Linux 为主。</p>
+</blockquote>
+<h2 id="在异步之旅开始之前"><a href="#在异步之旅开始之前" class="headerlink" title="在异步之旅开始之前"></a>在异步之旅开始之前</h2><p>相信任何一个朋友在一开始接触编程的时候都会编写类似下面这样的 C++ 代码</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inlcude <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="type">int</span> input;</span><br><span class="line">  std::cin &gt;&gt; input;</span><br><span class="line">  std::cout &lt;&lt; input &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>作为一个 Hello world 级别的程序，大家都知道在第五行会阻塞起来等待输入，但等待输入的行为实际上并没有那么简单，在学习了操作系统之后，我们知道在这一段代码背后是调用了阻塞的 syscall <code>read()</code>，当你通过标准库对这个系统调用的封装调用到它时，会从用户态陷入内核态，等待内核将输入交给程序，才会继续下去。这是程序最简单的形态，以至于如果你参加任何算法竞赛的时候，要写的程序都是这样的形态。而这种系统调用因此被称为阻塞的，<strong>阻塞IO</strong>。而在等待内核将输入的信息传递给程序之前，程序处于一个休眠状态，对于操作系统来说，也就是不把运行的时间片分配给它，这种行为我们也称为把程序<strong>挂起</strong>了。</p>
+<p>但这太简单了，初学者一定会好奇，这样一些从上到下顺序执行的代码，如何拼凑出一个带 UI 的程序。比如初学者可能会使用 Qt 去做一个贪吃蛇程序，在当下的这个年代，各种成熟的 UI 库层出不穷，很容易就能做到这一点。在做完这些刚刚入门编程的时候，他们略深入一些便会听说，他们所做的 Qt 程序运行在一个事件循环上，而 Qt 默认居然是单个线程就可以运行的。单线程怎么可能做到这个事情呢，它怎么能做到等待你输入，等待你点击 UI 的时候还能保证软件其他部分被渲染，动画似乎是完全与你的行为无关，一点也不像在 cli 中会阻塞，这种行为在多线程的前提下简直是个魔法嘛。</p>
+<p>是的，我当年就是这么想的。在当时的我看来，阻塞完全是一个 debuff，应该需要一个不阻塞的接口。如果没有按下，也能正常执行后面的程序。那么我们就可以说，在这种情况下，我们的程序同操作系统实际做的事情一样，那就是创建一个巨大的 <code>while</code> 循环，不断询问操作系统对应的按钮是否被按下，这些询问本身并不花时间，只是问一问操作系统当前这个 IO 任务是否被完成。如果完成，我程序就可以从操作系统里取，如果没完成，那我就不管了，等到 while 下一次询问。这种类型的系统调用确实存在，他们被被称为非阻塞的，<strong>非阻塞IO</strong>，就像下面这样：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 假设这里的isClickedButtonX()就是一个不阻塞的询问</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonW</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonA</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonS</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonD</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以把所有的输入，包括这边代码中的 <code>isClickedButtonX()</code>，以及更为统一的鼠标指针，键盘输入，网络请求，甚至是外设(蓝牙，LED)这种在冯诺依曼结构里被称为输入输出设备向系统内部传递信息并交给操作系统，进而交由应用程序的所有信息称之为 <strong>IO</strong> 或者说 <strong>IO 事件</strong>。在上述的代码中，我们进行循环查询，并合理的把它们处理：也就是注释所说的 do something，不同的事件有不同处理，处理的方式在下文被称为<strong>任务</strong>，这是所谓的事件分发。这其实是最高效的处理这些 IO 事件的方式，事实上某些单片机程序就是这么做的，这种循环查询某个事件是否就绪的模式称为轮询(polling)。</p>
+<blockquote>
+<p>这样的方式可以进行的原因是：我们必须理解程序的运行，程序的信息来自于两处，一个是来自操作系统，一个是程序自身已经编入的信息，它在运行时的额外信息完全来自于操作系统，而操作系统的信息来自于硬件的交互。操作系统本身是异步的，因为硬件是并行处理的，操作系统通过中断以及各种调度算法处理并存储来自硬件的各种信息，本身 <strong>OS 就作为一个巨大 Buffer 为程序提供信息</strong>，所以程序本身无需在意数据是怎么被具体准备出来的，你只需要向操作系统注册需要的 IO 事件，操作系统就为你在缓冲区里准备好 IO 事件发生时拿到的数据，你自己去取，因此数据其实短期内不会丢失的，只等你的应用去响应并消费。</p>
+</blockquote>
+<p>但是这种方式最大的问题是，这样的行为意味着你的 while 代码块中的代码会一往无前的运行，每次循环都不带停的。当裸的 <code>while(1)</code> 出现在你的程序里，导致死循环，会大量占用 CPU 资源，使 CPU 占用率增高。</p>
+<p>这里需要复习一下 CPU 占用率是什么。它的定义是通过对比忙碌时间和总时间得出的百分比，而总时间减去忙碌时间是空闲时间，其实操作系统完成了对 CPU 的调度，操作系统在运行时可以告诉 CPU，你要在某一个时间周期里工作多久，然后这个时间周期里的 CPU 还能休息一会，停止工作，而这段时间就是空闲时间。</p>
+<p>而死循环程序会导致它试图最大程度请求 CPU 去做无用的轮询，操作系统为了最大满足它索要的计算资源，不允许 CPU 停止休息，因此占用率便提高了。</p>
+<p>所以完全阻塞等待某个资源不行，开个循环询问所有任务的就绪状态也有问题，那应该怎么办呢?</p>
+<h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环。但问题就在于程序此时此刻就只能做一件事情了。也许你会同早期的我一样，认为这个关键就在于 syscall 阻塞了线程的活动，应该彻底抛开可能导致阻塞的系统调用，也许存在一个可以天降信息的超级接口可以传递信息，很不幸，事实证明这样的接口并不存在。</p>
+<p>让我们回看一下令我们困惑的例子：如果我们要做一个单线程的贪吃蛇的小程序，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些渲染与计算的工作。但是我们在这个问题上往往忽略了一个事情，那就是计时器事件本身就也是一个 IO 事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
+<p>如果在 <code>while</code> 里将轮询事件能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个事件，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理是，<strong>在一个线程里通过有且仅有一个接口去获取所有 IO 事件，如果查询的时候存在准备好的数据，则立即返回并处理，如果查询时没有准备好的数据，则立即阻塞，等待操作系统准备好数据立即将其唤醒</strong>，这一类接口，比较常见的就是 Linux 下的 select/poll/epoll，将这样的接口置于while循环下，如果你处理 IO 事件的速度高于 IO 事件产生的速度，你就可以及时解决所有 IO 事件</p>
+<p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，如我程序读写一个文件的时候，只是等在那，不会读取别的比如按钮点击事件等这样程序处理事件意义上的阻塞和接口的阻塞这两个阻塞说的并不是同样的概念。接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，是必须要让用户态应用程序挂起的。所以从这个意义上来说，阻塞是必然的，所有这类要把 CPU 资源谦让出来的程序都应当是阻塞的程序。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
+<p><strong>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</strong></p>
+<p>所以，我们的程序需要高效的处理或者说消费掉 IO 事件，这是保证任务不会堆起来，所有任务都能得到处理的前提。从具体参数上看就是处理 IO 事件的速度高于 IO 事件产生的速度，所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，适合这种模式。而不满足这个条件的程序，一种是计算量特别大的程序，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong>，一般选择多线程方式，还有一种是现代设备 IO 速度越来越快，此时可能直接轮询，试图达到速率上限能获得更高的收益(比如 io_uring 就是在做这里的极致优化)。</p>
+<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>最根本的问题解决了，接下来是要为这个简陋的 <code>while(1)</code> 循环加工一下了，我们需要一个在这个循环体进行一次时能够彻底消费掉这些操作系统里出现的数据的代码，其实这是一个调度器。在绝大部分的实现中，它都以一些我们刚刚提到的另一个耳熟能详的名字出现：事件驱动的模式，或者说事件循环。</p>
+<p>来看下面这段给出的伪代码：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> *task_list = TaskList.<span class="built_in">getInstance</span>()-&gt;<span class="built_in">add</span>(InitTask);</span><br><span class="line"><span class="comment">//你需要在这里的InitTask注册监听的事件，否则程序立即退出</span></span><br><span class="line"><span class="keyword">auto</span> *event_fetcher = EventFetcher.<span class="built_in">getInstance</span>();</span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> task: *task_list)</span><br><span class="line">        <span class="built_in">task</span>();</span><br><span class="line">    task_list.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="keyword">auto</span> events = EventFetcher.<span class="built_in">getInstance</span>()-&gt;<span class="built_in">getEvents</span>();</span><br><span class="line">    <span class="comment">// 这里如果获取不到会阻塞等待</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> event: events)</span><br><span class="line">        <span class="built_in">EventDispatcher</span>(event); </span><br><span class="line">    <span class="comment">// 分发后，后续任务也就是回调用闭包形式传入序列</span></span><br><span class="line">    <span class="comment">// 倘若监听的事件和任务队列全无，则程序退出</span></span><br><span class="line">    <span class="keyword">if</span>(!events.<span class="built_in">length</span>() &amp;&amp; task_list.<span class="built_in">length</span>())</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先，既然要监听事件，必须有一个监听器，在这里是 <code>EventFetcher</code>，你需要在 <code>initTask</code> 这个初始任务里完成注册，紧接着是事件发生后分发任务的函数 <code>EventDispatcher</code>，它将事件按照注册时留下的函数，将发生事件后处理事件的任务扔给 <code>taskList</code>，并一个一个跟着处理，<code>taskList</code> 这样的容器可能是按照优先级优先弹出的优先队列或者其他什么算法，用以高效的分配任务，这样的任务我们给它一个名字，叫做<strong>回调函数</strong></p>
+<p>回调函数何时执行是由调度器决定的，原本把它放到 <code>taskList</code> 的函数大概率早就已经执行下去了，并不会管回调函数什么时候运行，或者说对于程序员来说，它何时运行逻辑都必须正确，这种逻辑上他俩执行没什么关系的行为就是所谓异步。</p>
+<p>要注意的是，输入 <code>taskList</code> 的是一个闭包，如果假使说这个任务是一个计时器，也许你会需要循环往复的计时，此时你必须在回调函数里将计时器重新启动，启动的过程就是向 <code>EventFetcher</code> 再注册一遍计时器，向 <code>EventDispatcher</code> 再把自己的任务和自己当前正在执行的这个回调组成的一对数据再次传入，以此实现无限计时的效果</p>
+<p>回调式的写法在现代的 UI 框架里相当常见，例如 Qt 的信号槽机制，本质上就是这样的东西，我们来看看下面 Dart 的事件循环实现</p>
+<p><img src="/images/深入异步通用概念_图1.png" width="50%" height="50%"></p>
+<p>哎哎，这不就是一模一样，所以说自 IO 多路复用出现后，事件循环也很自然的就出现了</p>
+<p>然而大量使用回调引发了回调地狱的问题。异步最大的问题就是难以阅读。异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap，为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
+<h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><p>想出协程，async/await 这套东西的人绝对是个天才，我无缘得见是什么样的心路历程能够想到这一套东西，但我们仍然可以看看它是怎么工作的，这里我们主要看看的是 async/await，协程的概念与其基本一致，想必聪明的读者看完下面这些，也就能理解协程了</p>
+<p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
+<p>实则不然。这正是 <code>async/await</code> 的巧妙之处，也是理解其非阻塞本质的关键。<code>await</code> 的”等待”，是一种<strong>主动的让步，而非被动的阻塞</strong>。</p>
+<h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
+<p>一个普通的同步函数从开始到结束，其执行路径是唯一的、连续的。而一个 <code>async</code> 函数内部因为有了 <code>await</code> 点，它的执行可以被分割成多个阶段。每一个 <code>await</code> 都是一个潜在的中断点。</p>
+<p>让我们用一个例子来将这个状态机可视化：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 0: 开始</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = <span class="title function_ invoke__">fetch_url</span>(url1).<span class="keyword">await</span>?; <span class="comment">// &lt;- 等待点 1 (await 1)</span></span><br><span class="line">    <span class="comment">// 阶段 1: 收到 data1 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = <span class="title function_ invoke__">fetch_url</span>(url2).<span class="keyword">await</span>?; <span class="comment">// &lt;- 等待点 2 (await 2)</span></span><br><span class="line">    <span class="comment">// 阶段 2: 收到 data2 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 3: 结束</span></span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译器会将这个 <code>async fn</code> 编译成一个实现了 <code>Future</code> trait 的状态机。这个状态机大致长这样：</p>
+<ul>
+<li><strong>基本概念</strong> 首先编译器会把 async 函数编译成状态机，在 await 发生的时候，状态机整个休眠，在外部，通过 <code>poll</code> 唤醒状态机，<code>poll</code> 的语义是<strong>尽可能催促状态机执行的更远</strong></li>
+<li><strong>状态 0 (State 0):</strong> 刚被调用 <code>poll</code> 试图推动状态机时，启动 <code>fetch_url(url1)</code> 这个 Future，然后<strong>立即返回 <code>Poll::Pending</code></strong>。同时，它记录下自己的状态：”我现在正卡在 <code>await 1</code> 这里”。</li>
+<li><strong>事件与唤醒：</strong> 当 <code>fetch_url(url1)</code> 的 I/O 操作在后台完成时（例如，通过操作系统的 epoll/kqueue 等机制通知），一个事件被触发。调度器会知道：”哦，<code>fetch_url(url1)</code> 这个 Future 准备好了”。然后，调度器会找到正在等待它的 <code>fetch_data_and_process</code> 状态机，并再次调用它的 <code>poll</code> 方法。</li>
+<li><strong>状态 1 (State 1):</strong> 状态机从上次中断的地方恢复。它发现自己是处于”状态 1”，于是从 <code>fetch_url(url1)</code> 中拿到结果 <code>data1</code>，执行 <code>println!</code>，然后启动 <code>fetch_url(url2)</code>，接着再次返回 <code>Poll::Pending</code>，并将状态更新为”卡在 <code>await 2</code>“。</li>
+<li><strong>状态 2 (State 2):</strong> 同理，当 <code>fetch_url(url2)</code> 完成时，调度器再次唤醒它。状态机恢复，拿到 <code>data2</code>，执行最后的逻辑，最终返回 <code>Poll::Ready(result)</code>，标志着整个异步任务的完成。</li>
+</ul>
+<p>哦？调度器，事件的概念又被提及了，是不是事件循环是 async/await 的重要实现方式之一呢？</p>
+<p>你猜的没有错，事实上，你可以从事件循环上很容易的构建出一个 async/await 系统来：如果所有的 async 状态机都是一个对象，当某个 <code>async</code> 函数运行到 <code>await</code> 状态的时候，就是把一个任务注册到事件循环，这个任务是，监听到” await 等待的状态机运行完毕”这个事件时，事件循环的调度器回调 poll 函数来推动自己进行下一步。而正是因为回调函数都会坍缩为 poll ，这就使得在一定程度上事件循环的任务列表里基本都是相同的 poll 函数，简化一下可以省略调任务列表，直接把发送” await 等待的状态机运行完毕”事件改成 poll ，所以 async/await 实现也有可能不需要依赖事件循环。</p>
+<p>所以，<code>await</code> 的关键在于：<strong>当任务需要等待（比如 I/O 未就绪）时，它不是傻傻地占着线程不放，而是通过返回 <code>Pending</code> 来释放线程的控制权。这个线程此时就可以掉头去执行其他已经就绪的任务（比如另一个完成的 HTTP 请求）。</strong> 这正是异步编程高并发能力的根源。</p>
+<h3 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h3><p>想象一下，对于 ui 框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)，只有使用这种特制的 await，实际上是让事件循环用不同的监听模式来 poll，才能实现让一组任务异步进行。单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
+<blockquote>
+<p>注意：<strong>异步任务树</strong>实为本文自创的概念，实际上怎么称呼这样的结构我并不知道。同样的，可能存在更复杂的数据结构能更高效的解决这样的问题，但下面我所提及的应该是一种实现。</p>
+</blockquote>
+<p>其所有叶子节点都是 await 函数的尽头，即具体等待一个任务，树的下方是调度器，当事件发生时，调度器将会在事件列表中挑选一个事件，poll 这个事件对应的叶子节点，是一个 async 函数/协程，让它执行至挂起或结束，控制权回到调度器，处理下一个事件，如果事件消费完毕，则继续挂起，这样的循环构成了异步模式下，无栈协程组成程序的图景。</p>
+<p>我们可以从刚刚那个 <code>fetch_data_and_process()</code> 为例子来画一下这棵树具体可以如何工作的其中一种样子：</p>
+<p>首先是 <code>fetch_data_and_process()</code> 被 await 之前，先是有一棵树</p>
+<p><img src="/images/深入异步通用概念_图2.png" width="100%" height="100%"></p>
+<p>然后紧接着，调用者开始 await，实际上<strong>干了4件事情</strong></p>
+<ol>
+<li>初始化 <code>fetch_data_and_process</code> 的状态机，同时包括分配返回值所放置区域等行为</li>
+<li>把推动 <code>fetch_data_and_process</code> 的状态机的 poll 函数放进事件循环的任务队列</li>
+<li>把监听 <code>fetch_data_and_process</code> 的状态机完成的事件注册到事件循环，回调是 poll 调用者自己</li>
+<li>调用者挂起自己</li>
+</ol>
+<p>于是便得到了</p>
+<p><img src="/images/深入异步通用概念_图3.png" width="100%" height="100%"></p>
+<p>记录一下此时此刻事件循环的状态(省略无关项，同时<strong>列表的内容是伪代码</strong>，下同)：</p>
+<ul>
+<li>任务列表：<code>fetch_data_and_process.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
+</ul>
+<p>接着等待事件循环调度，直到调用 poll 推动<code>fetch_data_and_process</code> 的状态机，运行下来就到了 <code>let data1 = fetch_url(url1).await?;</code> 这一行了，也是同理，做这四件事情</p>
+<p><img src="/images/深入异步通用概念_图4.png" width="100%" height="100%"></p>
+<p>事件循环的状态：</p>
+<ul>
+<li>任务列表：<code>fetch_url.poll()</code></li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
+</ul>
+<p>我们假定 <code>fetch_url</code> 要直接做一个获取资源的基础 API，那么它和上述的 await 实际上理应是有差别的，因为它不能再把任务推给别人了自己只是等待了，必须自己处理，所以这个异步函数的函数体里只会干两件事</p>
+<ol>
+<li>创建获取 url 资源的事件，注册到事件循环，回调是 poll <code>fetch_url</code> 自己</li>
+<li>挂起自己，等待数据完成</li>
+</ol>
+<p><img src="/images/深入异步通用概念_图5.png" width="100%" height="100%"></p>
+<p>此时此刻事件循环的状态：</p>
+<ul>
+<li>任务列表：空</li>
+<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>,<br><code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
+</ul>
+<p>好了，接下来任务简单了，等待回调，<code>Event&lt;API_getUrl.finish()&gt;</code> 发生时，<code>fetch_url</code> 会被推动到结束，在结尾的时候，也会挂起自己这个状态机，运行过程回到调度器里，从而从这棵树上脱落。在此之前释放一个 <code>Event&lt;fetch_url.finish()&gt;</code> 的事件信息，告诉事件循环 <code>fetch_data_and_process.poll()</code> 该被放进队列里运行了。</p>
+<p><img src="/images/深入异步通用概念_图6.png" width="100%" height="100%"></p>
+<p>然后 <code>fetch_data_and_process.poll()</code> 让 async 函数 <code>fetch_data_and_process</code> 继续运行，碰到第二个 await <code>let data2 = fetch_url(url2).await?;</code>，逻辑是一样的。直到最后 <code>fetch_data_and_process</code> 也执行到最后，挂起自己交给调度器，脱落，也便回到 <code>caller</code> 了。</p>
+<p><img src="/images/深入异步通用概念_图7.png" width="100%" height="100%"></p>
+<p>这么看来实现这么一套异步的库也不是很麻烦嘛，虽然为 IO 事件包裹一层 API 是实打实的 dirty work</p>
+<p>通过这个小例子你也可以自然的发现，如果你的应用只是普通的 await function 组合，没有特制的等待好几个任务的 await，那你的<strong>异步任务树</strong>就是<strong>异步任务链表</strong>，在这种情况下，实际上和同步毫无区别，而如果你可以同时 await 好几个任务，那由于任务是递交给事件循环穿插运行的，也便实现了所谓的异步：最简单的例子，你可以同时异步高效的 fetch 好几个 url 的内容了。</p>
+<h3 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h3><p>理解了上述机制，我们也就能明白为什么说 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
+<p>这是因为，<code>await</code> 的语义依赖于其所在的上下文是一个可以被挂起和恢复的状态机。一个普通的同步函数不具备这种能力。它一旦开始执行，就必须运行到结束，中间无法被”挂起”并将线程控制权交还给调度器。</p>
+<p>因此，<strong>异步模式是构建在同步模式之上的一种特殊环境</strong>。当你选择踏入这个环境（调用一个 <code>async</code> 函数），你就必须遵守它的规则。这种”鸿沟”是异步编程模型本身的性质所决定的，而非 Rust 或其他语言的设计缺陷。</p>
+<blockquote>
+<p>本节我们聚焦于单线程内的协程调度，揭示了 <code>async/await</code> 非阻塞的秘密。然而，协程的魅力远不止于此。它并不与异步强绑定，其本质只是一个可暂停、可恢复的代码块，是”程序是状态机”这一最本质概念的体现。在多线程的舞台上，协程还能演绎出更精彩的并发模式。</p>
+</blockquote>
+<h2 id="后日谈"><a href="#后日谈" class="headerlink" title="后日谈"></a>后日谈</h2><p>说真的，我觉得异步真的不是一个很好理解的东西，它和操作系统相关性不小，但你不能把它看作是操作系统的调度模式。因为操作系统作为一个具有最高权限的软件，它作为状态机，推动它的是硬件中断，在计算机模型里，它不需要考虑自己去实现这个”异步”的功能。但在实际的应用里，其实完全是同步模式，靠获取 os 的信息手动实现的推动状态机，才真正进入了异步。值得一提，我的朋友说：”其实直到在单片机里应用这些行为才真正理解了什么是异步。” 我想这正是轮询，非阻塞 IO 启发了他吧。<br>本人愚钝，这个概念确是想了不少时间才得以理解，中间甚至有过很久的错误理解，如有谬误，还请多多包涵</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -2745,114 +2861,18 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
       </categories>
   </entry>
   <entry>
-    <title>深入异步通用概念</title>
-    <url>/posts/9b424f3e.html</url>
-    <content><![CDATA[<h1 id="深入异步通用概念"><a href="#深入异步通用概念" class="headerlink" title="深入异步通用概念"></a>深入异步通用概念</h1><p>协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程。这些东西曾经困扰了我许久，我饱读各种相关的资料却始终不得其解，因此我写下了这篇博客</p>
+    <title>链接、装载与库</title>
+    <url>/posts/8525127.html</url>
+    <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
 <span id="more"></span>
-<blockquote>
-<p> 前言: 本文所说的异步为单线程情况下的异步 IO。我将试图把 IO 多路复用、异步 IO、事件循环、协程、async/await 等分散的概念串联起来，方便理解其前因后果。注意其中涉及到的 syscall 以 Linux 为主。</p>
-</blockquote>
-<h2 id="在异步之旅开始之前"><a href="#在异步之旅开始之前" class="headerlink" title="在异步之旅开始之前"></a>在异步之旅开始之前</h2><p>相信任何一个朋友在一开始接触编程的时候都会编写类似下面这样的 C++ 代码</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#inlcude <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="type">int</span> input;</span><br><span class="line">  std::cin &gt;&gt; input;</span><br><span class="line">  std::cout &lt;&lt; input &lt;&lt; std::endl; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>作为一个 Hello world 级别的程序，大家都知道在第五行会阻塞起来等待输入，但等待输入的行为实际上并没有那么简单，在学习了操作系统之后，我们知道在这一段代码背后是调用了阻塞的 syscall <code>read()</code>，当你通过标准库对这个系统调用的封装调用到它时，会从用户态陷入内核态，等待内核将输入交给程序，才会继续下去。这是程序最简单的形态，以至于如果你参加任何算法竞赛的时候，要写的程序都是这样的形态。而这种系统调用因此被称为阻塞的，<strong>阻塞IO</strong>。而在等待内核将输入的信息传递给程序之前，程序处于一个休眠状态，对于操作系统来说，也就是不把运行的时间片分配给它，这种行为我们也称为把程序<strong>挂起</strong>了。</p>
-<p>但这太简单了，初学者一定会好奇，这样一些从上到下顺序执行的代码，如何拼凑出一个带 UI 的程序。比如初学者可能会使用 Qt 去做一个贪吃蛇程序，在当下的这个年代，各种成熟的 UI 库层出不穷，很容易就能做到这一点。在做完这些刚刚入门编程的时候，他们略深入一些便会听说，他们所做的 Qt 程序运行在一个事件循环上，而 Qt 默认居然是单个线程就可以运行的。单线程怎么可能做到这个事情呢，它怎么能做到等待你输入，等待你点击 UI 的时候还能保证软件其他部分被渲染，动画似乎是完全与你的行为无关，一点也不像在 cli 中会阻塞，这种行为在多线程的前提下简直是个魔法嘛。</p>
-<p>是的，我当年就是这么想的。在当时的我看来，阻塞完全是一个 debuff，应该需要一个不阻塞的接口。如果没有按下，也能正常执行后面的程序。那么我们就可以说，在这种情况下，我们的程序同操作系统实际做的事情一样，那就是创建一个巨大的 <code>while</code> 循环，不断询问操作系统对应的按钮是否被按下，这些询问本身并不花时间，只是问一问操作系统当前这个 IO 任务是否被完成。如果完成，我程序就可以从操作系统里取，如果没完成，那我就不管了，等到 while 下一次询问。这种类型的系统调用确实存在，他们被被称为非阻塞的，<strong>非阻塞IO</strong>，就像下面这样：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 假设这里的isClickedButtonX()就是一个不阻塞的询问</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonW</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonA</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonS</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">isClickedButtonD</span>()) &#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们可以把所有的输入，包括这边代码中的 <code>isClickedButtonX()</code>，以及更为统一的鼠标指针，键盘输入，网络请求，甚至是外设(蓝牙，LED)这种在冯诺依曼结构里被称为输入输出设备向系统内部传递信息并交给操作系统，进而交由应用程序的所有信息称之为 <strong>IO</strong> 或者说 <strong>IO 事件</strong>。在上述的代码中，我们进行循环查询，并合理的把它们处理：也就是注释所说的 do something，不同的事件有不同处理，处理的方式在下文被称为<strong>任务</strong>，这是所谓的事件分发。这其实是最高效的处理这些 IO 事件的方式，事实上某些单片机程序就是这么做的，这种循环查询某个事件是否就绪的模式称为轮询(polling)。</p>
-<blockquote>
-<p>这样的方式可以进行的原因是：我们必须理解程序的运行，程序的信息来自于两处，一个是来自操作系统，一个是程序自身已经编入的信息，它在运行时的额外信息完全来自于操作系统，而操作系统的信息来自于硬件的交互。操作系统本身是异步的，因为硬件是并行处理的，操作系统通过中断以及各种调度算法处理并存储来自硬件的各种信息，本身 <strong>OS 就作为一个巨大 Buffer 为程序提供信息</strong>，所以程序本身无需在意数据是怎么被具体准备出来的，你只需要向操作系统注册需要的 IO 事件，操作系统就为你在缓冲区里准备好 IO 事件发生时拿到的数据，你自己去取，因此数据其实短期内不会丢失的，只等你的应用去响应并消费。</p>
-</blockquote>
-<p>但是这种方式最大的问题是，这样的行为意味着你的 while 代码块中的代码会一往无前的运行，每次循环都不带停的。当裸的 <code>while(1)</code> 出现在你的程序里，导致死循环，会大量占用 CPU 资源，使 CPU 占用率增高。</p>
-<p>这里需要复习一下 CPU 占用率是什么。它的定义是通过对比忙碌时间和总时间得出的百分比，而总时间减去忙碌时间是空闲时间，其实操作系统完成了对 CPU 的调度，操作系统在运行时可以告诉 CPU，你要在某一个时间周期里工作多久，然后这个时间周期里的 CPU 还能休息一会，停止工作，而这段时间就是空闲时间。</p>
-<p>而死循环程序会导致它试图最大程度请求 CPU 去做无用的轮询，操作系统为了最大满足它索要的计算资源，不允许 CPU 停止休息，因此占用率便提高了。</p>
-<p>所以完全阻塞等待某个资源不行，开个循环询问所有任务的就绪状态也有问题，那应该怎么办呢?</p>
-<h2 id="破局之法之多路复用"><a href="#破局之法之多路复用" class="headerlink" title="破局之法之多路复用"></a>破局之法之多路复用</h2><p>上文提到的阻塞 IO 并没有死循环的问题，你哪怕在一个 <code>while</code> 循环里写一个 <code>std::cin</code> 也不会出现占用超多 CPU 资源的问题，因为在你运行到的时候，系统就已经定在那了，程序被挂起了，不会走新的一轮 <code>while</code> 循环。但问题就在于程序此时此刻就只能做一件事情了。也许你会同早期的我一样，认为这个关键就在于 syscall 阻塞了线程的活动，应该彻底抛开可能导致阻塞的系统调用，也许存在一个可以天降信息的超级接口可以传递信息，很不幸，事实证明这样的接口并不存在。</p>
-<p>让我们回看一下令我们困惑的例子：如果我们要做一个单线程的贪吃蛇的小程序，我们可能需要程序以一个固定的帧率去绘制，移动屏幕上的这条小蛇，那么我们就需要设定一个计时器来定时做一些渲染与计算的工作。但是我们在这个问题上往往忽略了一个事情，那就是计时器事件本身就也是一个 IO 事件，从更大的一个层次上，他和你等待一个按钮按下没有什么区别。</p>
-<p>如果在 <code>while</code> 里将轮询事件能解决问题，但是没有阻塞导致占用率高，但阻塞的情况只会响应一个事件，那又不行。但如果我们能把这些个 <code>if</code> 扔给操作系统去考虑呢？于是 <strong>IO 多路复用</strong>出现了，它的核心原理是，<strong>在一个线程里通过有且仅有一个接口去获取所有 IO 事件，如果查询的时候存在准备好的数据，则立即返回并处理，如果查询时没有准备好的数据，则立即阻塞，等待操作系统准备好数据立即将其唤醒</strong>，这一类接口，比较常见的就是 Linux 下的 select/poll/epoll，将这样的接口置于while循环下，如果你处理 IO 事件的速度高于 IO 事件产生的速度，你就可以及时解决所有 IO 事件</p>
-<p>看到了么，我特意强调了阻塞的字眼，为什么？需要强调的是，如我程序读写一个文件的时候，只是等在那，不会读取别的比如按钮点击事件等这样程序处理事件意义上的阻塞和接口的阻塞这两个阻塞说的并不是同样的概念。接口的阻塞是因为至少目前为止要想释放 CPU 的利用率，是必须要让用户态应用程序挂起的。所以从这个意义上来说，阻塞是必然的，所有这类要把 CPU 资源谦让出来的程序都应当是阻塞的程序。而只要有一个接口访问 IO 事件，等事件一出现，就立即响应，消费掉任务，然后挂起，就不算程序处理事件意义上的阻塞，因为你的程序仍然会高效的处理事件。</p>
-<p><strong>是的，此阻塞非彼阻塞，所谓阻塞亦能实现非阻塞</strong></p>
-<p>所以，我们的程序需要高效的处理或者说消费掉 IO 事件，这是保证任务不会堆起来，所有任务都能得到处理的前提。从具体参数上看就是处理 IO 事件的速度高于 IO 事件产生的速度，所以这个条件成立的程序，是为 <strong>IO 密集型程序</strong>，适合这种模式。而不满足这个条件的程序，一种是计算量特别大的程序，可能是执行某些科学计算，求解微分方程，处理图像，甚至是深度学习任务，这些程序是为<strong>计算密集型任务</strong>，一般选择多线程方式，还有一种是现代设备 IO 速度越来越快，此时可能直接轮询，试图达到速率上限能获得更高的收益(比如 io_uring 就是在做这里的极致优化)。</p>
-<h2 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h2><p>最根本的问题解决了，接下来是要为这个简陋的 <code>while(1)</code> 循环加工一下了，我们需要一个在这个循环体进行一次时能够彻底消费掉这些操作系统里出现的数据的代码，其实这是一个调度器。在绝大部分的实现中，它都以一些我们刚刚提到的另一个耳熟能详的名字出现：事件驱动的模式，或者说事件循环。</p>
-<p>来看下面这段给出的伪代码：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">auto</span> *task_list = TaskList.<span class="built_in">getInstance</span>()-&gt;<span class="built_in">add</span>(InitTask);</span><br><span class="line"><span class="comment">//你需要在这里的InitTask注册监听的事件，否则程序立即退出</span></span><br><span class="line"><span class="keyword">auto</span> *event_fetcher = EventFetcher.<span class="built_in">getInstance</span>();</span><br><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> task: *task_list)</span><br><span class="line">        <span class="built_in">task</span>();</span><br><span class="line">    task_list.<span class="built_in">clear</span>();</span><br><span class="line">    <span class="keyword">auto</span> events = EventFetcher.<span class="built_in">getInstance</span>()-&gt;<span class="built_in">getEvents</span>();</span><br><span class="line">    <span class="comment">// 这里如果获取不到会阻塞等待</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> event: events)</span><br><span class="line">        <span class="built_in">EventDispatcher</span>(event); </span><br><span class="line">    <span class="comment">// 分发后，后续任务也就是回调用闭包形式传入序列</span></span><br><span class="line">    <span class="comment">// 倘若监听的事件和任务队列全无，则程序退出</span></span><br><span class="line">    <span class="keyword">if</span>(!events.<span class="built_in">length</span>() &amp;&amp; task_list.<span class="built_in">length</span>())</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先，既然要监听事件，必须有一个监听器，在这里是 <code>EventFetcher</code>，你需要在 <code>initTask</code> 这个初始任务里完成注册，紧接着是事件发生后分发任务的函数 <code>EventDispatcher</code>，它将事件按照注册时留下的函数，将发生事件后处理事件的任务扔给 <code>taskList</code>，并一个一个跟着处理，<code>taskList</code> 这样的容器可能是按照优先级优先弹出的优先队列或者其他什么算法，用以高效的分配任务，这样的任务我们给它一个名字，叫做<strong>回调函数</strong></p>
-<p>回调函数何时执行是由调度器决定的，原本把它放到 <code>taskList</code> 的函数大概率早就已经执行下去了，并不会管回调函数什么时候运行，或者说对于程序员来说，它何时运行逻辑都必须正确，这种逻辑上他俩执行没什么关系的行为就是所谓异步。</p>
-<p>要注意的是，输入 <code>taskList</code> 的是一个闭包，如果假使说这个任务是一个计时器，也许你会需要循环往复的计时，此时你必须在回调函数里将计时器重新启动，启动的过程就是向 <code>EventFetcher</code> 再注册一遍计时器，向 <code>EventDispatcher</code> 再把自己的任务和自己当前正在执行的这个回调组成的一对数据再次传入，以此实现无限计时的效果</p>
-<p>回调式的写法在现代的 UI 框架里相当常见，例如 Qt 的信号槽机制，本质上就是这样的东西，我们来看看下面 Dart 的事件循环实现</p>
-<p><img src="/images/深入异步通用概念_图1.png" width="50%" height="50%"></p>
-<p>哎哎，这不就是一模一样，所以说自 IO 多路复用出现后，事件循环也很自然的就出现了</p>
-<p>然而大量使用回调引发了回调地狱的问题。异步最大的问题就是难以阅读。异步的行为导致无法定位事件的来源，所有的任务的调用栈将都被污染为事件循环所执行的，形成了可悲的厚障壁—— asynchronous gap，为程序员调试带来了极大的困难。为了缓解回调地狱，Javascript 带头引入了 promise 的概念，但仍然未脱离回调的意图，只是让回调写成链式调用更好看一点罢了，在此处我们按下不表，有兴趣的可以自行阅读 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise - JavaScript | MDN</a></p>
-<h2 id="横空出世的协程，async-await-的秘法"><a href="#横空出世的协程，async-await-的秘法" class="headerlink" title="横空出世的协程，async/await 的秘法"></a>横空出世的协程，async/await 的秘法</h2><p>想出协程，async/await 这套东西的人绝对是个天才，我无缘得见是什么样的心路历程能够想到这一套东西，但我们仍然可以看看它是怎么工作的，这里我们主要看看的是 async/await，协程的概念与其基本一致，想必聪明的读者看完下面这些，也就能理解协程了</p>
-<p>当我们第一次接触 <code>async/await</code> 时，一个最直观的困惑就是：<code>await</code> 字面意思就是”等待”，等待一个任务完成，这听起来不就是<strong>阻塞</strong>吗？如果它阻塞了当前线程，那和我们直接用同步的 <code>thread.sleep()</code> 或等待一个锁有什么区别？这岂不是换汤不换药？</p>
-<p>实则不然。这正是 <code>async/await</code> 的巧妙之处，也是理解其非阻塞本质的关键。<code>await</code> 的”等待”，是一种<strong>主动的让步，而非被动的阻塞</strong>。</p>
-<h3 id="await-的”等待”是假象，状态机的”挂起”才是真相"><a href="#await-的”等待”是假象，状态机的”挂起”才是真相" class="headerlink" title="await 的”等待”是假象，状态机的”挂起”才是真相"></a>await 的”等待”是假象，状态机的”挂起”才是真相</h3><p>要理解这一点，我们必须揭开 <code>async</code> 函数的华丽外衣，直视其内核：<strong>一个由编译器自动生成的状态机</strong>。</p>
-<p>一个普通的同步函数从开始到结束，其执行路径是唯一的、连续的。而一个 <code>async</code> 函数内部因为有了 <code>await</code> 点，它的执行可以被分割成多个阶段。每一个 <code>await</code> 都是一个潜在的中断点。</p>
-<p>让我们用一个例子来将这个状态机可视化：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">fn</span> <span class="title function_">fetch_data_and_process</span>() <span class="punctuation">-&gt;</span> <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url1</span> = <span class="string">&quot;http://example.com/data1&quot;</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">url2</span> = <span class="string">&quot;http://example.com/data2&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 0: 开始</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data1</span> = <span class="title function_ invoke__">fetch_url</span>(url1).<span class="keyword">await</span>?; <span class="comment">// &lt;- 等待点 1 (await 1)</span></span><br><span class="line">    <span class="comment">// 阶段 1: 收到 data1 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data1: &#123;&#125;&quot;</span>, data1);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">data2</span> = <span class="title function_ invoke__">fetch_url</span>(url2).<span class="keyword">await</span>?; <span class="comment">// &lt;- 等待点 2 (await 2)</span></span><br><span class="line">    <span class="comment">// 阶段 2: 收到 data2 后继续</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Received data2: &#123;&#125;&quot;</span>, data2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阶段 3: 结束</span></span><br><span class="line">    <span class="built_in">format!</span>(<span class="string">&quot;&#123;&#125; + &#123;&#125;&quot;</span>, data1, data2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编译器会将这个 <code>async fn</code> 编译成一个实现了 <code>Future</code> trait 的状态机。这个状态机大致长这样：</p>
+<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
+<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
 <ul>
-<li><strong>基本概念</strong> 首先编译器会把 async 函数编译成状态机，在 await 发生的时候，状态机整个休眠，在外部，通过 <code>poll</code> 唤醒状态机，<code>poll</code> 的语义是<strong>尽可能催促状态机执行的更远</strong></li>
-<li><strong>状态 0 (State 0):</strong> 刚被调用 <code>poll</code> 试图推动状态机时，启动 <code>fetch_url(url1)</code> 这个 Future，然后<strong>立即返回 <code>Poll::Pending</code></strong>。同时，它记录下自己的状态：”我现在正卡在 <code>await 1</code> 这里”。</li>
-<li><strong>事件与唤醒：</strong> 当 <code>fetch_url(url1)</code> 的 I/O 操作在后台完成时（例如，通过操作系统的 epoll/kqueue 等机制通知），一个事件被触发。调度器会知道：”哦，<code>fetch_url(url1)</code> 这个 Future 准备好了”。然后，调度器会找到正在等待它的 <code>fetch_data_and_process</code> 状态机，并再次调用它的 <code>poll</code> 方法。</li>
-<li><strong>状态 1 (State 1):</strong> 状态机从上次中断的地方恢复。它发现自己是处于”状态 1”，于是从 <code>fetch_url(url1)</code> 中拿到结果 <code>data1</code>，执行 <code>println!</code>，然后启动 <code>fetch_url(url2)</code>，接着再次返回 <code>Poll::Pending</code>，并将状态更新为”卡在 <code>await 2</code>“。</li>
-<li><strong>状态 2 (State 2):</strong> 同理，当 <code>fetch_url(url2)</code> 完成时，调度器再次唤醒它。状态机恢复，拿到 <code>data2</code>，执行最后的逻辑，最终返回 <code>Poll::Ready(result)</code>，标志着整个异步任务的完成。</li>
+<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
+<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
+<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。</li>
 </ul>
-<p>哦？调度器，事件的概念又被提及了，是不是事件循环是 async/await 的重要实现方式之一呢？</p>
-<p>你猜的没有错，事实上，你可以从事件循环上很容易的构建出一个 async/await 系统来：如果所有的 async 状态机都是一个对象，当某个 <code>async</code> 函数运行到 <code>await</code> 状态的时候，就是把一个任务注册到事件循环，这个任务是，监听到” await 等待的状态机运行完毕”这个事件时，事件循环的调度器回调 poll 函数来推动自己进行下一步。而正是因为回调函数都会坍缩为 poll ，这就使得在一定程度上事件循环的任务列表里基本都是相同的 poll 函数，简化一下可以省略调任务列表，直接把发送” await 等待的状态机运行完毕”事件改成 poll ，所以 async/await 实现也有可能不需要依赖事件循环。</p>
-<p>所以，<code>await</code> 的关键在于：<strong>当任务需要等待（比如 I/O 未就绪）时，它不是傻傻地占着线程不放，而是通过返回 <code>Pending</code> 来释放线程的控制权。这个线程此时就可以掉头去执行其他已经就绪的任务（比如另一个完成的 HTTP 请求）。</strong> 这正是异步编程高并发能力的根源。</p>
-<h3 id="异步任务树与调度器的工作流"><a href="#异步任务树与调度器的工作流" class="headerlink" title="异步任务树与调度器的工作流"></a>异步任务树与调度器的工作流</h3><p>想象一下，对于 ui 框架，显然要 await 的东西不可能只有一个按钮别的不等了，所以，async 需要能等待多个任务，因此你会在 rust 的宏里看见有实现这个功能的 await (<code>join_all(v).await</code>)，只有使用这种特制的 await，实际上是让事件循环用不同的监听模式来 poll，才能实现让一组任务异步进行。单个 <code>async</code> 函数是一个状态机，而一个复杂的异步程序则是由无数个 <code>async</code> 函数通过 <code>await</code> 组合而成的一棵<strong>异步任务树</strong>。</p>
-<blockquote>
-<p>注意：<strong>异步任务树</strong>实为本文自创的概念，实际上怎么称呼这样的结构我并不知道。同样的，可能存在更复杂的数据结构能更高效的解决这样的问题，但下面我所提及的应该是一种实现。</p>
-</blockquote>
-<p>其所有叶子节点都是 await 函数的尽头，即具体等待一个任务，树的下方是调度器，当事件发生时，调度器将会在事件列表中挑选一个事件，poll 这个事件对应的叶子节点，是一个 async 函数/协程，让它执行至挂起或结束，控制权回到调度器，处理下一个事件，如果事件消费完毕，则继续挂起，这样的循环构成了异步模式下，无栈协程组成程序的图景。</p>
-<p>我们可以从刚刚那个 <code>fetch_data_and_process()</code> 为例子来画一下这棵树具体可以如何工作的其中一种样子：</p>
-<p>首先是 <code>fetch_data_and_process()</code> 被 await 之前，先是有一棵树</p>
-<p><img src="/images/深入异步通用概念_图2.png" width="100%" height="100%"></p>
-<p>然后紧接着，调用者开始 await，实际上<strong>干了4件事情</strong></p>
-<ol>
-<li>初始化 <code>fetch_data_and_process</code> 的状态机，同时包括分配返回值所放置区域等行为</li>
-<li>把推动 <code>fetch_data_and_process</code> 的状态机的 poll 函数放进事件循环的任务队列</li>
-<li>把监听 <code>fetch_data_and_process</code> 的状态机完成的事件注册到事件循环，回调是 poll 调用者自己</li>
-<li>调用者挂起自己</li>
-</ol>
-<p>于是便得到了</p>
-<p><img src="/images/深入异步通用概念_图3.png" width="100%" height="100%"></p>
-<p>记录一下此时此刻事件循环的状态(省略无关项，同时<strong>列表的内容是伪代码</strong>，下同)：</p>
-<ul>
-<li>任务列表：<code>fetch_data_and_process.poll()</code></li>
-<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code></li>
-</ul>
-<p>接着等待事件循环调度，直到调用 poll 推动<code>fetch_data_and_process</code> 的状态机，运行下来就到了 <code>let data1 = fetch_url(url1).await?;</code> 这一行了，也是同理，做这四件事情</p>
-<p><img src="/images/深入异步通用概念_图4.png" width="100%" height="100%"></p>
-<p>事件循环的状态：</p>
-<ul>
-<li>任务列表：<code>fetch_url.poll()</code></li>
-<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code></li>
-</ul>
-<p>我们假定 <code>fetch_url</code> 要直接做一个获取资源的基础 API，那么它和上述的 await 实际上理应是有差别的，因为它不能再把任务推给别人了自己只是等待了，必须自己处理，所以这个异步函数的函数体里只会干两件事</p>
-<ol>
-<li>创建获取 url 资源的事件，注册到事件循环，回调是 poll <code>fetch_url</code> 自己</li>
-<li>挂起自己，等待数据完成</li>
-</ol>
-<p><img src="/images/深入异步通用概念_图5.png" width="100%" height="100%"></p>
-<p>此时此刻事件循环的状态：</p>
-<ul>
-<li>任务列表：空</li>
-<li>注册的事件：<br><code>Event&lt;fetch_data_and_process.finish()&gt; -&gt; caller.poll()</code>,<br><code>Event&lt;fetch_url.finish()&gt; -&gt; fetch_data_and_process.poll()</code>,<br><code>Event&lt;API_getUrl.finish()&gt; -&gt; fetch_url.poll()</code></li>
-</ul>
-<p>好了，接下来任务简单了，等待回调，<code>Event&lt;API_getUrl.finish()&gt;</code> 发生时，<code>fetch_url</code> 会被推动到结束，在结尾的时候，也会挂起自己这个状态机，运行过程回到调度器里，从而从这棵树上脱落。在此之前释放一个 <code>Event&lt;fetch_url.finish()&gt;</code> 的事件信息，告诉事件循环 <code>fetch_data_and_process.poll()</code> 该被放进队列里运行了。</p>
-<p><img src="/images/深入异步通用概念_图6.png" width="100%" height="100%"></p>
-<p>然后 <code>fetch_data_and_process.poll()</code> 让 async 函数 <code>fetch_data_and_process</code> 继续运行，碰到第二个 await <code>let data2 = fetch_url(url2).await?;</code>，逻辑是一样的。直到最后 <code>fetch_data_and_process</code> 也执行到最后，挂起自己交给调度器，脱落，也便回到 <code>caller</code> 了。</p>
-<p><img src="/images/深入异步通用概念_图7.png" width="100%" height="100%"></p>
-<p>这么看来实现这么一套异步的库也不是很麻烦嘛，虽然为 IO 事件包裹一层 API 是实打实的 dirty work</p>
-<p>通过这个小例子你也可以自然的发现，如果你的应用只是普通的 await function 组合，没有特制的等待好几个任务的 await，那你的<strong>异步任务树</strong>就是<strong>异步任务链表</strong>，在这种情况下，实际上和同步毫无区别，而如果你可以同时 await 好几个任务，那由于任务是递交给事件循环穿插运行的，也便实现了所谓的异步：最简单的例子，你可以同时异步高效的 fetch 好几个 url 的内容了。</p>
-<h3 id="无法逾越的鸿沟：异步的”传染性”"><a href="#无法逾越的鸿沟：异步的”传染性”" class="headerlink" title="无法逾越的鸿沟：异步的”传染性”"></a><strong>无法逾越的鸿沟：异步的”传染性”</strong></h3><p>理解了上述机制，我们也就能明白为什么说 <code>async</code> 函数具有”传染性”：一个函数内部如果使用了 <code>await</code>，它自身就必须被标记为 <code>async</code>。</p>
-<p>这是因为，<code>await</code> 的语义依赖于其所在的上下文是一个可以被挂起和恢复的状态机。一个普通的同步函数不具备这种能力。它一旦开始执行，就必须运行到结束，中间无法被”挂起”并将线程控制权交还给调度器。</p>
-<p>因此，<strong>异步模式是构建在同步模式之上的一种特殊环境</strong>。当你选择踏入这个环境（调用一个 <code>async</code> 函数），你就必须遵守它的规则。这种”鸿沟”是异步编程模型本身的性质所决定的，而非 Rust 或其他语言的设计缺陷。</p>
-<blockquote>
-<p>本节我们聚焦于单线程内的协程调度，揭示了 <code>async/await</code> 非阻塞的秘密。然而，协程的魅力远不止于此。它并不与异步强绑定，其本质只是一个可暂停、可恢复的代码块，是”程序是状态机”这一最本质概念的体现。在多线程的舞台上，协程还能演绎出更精彩的并发模式。</p>
-</blockquote>
-<h2 id="后日谈"><a href="#后日谈" class="headerlink" title="后日谈"></a>后日谈</h2><p>说真的，我觉得异步真的不是一个很好理解的东西，它和操作系统相关性不小，但你不能把它看作是操作系统的调度模式。因为操作系统作为一个具有最高权限的软件，它作为状态机，推动它的是硬件中断，在计算机模型里，它不需要考虑自己去实现这个”异步”的功能。但在实际的应用里，其实完全是同步模式，靠获取 os 的信息手动实现的推动状态机，才真正进入了异步。值得一提，我的朋友说：”其实直到在单片机里应用这些行为才真正理解了什么是异步。” 我想这正是轮询，非阻塞 IO 启发了他吧。<br>本人愚钝，这个概念确是想了不少时间才得以理解，中间甚至有过很久的错误理解，如有谬误，还请多多包涵</p>
+<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2><p>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -2899,26 +2919,6 @@ r_{0}=\sqrt{x_{0}^{2}+y_{0}^{2}}</script><p>将所有初值带入得到：</p>
 <p>我们不会对此进行详细的介绍，UEFI 提供了一种统一的方式，它所干的事情就是做安全检查，为操作系统启动准备环境</p>
 <p>UEFI 时期已经完成了对文件系统的支持，他会读取即 EFI 系统分区中的 <code>*.efi</code> 文件，并且启动它，通常来说这个程序是一个 Bootloader ，但是其实也能是其他任何东西，总之这就是我们常说的裸机程序了</p>
 <h2 id="好用的工具推荐"><a href="#好用的工具推荐" class="headerlink" title="好用的工具推荐"></a>好用的工具推荐</h2><p><strong>RW-Everything</strong> <a href="https://rweverything.com/">https://rweverything.com/</a><br>奇妙的小工具，能让你的内存旋转</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>链接、装载与库</title>
-    <url>/posts/8525127.html</url>
-    <content><![CDATA[<h1 id="链接、装载与库"><a href="#链接、装载与库" class="headerlink" title="链接、装载与库"></a>链接、装载与库</h1><p>对于多文件的开发过程来说，关于这一些东西我确实是欠缺的，正好有机会接触《程序员的自我修养——链接、装载与库》一书，初读也是感受颇深。就随着认知增长一点一点记录一些东西吧</p>
-<span id="more"></span>
-<h2 id="一、关于Extern"><a href="#一、关于Extern" class="headerlink" title="一、关于Extern"></a>一、关于Extern</h2><p>在C/C++中声明一个外部变量需要用到extern关键字，而外部函数声明却是可以省略extern的，不需要额外添加关键字，在动态链接当中，将cpp编译为ELF/PE格式后将其置于调用其的cpp文件相同的路径之下，并保留头文件，利用编译器进行编译，以我不成熟的理解，可以想象它仍然是cpp文件，只不过先被处理成了二进制而已<br>了解了头文件的作用，其实动态链接的时候不用头文件也是可以的，可以将其内容直接加到，所以那些头文件里的函数声明其实是一个外部函数的声明，故而不应该在那个为止将函数定义出来。<br>假设有如下一种情况代码如下：<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*------myfun.h------*/</span></span><br><span class="line"><span class="type">int</span> exa = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------myfun.cpp------*/</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myfun</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*------main.cpp------*/</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;myfun.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>在myfun.cpp成为so库的时候，其实int是被声明成这so的模块的全局变量，但当我们拿myfun.h使用的时候，它就变成了main.cpp这个模块里再次定义的东西了(没有extern)，需要改。另外建议别在头文件里定义什么东西，否则会出现一些重复定义的问题。其实头文件对计算机而言没什么作用，她只是在<strong>预编译</strong>时在#include的地方<strong>展开</strong>一下，没别的意义了，其实头文件主要是给别人看的。</p>
-<h2 id="二、神奇的强弱符号"><a href="#二、神奇的强弱符号" class="headerlink" title="二、神奇的强弱符号"></a>二、神奇的强弱符号</h2><p>我们经常在编程中碰到一种情况叫符号重复定义。多个目标文件中含有相同名字全局符号的定义，那么这些目标文件链接的时候将会出现符号重复定义的错误。通常对于全局变量来说，初始化后均为强符号，未初始化为弱符号，弱符号在链接时候会被强符号替代，我们可以通过GCC的<code>__attribute__((weak))</code>来定义任何一个强符号为弱符号。<br>对于它们，下列三条规则使用：</p>
-<ul>
-<li>同名的强符号只能有一个，否则编译器报”重复定义”错误。</li>
-<li>允许一个强符号和多个弱符号，但定义会选择强符号的。</li>
-<li>当有多个弱符号相同时，链接器选择内存占用最大的那个。<br>所以说，我们可以通过定义自己的库函数是强符号，而用户使用的时候定义弱符号，以此来观察是否能够调用库函数，或者用户函数。太神奇了。<br>但是弱函数也不能胡乱使用，第三点规则已经说明了问题。</li>
-</ul>
-<h2 id="三、argc和argv"><a href="#三、argc和argv" class="headerlink" title="三、argc和argv[ ]"></a>三、argc和argv[ ]</h2><p>其中<code>argc</code>是外部输入的参数个数，<code>argv[ ]</code>是参数的字符串数组。即在命令行执行时后面跟着的参数。</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
