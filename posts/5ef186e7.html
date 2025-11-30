@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Github登陆与验证的故事最近一次给我的 Gentoo 滚包的时候，发现了一个很神奇的问题，特此来写一篇博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github登陆与验证的故事">
+<meta property="og:url" content="https://feipiao594.github.io/posts/5ef186e7.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="Github登陆与验证的故事最近一次给我的 Gentoo 滚包的时候，发现了一个很神奇的问题，特此来写一篇博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE1.png">
+<meta property="og:image" content="https://feipiao594.github.io/posts/image.png">
+<meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE2.jpg">
+<meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE3.png">
+<meta property="og:image" content="https://feipiao594.github.io/posts/image-1.png">
+<meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE4.png">
+<meta property="og:image" content="https://feipiao594.github.io/posts/image-2.png">
+<meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE5.png">
+<meta property="og:image" content="https://feipiao594.github.io/posts/image-3.png">
+<meta property="article:published_time" content="2025-11-30T07:34:50.000Z">
+<meta property="article:modified_time" content="2025-11-30T11:07:44.235Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE1.png">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/5ef186e7.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Github登陆与验证的故事 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/5ef186e7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Github登陆与验证的故事
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-11-30 15:34:50 / 修改时间：19:07:44" itemprop="dateCreated datePublished" datetime="2025-11-30T15:34:50+08:00">2025-11-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/" itemprop="url" rel="index"><span itemprop="name">Project_Tools</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Project-Tools/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Github登陆与验证的故事"><a href="#Github登陆与验证的故事" class="headerlink" title="Github登陆与验证的故事"></a>Github登陆与验证的故事</h1><p>最近一次给我的 Gentoo 滚包的时候，发现了一个很神奇的问题，特此来写一篇博客</p>
+<span id="more"></span>
+<h2 id="问题阐述"><a href="#问题阐述" class="headerlink" title="问题阐述"></a>问题阐述</h2><p>更新元数据到 steam 的时候，突然开始问我要用户名和密码了<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; Syncing repository &#x27;steam-overlay&#x27; into &#x27;/var/db/repos/steam-overlay&#x27;...</span><br><span class="line">/usr/sbin/git fetch origin --depth 1</span><br><span class="line">Username for &#x27;https://github.com&#x27;:</span><br></pre></td></tr></table></figure></p>
+<p>还记得很久之前，我一开始学习使用 git 的时候，到发生这个事情之前，我一直都是在这个登陆上瞎搞搞就成功的，但是此次发生这样的错误，我实在是受不了了。<code>steam-overlay</code> 提供了 <code>proton</code> 这样的基础设施，我必须修好它。</p>
+<h2 id="解决问题的开篇"><a href="#解决问题的开篇" class="headerlink" title="解决问题的开篇"></a>解决问题的开篇</h2><p>实质上这个问题是好几个事情的叠加，我此次滚包距离上次滚包已经是有两个月之久了，最后变动的包一共有 684 项，总体编译并更新时长超过了 11 个小时。<br>首先我们知道，Github 其实在很久之前就不允许使用用户名+密码这种比较弱的身份验证方式登陆了，你必须在 Github 上创建 PAT(personal access token) 来验证你的身份，具体的创建方式在官方文档里有提供(<a target="_blank" rel="noopener" href="https://githubdocs.cn/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">https://githubdocs.cn/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens</a>)</p>
+<p>注意上述方式只支持 https 的登陆，ssh 不能使用 PAT 进行登陆，而 Github 也给出了这个 PAT 具体是怎么使用的</p>
+<p><img src="/images/Github登陆与验证的故事_图1.png" width="100%" height="100%"><br><img src="image.png" alt="alt text"></p>
+<p>可以看到，默认的 Git 只支持使用 username 和 password 进行认证。让我们来细细讨论一下 git 的认证模式</p>
+<h2 id="git-认证机制"><a href="#git-认证机制" class="headerlink" title="git 认证机制"></a>git 认证机制</h2><blockquote>
+<p>注:下面讨论的对象全部都是官方的 Git CLI，不讨论第三方的 git 实现</p>
+</blockquote>
+<p>其实官方的 Git CLI 并不是自己实现各种 HTTP 认证机制的，而是调用了 <code>libcurl</code> 来处理 HTTP 连接、握手、认证等底层细节。使用 <code>libcurl</code> 你只需要像下面这样设置 username 和 password</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CURL *curl = curl_easy_init();</span><br><span class="line"><span class="keyword">if</span> (curl) &#123;</span><br><span class="line">    curl_easy_setopt(curl, CURLOPT_URL, <span class="string">&quot;https://example.com/repo.git&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Git 就是这么做的:把从 credential helper 拿到的字段设置进去</span></span><br><span class="line">    curl_easy_setopt(curl, CURLOPT_USERNAME, <span class="string">&quot;myuser&quot;</span>);</span><br><span class="line">    curl_easy_setopt(curl, CURLOPT_PASSWORD, <span class="string">&quot;mypassword&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 默认情况 libcurl 根据服务器实际支持情况自动选择认证方式</span></span><br><span class="line">    CURLcode res = curl_easy_perform(curl);</span><br><span class="line">    curl_easy_cleanup(curl);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但大家都知道，验证方式可不是只有 username + password 这样一种模式，那么如果服务器问你要 token-only 的协商模式怎么办？<br>让我们来看看 git 实现了什么，搜索 <code>curl_easy_setopt</code>:<br><a target="_blank" rel="noopener" href="https://github.com/search?q=repo%3Agit%2Fgit%20curl_easy_setopt&amp;type=code">https://github.com/search?q=repo%3Agit%2Fgit%20curl_easy_setopt&amp;type=code</a></p>
+<p>你会发现，其实 git 只给 libcurl 传了 username + password，那么在这种情况下，其实如果服务器真问你要 token-only，是属于 <code>libcurl</code> 在只有 username + password 下无法处理的情况，那么库也只能给你返回一个错误了</p>
+<p><strong>(结论 1) 所以其实 git 支持的模式就是，libcurl 在拥有 username + password 时能正常工作的那几个认证模式，其中最典型的就是 basic，其他都是在此基础上的安全性修正。</strong><br>所以在这种情况下，绝大部分 git 仓库在 http(s)下，既然反正都要使用用户名密码了，那么把密码当 token 也是一种合适的行为了</p>
+<h2 id="VSCode-怎么做的？"><a href="#VSCode-怎么做的？" class="headerlink" title="VSCode 怎么做的？"></a>VSCode 怎么做的？</h2><p>在通过各种途径:比如 <strong>Git Pro</strong>、Git 源代码、LLM 搜索的情况下了解了这些，我立马意识到一个问题:<br>是啊，我现在也许可以解决当下的问题了，但是有一个破绽我还是不能理解，我常用的 VSCode 提供了 GUI 模式的 git 仓库操作能力，我为什么最近在 VSCode 底下的提交行为并没有出现问题，偏偏是滚包的时候出问题了？</p>
+<p>AI 给我了一个结果，因为有所谓 GCM(<a target="_blank" rel="noopener" href="https://github.com/git-ecosystem/git-credential-manager">git credential manager</a>) 存在，他说这个工具是通过设置如下选项进行配置 git 的 credential.helper 来起作用的<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config credential.helper</span><br></pre></td></tr></table></figure></p>
+<p>credential.helper 是 git 的一个凭证管理子系统，用于在“git 想要 username/password 时”，提供这些凭证，或者把它们保存下来。<br>其实工作原理就是 git 在做一些远程操作的时候就传给他们一些信息，要他们返还的一组 username + password 来登陆，而 git 本身并不负责这些</p>
+<p>也就是说如果他们不存在那 git 应该每次 push/clone 操作都会问你讨要用户名密码</p>
+<p>如果这条指令能够返回 <code>manager-core</code> 那么就说明我在使用 gcm 了<br>是…是么？AI 说的话我只能相信 50%，在我的电脑上这行指令成功返回了 <code>cache</code></p>
+<p>这是何意，cache 就只是把密码暂存在内存里几分钟，但我 VSCode 在我装完它这一年，基本在登陆后从不会再怎么多登陆，我甚至不知道怎么退出登陆(笑)</p>
+<p>于是在实践下我发现了一些东西，<code>feipiao-study-record</code> 是我新建的一个私有库，在 vscode 的聚合终端和外部的 konsole 中完全不一样</p>
+<p><img src="/images/Github登陆与验证的故事_图2.jpg" width="100%" height="100%"></p>
+<p>而且在我把 credential.helper 置空后，vscode 这边仍然可以工作。</p>
+<p>这肯定是环境变量在起作用了，搜索了一下 vscode 聚合终端下面的环境变量，锚定了下面几个</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">env</span> | grep -i askpass</span><br><span class="line">VSCODE_GIT_ASKPASS_NODE=/opt/vscode/code</span><br><span class="line">SSH_ASKPASS=/usr/bin/ksshaskpass</span><br><span class="line">GIT_ASKPASS=/opt/vscode/resources/app/extensions/git/dist/askpass.sh</span><br><span class="line">VSCODE_GIT_ASKPASS_EXTRA_ARGS=</span><br><span class="line">VSCODE_GIT_ASKPASS_MAIN=/opt/vscode/resources/app/extensions/git/dist/askpass-main.js</span><br></pre></td></tr></table></figure>
+<p>描述他们的<a target="_blank" rel="noopener" href="https://git-scm.com/docs/gitcredentials">官方文档</a>如下:</p>
+<p><img src="/images/Github登陆与验证的故事_图3.png" width="100%" height="100%"><br><img src="image-1.png" alt="alt text"></p>
+<p>他们这几个环境变量其实是一个朴素的 credential.helper，单纯只是一个 cli 进程，git 从标准 IO 传递并获取他们存取的用户名密码</p>
+<p><strong>(结论 2)</strong> 而这边的 <code>GIT_ASKPASS</code> 赫然就是 vscode 的东西，原来是用这种方式侵入并提供了认证服务啊，所有 vscode 的登陆窗口，vscode 里方便的认证，都来自于此，vscode 负责替你与 github 产生交互，最终生成一个 username + password 给 git，git 在这个会话的基础上进行与 github git 仓库的远程操作</p>
+<p>使用以下命令可以删去这个环境变量，此时 vscode 和外部的 konsole 效果就一致了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">env</span> -u GIT_ASKPASS git <span class="built_in">clone</span> &lt;your-repo-https-url&gt;</span><br></pre></td></tr></table></figure></p>
+<p>但是还是报错，直接报错，也没问我要，在给 GIT 打上 TRACE 环境变量后，从 log 里看到是 <code>SSH_ASKPASS</code> 在干坏事，我从来没有调整过 kde 的 <code>kwallet</code>，里面存储的从来就是一个错误的 token，所以这下就寄掉了。调整一下就可以工作了。</p>
+<h2 id="GCM-去哪了"><a href="#GCM-去哪了" class="headerlink" title="GCM 去哪了"></a>GCM 去哪了</h2><p>可以看到啊，在 github 的 settings - application 里有相关的允许的认证客户端的信息，vscode 插件的认证次数要远多于 gcm (我这边按照 Recently Used 排序了)</p>
+<p><img src="/images/Github登陆与验证的故事_图4.png" width="100%" height="100%"><br><img src="image-2.png" alt="alt text"></p>
+<p>但 GCM 这个东西确实存在啊。其实它是绑定在 windows 的 git 安装包的，所以 windows 用户其实一上来就使用了最现代的认证模式，它会拉起一个浏览器页面让你登陆<br>所以在 windows 上执行刚刚的我返回 <code>cache</code> 的指令，你们大概率会得到 <code>manager-core</code> 或者 <code>manager</code></p>
+<p>而如果 gcm 存在，那这些环境变量就不需要考虑了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>官方 git cli 只在远程请求的时候问你要 username + password，支持的 http(s) 的认证模式就是，它所依赖的 libcurl 在拥有 username + password 时能正常工作的那几个认证模式，其中最典型的就是 basic，其他都是在此基础上的安全性修正。</li>
+<li>官方 git cli 可以从别的地方读入 username + password，有 credential.helper 和 askpass 系环境变量两种，其中前者优先级更高，详情请看上方标注出的官方文档</li>
+<li>vscode 通过设置 GIT_ASKPASS 与其自身的内置插件来实现 github 登陆</li>
+</ol>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><p>完全使用 GCM 来统一登陆手段，全局配置 credential.helper 为 GCM 会让 vscode 的认证 hook 失效，因为其实质上只是在调用 git，而 git 负责决定认证信息来源。</p>
+<h2 id="番外"><a href="#番外" class="headerlink" title="番外"></a>番外</h2><h3 id="事件一"><a href="#事件一" class="headerlink" title="事件一"></a>事件一</h3><p>2025-10-30 时，Gentoo 官方的 Github Organization 踢掉了所有第三方源，包括一些比较有名的，比如 steam-overlay、gentoo-zh<br>这也导致了上述滚包的时候产生的 github 认证问题不只是上述的这个问题，可能是 github 服务器认为这是一个属于 Gentoo 官方的 Github Organization 的私有仓库，问我要 token 来了<br>而我很久没滚包了，没看见 gentoo 社区里的新闻www</p>
+<h3 id="事件二"><a href="#事件二" class="headerlink" title="事件二"></a>事件二</h3><p>在查看 Pro Git 这本书的时候，我发现关于传输协议这段的描述<br><a target="_blank" rel="noopener" href="https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols">https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols</a></p>
+<p>中文版会把 The Dumb Protocol 翻译成哑协议，在我印象里 dumb 是愚蠢的意思，而且这边就两个协议，另一个叫 The Smart Protocol</p>
+<p>我一开始以为是某种中国人的含蓄（<br>一搜发现 dumb 还真有哑的意思，而且排在愚蠢前，那到底是谁比较愚蠢自不必多说了 qwq</p>
+<p><img src="/images/Github登陆与验证的故事_图5.png" width="100%" height="100%"><br><img src="image-3.png" alt="alt text"></p>
+<p>我还是觉得这是中国人的含蓄</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/9b424f3e.html" rel="prev" title="深入异步通用概念">
+      <i class="fa fa-chevron-left"></i> 深入异步通用概念
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B"><span class="nav-number">1.</span> <span class="nav-text">Github登陆与验证的故事</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E9%98%90%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">问题阐述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%E7%9A%84%E5%BC%80%E7%AF%87"><span class="nav-number">1.2.</span> <span class="nav-text">解决问题的开篇</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6"><span class="nav-number">1.3.</span> <span class="nav-text">git 认证机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VSCode-%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84%EF%BC%9F"><span class="nav-number">1.4.</span> <span class="nav-text">VSCode 怎么做的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GCM-%E5%8E%BB%E5%93%AA%E4%BA%86"><span class="nav-number">1.5.</span> <span class="nav-text">GCM 去哪了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.7.</span> <span class="nav-text">建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%95%AA%E5%A4%96"><span class="nav-number">1.8.</span> <span class="nav-text">番外</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E4%B8%80"><span class="nav-number">1.8.1.</span> <span class="nav-text">事件一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E4%BA%8C"><span class="nav-number">1.8.2.</span> <span class="nav-text">事件二</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">178k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">5:23</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : '33681b1bc18966505a400f417651d27f',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

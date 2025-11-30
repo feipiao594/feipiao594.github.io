@@ -142,24 +142,6 @@
       </categories>
   </entry>
   <entry>
-    <title>C++模板元编程</title>
-    <url>/posts/9244e40f.html</url>
-    <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
-<span id="more"></span>
-<h2 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h2><p>推荐一个<a href="https://zhuanlan.zhihu.com/p/378355217">知乎链接</a>，作者的讲述非常优秀<br>模板元编程是一个庞大的课题，我打算慢慢写它</p>
-<h2 id="一些零碎的理解"><a href="#一些零碎的理解" class="headerlink" title="一些零碎的理解"></a>一些零碎的理解</h2><p>由于本人也学艺不精，所以这个板块先写一些临时的感悟啥的，以及学习时候使用的一些例子</p>
-<h3 id="std-enable-if的一种用法"><a href="#std-enable-if的一种用法" class="headerlink" title="std::enable_if的一种用法"></a>std::enable_if的一种用法</h3><p>学习时候用到测试代码如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> N = <span class="type">void</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> test</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span>&lt;T, std::<span class="type">enable_if_t</span>&lt;std::is_same_v&lt;T, <span class="type">int</span>&gt;, <span class="type">void</span>&gt;&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">int</span>&gt;::value;<span class="comment">//1</span></span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">char</span>&gt;::value;<span class="comment">//0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>通过一个迂回的方式来判断一个类型是不是int类型，当然我只是想叙述<code>std::enable_if</code>应该怎么用，这个模板是输入两个参数，第一个是<code>bool</code>类型，第二个是当输入<code>true</code>时，其<code>type</code>是什么类型，由于<code>std::enable_if</code>所返回的类型任意，且利用偏特化进行分支选择时，其主模板，和<code>std::enable_if</code>所处同样位置必须时模板<code>typename T</code>，且由于一般不会写上<code>enable_if</code>这一个位置的类型，主模板必须缺省，缺省<code>void</code>就是一个好选择</p>
-<p>注意特化和函数的默认参数不同，可以特化任意位置的参数，如我们可以特化如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTemplateType</span>&lt;<span class="type">float</span>, N&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//content</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>利用上述特化的性质，<code>enable_if</code>可以塞在模板参数中间，但以我之见，在其等价位置的后方应该只存在形参包或者有缺省值的模板参数</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++模板元-质数序列</title>
     <url>/posts/3187765d.html</url>
     <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
@@ -178,45 +160,21 @@
       </categories>
   </entry>
   <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+    <title>C++模板元编程</title>
+    <url>/posts/9244e40f.html</url>
+    <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
 <span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
+<h2 id="推荐"><a href="#推荐" class="headerlink" title="推荐"></a>推荐</h2><p>推荐一个<a href="https://zhuanlan.zhihu.com/p/378355217">知乎链接</a>，作者的讲述非常优秀<br>模板元编程是一个庞大的课题，我打算慢慢写它</p>
+<h2 id="一些零碎的理解"><a href="#一些零碎的理解" class="headerlink" title="一些零碎的理解"></a>一些零碎的理解</h2><p>由于本人也学艺不精，所以这个板块先写一些临时的感悟啥的，以及学习时候使用的一些例子</p>
+<h3 id="std-enable-if的一种用法"><a href="#std-enable-if的一种用法" class="headerlink" title="std::enable_if的一种用法"></a>std::enable_if的一种用法</h3><p>学习时候用到测试代码如下<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> N = <span class="type">void</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> test</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">test</span>&lt;T, std::<span class="type">enable_if_t</span>&lt;std::is_same_v&lt;T, <span class="type">int</span>&gt;, <span class="type">void</span>&gt;&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">int</span>&gt;::value;<span class="comment">//1</span></span><br><span class="line">    std::cout &lt;&lt; test&lt;<span class="type">char</span>&gt;::value;<span class="comment">//0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过一个迂回的方式来判断一个类型是不是int类型，当然我只是想叙述<code>std::enable_if</code>应该怎么用，这个模板是输入两个参数，第一个是<code>bool</code>类型，第二个是当输入<code>true</code>时，其<code>type</code>是什么类型，由于<code>std::enable_if</code>所返回的类型任意，且利用偏特化进行分支选择时，其主模板，和<code>std::enable_if</code>所处同样位置必须时模板<code>typename T</code>，且由于一般不会写上<code>enable_if</code>这一个位置的类型，主模板必须缺省，缺省<code>void</code>就是一个好选择</p>
+<p>注意特化和函数的默认参数不同，可以特化任意位置的参数，如我们可以特化如下：<br><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">MyTemplateType</span>&lt;<span class="type">float</span>, N&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//content</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>利用上述特化的性质，<code>enable_if</code>可以塞在模板参数中间，但以我之见，在其等价位置的后方应该只存在形参包或者有缺省值的模板参数</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
       </categories>
   </entry>
   <entry>
@@ -313,6 +271,48 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CelesteMiaoNet自建群服教程</title>
     <url>/posts/75894d10.html</url>
     <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
@@ -356,6 +356,18 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -394,15 +406,62 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <url>/posts/a39b2865.html</url>
-    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+    <title>Github登陆与验证的故事</title>
+    <url>/posts/5ef186e7.html</url>
+    <content><![CDATA[<h1 id="Github登陆与验证的故事"><a href="#Github登陆与验证的故事" class="headerlink" title="Github登陆与验证的故事"></a>Github登陆与验证的故事</h1><p>最近一次给我的 Gentoo 滚包的时候，发现了一个很神奇的问题，特此来写一篇博客</p>
 <span id="more"></span>
+<h2 id="问题阐述"><a href="#问题阐述" class="headerlink" title="问题阐述"></a>问题阐述</h2><p>更新元数据到 steam 的时候，突然开始问我要用户名和密码了<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; Syncing repository &#x27;steam-overlay&#x27; into &#x27;/var/db/repos/steam-overlay&#x27;...</span><br><span class="line">/usr/sbin/git fetch origin --depth 1</span><br><span class="line">Username for &#x27;https://github.com&#x27;:</span><br></pre></td></tr></table></figure></p>
+<p>还记得很久之前，我一开始学习使用 git 的时候，到发生这个事情之前，我一直都是在这个登陆上瞎搞搞就成功的，但是此次发生这样的错误，我实在是受不了了。<code>steam-overlay</code> 提供了 <code>proton</code> 这样的基础设施，我必须修好它。</p>
+<h2 id="解决问题的开篇"><a href="#解决问题的开篇" class="headerlink" title="解决问题的开篇"></a>解决问题的开篇</h2><p>实质上这个问题是好几个事情的叠加，我此次滚包距离上次滚包已经是有两个月之久了，最后变动的包一共有 684 项，总体编译并更新时长超过了 11 个小时。<br>首先我们知道，Github 其实在很久之前就不允许使用用户名+密码这种比较弱的身份验证方式登陆了，你必须在 Github 上创建 PAT(personal access token) 来验证你的身份，具体的创建方式在官方文档里有提供(<a href="https://githubdocs.cn/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">https://githubdocs.cn/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens</a>)</p>
+<p>注意上述方式只支持 https 的登陆，ssh 不能使用 PAT 进行登陆，而 Github 也给出了这个 PAT 具体是怎么使用的</p>
+<p><img src="/images/Github登陆与验证的故事_图1.png" width="100%" height="100%"><br><img src="image.png" alt="alt text"></p>
+<p>可以看到，默认的 Git 只支持使用 username 和 password 进行认证。让我们来细细讨论一下 git 的认证模式</p>
+<h2 id="git-认证机制"><a href="#git-认证机制" class="headerlink" title="git 认证机制"></a>git 认证机制</h2><blockquote>
+<p>注:下面讨论的对象全部都是官方的 Git CLI，不讨论第三方的 git 实现</p>
+</blockquote>
+<p>其实官方的 Git CLI 并不是自己实现各种 HTTP 认证机制的，而是调用了 <code>libcurl</code> 来处理 HTTP 连接、握手、认证等底层细节。使用 <code>libcurl</code> 你只需要像下面这样设置 username 和 password</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">CURL *curl = curl_easy_init();</span><br><span class="line"><span class="keyword">if</span> (curl) &#123;</span><br><span class="line">    curl_easy_setopt(curl, CURLOPT_URL, <span class="string">&quot;https://example.com/repo.git&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Git 就是这么做的:把从 credential helper 拿到的字段设置进去</span></span><br><span class="line">    curl_easy_setopt(curl, CURLOPT_USERNAME, <span class="string">&quot;myuser&quot;</span>);</span><br><span class="line">    curl_easy_setopt(curl, CURLOPT_PASSWORD, <span class="string">&quot;mypassword&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 默认情况 libcurl 根据服务器实际支持情况自动选择认证方式</span></span><br><span class="line">    CURLcode res = curl_easy_perform(curl);</span><br><span class="line">    curl_easy_cleanup(curl);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但大家都知道，验证方式可不是只有 username + password 这样一种模式，那么如果服务器问你要 token-only 的协商模式怎么办？<br>让我们来看看 git 实现了什么，搜索 <code>curl_easy_setopt</code>:<br><a href="https://github.com/search?q=repo%3Agit%2Fgit%20curl_easy_setopt&amp;type=code">https://github.com/search?q=repo%3Agit%2Fgit%20curl_easy_setopt&amp;type=code</a></p>
+<p>你会发现，其实 git 只给 libcurl 传了 username + password，那么在这种情况下，其实如果服务器真问你要 token-only，是属于 <code>libcurl</code> 在只有 username + password 下无法处理的情况，那么库也只能给你返回一个错误了</p>
+<p><strong>(结论 1) 所以其实 git 支持的模式就是，libcurl 在拥有 username + password 时能正常工作的那几个认证模式，其中最典型的就是 basic，其他都是在此基础上的安全性修正。</strong><br>所以在这种情况下，绝大部分 git 仓库在 http(s)下，既然反正都要使用用户名密码了，那么把密码当 token 也是一种合适的行为了</p>
+<h2 id="VSCode-怎么做的？"><a href="#VSCode-怎么做的？" class="headerlink" title="VSCode 怎么做的？"></a>VSCode 怎么做的？</h2><p>在通过各种途径:比如 <strong>Git Pro</strong>、Git 源代码、LLM 搜索的情况下了解了这些，我立马意识到一个问题:<br>是啊，我现在也许可以解决当下的问题了，但是有一个破绽我还是不能理解，我常用的 VSCode 提供了 GUI 模式的 git 仓库操作能力，我为什么最近在 VSCode 底下的提交行为并没有出现问题，偏偏是滚包的时候出问题了？</p>
+<p>AI 给我了一个结果，因为有所谓 GCM(<a href="https://github.com/git-ecosystem/git-credential-manager">git credential manager</a>) 存在，他说这个工具是通过设置如下选项进行配置 git 的 credential.helper 来起作用的<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config credential.helper</span><br></pre></td></tr></table></figure></p>
+<p>credential.helper 是 git 的一个凭证管理子系统，用于在“git 想要 username/password 时”，提供这些凭证，或者把它们保存下来。<br>其实工作原理就是 git 在做一些远程操作的时候就传给他们一些信息，要他们返还的一组 username + password 来登陆，而 git 本身并不负责这些</p>
+<p>也就是说如果他们不存在那 git 应该每次 push/clone 操作都会问你讨要用户名密码</p>
+<p>如果这条指令能够返回 <code>manager-core</code> 那么就说明我在使用 gcm 了<br>是…是么？AI 说的话我只能相信 50%，在我的电脑上这行指令成功返回了 <code>cache</code></p>
+<p>这是何意，cache 就只是把密码暂存在内存里几分钟，但我 VSCode 在我装完它这一年，基本在登陆后从不会再怎么多登陆，我甚至不知道怎么退出登陆(笑)</p>
+<p>于是在实践下我发现了一些东西，<code>feipiao-study-record</code> 是我新建的一个私有库，在 vscode 的聚合终端和外部的 konsole 中完全不一样</p>
+<p><img src="/images/Github登陆与验证的故事_图2.jpg" width="100%" height="100%"></p>
+<p>而且在我把 credential.helper 置空后，vscode 这边仍然可以工作。</p>
+<p>这肯定是环境变量在起作用了，搜索了一下 vscode 聚合终端下面的环境变量，锚定了下面几个</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; <span class="built_in">env</span> | grep -i askpass</span><br><span class="line">VSCODE_GIT_ASKPASS_NODE=/opt/vscode/code</span><br><span class="line">SSH_ASKPASS=/usr/bin/ksshaskpass</span><br><span class="line">GIT_ASKPASS=/opt/vscode/resources/app/extensions/git/dist/askpass.sh</span><br><span class="line">VSCODE_GIT_ASKPASS_EXTRA_ARGS=</span><br><span class="line">VSCODE_GIT_ASKPASS_MAIN=/opt/vscode/resources/app/extensions/git/dist/askpass-main.js</span><br></pre></td></tr></table></figure>
+<p>描述他们的<a href="https://git-scm.com/docs/gitcredentials">官方文档</a>如下:</p>
+<p><img src="/images/Github登陆与验证的故事_图3.png" width="100%" height="100%"><br><img src="image-1.png" alt="alt text"></p>
+<p>他们这几个环境变量其实是一个朴素的 credential.helper，单纯只是一个 cli 进程，git 从标准 IO 传递并获取他们存取的用户名密码</p>
+<p><strong>(结论 2)</strong> 而这边的 <code>GIT_ASKPASS</code> 赫然就是 vscode 的东西，原来是用这种方式侵入并提供了认证服务啊，所有 vscode 的登陆窗口，vscode 里方便的认证，都来自于此，vscode 负责替你与 github 产生交互，最终生成一个 username + password 给 git，git 在这个会话的基础上进行与 github git 仓库的远程操作</p>
+<p>使用以下命令可以删去这个环境变量，此时 vscode 和外部的 konsole 效果就一致了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">env</span> -u GIT_ASKPASS git <span class="built_in">clone</span> &lt;your-repo-https-url&gt;</span><br></pre></td></tr></table></figure></p>
+<p>但是还是报错，直接报错，也没问我要，在给 GIT 打上 TRACE 环境变量后，从 log 里看到是 <code>SSH_ASKPASS</code> 在干坏事，我从来没有调整过 kde 的 <code>kwallet</code>，里面存储的从来就是一个错误的 token，所以这下就寄掉了。调整一下就可以工作了。</p>
+<h2 id="GCM-去哪了"><a href="#GCM-去哪了" class="headerlink" title="GCM 去哪了"></a>GCM 去哪了</h2><p>可以看到啊，在 github 的 settings - application 里有相关的允许的认证客户端的信息，vscode 插件的认证次数要远多于 gcm (我这边按照 Recently Used 排序了)</p>
+<p><img src="/images/Github登陆与验证的故事_图4.png" width="100%" height="100%"><br><img src="image-2.png" alt="alt text"></p>
+<p>但 GCM 这个东西确实存在啊。其实它是绑定在 windows 的 git 安装包的，所以 windows 用户其实一上来就使用了最现代的认证模式，它会拉起一个浏览器页面让你登陆<br>所以在 windows 上执行刚刚的我返回 <code>cache</code> 的指令，你们大概率会得到 <code>manager-core</code> 或者 <code>manager</code></p>
+<p>而如果 gcm 存在，那这些环境变量就不需要考虑了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>官方 git cli 只在远程请求的时候问你要 username + password，支持的 http(s) 的认证模式就是，它所依赖的 libcurl 在拥有 username + password 时能正常工作的那几个认证模式，其中最典型的就是 basic，其他都是在此基础上的安全性修正。</li>
+<li>官方 git cli 可以从别的地方读入 username + password，有 credential.helper 和 askpass 系环境变量两种，其中前者优先级更高，详情请看上方标注出的官方文档</li>
+<li>vscode 通过设置 GIT_ASKPASS 与其自身的内置插件来实现 github 登陆</li>
+</ol>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><p>完全使用 GCM 来统一登陆手段，全局配置 credential.helper 为 GCM 会让 vscode 的认证 hook 失效，因为其实质上只是在调用 git，而 git 负责决定认证信息来源。</p>
+<h2 id="番外"><a href="#番外" class="headerlink" title="番外"></a>番外</h2><h3 id="事件一"><a href="#事件一" class="headerlink" title="事件一"></a>事件一</h3><p>2025-10-30 时，Gentoo 官方的 Github Organization 踢掉了所有第三方源，包括一些比较有名的，比如 steam-overlay、gentoo-zh<br>这也导致了上述滚包的时候产生的 github 认证问题不只是上述的这个问题，可能是 github 服务器认为这是一个属于 Gentoo 官方的 Github Organization 的私有仓库，问我要 token 来了<br>而我很久没滚包了，没看见 gentoo 社区里的新闻www</p>
+<h3 id="事件二"><a href="#事件二" class="headerlink" title="事件二"></a>事件二</h3><p>在查看 Pro Git 这本书的时候，我发现关于传输协议这段的描述<br><a href="https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols">https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols</a></p>
+<p>中文版会把 The Dumb Protocol 翻译成哑协议，在我印象里 dumb 是愚蠢的意思，而且这边就两个协议，另一个叫 The Smart Protocol</p>
+<p>我一开始以为是某种中国人的含蓄（<br>一搜发现 dumb 还真有哑的意思，而且排在愚蠢前，那到底是谁比较愚蠢自不必多说了 qwq</p>
+<p><img src="/images/Github登陆与验证的故事_图5.png" width="100%" height="100%"><br><img src="image-3.png" alt="alt text"></p>
+<p>我还是觉得这是中国人的含蓄</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
       </categories>
   </entry>
   <entry>
@@ -1385,27 +1444,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>关于51单片机移植u8g2失败经历</title>
-    <url>/posts/572ad35a.html</url>
-    <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
-<blockquote>
-<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
-<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
-<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
-<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
-</blockquote>
-<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br>图中使用的开发板是普中的51开发板<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>使用说明之qblog批处理</title>
     <url>/posts/64b84f95.html</url>
     <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
@@ -1434,6 +1472,27 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于51单片机移植u8g2失败经历</title>
+    <url>/posts/572ad35a.html</url>
+    <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
+<blockquote>
+<p>前排提示，据我的研究，移植u8g2库到51并非一个理智的行为，至于为什么如此，下面我们就来讨论一下</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="关于C51的关键字"><a href="#关于C51的关键字" class="headerlink" title="关于C51的关键字"></a>关于C51的关键字</h2><p>C51有一些<strong>特殊的关键字</strong>，如<code>data</code>，<code>xdata</code>这类，其实是规定一个变量在数据中是如何存储的，我遇到的第一个问题就是，u8g2中有不少的代码都使用到了<code>data</code>作为变量名，这导致了许多代码的识别直接出现了问题，因为编译器只把它当成关键字</p>
+<h2 id="关于数组超限的问题"><a href="#关于数组超限的问题" class="headerlink" title="关于数组超限的问题"></a>关于数组超限的问题</h2><p>这个方便解决，用C51新添加的关键字，在数组声明前写上<code>code</code>关键字，将其移至<code>flash</code>中即可</p>
+<h2 id="关于8051对函数指针not-well-suit"><a href="#关于8051对函数指针not-well-suit" class="headerlink" title="关于8051对函数指针not well suit"></a>关于8051对函数指针not well suit</h2><blockquote>
+<p>Basically, the 8051 is not “just another processor” that you can program as you would a PC, etc.The 8051 architecture has some very specific optimisations that make it very good for some things,and very poor for others - and <strong>function pointer</strong> is one of those things to which it is <strong>not well suited</strong>!</p>
+</blockquote>
+<p>这段话打破了我一整天的努力，因为u8g2库里重要的结构体有好几个成员变量都是函数指针，<strong>这意味着移植它到51单片机并非良构</strong>，虽然可以使用规定变量存储位置的方法解决一部分错误，终究还是不能解决所有的问题，也正是因为如此，这一个大坑直接扼杀了我移植的道路</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>终究还是只能是随便玩玩，还不如自己写呢<br>现在我已经成功的让<strong>字符</strong>在上面显示了，也算是曲折的完成了原先任务(的1/10)了吧<br>图中使用的开发板是普中的51开发板<br><img src="/images/关于51单片机移植u8g2失败经历_图1.jpg" width="70%" height="70%"></p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -1515,20 +1574,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>关于编译原理的一些哲学想法</title>
-    <url>/posts/604cfd1a.html</url>
-    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
-<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
     <title>初入Linux的一些感想</title>
     <url>/posts/13c32592.html</url>
     <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
@@ -1547,6 +1592,20 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <url>/posts/604cfd1a.html</url>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -2022,6 +2081,33 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
+<p>18.024 Multivariable Calculus (Finished)</p>
+<p>18.700 Linear Algebra (Finished)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
+<p>18.100 Real Analysis (<strong>working</strong>)</p>
+<p><strong>Third Part</strong><br>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
+<p>南京大学 OS (<strong>Working</strong>)</p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -2092,33 +2178,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
-<p>18.024 Multivariable Calculus (Finished)</p>
-<p>18.700 Linear Algebra (Finished)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
-<p>18.100 Real Analysis (<strong>working</strong>)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-<p>南京大学 OS (<strong>Working</strong>)</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
     <title>排序</title>
     <url>/posts/a444b428.html</url>
     <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
@@ -2128,6 +2187,35 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>DSA</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>数学实验综合练习</title>
+    <url>/posts/93a8bfd0.html</url>
+    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
+<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
+<span id="more"></span>
+<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
+<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
+<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>后半部分为logist模型<br>模型公式如下</p>
+<script type="math/tex; mode=display">
+N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
+<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
+<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
+<script type="math/tex; mode=display">
+A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
+<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Math_modeling</category>
       </categories>
   </entry>
   <entry>
@@ -2194,35 +2282,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>数学实验综合练习</title>
-    <url>/posts/93a8bfd0.html</url>
-    <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
-<h2 id="题目-新冠疫情预测"><a href="#题目-新冠疫情预测" class="headerlink" title="题目_新冠疫情预测"></a>题目_新冠疫情预测</h2><p>搜集全球新冠疫情的数据，选择全球数据或者某一个国家的数据，研究数据的<strong>函数类型</strong>，根据全球或者某一国家截止2022年5月底的数据，预测全球(或者该国家)感染的<strong>最终规模</strong>，判断全球(或者该国家)疫情何时结束。</p>
-<span id="more"></span>
-<h2 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h2><p>我们小组将课题定为对全球新冠疫情的预测。小组将统计范围放在全球，以便对新冠疫情的分析更具全局性和准确性。实验主要分为三个步骤，首先由小组成员ds进行全球新冠疫情数据的收集整理和汇总，将其交由成员zxy，根据收集的数据研究分析其函数类型，并以此预测全球感染的最终规模和结束时间，最后由成员cj将本次实验过程、结果总结并撰写为报告。</p>
-<h2 id="数据搜集阶段"><a href="#数据搜集阶段" class="headerlink" title="数据搜集阶段"></a>数据搜集阶段</h2><p>对于全球疫情数据的收集，由于数据的庞大及专业性，显然难以以线下的调查或者查阅资料获得，所以小组将目光投向网络。根据实验要求，所需的数据是全球范围内截止2022年5月的疫情病例人数。小组划定起始时间为2020年1月，以月为单位，收集了29个月的新冠感染数据。我们小组采用以ChatGPT收集数据为准。整理合并制作出数据表格，如下图<br><img src="/images/数学实验综合练习_图1.png" width="100%" height="100%"></p>
-<h2 id="数据分析及疫情预测阶段"><a href="#数据分析及疫情预测阶段" class="headerlink" title="数据分析及疫情预测阶段"></a>数据分析及疫情预测阶段</h2><p>根据收集的全球病例数据，通过Matlab制作出了散点图，如下<br><img src="/images/数学实验综合练习_图2.png" width="70%" height="70%"><br>由图可见，感染总数从初始阶段开始便<strong>猛增</strong>，增长速率也在加快，而后半段呈现<strong>类线性的缓慢上升</strong>，显然这不符合书本上已给出的数学模型。经小组思考和讨论后，决定将其分为两段分别研究。<br>前半部分是J型曲线模型<br>模型公式如下</p>
-<script type="math/tex; mode=display">
-N(t)=N_0(1+e^{kt})</script><p><img src="/images/数学实验综合练习_图3.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">0.09</span>,<span class="number">0.85</span>,<span class="number">86.74</span>,<span class="number">682.41</span>,<span class="number">1795.69</span>,<span class="number">2717.62</span>,<span class="number">4174.10</span>,<span class="number">6735.730</span>,<span class="number">10001.90</span>...</span><br><span class="line">,<span class="number">12581.53</span>,<span class="number">16234.30</span>,<span class="number">20174.37</span>,<span class="number">22554.55</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">500</span>,<span class="number">2</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)*(<span class="number">1</span>+<span class="built_in">exp</span>(a(<span class="number">2</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,y);</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">13</span>;</span><br><span class="line">Y=A(<span class="number">1</span>).*(<span class="number">1</span>+<span class="built_in">exp</span>(A(<span class="number">2</span>)*X));</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>后半部分为logist模型<br>模型公式如下</p>
-<script type="math/tex; mode=display">
-N(t)=\frac{c}{1+ae^{kt}}</script><p><img src="/images/数学实验综合练习_图4.png" width="70%" height="70%"><br>代码如下</p>
-<figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">clc;clear;</span><br><span class="line">y=[<span class="number">22911.44</span>,<span class="number">23250.81</span>,<span class="number">23594.19</span>,<span class="number">23923.71</span>,<span class="number">24156.30</span>,<span class="number">24395.02</span>,<span class="number">24703.13</span>...</span><br><span class="line">,<span class="number">25000.68</span>,<span class="number">25211.07</span>,<span class="number">25519.78</span>,<span class="number">25768.44</span>,<span class="number">25941.22</span>,<span class="number">26241.14</span>,<span class="number">26526.19</span>,<span class="number">26799.18</span>,<span class="number">27099.82</span>];</span><br><span class="line">x=<span class="number">1</span>:<span class="built_in">length</span>(y);</span><br><span class="line">a=[<span class="number">5000</span>,<span class="number">100</span>,<span class="number">1</span>];</span><br><span class="line">f = @(a,x)a(<span class="number">1</span>)./(<span class="number">1</span>+a(<span class="number">2</span>)*<span class="built_in">exp</span>(-a(<span class="number">3</span>)*x));</span><br><span class="line">[A,resnorm] = lsqcurvefit(f,a,x,(y<span class="number">-22911</span>));</span><br><span class="line"><span class="built_in">plot</span>(x,y,<span class="string">&#x27;b*&#x27;</span>);</span><br><span class="line"><span class="built_in">hold</span> on;</span><br><span class="line">X=<span class="number">1</span>:<span class="number">40</span>;</span><br><span class="line">Y=A(<span class="number">1</span>)./(<span class="number">1</span>+A(<span class="number">2</span>)*<span class="built_in">exp</span>(-A(<span class="number">3</span>)*X))+<span class="number">22911</span>;</span><br><span class="line"><span class="built_in">plot</span>(X,Y,<span class="string">&#x27;r-&#x27;</span>);</span><br><span class="line">grid on;</span><br></pre></td></tr></table></figure>
-<p>分别利用lsqcurvefit拟合非线性函数，最终得到前者的系数组成的数组A为</p>
-<script type="math/tex; mode=display">
-A = \quad 1.0e+03\quad * \quad [4.4978 \quad 0.0128 \quad 0.0003]</script><p>后者的系数组成的数组A为</p>
-<script type="math/tex; mode=display">
-A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是前半段的模型与logist模型差异较大，观察其图形，与物种增长的<strong>J型曲线</strong>极为相似。小组推测出现这种曲线的原因是，新冠病毒爆发的初期，大多国家并没有采取有效的控制措施，对抗病毒的药物或是疫苗任然处于研制当中，此时的新冠病毒就处于没有任何威胁的环境中，因而其增长曲线与J型极为类似，而与logist模型相悖。</p>
-<p>由后半段的拟合曲线图可看出，感染人数的变化趋势与书本上所给例子有相似之处。两段曲线的分界点为2021年12月，小组判断在此时疫情已经得到了一定的控制，同时病毒的致病能力也会有所下降，从而逐渐符合<strong>logist模型</strong>。</p>
-<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>根据拟合模型预估(即第四张图中 X:28，Y:27350)，全球疫情将持续长达<strong>4年</strong>左右，最终感染规模为<strong>2.74亿人</strong>，预计在<strong>2023年5月</strong>彻底结束。</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Math_modeling</category>
       </categories>
   </entry>
   <entry>
