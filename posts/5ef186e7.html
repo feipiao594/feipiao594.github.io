@@ -28,16 +28,12 @@
 <meta property="og:description" content="Github登陆与验证的故事最近一次给我的 Gentoo 滚包的时候，发现了一个很神奇的问题，特此来写一篇博客">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE1.png">
-<meta property="og:image" content="https://feipiao594.github.io/posts/image.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE2.jpg">
 <meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE3.png">
-<meta property="og:image" content="https://feipiao594.github.io/posts/image-1.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE4.png">
-<meta property="og:image" content="https://feipiao594.github.io/posts/image-2.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE5.png">
-<meta property="og:image" content="https://feipiao594.github.io/posts/image-3.png">
 <meta property="article:published_time" content="2025-11-30T07:34:50.000Z">
-<meta property="article:modified_time" content="2025-11-30T11:07:44.235Z">
+<meta property="article:modified_time" content="2025-11-30T11:10:05.754Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/Github%E7%99%BB%E9%99%86%E4%B8%8E%E9%AA%8C%E8%AF%81%E7%9A%84%E6%95%85%E4%BA%8B_%E5%9B%BE1.png">
@@ -230,7 +226,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-11-30 15:34:50 / 修改时间：19:07:44" itemprop="dateCreated datePublished" datetime="2025-11-30T15:34:50+08:00">2025-11-30</time>
+              <time title="创建时间：2025-11-30 15:34:50 / 修改时间：19:10:05" itemprop="dateCreated datePublished" datetime="2025-11-30T15:34:50+08:00">2025-11-30</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,7 +277,7 @@
 <p>还记得很久之前，我一开始学习使用 git 的时候，到发生这个事情之前，我一直都是在这个登陆上瞎搞搞就成功的，但是此次发生这样的错误，我实在是受不了了。<code>steam-overlay</code> 提供了 <code>proton</code> 这样的基础设施，我必须修好它。</p>
 <h2 id="解决问题的开篇"><a href="#解决问题的开篇" class="headerlink" title="解决问题的开篇"></a>解决问题的开篇</h2><p>实质上这个问题是好几个事情的叠加，我此次滚包距离上次滚包已经是有两个月之久了，最后变动的包一共有 684 项，总体编译并更新时长超过了 11 个小时。<br>首先我们知道，Github 其实在很久之前就不允许使用用户名+密码这种比较弱的身份验证方式登陆了，你必须在 Github 上创建 PAT(personal access token) 来验证你的身份，具体的创建方式在官方文档里有提供(<a target="_blank" rel="noopener" href="https://githubdocs.cn/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens">https://githubdocs.cn/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens</a>)</p>
 <p>注意上述方式只支持 https 的登陆，ssh 不能使用 PAT 进行登陆，而 Github 也给出了这个 PAT 具体是怎么使用的</p>
-<p><img src="/images/Github登陆与验证的故事_图1.png" width="100%" height="100%"><br><img src="image.png" alt="alt text"></p>
+<p><img src="/images/Github登陆与验证的故事_图1.png" width="100%" height="100%"></p>
 <p>可以看到，默认的 Git 只支持使用 username 和 password 进行认证。让我们来细细讨论一下 git 的认证模式</p>
 <h2 id="git-认证机制"><a href="#git-认证机制" class="headerlink" title="git 认证机制"></a>git 认证机制</h2><blockquote>
 <p>注:下面讨论的对象全部都是官方的 Git CLI，不讨论第三方的 git 实现</p>
@@ -303,13 +299,13 @@
 <p>这肯定是环境变量在起作用了，搜索了一下 vscode 聚合终端下面的环境变量，锚定了下面几个</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">env</span> | grep -i askpass</span><br><span class="line">VSCODE_GIT_ASKPASS_NODE=/opt/vscode/code</span><br><span class="line">SSH_ASKPASS=/usr/bin/ksshaskpass</span><br><span class="line">GIT_ASKPASS=/opt/vscode/resources/app/extensions/git/dist/askpass.sh</span><br><span class="line">VSCODE_GIT_ASKPASS_EXTRA_ARGS=</span><br><span class="line">VSCODE_GIT_ASKPASS_MAIN=/opt/vscode/resources/app/extensions/git/dist/askpass-main.js</span><br></pre></td></tr></table></figure>
 <p>描述他们的<a target="_blank" rel="noopener" href="https://git-scm.com/docs/gitcredentials">官方文档</a>如下:</p>
-<p><img src="/images/Github登陆与验证的故事_图3.png" width="100%" height="100%"><br><img src="image-1.png" alt="alt text"></p>
+<p><img src="/images/Github登陆与验证的故事_图3.png" width="100%" height="100%"></p>
 <p>他们这几个环境变量其实是一个朴素的 credential.helper，单纯只是一个 cli 进程，git 从标准 IO 传递并获取他们存取的用户名密码</p>
 <p><strong>(结论 2)</strong> 而这边的 <code>GIT_ASKPASS</code> 赫然就是 vscode 的东西，原来是用这种方式侵入并提供了认证服务啊，所有 vscode 的登陆窗口，vscode 里方便的认证，都来自于此，vscode 负责替你与 github 产生交互，最终生成一个 username + password 给 git，git 在这个会话的基础上进行与 github git 仓库的远程操作</p>
 <p>使用以下命令可以删去这个环境变量，此时 vscode 和外部的 konsole 效果就一致了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">env</span> -u GIT_ASKPASS git <span class="built_in">clone</span> &lt;your-repo-https-url&gt;</span><br></pre></td></tr></table></figure></p>
 <p>但是还是报错，直接报错，也没问我要，在给 GIT 打上 TRACE 环境变量后，从 log 里看到是 <code>SSH_ASKPASS</code> 在干坏事，我从来没有调整过 kde 的 <code>kwallet</code>，里面存储的从来就是一个错误的 token，所以这下就寄掉了。调整一下就可以工作了。</p>
 <h2 id="GCM-去哪了"><a href="#GCM-去哪了" class="headerlink" title="GCM 去哪了"></a>GCM 去哪了</h2><p>可以看到啊，在 github 的 settings - application 里有相关的允许的认证客户端的信息，vscode 插件的认证次数要远多于 gcm (我这边按照 Recently Used 排序了)</p>
-<p><img src="/images/Github登陆与验证的故事_图4.png" width="100%" height="100%"><br><img src="image-2.png" alt="alt text"></p>
+<p><img src="/images/Github登陆与验证的故事_图4.png" width="100%" height="100%"></p>
 <p>但 GCM 这个东西确实存在啊。其实它是绑定在 windows 的 git 安装包的，所以 windows 用户其实一上来就使用了最现代的认证模式，它会拉起一个浏览器页面让你登陆<br>所以在 windows 上执行刚刚的我返回 <code>cache</code> 的指令，你们大概率会得到 <code>manager-core</code> 或者 <code>manager</code></p>
 <p>而如果 gcm 存在，那这些环境变量就不需要考虑了</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
@@ -322,7 +318,7 @@
 <h3 id="事件二"><a href="#事件二" class="headerlink" title="事件二"></a>事件二</h3><p>在查看 Pro Git 这本书的时候，我发现关于传输协议这段的描述<br><a target="_blank" rel="noopener" href="https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols">https://git-scm.com/book/en/v2/Git-Internals-Transfer-Protocols</a></p>
 <p>中文版会把 The Dumb Protocol 翻译成哑协议，在我印象里 dumb 是愚蠢的意思，而且这边就两个协议，另一个叫 The Smart Protocol</p>
 <p>我一开始以为是某种中国人的含蓄（<br>一搜发现 dumb 还真有哑的意思，而且排在愚蠢前，那到底是谁比较愚蠢自不必多说了 qwq</p>
-<p><img src="/images/Github登陆与验证的故事_图5.png" width="100%" height="100%"><br><img src="image-3.png" alt="alt text"></p>
+<p><img src="/images/Github登陆与验证的故事_图5.png" width="100%" height="100%"></p>
 <p>我还是觉得这是中国人的含蓄</p>
 
     </div>
