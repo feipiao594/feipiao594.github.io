@@ -11,15 +11,22 @@
 <li>对于 PC 端，使用键盘方向键或 WASD 键(需点击一下棋盘让焦点位于游戏内)</li>
 <li>对于手机端，点击屏幕上的方向按钮来移动所有方块。</li>
 <li>相同数字的方块相撞时会合并为更大的数字。</li>
+<li>每次移动，都会在棋盘上任意一个格子生成 2(90%) 或 4(10%)</li>
 <li>目标是得到2048方块，但你可以继续玩更高分数。</li>
 <li>当格子填满且无法移动时游戏结束。</li>
 </ul>
 <h3 id="特色："><a href="#特色：" class="headerlink" title="特色："></a>特色：</h3><ul>
-<li>支持缓存，刷新页面后可继续上次游戏。</li>
+<li>支持在第一次移动后进行缓存，刷新页面后可继续上次游戏。</li>
 <li>达到2048后可继续挑战更高分数。</li>
 <li>支持PC和移动端。</li>
 </ul>
-<p>享受游戏吧！</p>
+<h3 id="分数计算公式"><a href="#分数计算公式" class="headerlink" title="分数计算公式"></a>分数计算公式</h3><p>每次合并两个相同数字的方块时，分数会增加合并后的数值。例如：</p>
+<ul>
+<li>两个2合并为4，得4分</li>
+<li>两个4合并为8，得8分</li>
+<li>两个8合并为16，得16分</li>
+</ul>
+<p>以此类推。</p>
 <h2 id="游戏本体"><a href="#游戏本体" class="headerlink" title="游戏本体"></a>游戏本体</h2><div id="game-container" tabindex="0">
   <div id="game-section">
     <div id="score">分数: <span id="score-value">0</span> <span id="status"></span></div>
@@ -571,20 +578,6 @@ initGrid();
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++模板元-质数序列</title>
     <url>/posts/3187765d.html</url>
     <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
@@ -595,6 +588,20 @@ initGrid();
 <p>输出上述数组的长度</p>
 <p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
 <p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -618,91 +625,6 @@ initGrid();
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CelesteMiaoNet自建群服教程</title>
-    <url>/posts/75894d10.html</url>
-    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
-<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
-<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
-<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
-<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
-<p>下载完毕后，直接运行就可以安装编译工具</p>
-<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
-<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
-<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
-<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
-<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
-<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
-<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
-</blockquote>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
-<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
-</ol>
-<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
-<ol>
-<li>服务器默认开放端口号为 17230</li>
-</ol>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
-<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
-<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -799,6 +721,103 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>CelesteMiaoNet自建群服教程</title>
+    <url>/posts/75894d10.html</url>
+    <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
+<p>本教程能够帮助你自建喵服群服，此教程发布时间为2025.3.1，请注意教程的时效性</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><p>你需要对基本的服务器运维有一些了解，本教程不负责教学服务器基本运维，可以自行搜寻资料<br>你需要有一台 Windows 为系统的设备用来编译喵服(Linux/MacOS 可能亦可，但 Windows 能保证可行)<br>其次你需要一个拥有公网IP的服务器，你可以选择常见的云服务器 ECS </p>
+<h2 id="下载-NET-编译工具"><a href="#下载-NET-编译工具" class="headerlink" title="下载 .NET 编译工具"></a>下载 .NET 编译工具</h2><p>前往微软官方，选择合适的 .NET 版本下载 <strong>SDK</strong><br><a href="https://dotnet.microsoft.com/zh-cn/download/dotnet">https://dotnet.microsoft.com/zh-cn/download/dotnet</a></p>
+<p>注意 Everest 使用的版本是 .NET 7.0，尽管目前这已经是一个不被支持的版本，但你可以仍然可以使用它</p>
+<p>选取 <code>x64</code> ，即可开始下载<br><img src="/images/CelesteMiaoNet自建群服教程_图1.png" width="100%" height="100%"></p>
+<p>下载完毕后，直接运行就可以安装编译工具</p>
+<h2 id="下载喵服仓库"><a href="#下载喵服仓库" class="headerlink" title="下载喵服仓库"></a>下载喵服仓库</h2><p>到喵服 Github 官网<br><a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></p>
+<p>直接下载项目 zip 或使用 <code>git</code> 工具下载</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/CelesteNyaServer/CelesteNet.git</span><br></pre></td></tr></table></figure>
+<p><strong>注意这个项目要求你把项目文件夹置于 Celeste 的 Mods 文件夹下</strong></p>
+<h2 id="编译喵服服务器"><a href="#编译喵服服务器" class="headerlink" title="编译喵服服务器"></a>编译喵服服务器</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd CelesteNet</span><br><span class="line">dotnet build -c Release</span><br></pre></td></tr></table></figure>
+<p>如果运行没有报错，这时你应该能够在 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 看见一个已经完整编译好的服务器，比如，目录下有 <code>CelesteNet.Server.exe</code></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>将上面的 <code>./CelesteNet.Server/bin/Debug/net7.0/*</code> 中 net7.0 这个文件夹压缩，并上传到你的服务器</p>
+<p>如果服务器是 Windows 系统，你可以直接运行 <code>CelesteNet.Server.exe</code></p>
+<p>如果服务器是 Linux/MacOS 系统，请重复 <code>下载 .NET 编译工具</code> 这一步骤，注意选择对应系统与架构的 .NET 安装，你也可以直接使用包管理<br>安装完毕后你只需要使用如下指令即可轻松打开服务器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dotnet ./CelesteNet.Server.dll</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于 Linux 你也可以参考微软官方的教程<br><a href="https://learn.microsoft.com/zh-cn/dotnet/core/install/linux">https://learn.microsoft.com/zh-cn/dotnet/core/install/linux</a><br>注意 Debian 源内的包只支持 amd64 架构，如果你的服务器是其他架构，比如我的树莓派是 arm64，请使用手动安装方法</p>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ol>
+<li>服务器的配置文件存在于 <code>./ModuleConfigs</code> 里，比如 <code>./ModuleConfigs/CelesteNetServer.ChatModule.yaml</code> 你可以添加一些进服时显示的信息，如下图</li>
+</ol>
+<p><img src="/images/CelesteMiaoNet自建群服教程_图2.jpg" width="100%" height="100%"></p>
+<ol>
+<li>服务器默认开放端口号为 17230</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ol>
+<li>[喵服仓库] <a href="https://github.com/CelesteNyaServer/CelesteNet">https://github.com/CelesteNyaServer/CelesteNet</a></li>
+<li>[官服仓库] <a href="https://github.com/0x0ade/CelesteNet">https://github.com/0x0ade/CelesteNet</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -834,18 +853,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <url>/posts/a39b2865.html</url>
-    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1421,27 +1428,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_4_结构体</title>
-    <url>/posts/ae9548c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
-<span id="more"></span>
-<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
-<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
-<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
-<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_3_所有权</title>
     <url>/posts/f75e4487.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
@@ -1489,6 +1475,27 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Rust_Chapter_4_结构体</title>
+    <url>/posts/ae9548c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-4-结构体"><a href="#Rust-Chapter-4-结构体" class="headerlink" title="Rust_Chapter_4_结构体"></a>Rust_Chapter_4_结构体</h1><p>对于早期学习了C++的我来说，OOP是很重要的东西，因而同理Rust里的结构体也是极其重要的</p>
+<span id="more"></span>
+<h2 id="结构体的定义与实例化"><a href="#结构体的定义与实例化" class="headerlink" title="结构体的定义与实例化"></a>结构体的定义与实例化</h2><p>和元组不一样的是，结构体需要给每个数据赋予名字以便清楚地表明它们的意义。正是由于有了这些名字，结构体的使用要比元组更加灵活：你不再需要依赖顺序索引来指定或访问实例中的值。</p>
+<h3 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h3><p>关键字struct被用来定义并命名结构体，一个良好的结构体名称应当能够反映出自身数据组合的意义。除此之外，我们还需要在随后的花括号中声明所有数据的名字及类型，这些数据也被称作字段。如下代码展示了一个用于存储账户信息的结构体定义：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username: <span class="type">String</span>,</span><br><span class="line">  email: <span class="type">String</span>,</span><br><span class="line">  sign_in_count: <span class="type">u64</span>,</span><br><span class="line">  active: <span class="type">bool</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意到这里与C++不同的语法，首先类型后置不必多言，所有类型结尾都要接上一个逗号<code>,</code>，而且结构体声明的最后也不需要加上一个在C/C++中很容易忘掉的分号<code>;</code></p>
+<h3 id="结构体的实例化"><a href="#结构体的实例化" class="headerlink" title="结构体的实例化"></a>结构体的实例化</h3><p>直接看代码，和C++很不一样，这里首先要<strong>加上成员变量的名字</strong>，再把Rust结构体的定义中的类型名换成具体的名字。注意到这里是一条语句，所以语句的结尾要加上分号<code>;</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在获得了结构体实例后，我们可以通过<strong>点号</strong>来访问实例中的特定字段(熟悉的语法)。<br>如果你想获得某个用户的电子邮件地址，那么可以使用<code>user1.email</code>来获取。另外，<strong>假如</strong>这个结构体的<strong>实例是可变</strong>的(结构体的定义当然无关可不可变)，那么我们还可以通过点号来修改字段中的值。示例5-3展示了如何修改一个<strong>可变</strong><code>User</code>实例中<code>email</code>字段的值</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
+<p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_5_枚举与模式匹配</title>
     <url>/posts/28bcc6be.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
@@ -1521,6 +1528,64 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>很合理对吧</p>
 <h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_6_包与crate</title>
+    <url>/posts/23fc5c90.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-6-包与crate"><a href="#Rust-Chapter-6-包与crate" class="headerlink" title="Rust_Chapter_6_包与crate"></a>Rust_Chapter_6_包与crate</h1><p>相比于C++，Rust最吸引我得就是其强大的包管理与调用，cargo实在是太好用了。现在，我们来讨论包与crate相关的内容</p>
+<span id="more"></span>
+<h2 id="包与crate"><a href="#包与crate" class="headerlink" title="包与crate"></a>包与crate</h2><p><code>crate</code>是Rust在编译时最小的代码单位。其分为两种，一种是<strong>二进制项</strong>，一种是<strong>库</strong>，其中库crate不包括<code>main</code>函数</p>
+<p>包(package)是提供一系列功能的一个或者多个crate。一个包会包含一个<code>Cargo.toml</code>文件，阐述如何去构建这些 crate。Cargo就是一个包含构建你代码的二进制项的包。Cargo也包含这些二进制项所依赖的库。其他项目也能用Cargo库来实现与Cargo命令行程序一样的逻辑。</p>
+<p>包中可以包含<strong>至多一个库</strong>crate(library crate)。包中可以包含<strong>任意多个二进制</strong>crate(binary crate)，但是必须至少包含一个crate(无论是库的还是二进制的)。</p>
+<p>一个标准的项目目录如下，来自Rust语言圣经(Rust Course):</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── Cargo.lock</span><br><span class="line">├── src</span><br><span class="line">│   ├── main.rs</span><br><span class="line">│   ├── lib.rs</span><br><span class="line">│   └── bin</span><br><span class="line">│       └── main1.rs</span><br><span class="line">│       └── main2.rs</span><br><span class="line">├── tests</span><br><span class="line">│   └── some_integration_tests.rs</span><br><span class="line">├── benches</span><br><span class="line">│   └── simple_bench.rs</span><br><span class="line">└── examples</span><br><span class="line">    └── simple_example.rs</span><br></pre></td></tr></table></figure>
+<ul>
+<li>唯一库包：<code>src/lib.rs</code></li>
+<li>默认二进制包：<code>src/main.rs</code>，编译后生成的可执行文件与Package同名</li>
+<li>其余二进制包：<code>src/bin/main1.rs</code>和<code>src/bin/main2.rs</code>，它们会分别生成一个文件同名的二进制可执行文件</li>
+<li>集成测试文件：<code>tests</code>目录下</li>
+<li>基准性能测试benchmark文件：<code>benches</code>目录下</li>
+<li>项目示例：<code>examples</code>目录下</li>
+</ul>
+<p>要注意的是上面的这些是Cargo的默认规范，但你可以不跟据规范来，比如你想在一个自定义的文件夹底下放一个<code>main3.rs</code>，你可以在<code>Cargo.toml</code>内用<code>[[bin]]</code>来指定一个二进制项的包。就像这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[[bin]]</span><br><span class="line">name =&quot;myproject&quot;</span><br><span class="line">path =&quot;src/myproject/bin/main3.rs&quot;</span><br></pre></td></tr></table></figure>
+<p>但我们一般不会这么做，使用规范肯定要更加合适。</p>
+<p>上面我们这样定义的<code>src/lib.rs</code>也好<code>src/main.rs</code>也好，其实是一个crate的一个<strong>根文件</strong>，编译器在编译时，会通过这个根文件里写的<code>use</code>语句按照一定的规则查找相对路径底下的一些crate的其他文件，并且将文件共同串联组成一个crate的树，这棵树叫做<strong>模块树</strong></p>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mod</span> my_mod &#123;</span><br><span class="line">  <span class="keyword">fn</span> <span class="title function_">private_function</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;called `my_mod::private_function()`&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">function</span>() &#123;</span><br><span class="line">      <span class="built_in">println!</span>(<span class="string">&quot;called`my_mod::function()`&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用<code>mod</code>关键字声明了一个名叫<code>my_mod</code>的一个<strong>模块/module</strong></p>
+<h3 id="引用模块内的东西"><a href="#引用模块内的东西" class="headerlink" title="引用模块内的东西"></a>引用模块内的东西</h3><p>类似于C++的namespace，你可以使用相对路径，绝对路径来访问模块内的东西(前提是下面提到的可见性要符合)</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mod</span> front_of_house &#123;</span><br><span class="line">    <span class="keyword">mod</span> hosting &#123;</span><br><span class="line">        <span class="keyword">fn</span> <span class="title function_">add_to_waitlist</span>() &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">eat_at_restaurant</span>() &#123;</span><br><span class="line">    <span class="comment">// 绝对路径</span></span><br><span class="line">    crate::front_of_house::hosting::<span class="title function_ invoke__">add_to_waitlist</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 相对路径</span></span><br><span class="line">    front_of_house::hosting::<span class="title function_ invoke__">add_to_waitlist</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>绝对路径：以crate(会指向当前所在包名)或者包名起手开始逐级下来，使用crate作为开始就和使用<code>/</code>作为开始一样。</li>
+<li>相对路径：相比绝对路径少了crate根到当前module</li>
+</ul>
+<p>还有一些小点子<br><code>super</code>关键字，在相对路径中可以作为相对路径的开头，它代表的是当前module的父module，你可以连着使用<code>super</code><br><code>self</code>关键字，在相对路径中可以作为相对路径的开头，它代表的就是当前module</p>
+<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>模块内的东西具有可见性，默认为私有，加上<code>pub</code>关键字可以使得其内部的函数，结构体之类的东西能够被外部访问，但在模块内部，是可以访问的，模块本身可以嵌套，我们可以在这个<code>my_mod</code>内同样的写一个<code>my_mod2</code></p>
+<p>但注意：</p>
+<ul>
+<li>将结构体设置为<code>pub</code>，但它的所有字段依然是私有的</li>
+<li>将枚举设置为<code>pub</code>，它的所有字段也将对外可见</li>
+</ul>
+<h3 id="模块内容存于文件-夹-中"><a href="#模块内容存于文件-夹-中" class="headerlink" title="模块内容存于文件(夹)中"></a>模块内容存于文件(夹)中</h3><p>当你使用在某个文件中使用<code>mod something</code>定义一个模块时，你可以在这个文件的相对路径下方创建一个文件或者文件夹来将花括号<code>&#123;&#125;</code>中的内容放到文件/文件夹下的<code>mod.rs</code>中，但要求这个文件就叫<code>something.rs</code>或者文件夹名字<code>something</code>(显然是一种规范)，如此，模块的声明和实现是分离的</p>
+<p>看看下面这个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── Cargo.lock</span><br><span class="line">└── src</span><br><span class="line">    ├── main.rs</span><br><span class="line">    ├── something1.rs</span><br><span class="line">    └── something2</span><br><span class="line">        └── mod.rs</span><br><span class="line">        └── something3.rs</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---src/main.rs---*/</span></span><br><span class="line"><span class="keyword">mod</span> something1;</span><br><span class="line"><span class="keyword">mod</span> something2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">  something2::something3::<span class="title function_ invoke__">fun</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---src/something2/something3.rs---*/</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">fun</span>()&#123;</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;call something3&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---src/something2/mod.rs---*/</span></span><br><span class="line"><span class="keyword">mod</span> something3;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">fun</span>()&#123;</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;call something2&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用use引用模块"><a href="#使用use引用模块" class="headerlink" title="使用use引用模块"></a>使用use引用模块</h2><p>嗯，有一种python import的感觉</p>
+<ul>
+<li>可以用与module定义一致的相对引用与绝对引用的方式来减少写一长串的引用，减少<code>::</code>的个数(尽管某些C++程序员觉得很多的<code>::</code>很酷)<br>减少的方式就是，像上面这个<a href="#模块内容存于文件(夹">模块内容存于文件(夹)中</a>中)所给出的例子来看，你可以使用<code>use something2::something3::fun;</code>令你以后使用fun的时候可以不用输入前面的一串，当然你也可以只引入一个module，即<code>use something2::something3;</code>，那么你使用时就要<code>something3::fun();</code>了<br>总之就是，什么在use那一串的最后就拿他起手</li>
+<li>解决冲突，当你use了两个相同的函数，这必然会导致和C++命名空间污染一样的编译期错误，这要求你尽量避免这种引用，当然即使你这么做了，你仍然可以在函数前面加上<code>mod_name::</code>的前缀去修正这个冲突</li>
+<li>对于同名冲突问题，还可以使用 as 关键字来解决，它可以赋予引入项一个全新的名称：<code>use std::io::Result as IoResult;</code></li>
+<li>用花括号减少写多行的引用：<code>use std::&#123;cmp::Ordering, io&#125;;</code></li>
+<li>使用<code>*</code>引入模块下的所有项，就像我们在python中做的那样</li>
+</ul>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1580,64 +1645,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p><strong>枚举的泛型</strong></p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Result 就是一个很好的例子</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Result</span>&lt;T, E&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">Ok</span>(T),</span><br><span class="line">    <span class="title function_ invoke__">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="关于实现"><a href="#关于实现" class="headerlink" title="关于实现"></a>关于实现</h2><p>仍然和 C++ 的模板一致，在编译期 Rust 编译器会根据具体使用到的代码，根据泛型实例化一个具体的实现</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_6_包与crate</title>
-    <url>/posts/23fc5c90.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-6-包与crate"><a href="#Rust-Chapter-6-包与crate" class="headerlink" title="Rust_Chapter_6_包与crate"></a>Rust_Chapter_6_包与crate</h1><p>相比于C++，Rust最吸引我得就是其强大的包管理与调用，cargo实在是太好用了。现在，我们来讨论包与crate相关的内容</p>
-<span id="more"></span>
-<h2 id="包与crate"><a href="#包与crate" class="headerlink" title="包与crate"></a>包与crate</h2><p><code>crate</code>是Rust在编译时最小的代码单位。其分为两种，一种是<strong>二进制项</strong>，一种是<strong>库</strong>，其中库crate不包括<code>main</code>函数</p>
-<p>包(package)是提供一系列功能的一个或者多个crate。一个包会包含一个<code>Cargo.toml</code>文件，阐述如何去构建这些 crate。Cargo就是一个包含构建你代码的二进制项的包。Cargo也包含这些二进制项所依赖的库。其他项目也能用Cargo库来实现与Cargo命令行程序一样的逻辑。</p>
-<p>包中可以包含<strong>至多一个库</strong>crate(library crate)。包中可以包含<strong>任意多个二进制</strong>crate(binary crate)，但是必须至少包含一个crate(无论是库的还是二进制的)。</p>
-<p>一个标准的项目目录如下，来自Rust语言圣经(Rust Course):</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── Cargo.lock</span><br><span class="line">├── src</span><br><span class="line">│   ├── main.rs</span><br><span class="line">│   ├── lib.rs</span><br><span class="line">│   └── bin</span><br><span class="line">│       └── main1.rs</span><br><span class="line">│       └── main2.rs</span><br><span class="line">├── tests</span><br><span class="line">│   └── some_integration_tests.rs</span><br><span class="line">├── benches</span><br><span class="line">│   └── simple_bench.rs</span><br><span class="line">└── examples</span><br><span class="line">    └── simple_example.rs</span><br></pre></td></tr></table></figure>
-<ul>
-<li>唯一库包：<code>src/lib.rs</code></li>
-<li>默认二进制包：<code>src/main.rs</code>，编译后生成的可执行文件与Package同名</li>
-<li>其余二进制包：<code>src/bin/main1.rs</code>和<code>src/bin/main2.rs</code>，它们会分别生成一个文件同名的二进制可执行文件</li>
-<li>集成测试文件：<code>tests</code>目录下</li>
-<li>基准性能测试benchmark文件：<code>benches</code>目录下</li>
-<li>项目示例：<code>examples</code>目录下</li>
-</ul>
-<p>要注意的是上面的这些是Cargo的默认规范，但你可以不跟据规范来，比如你想在一个自定义的文件夹底下放一个<code>main3.rs</code>，你可以在<code>Cargo.toml</code>内用<code>[[bin]]</code>来指定一个二进制项的包。就像这样：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[[bin]]</span><br><span class="line">name =&quot;myproject&quot;</span><br><span class="line">path =&quot;src/myproject/bin/main3.rs&quot;</span><br></pre></td></tr></table></figure>
-<p>但我们一般不会这么做，使用规范肯定要更加合适。</p>
-<p>上面我们这样定义的<code>src/lib.rs</code>也好<code>src/main.rs</code>也好，其实是一个crate的一个<strong>根文件</strong>，编译器在编译时，会通过这个根文件里写的<code>use</code>语句按照一定的规则查找相对路径底下的一些crate的其他文件，并且将文件共同串联组成一个crate的树，这棵树叫做<strong>模块树</strong></p>
-<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mod</span> my_mod &#123;</span><br><span class="line">  <span class="keyword">fn</span> <span class="title function_">private_function</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;called `my_mod::private_function()`&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">function</span>() &#123;</span><br><span class="line">      <span class="built_in">println!</span>(<span class="string">&quot;called`my_mod::function()`&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里用<code>mod</code>关键字声明了一个名叫<code>my_mod</code>的一个<strong>模块/module</strong></p>
-<h3 id="引用模块内的东西"><a href="#引用模块内的东西" class="headerlink" title="引用模块内的东西"></a>引用模块内的东西</h3><p>类似于C++的namespace，你可以使用相对路径，绝对路径来访问模块内的东西(前提是下面提到的可见性要符合)</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mod</span> front_of_house &#123;</span><br><span class="line">    <span class="keyword">mod</span> hosting &#123;</span><br><span class="line">        <span class="keyword">fn</span> <span class="title function_">add_to_waitlist</span>() &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">eat_at_restaurant</span>() &#123;</span><br><span class="line">    <span class="comment">// 绝对路径</span></span><br><span class="line">    crate::front_of_house::hosting::<span class="title function_ invoke__">add_to_waitlist</span>();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 相对路径</span></span><br><span class="line">    front_of_house::hosting::<span class="title function_ invoke__">add_to_waitlist</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>绝对路径：以crate(会指向当前所在包名)或者包名起手开始逐级下来，使用crate作为开始就和使用<code>/</code>作为开始一样。</li>
-<li>相对路径：相比绝对路径少了crate根到当前module</li>
-</ul>
-<p>还有一些小点子<br><code>super</code>关键字，在相对路径中可以作为相对路径的开头，它代表的是当前module的父module，你可以连着使用<code>super</code><br><code>self</code>关键字，在相对路径中可以作为相对路径的开头，它代表的就是当前module</p>
-<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>模块内的东西具有可见性，默认为私有，加上<code>pub</code>关键字可以使得其内部的函数，结构体之类的东西能够被外部访问，但在模块内部，是可以访问的，模块本身可以嵌套，我们可以在这个<code>my_mod</code>内同样的写一个<code>my_mod2</code></p>
-<p>但注意：</p>
-<ul>
-<li>将结构体设置为<code>pub</code>，但它的所有字段依然是私有的</li>
-<li>将枚举设置为<code>pub</code>，它的所有字段也将对外可见</li>
-</ul>
-<h3 id="模块内容存于文件-夹-中"><a href="#模块内容存于文件-夹-中" class="headerlink" title="模块内容存于文件(夹)中"></a>模块内容存于文件(夹)中</h3><p>当你使用在某个文件中使用<code>mod something</code>定义一个模块时，你可以在这个文件的相对路径下方创建一个文件或者文件夹来将花括号<code>&#123;&#125;</code>中的内容放到文件/文件夹下的<code>mod.rs</code>中，但要求这个文件就叫<code>something.rs</code>或者文件夹名字<code>something</code>(显然是一种规范)，如此，模块的声明和实现是分离的</p>
-<p>看看下面这个例子：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.</span><br><span class="line">├── Cargo.toml</span><br><span class="line">├── Cargo.lock</span><br><span class="line">└── src</span><br><span class="line">    ├── main.rs</span><br><span class="line">    ├── something1.rs</span><br><span class="line">    └── something2</span><br><span class="line">        └── mod.rs</span><br><span class="line">        └── something3.rs</span><br></pre></td></tr></table></figure>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---src/main.rs---*/</span></span><br><span class="line"><span class="keyword">mod</span> something1;</span><br><span class="line"><span class="keyword">mod</span> something2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">  something2::something3::<span class="title function_ invoke__">fun</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---src/something2/something3.rs---*/</span></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">fun</span>()&#123;</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;call something3&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---src/something2/mod.rs---*/</span></span><br><span class="line"><span class="keyword">mod</span> something3;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">fun</span>()&#123;</span><br><span class="line">  <span class="built_in">println!</span>(<span class="string">&quot;call something2&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="使用use引用模块"><a href="#使用use引用模块" class="headerlink" title="使用use引用模块"></a>使用use引用模块</h2><p>嗯，有一种python import的感觉</p>
-<ul>
-<li>可以用与module定义一致的相对引用与绝对引用的方式来减少写一长串的引用，减少<code>::</code>的个数(尽管某些C++程序员觉得很多的<code>::</code>很酷)<br>减少的方式就是，像上面这个<a href="#模块内容存于文件(夹">模块内容存于文件(夹)中</a>中)所给出的例子来看，你可以使用<code>use something2::something3::fun;</code>令你以后使用fun的时候可以不用输入前面的一串，当然你也可以只引入一个module，即<code>use something2::something3;</code>，那么你使用时就要<code>something3::fun();</code>了<br>总之就是，什么在use那一串的最后就拿他起手</li>
-<li>解决冲突，当你use了两个相同的函数，这必然会导致和C++命名空间污染一样的编译期错误，这要求你尽量避免这种引用，当然即使你这么做了，你仍然可以在函数前面加上<code>mod_name::</code>的前缀去修正这个冲突</li>
-<li>对于同名冲突问题，还可以使用 as 关键字来解决，它可以赋予引入项一个全新的名称：<code>use std::io::Result as IoResult;</code></li>
-<li>用花括号减少写多行的引用：<code>use std::&#123;cmp::Ordering, io&#125;;</code></li>
-<li>使用<code>*</code>引入模块下的所有项，就像我们在python中做的那样</li>
-</ul>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1796,6 +1803,37 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
     <title>从LFS构建中习得的交叉编译</title>
     <url>/posts/c858dee6.html</url>
     <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
@@ -1884,37 +1922,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -2017,6 +2024,20 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <url>/posts/604cfd1a.html</url>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>初入Linux的一些感想</title>
     <url>/posts/13c32592.html</url>
     <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
@@ -2035,57 +2056,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于编译原理的一些哲学想法</title>
-    <url>/posts/604cfd1a.html</url>
-    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
-<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
-    <url>/posts/57f25e7f.html</url>
-    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
-<blockquote>
-<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
-<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
-<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
-<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，而且路由器一定要是 R1、R2…这样的命名(即默认命名)，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
-<blockquote>
-<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
-</blockquote>
-<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
-<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
-<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Computer_network</category>
       </categories>
   </entry>
   <entry>
@@ -2195,6 +2165,83 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识量子计算</title>
+    <url>/posts/fe2da916.html</url>
+    <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
+<h2 id="关于使用的Python库-Qiskit"><a href="#关于使用的Python库-Qiskit" class="headerlink" title="关于使用的Python库:Qiskit"></a>关于使用的Python库:Qiskit</h2><p>可以看一手<a href="https://qiskit.org/">官网的介绍</a>:</p>
+<blockquote>
+<p>Qiskit [kiss-kit] is an open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules.</p>
+</blockquote>
+<p>我主要就使用Qiskit库进行量子计算的学习</p>
+<h2 id="量子计算的基础知识"><a href="#量子计算的基础知识" class="headerlink" title="量子计算的基础知识"></a>量子计算的基础知识</h2><p>这一部分讲一些基础的东西</p>
+<h3 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h3><p>量子比特属于叠加态，其可以表达成基础的几个状态的线性组合，而且线性组合的系数都是复数</p>
+<p>原因是其可以组成向量空间，其实是复希尔伯特空间，这很trival</p>
+<p>具体的表达如下</p>
+<script type="math/tex; mode=display">
+\langle\psi|=a\langle 1|+b \langle 0|、|\psi\rangle = a|1\rangle + b|0 \rangle</script><h3 id="左矢和右矢"><a href="#左矢和右矢" class="headerlink" title="左矢和右矢"></a>左矢和右矢</h3><p>右矢就是普通的向量<br>看起来左矢就是对偶向量</p>
+<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>如果$|\psi\rangle$是某个例子的初始状态，则$|\langle\phi|\psi\rangle|^2$代表在$|\phi\rangle$这个状态找到$|\psi\rangle$这个状态的概率</p>
+<p>点乘具有<strong>正交性和归一性</strong>，即</p>
+<script type="math/tex; mode=display">\langle i|j \rangle = \delta_{ij}</script><h3 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h3><p>张量分析当中的基本运算</p>
+<script type="math/tex; mode=display">|\psi\rangle\otimes|\phi\rangle\equiv|\psi\rangle|\phi\rangle\equiv|\psi,\phi\rangle\equiv|\psi\phi\rangle</script><p>注意，张量积不满足交换律感觉这里的张量积主要用于将qubit合成为张量进矩阵格式的运算</p>
+<p>运算满足如下方法</p>
+<script type="math/tex; mode=display">
+\langle\phi_1\phi_2|\psi_1\psi_2\rangle = \langle\phi_1|\psi_1\rangle_1\langle\phi_2|\psi_2\rangle_2</script><h3 id="外积"><a href="#外积" class="headerlink" title="外积"></a>外积</h3><p>外积是一种用于产生算符的运算，其定义为</p>
+<script type="math/tex; mode=display">|\psi\rangle\langle\phi|=|\psi\rangle\otimes\langle\phi|</script><h3 id="纯态与混合态"><a href="#纯态与混合态" class="headerlink" title="纯态与混合态"></a>纯态与混合态</h3><p>纯态是指可以被一个简单向量表示的量子态<br>位于布洛赫球上的向量是纯态，因为他们可以被书写成</p>
+<script type="math/tex; mode=display">
+|\psi\rangle=\begin{bmatrix}\cos\frac{\theta}{2}\\ e^{i\phi}\sin\frac{\theta}{2}\end{bmatrix}</script><p>而混合态就是在布洛赫球内的向量</p>
+<h3 id="密度矩阵"><a href="#密度矩阵" class="headerlink" title="密度矩阵"></a>密度矩阵</h3><p>给定一个纯态$|\psi\rangle$，其密度算符(矩阵)定义为</p>
+<script type="math/tex; mode=display">
+\rho=|\psi \rangle \langle \psi|</script><h2 id="量子逻辑门"><a href="#量子逻辑门" class="headerlink" title="量子逻辑门"></a>量子逻辑门</h2><p>对量子的逻辑运算可以被理解为<strong>张量乘法</strong>，即可以把量子逻辑门理解为一个矩阵运算，利用量子逻辑门计算一次的计算，由于叠加态的存在，可以同时处理很多情况，因此达到快于经典计算机的速度</p>
+<p>量子电路要求总是可逆电路</p>
+<p>量子逻辑门的物理实现中经常提到了一个结构，约瑟夫森结，这是组成量子逻辑门的一个重要元件</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> QuantumCircuit</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> Aer</span><br><span class="line"><span class="keyword">from</span> qiskit.visualization <span class="keyword">import</span> plot_state_city</span><br><span class="line"></span><br><span class="line">circ = QuantumCircuit(<span class="number">3</span>)</span><br><span class="line">circ.h(<span class="number">0</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">circ.h(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">backend = Aer.get_backend(<span class="string">&quot;statevector_simulator&quot;</span>)</span><br><span class="line">job = backend.run(circ)</span><br><span class="line">result = job.result()</span><br><span class="line">outputstate = result.get_statevector(circ, decimals=<span class="number">3</span>)</span><br><span class="line">plot_state_city(outputstate)</span><br><span class="line"><span class="comment"># 注意，生成的是密度矩阵而不是直接告诉我值的虚实部</span></span><br><span class="line"><span class="comment"># 注意，|\psi| = a|1&gt;+b|0&gt;的系数a，b是复数而非实数</span></span><br><span class="line"><span class="comment"># 因为这个是在一个复希尔伯特空间上</span></span><br><span class="line"><span class="comment"># 右矢是向量，左矢是对偶向量</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><strong>上述代码对应的量子电路图如下</strong><br><img src="/images/初识量子计算_图2.png" width="100%" height="100%"></p>
+<p><strong>输出的结果图如下</strong><br><img src="/images/初识量子计算_图1.png" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
+    <url>/posts/57f25e7f.html</url>
+    <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
+<blockquote>
+<p>这个脚本只用于完成作业，如果要实际使用可以在此基础上使用 GNS3 提供的 api 接口来进行二次开发</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h2><h3 id="安装-Python"><a href="#安装-Python" class="headerlink" title="安装 Python"></a>安装 Python</h3><p>安装 Python 在此不做赘述，这个 Python 脚本也不需要 pip 任何的库<br>我使用的 Python 版本为 3.12，由于 <code>telnetlib</code> 库本身是一个 Deprecated 的库，python 版本应该低于 3.13</p>
+<h3 id="写下指令"><a href="#写下指令" class="headerlink" title="写下指令"></a>写下指令</h3><p>在<strong>Python文件相同的目录下的</strong> <code>commands.txt</code> 内写下你需要的指令，允许使用 <code>//</code> 进行行注释，注意需要先切换到一个具体的路由器上，例子如下:<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// commands.txt</span><br><span class="line"></span><br><span class="line">// 切换至 R1</span><br><span class="line">switch_router localhost 5000 // 伪指令，切换到localhost:5000</span><br><span class="line">// 根据 server_settings localhost:5000 是指第1个路由器，即为 R1</span><br><span class="line">config t </span><br><span class="line">int s1/0 </span><br><span class="line">ip address 11.11.88.1 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0 </span><br><span class="line">ip address 11.11.0.1 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br><span class="line"></span><br><span class="line">// 切换至 R2</span><br><span class="line">switch_router localhost 5001</span><br><span class="line">config t</span><br><span class="line">int s1/1</span><br><span class="line">ip address 11.11.88.2 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int s1/0</span><br><span class="line">ip address 11.11.88.5 255.255.255.252</span><br><span class="line">no shutdown</span><br><span class="line">exit</span><br><span class="line">int loopback0</span><br><span class="line">ip address 11.11.0.2 255.255.255.255</span><br><span class="line">end</span><br><span class="line">write</span><br><span class="line">show ip int b</span><br></pre></td></tr></table></figure></p>
+<p>注意添加了一个伪指令 <code>switch_router &lt;IP address&gt; &lt;Port&gt;</code>，这个指的是你在软件里拖的路由器标记的那个的地址，在 GNS3 的设置里是可以更改的<br>不建议修改 GNS3 安装时默认监听的 IP地址 与端口号<br>默认的 IP 地址是 localhost<br>路由器的端口号默认时 5000-10000，第1个路由器就是 5000，第2个是5001，如果你修改了，请自己更改上面这条伪指令里的值</p>
+<h3 id="启动你的路由器"><a href="#启动你的路由器" class="headerlink" title="启动你的路由器"></a>启动你的路由器</h3><p><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图1.png" width="100%" height="100%"><br>一定要启动路由器，而且路由器一定要是 R1、R2…这样的命名(即默认命名)，否则脚本无法连接上，并且注意脚本运行时不要打开你 GNS3 里自带的终端，否则有可能卡住</p>
+<blockquote>
+<p>如果因此不慎卡住，请关闭脚本并关掉 GNS3 的所有路由器，可以解决问题</p>
+</blockquote>
+<h3 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python main.py</span><br></pre></td></tr></table></figure>
+<p>运行脚本会<strong>逐行</strong>读取你 <code>commands.txt</code> 内的指令，遇到 <code>switch_router</code> 会切换到对应路由器环境下，遇到空行和注释会跳过，遇到具体指令就会发送给<strong>当前路由器</strong>进行执行，总之免去了一行一行输入的麻烦</p>
+<p>运行大致能得到如下结果，输出的内容有回显<br><img src="/images/南京邮电大学交换技术与通信网实验自动执行脚本_图2.png" width="100%" height="100%"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> telnetlib</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">HOSTNAME = <span class="string">&quot;&quot;</span></span><br><span class="line">FILENAME = <span class="string">&#x27;commands.txt&#x27;</span></span><br><span class="line">FIRSTFLAG = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">telnet_login_and_wait_for_prompt</span>(<span class="params">host, port=<span class="number">23</span>, delay=<span class="number">0.5</span>, timeout=<span class="number">5</span></span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        tn = telnetlib.Telnet(host, port, timeout)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[NOTE] Waiting for <span class="subst">&#123;delay&#125;</span> seconds to allow the device to initialize...&quot;</span>)</span><br><span class="line">        time.sleep(delay)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        output = tn.read_very_eager().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> tn</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[Error] question occurred while connecting: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">send_telnet_command</span>(<span class="params">tn, command, timeout=<span class="number">10</span></span>):</span><br><span class="line">    <span class="keyword">global</span> FIRSTFLAG</span><br><span class="line">    <span class="comment"># print(f&quot;[Debug] command: &#123;command&#125;&quot;)</span></span><br><span class="line">    tn.write(command.encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&quot;\r&quot;</span>)</span><br><span class="line"></span><br><span class="line">    prompt_patterns = [</span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config-[\w-]+\)#&quot;</span>,  </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>\(config\)#&quot;</span>,         </span><br><span class="line">            <span class="string">fr&quot;<span class="subst">&#123;HOSTNAME&#125;</span>#&quot;</span>,                   </span><br><span class="line">        ]</span><br><span class="line">    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        </span><br><span class="line">        output = tn.read_some().decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line">        output_cache += output</span><br><span class="line">        <span class="built_in">print</span>(output, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line">        output_cache = output_cache.splitlines()[-<span class="number">1</span>] <span class="keyword">if</span> <span class="string">&quot;\n&quot;</span> <span class="keyword">in</span> output_cache <span class="keyword">else</span> output_cache</span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;--More--&quot;</span>, output_cache):</span><br><span class="line">            tn.write(<span class="string">b&quot;\r&quot;</span>)</span><br><span class="line">            output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> re.search(<span class="string">r&quot;#&quot;</span>, output):</span><br><span class="line">            <span class="keyword">if</span> FIRSTFLAG:</span><br><span class="line">                FIRSTFLAG = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="comment"># print(f&quot;[Debug] output_cache: &#123;output_cache&#125;&quot;)</span></span><br><span class="line">            <span class="keyword">for</span> pattern <span class="keyword">in</span> prompt_patterns:</span><br><span class="line">                <span class="keyword">if</span> re.search(pattern, output_cache):</span><br><span class="line">                    <span class="comment"># print(f&quot;[Debug] find patterns &#123;pattern&#125;&quot;)</span></span><br><span class="line">                    output_cache = <span class="string">&quot;&quot;</span></span><br><span class="line">                    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_commands_from_file</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">        commands = [line.strip() <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines() <span class="keyword">if</span> line.strip()]</span><br><span class="line">    <span class="keyword">return</span> commands</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_commands</span>(<span class="params">commands</span>):</span><br><span class="line">    <span class="keyword">global</span> HOSTNAME, FIRSTFLAG</span><br><span class="line">    tn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> command <span class="keyword">in</span> commands:</span><br><span class="line">        command = command.split(<span class="string">&#x27;//&#x27;</span>)[<span class="number">0</span>].strip()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> command:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="comment"># 伪指令：切换路由器 switch_router</span></span><br><span class="line">        <span class="keyword">if</span> command.startswith(<span class="string">&#x27;switch_router&#x27;</span>):</span><br><span class="line">            _, new_host, new_port = command.split()</span><br><span class="line">            HOSTNAME = <span class="string">f&quot;R<span class="subst">&#123;<span class="built_in">int</span>(new_port) - <span class="number">4999</span>&#125;</span>&quot;</span></span><br><span class="line">            FIRSTFLAG = <span class="literal">True</span></span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;exit&quot;</span>)</span><br><span class="line">                tn.close()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[NOTE] Switching to router <span class="subst">&#123;new_host&#125;</span> on port <span class="subst">&#123;new_port&#125;</span>&quot;</span>)</span><br><span class="line">            tn = telnet_login_and_wait_for_prompt(new_host, <span class="built_in">int</span>(new_port))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> tn:</span><br><span class="line">                send_telnet_command(tn, command)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;[Error] No active Telnet session. Skipping command.&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> tn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">configure_router</span>():</span><br><span class="line">    commands = load_commands_from_file(FILENAME)</span><br><span class="line">    tn = process_commands(commands)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> tn:</span><br><span class="line">        tn.write(<span class="string">b&quot;exit\r&quot;</span>)</span><br><span class="line">        tn.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># if __name__ == &quot;__main__&quot;:</span></span><br><span class="line"><span class="comment">#     with open(&quot;output.txt&quot;, &quot;w&quot;) as file:</span></span><br><span class="line"><span class="comment">#     # 重定向标准输出到文件</span></span><br><span class="line"><span class="comment">#         sys.stdout = file</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#         # 示例打印内容</span></span><br><span class="line"><span class="comment">#         print(&quot;This will be written to the file.&quot;)</span></span><br><span class="line"><span class="comment">#         print(&quot;Another line in the file.&quot;)</span></span><br><span class="line"><span class="comment">#         configure_router()</span></span><br><span class="line"><span class="comment">#         print(&quot;exit\n[Success] Configure finished&quot;)</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    configure_router()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;exit\n[Success] Configure finished&quot;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Computer_network</category>
+      </categories>
+  </entry>
+  <entry>
     <title>含水滚筒的水平面</title>
     <url>/posts/6b2e6898.html</url>
     <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
@@ -2236,46 +2283,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识量子计算</title>
-    <url>/posts/fe2da916.html</url>
-    <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
-<h2 id="关于使用的Python库-Qiskit"><a href="#关于使用的Python库-Qiskit" class="headerlink" title="关于使用的Python库:Qiskit"></a>关于使用的Python库:Qiskit</h2><p>可以看一手<a href="https://qiskit.org/">官网的介绍</a>:</p>
-<blockquote>
-<p>Qiskit [kiss-kit] is an open-source SDK for working with quantum computers at the level of pulses, circuits, and application modules.</p>
-</blockquote>
-<p>我主要就使用Qiskit库进行量子计算的学习</p>
-<h2 id="量子计算的基础知识"><a href="#量子计算的基础知识" class="headerlink" title="量子计算的基础知识"></a>量子计算的基础知识</h2><p>这一部分讲一些基础的东西</p>
-<h3 id="量子比特"><a href="#量子比特" class="headerlink" title="量子比特"></a>量子比特</h3><p>量子比特属于叠加态，其可以表达成基础的几个状态的线性组合，而且线性组合的系数都是复数</p>
-<p>原因是其可以组成向量空间，其实是复希尔伯特空间，这很trival</p>
-<p>具体的表达如下</p>
-<script type="math/tex; mode=display">
-\langle\psi|=a\langle 1|+b \langle 0|、|\psi\rangle = a|1\rangle + b|0 \rangle</script><h3 id="左矢和右矢"><a href="#左矢和右矢" class="headerlink" title="左矢和右矢"></a>左矢和右矢</h3><p>右矢就是普通的向量<br>看起来左矢就是对偶向量</p>
-<h3 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h3><p>如果$|\psi\rangle$是某个例子的初始状态，则$|\langle\phi|\psi\rangle|^2$代表在$|\phi\rangle$这个状态找到$|\psi\rangle$这个状态的概率</p>
-<p>点乘具有<strong>正交性和归一性</strong>，即</p>
-<script type="math/tex; mode=display">\langle i|j \rangle = \delta_{ij}</script><h3 id="张量积"><a href="#张量积" class="headerlink" title="张量积"></a>张量积</h3><p>张量分析当中的基本运算</p>
-<script type="math/tex; mode=display">|\psi\rangle\otimes|\phi\rangle\equiv|\psi\rangle|\phi\rangle\equiv|\psi,\phi\rangle\equiv|\psi\phi\rangle</script><p>注意，张量积不满足交换律感觉这里的张量积主要用于将qubit合成为张量进矩阵格式的运算</p>
-<p>运算满足如下方法</p>
-<script type="math/tex; mode=display">
-\langle\phi_1\phi_2|\psi_1\psi_2\rangle = \langle\phi_1|\psi_1\rangle_1\langle\phi_2|\psi_2\rangle_2</script><h3 id="外积"><a href="#外积" class="headerlink" title="外积"></a>外积</h3><p>外积是一种用于产生算符的运算，其定义为</p>
-<script type="math/tex; mode=display">|\psi\rangle\langle\phi|=|\psi\rangle\otimes\langle\phi|</script><h3 id="纯态与混合态"><a href="#纯态与混合态" class="headerlink" title="纯态与混合态"></a>纯态与混合态</h3><p>纯态是指可以被一个简单向量表示的量子态<br>位于布洛赫球上的向量是纯态，因为他们可以被书写成</p>
-<script type="math/tex; mode=display">
-|\psi\rangle=\begin{bmatrix}\cos\frac{\theta}{2}\\ e^{i\phi}\sin\frac{\theta}{2}\end{bmatrix}</script><p>而混合态就是在布洛赫球内的向量</p>
-<h3 id="密度矩阵"><a href="#密度矩阵" class="headerlink" title="密度矩阵"></a>密度矩阵</h3><p>给定一个纯态$|\psi\rangle$，其密度算符(矩阵)定义为</p>
-<script type="math/tex; mode=display">
-\rho=|\psi \rangle \langle \psi|</script><h2 id="量子逻辑门"><a href="#量子逻辑门" class="headerlink" title="量子逻辑门"></a>量子逻辑门</h2><p>对量子的逻辑运算可以被理解为<strong>张量乘法</strong>，即可以把量子逻辑门理解为一个矩阵运算，利用量子逻辑门计算一次的计算，由于叠加态的存在，可以同时处理很多情况，因此达到快于经典计算机的速度</p>
-<p>量子电路要求总是可逆电路</p>
-<p>量子逻辑门的物理实现中经常提到了一个结构，约瑟夫森结，这是组成量子逻辑门的一个重要元件</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> QuantumCircuit</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> qiskit <span class="keyword">import</span> Aer</span><br><span class="line"><span class="keyword">from</span> qiskit.visualization <span class="keyword">import</span> plot_state_city</span><br><span class="line"></span><br><span class="line">circ = QuantumCircuit(<span class="number">3</span>)</span><br><span class="line">circ.h(<span class="number">0</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">circ.cx(<span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">circ.h(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">backend = Aer.get_backend(<span class="string">&quot;statevector_simulator&quot;</span>)</span><br><span class="line">job = backend.run(circ)</span><br><span class="line">result = job.result()</span><br><span class="line">outputstate = result.get_statevector(circ, decimals=<span class="number">3</span>)</span><br><span class="line">plot_state_city(outputstate)</span><br><span class="line"><span class="comment"># 注意，生成的是密度矩阵而不是直接告诉我值的虚实部</span></span><br><span class="line"><span class="comment"># 注意，|\psi| = a|1&gt;+b|0&gt;的系数a，b是复数而非实数</span></span><br><span class="line"><span class="comment"># 因为这个是在一个复希尔伯特空间上</span></span><br><span class="line"><span class="comment"># 右矢是向量，左矢是对偶向量</span></span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><strong>上述代码对应的量子电路图如下</strong><br><img src="/images/初识量子计算_图2.png" width="100%" height="100%"></p>
-<p><strong>输出的结果图如下</strong><br><img src="/images/初识量子计算_图1.png" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -2368,6 +2375,47 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>广义Fouier变换与Laplace变换</title>
+    <url>/posts/f38b0ecb.html</url>
+    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
+<span id="more"></span>
+<hr>
+<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
+<script type="math/tex; mode=display">
+\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
+<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
+</blockquote>
+<p>卷积运算满足结合律，交换律，分配律</p>
+<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
+<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
+<hr>
+<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
+<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
+</blockquote>
+<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
+<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
+<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
+<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
+<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
+\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
+<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
+<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
+<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
+<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
+<script type="math/tex; mode=display">
+\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
+<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
+<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
+<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -2553,47 +2601,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <url>/posts/f38b0ecb.html</url>
-    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
-<span id="more"></span>
-<hr>
-<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
-<script type="math/tex; mode=display">
-\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
-<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
-</blockquote>
-<p>卷积运算满足结合律，交换律，分配律</p>
-<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
-<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
-<hr>
-<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
-<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
-</blockquote>
-<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
-<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
-<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
-<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
-<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
-\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
-<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
-<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
-<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
-<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
-<script type="math/tex; mode=display">
-\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
-<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
-<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
-<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
-      </categories>
-  </entry>
-  <entry>
     <title>我的自学小计划</title>
     <url>/posts/e97bb949.html</url>
     <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
@@ -2618,18 +2625,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
 ]]></content>
       <categories>
         <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>排序</title>
-    <url>/posts/a444b428.html</url>
-    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
-<span id="more"></span>
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>DSA</category>
       </categories>
   </entry>
   <entry>
@@ -2659,6 +2654,18 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>排序</title>
+    <url>/posts/a444b428.html</url>
+    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
+<span id="more"></span>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>DSA</category>
       </categories>
   </entry>
   <entry>
