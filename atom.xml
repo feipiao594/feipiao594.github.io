@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-11-30T11:10:45.158Z</updated>
+  <updated>2025-12-06T12:56:54.218Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2048</title>
+    <link href="https://feipiao594.github.io/posts/cc2541cf.html"/>
+    <id>https://feipiao594.github.io/posts/cc2541cf.html</id>
+    <published>2025-12-06T12:23:35.000Z</published>
+    <updated>2025-12-06T12:56:54.218Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;2048&quot;&gt;&lt;a href=&quot;#2048&quot; class=&quot;headerlink&quot; title=&quot;2048&quot;&gt;&lt;/a&gt;2048&lt;/h1&gt;&lt;p&gt;小游戏，测试流畅性，同时学习 vibe coding&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Github登陆与验证的故事</title>
@@ -398,25 +415,6 @@
     <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
     
     <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>离散与连续傅里叶变换之间的联系</title>
-    <link href="https://feipiao594.github.io/posts/f1193ad8.html"/>
-    <id>https://feipiao594.github.io/posts/f1193ad8.html</id>
-    <published>2024-07-10T16:00:00.000Z</published>
-    <updated>2024-10-27T08:07:31.881Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;离散与连续傅里叶变换之间的联系&quot;&gt;&lt;a href=&quot;#离散与连续傅里叶变换之间的联系&quot; class=&quot;headerlink&quot; title=&quot;离散与连续傅里叶变换之间的联系&quot;&gt;&lt;/a&gt;离散与连续傅里叶变换之间的联系&lt;/h1&gt;&lt;p&gt;在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="EE_电子工程" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/"/>
-    
-    <category term="数字信号相关" scheme="https://feipiao594.github.io/categories/EE-%E7%94%B5%E5%AD%90%E5%B7%A5%E7%A8%8B/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E7%9B%B8%E5%85%B3/"/>
     
     
   </entry>
