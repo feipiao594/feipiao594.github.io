@@ -12,19 +12,19 @@
 <li>对于手机端，点击屏幕上的方向按钮来移动所有方块。</li>
 <li>相同数字的方块相撞时会合并为更大的数字。</li>
 <li>每次移动，都会在棋盘上任意一个格子生成 2(90%) 或 4(10%)</li>
-<li>目标是得到2048方块，但你可以继续玩更高分数。</li>
+<li>目标是得到 2048 方块，但你可以继续玩更高分数。</li>
 <li>当格子填满且无法移动时游戏结束。</li>
 </ul>
 <h3 id="特色："><a href="#特色：" class="headerlink" title="特色："></a>特色：</h3><ul>
 <li>支持在第一次移动后进行缓存，刷新页面后可继续上次游戏。</li>
-<li>达到2048后可继续挑战更高分数。</li>
+<li>达到 2048 后可继续挑战更高分数。</li>
 <li>支持PC和移动端。</li>
 </ul>
 <h3 id="分数计算公式"><a href="#分数计算公式" class="headerlink" title="分数计算公式"></a>分数计算公式</h3><p>每次合并两个相同数字的方块时，分数会增加合并后的数值。例如：</p>
 <ul>
-<li>两个2合并为4，得4分</li>
-<li>两个4合并为8，得8分</li>
-<li>两个8合并为16，得16分</li>
+<li>两个 2 合并为 4，得 4 分</li>
+<li>两个 4 合并为 8，得 8 分</li>
+<li>两个 8 合并为 16，得 16 分</li>
 </ul>
 <p>以此类推。</p>
 <h2 id="游戏本体"><a href="#游戏本体" class="headerlink" title="游戏本体"></a>游戏本体</h2><div id="game-container" tabindex="0">
@@ -469,6 +469,20 @@ initGrid();
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -596,20 +610,6 @@ initGrid();
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++模板元编程</title>
     <url>/posts/9244e40f.html</url>
     <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
@@ -721,6 +721,48 @@ initGrid();
       </categories>
   </entry>
   <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CelesteMiaoNet自建群服教程</title>
     <url>/posts/75894d10.html</url>
     <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
@@ -761,48 +803,6 @@ initGrid();
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -1803,37 +1803,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
       </categories>
   </entry>
   <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>从LFS构建中习得的交叉编译</title>
     <url>/posts/c858dee6.html</url>
     <content><![CDATA[<h1 id="从LFS构建中习得的交叉编译"><a href="#从LFS构建中习得的交叉编译" class="headerlink" title="从LFS构建中习得的交叉编译"></a>从LFS构建中习得的交叉编译</h1><p>在2024年寒假的过程中，我构建了LFS(<strong>L</strong>inux <strong>F</strong>rom <strong>S</strong>cratch)，其中有介绍了最基本的GNU/Linux环境的编译构建，这些的第一步即是gcc的交叉编译链的搭建，其对于开发者的重要性毋庸置疑</p>
@@ -1922,6 +1891,37 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -2217,6 +2217,36 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>圆盘摩擦力矩</title>
+    <url>/posts/8a033795.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
+<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
+<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
+<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
+<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
+<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
+<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
+<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
+<p>首先计算单个圆棒的</p>
+<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
+<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
+<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
+<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
+<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
+<blockquote>
+<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
+</blockquote>
+<p>小小思考，如是而已，愿君共勉。</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
+      </categories>
+  </entry>
+  <entry>
     <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
     <url>/posts/57f25e7f.html</url>
     <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
@@ -2249,36 +2279,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
 <script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
 <h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>圆盘摩擦力矩</title>
-    <url>/posts/8a033795.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在计算一个圆盘的摩擦力矩的时候产生了一些困惑，写下来与大家共同探讨</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果一个质量为$m$，半径为$R$的均匀圆板平放在桌面上，圆环与桌面之间的动摩擦因数为$\mu$，若圆板绕通过圆心且垂直与桌面的转轴旋转，求在圆板转动过程中摩擦力对转轴的力矩</p>
-<h2 id="分析与解答"><a href="#分析与解答" class="headerlink" title="分析与解答"></a>分析与解答</h2><p>显然对于这个问题，我能想到的最无脑的方式就是二重积分，实际上我也是这么做的</p>
-<h3 id="法一"><a href="#法一" class="headerlink" title="法一"></a>法一</h3><script type="math/tex; mode=display">M = \int_{\Omega}\frac{\mu mg}{S}\cdot r \mathrm{d}S=\frac{2}{3}\mu mgR</script><p>但紧接着我就注意到了，老师用的方法是圆盘的分割无限加细，需要把圆盘分割成无限多个圆环</p>
-<h3 id="法二"><a href="#法二" class="headerlink" title="法二"></a>法二</h3><p>将圆盘分割成无限多个圆环，则圆盘的质量面密度：</p>
-<script type="math/tex; mode=display">\sigma = \frac{m}{\pi R^2}</script><p>圆环的质量为</p>
-<script type="math/tex; mode=display">\mathrm{d}m = \sigma \mathrm{d}S = \sigma 2\pi r \mathrm{d}r</script><p>每个圆环产生的摩擦力矩</p>
-<script type="math/tex; mode=display">\mathrm{d}M_{阻} = \mu gr \mathrm{d}m\\M_{阻}=\int \mathrm{d}M_{阻} =\int_{0}^{R} \mu gr\mathrm{d}m=\frac{2}{3}\mu mgR</script><p>这种方法其实并不显然，其实还是把问题转化为了求一个<strong>面积元素</strong>，在求圆环质量时就是再求一个<strong>面积元素</strong></p>
-<h3 id="法三"><a href="#法三" class="headerlink" title="法三"></a>法三</h3><p>这就是我当时疑惑的点，因为在我看来，如果把它转化为一个圆环时成立的话，类似割圆法转化为好几个圆棒也自然是可以的，但结果算出来却是不同，以下是这种方法的错误计算结果</p>
-<p>首先计算单个圆棒的</p>
-<script type="math/tex; mode=display">M_{阻} = \int_0^{R} \mu r\frac{m_棒}{R}g \mathrm{d}r = \frac{1}{2}\mu m_棒gR</script><p>再计算整体的，即在原来基础上乘以$2\pi$，又把$m_棒$换成整体的质量，也就是$\frac{m_棒}{2\pi}$</p>
-<script type="math/tex; mode=display">M_{阻} = \frac{1}{2}\mu mgR</script><p>发现问题了么，这里第一个积分计算的是一个线元素，而我们在上面的例子全部都是面积元素，而这边我们需要把面积分为线元素和面元素，但<strong>线元素和面元素本来就没有什么关系</strong></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这点我们的微分学就能告诉我们，这绝对是错的</p>
-<p>当我询问了老师同学之后，我得到了答案，在这里，我们根本不能分成棒，只能分成<strong>三角形</strong>，这点就是来源于面元素不能和线元素混为一谈，不能强行直观上凑一个式子出来，将他俩转化</p>
-<p>而如果是<strong>三角形</strong>的话，整体的力的重心就到了$\frac{2}{3}$，瞧，这个神奇的分数就这么出来了</p>
-<p>所以说，对于一个二维的问题，我们自然只能分为<strong>面元素</strong>来考虑，而不能降一级到线积分，否则必然会遇到其中的问题(什么雅可比方程组的缩放比例之类的事情)</p>
-<blockquote>
-<p>对于一个n维的分布问题，我们只能获得体积元素，也就是，立体只能得到体密度，面只能得到面密度，体只能用体积元素逼近，面只能用面积元素逼近。</p>
-</blockquote>
-<p>小小思考，如是而已，愿君共勉。</p>
 ]]></content>
       <categories>
         <category>Physics</category>
@@ -2375,47 +2375,6 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>广义Fouier变换与Laplace变换</title>
-    <url>/posts/f38b0ecb.html</url>
-    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
-<span id="more"></span>
-<hr>
-<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
-<script type="math/tex; mode=display">
-\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
-<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
-</blockquote>
-<p>卷积运算满足结合律，交换律，分配律</p>
-<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
-<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
-<hr>
-<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
-<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
-<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
-</blockquote>
-<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
-<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
-<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
-<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
-<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
-\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
-<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
-<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
-<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
-<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
-<script type="math/tex; mode=display">
-\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
-<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
-<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
-<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
       </categories>
   </entry>
   <entry>
@@ -2531,6 +2490,47 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
+    <title>广义Fouier变换与Laplace变换</title>
+    <url>/posts/f38b0ecb.html</url>
+    <content><![CDATA[<h1 id="广义Fouier变换与Laplace变换"><a href="#广义Fouier变换与Laplace变换" class="headerlink" title="广义Fouier变换与Laplace变换"></a>广义Fouier变换与Laplace变换</h1><p>这一篇记录广义函数的Fouier变换与Laplace变换的定义</p>
+<span id="more"></span>
+<hr>
+<h2 id="广义函数的卷积运算"><a href="#广义函数的卷积运算" class="headerlink" title="广义函数的卷积运算"></a>广义函数的卷积运算</h2><p>设$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$，而且至少有一个具有紧致集(即$\mathcal{E}’$)，定义$f*g$为$\mathcal{D}^{\prime}(\Omega)$广义函数</p>
+<script type="math/tex; mode=display">
+\langle f*g,\varphi\rangle=\langle f(x),\langle g(y),\varphi(x+y)\rangle\rangle</script><blockquote>
+<p>$\mathcal{E}^{\prime}(\Omega)$与 $\mathcal{D}^{\prime}(\Omega)$ 之间的联系：设 $T\in D^{\prime}(\Omega),$ 则 $T\in\mathcal{E}^{\prime}(\Omega)$ 当且仅当 $\mathrm{supp} T$是中紧集</p>
+</blockquote>
+<p>卷积运算满足结合律，交换律，分配律</p>
+<script type="math/tex; mode=display">f*g*h=f*(g*h)\qquad f*g=g*f</script><p>且关于Dirac函数满足</p>
+<script type="math/tex; mode=display">f*\delta=\delta*f=f</script><p>要注意的是，不存在一般情况下$f$，$g$为$\mathcal{D}^{\prime}(\Omega)$时候的卷积，不满足上面的定义时，只有一些特殊情况可以满足卷积存在</p>
+<hr>
+<h2 id="Fouier变换"><a href="#Fouier变换" class="headerlink" title="Fouier变换"></a>Fouier变换</h2><p>若$\varphi\in\mathscr{S}(\mathbb{R}^N)$，即速降函数(schwartz function)，定义$T\in\mathscr{S}’(\mathbb{R}^N)$的傅里叶变换如下</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}T,\varphi\rangle=\langle T,\mathscr{F}\varphi\rangle</script><p>同理</p>
+<script type="math/tex; mode=display">\langle\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\mathscr{F}^{-1}\varphi\rangle\\\langle\mathscr{F}^{-1}\mathscr{F}T,\varphi\rangle=\langle\mathscr{F}\mathscr{F}^{-1}T,\varphi\rangle=\langle T,\varphi\rangle</script><blockquote>
+<p>广义函数没有常义函数那种定义域，它只有作为泛函的定义域，就是整个函数空间，那么那种定义域不在整个n维欧式空间上的函数其实也是这个特殊函数空间的泛函</p>
+</blockquote>
+<p>关于傅里叶变换，首先$\mathscr{F}$是$\mathscr{S}’\to\mathscr{S}’$的同构映射，而它的逆变换如下：</p>
+<script type="math/tex; mode=display">\mathscr{F}^{-1}f=\frac{(\mathscr{F}f)(-x)}{2\pi}</script><p>我们能证明，对于$f,g\in\mathscr{S}’$，其中一个具有紧支集($\mathscr{E}’$)，那么满足下式</p>
+<script type="math/tex; mode=display">\mathscr{F}(f*g)=\mathscr{F}f\cdot\mathscr{F}g</script><p>已知$ (f<em>g)(-x) = f(-x)</em>g(-x) $与卷积的<strong>线性性质</strong>得</p>
+<script type="math/tex; mode=display">\begin{aligned}f*g&=\mathscr{F}^{-1}(\mathscr{F}f\cdot\mathscr{F}g)\\&\Downarrow\\\mathscr{F}^{-1}f*\mathscr{F}^{-1}g&=\mathscr{F}^{-1}(f\cdot g)\\&\Downarrow\\\frac{(\mathscr{F}f*\mathscr{F}g)(-x)}{4\pi^2}&=\frac{\mathscr{F}(f\cdot g)(-x)}{2\pi}\\&\Downarrow\\\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}&=\mathscr{F}(f\cdot g)\\&\Downarrow\\\mathscr{F}(f\cdot g)&=\frac{\mathscr{F}f*\mathscr{F}g}{2\pi}\end{aligned}</script><p>要满足的条件是$f$，$g$中有一个为常义的光滑函数，假设是$g$，另一个$f\in\mathscr{S}’$，且$\mathscr{F}^{-1}g\in\mathscr{E}’$(或者说即$\mathscr{F}g\in\mathscr{E}’$)</p>
+<h3 id="计算-delta-函数的傅里叶变换"><a href="#计算-delta-函数的傅里叶变换" class="headerlink" title="计算$\delta$函数的傅里叶变换"></a>计算$\delta$函数的傅里叶变换</h3><script type="math/tex; mode=display">\begin{aligned}
+\langle\mathscr{F}\delta,\varphi\rangle&=\langle\delta,\mathscr{F}\varphi\rangle =\mathscr{F}\varphi(0)=\langle1,\varphi\rangle\end{aligned}</script><p>可得</p>
+<script type="math/tex; mode=display">\mathscr{F}\delta=1</script><hr>
+<h3 id="Laplace变换"><a href="#Laplace变换" class="headerlink" title="Laplace变换"></a>Laplace变换</h3><p>定义下面从$\mathbb{\Gamma}$到$\mathscr{S}_{\eta}^{\prime}$的映射$\xi\to\left(E(\xi)\right)_\eta $，被称为$T\in\mathscr{S}_x^{\prime}(\Gamma)$的Laplace变换记作$\left(\mathscr{L}T(\xi)\right)_n$或简记为$\mathscr{L}T$，其中$\mathscr{S}_x^{\prime}(\Gamma)=\left\{T\in\mathscr{D}_x^{\prime}\right.:\left.\exp(-\xi x)T\in\mathscr{S}_x^{\prime},\forall\xi\in\Gamma\right\}.$</p>
+<script type="math/tex; mode=display">\begin{aligned}\left(\mathscr{L}T(\xi)\right)_{\eta}&=\mathscr{L}T=\left(E(\xi)\right)_{\eta}\\&=\left[{\mathscr F}_{(x)}\left(\exp(-\xi x)T_{x}\right)\right]_{\eta}\end{aligned}</script><p>这里的意义是先进行Fouier变换后再把它看作为$\eta$的广义函数，而我们所用的其实下面这个命题叙述得到的</p>
+<p>若$\mathbb{\Gamma}$为凸开集，则$\mathscr{S}_{\eta}^{\prime}$的Laplace变换是一个从$\mathbb{\Gamma}$到$(\mathscr{O}_M)_\eta $的无穷可微映射，并且还有</p>
+<script type="math/tex; mode=display">
+\left(E(\xi)\right)_\eta=E(\xi,\eta)=F(\xi+i\eta)=F(p)</script><p>其中$F$为关于$p\in\Gamma+i\Xi^n$的全纯函数,也称为$T$的Laplace变换<br>反过来,定义在$\Gamma+i\Xi^n$上使得对于$\mathbb{\Gamma}$的任意紧子集$K$,在$K+i\Xi^n$上可被$\eta$的多项式界住的任意全纯函数$F$，均为唯一的广义函数$T\in\mathscr{S}_x^{\prime}(\Gamma)$的 Laplace变换</p>
+<p>解读一下，只有支集在$[0,\infty)$上的广义函数，其具有普遍的拉普拉斯变换，定义为</p>
+<script type="math/tex; mode=display">\mathscr{L}f=\langle f,e^{-st}\rangle</script><p>在工程中，有这么一个结论</p>
+<script type="math/tex; mode=display">\mathscr{L}\frac{\mathrm{d}f}{dx}=pF(p)-f(0^-)</script><p>如果说拉普拉斯变换要求支集在$[0,\infty)$，那么这个式子不应该存在后面减去的常数项，对于求解微分方程来说，处理因果信号，假设响应也是单边的，对响应的微分也是单边的，那么确实可以对两边进行拉普拉斯变换，而且解出的解应当是特解，而零输入响应就是线性齐次微分方程的解，它是”自然存在的响应，不会被消除”，它不是某个信号造成的响应，因此对函数左半边极限的描述可以适用于此，早就了上述式子这样的一个语法糖</p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
+      </categories>
+  </entry>
+  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -2628,6 +2628,18 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
+    <title>排序</title>
+    <url>/posts/a444b428.html</url>
+    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
+<span id="more"></span>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>DSA</category>
+      </categories>
+  </entry>
+  <entry>
     <title>数学实验综合练习</title>
     <url>/posts/93a8bfd0.html</url>
     <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
@@ -2654,18 +2666,6 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>排序</title>
-    <url>/posts/a444b428.html</url>
-    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
-<span id="more"></span>
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>DSA</category>
       </categories>
   </entry>
   <entry>
@@ -2923,107 +2923,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
-    <title>离散与连续傅里叶变换之间的联系</title>
-    <url>/posts/f1193ad8.html</url>
-    <content><![CDATA[<h1 id="离散与连续傅里叶变换之间的联系"><a href="#离散与连续傅里叶变换之间的联系" class="headerlink" title="离散与连续傅里叶变换之间的联系"></a>离散与连续傅里叶变换之间的联系</h1><p>在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干</p>
-<span id="more"></span>
-<blockquote>
-<p>我用到的这本书上说，DTFT在信号与系统中有学，所以略讲，信号与系统里提都没提DTFT 而且我觉得DTFT还非常容易和DFT混，如果不是真去尝试证明真不清楚其中是什么含义</p>
-</blockquote>
-<h2 id="DTFT"><a href="#DTFT" class="headerlink" title="DTFT"></a>DTFT</h2><p>想要理解DTFT得先从实际的采样开始，采样就是每隔采样周期T取一个值，就是把一个连续的信号在时间域上离散化，或者用数学一点的说法，用这种方法把一个定义在$\mathbb{R}$(时间是实数)上的函数映射成一个数列(定义在$\mathbb{Z}$上的函数)</p>
-<blockquote>
-<p>所以这里的连续信号中的连续并不是说的数学上的函数连续，而是指定义域不是$\mathbb{R}$)</p>
-</blockquote>
-<p>其表达式为</p>
-<script type="math/tex; mode=display">x[n]=x_a(nT)</script><p>​很容易就会想知道对$x[n]$进行DTFT和对$x_a(t)$进行CTFT(连续傅里叶变换)之后的结果有什么关系</p>
-<p>我们把两个变换的定义的式子写出来</p>
-<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)]=\int_{-\infty}^{+\infty}x(t)e^{-j\omega t}dt</script><script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\sum_{n=-\infty}^{+\infty}x[n]e^{-j\omega n}</script><p>首先要说明一下我这边的符号，比如$\mathrm{DTFT}[x[n]] (\omega)$的含义是先对$x[n]$进行离散时间的傅里叶变换后的频域函数代入$\omega$，比如$\mathrm{DTFT}[x[n]] (\pi)$就是$x[n]$的频域函数代入$\pi$，这里之所以不使用$X(e^{j\omega})$这种符号是我觉得在数学上不够直观，虽然书上会说写成这种复合函数的形式有工程上的好处，但其实不方便从理论的角度去考虑，多一层不如少一层</p>
-<p>可以看出他俩其实很相似，所以我们很容易就能联想到下面这个等式</p>
-<p><strong>Lemma 1:</strong></p>
-<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\mathrm{DTFT}[x[n]](T\omega)</script><p>其中<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>，这是采样函数，画成图像就是在坐标轴上从原点出发每隔时间T就是一个冲激</p>
-<p><strong>Proof:</strong></p>
-<script type="math/tex; mode=display">\begin{aligned}
-\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
-&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
-&=\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}\delta(t-nT)e^{-j\omega t}dt\\
-&=\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)\delta(t-nT)e^{-j\omega t}dt\\
-&=\sum_{n=-\infty}^{+\infty}x(nT)e^{-j\omega nT}\\
-&=\sum_{n=-\infty}^{+\infty}x[n]e^{-jT\omega n}\\
-&=\mathrm{DTFT}[x[n]](T\omega)
-\end{aligned}</script><p>那么输入的函数关系怎么样已经找出来了，输出的频域函数两个变换又有什么关系呢?<br>首先再来算一个东西</p>
-<p><strong>Lemma 2:</strong></p>
-<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p><strong>Proof:</strong></p>
-<p>首先对<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>进行傅里叶级数展开，得到</p>
-<script type="math/tex; mode=display">\delta_T(t)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}e^{j\frac{2\pi n}{T}t}</script><p>将这个式子代入连续傅里叶变换的定义式，得到</p>
-<script type="math/tex; mode=display">\begin{aligned}
-\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
-&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
-&=\frac{1}{T}\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}e^{jn\omega t}e^{-j\omega t}dt\\
-&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)e^{j(\frac{2\pi n}{T}-\omega) t}dt\\
-&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{2\pi n}{T}-\omega)
-\end{aligned}</script><p>可以看到，对原本的连续信号的采样进行连续傅里叶变换得到的结果是原本信号的傅里叶变换的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有函数的和的$\frac{1}{T}$倍，这就是所谓的周期延拓</p>
-<p>好了，由上面得到的两个小等式联立一下可以证明我们需要的东西了</p>
-<p><strong>Equation:</strong> </p>
-<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]](T\omega)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p>将两边的$\omega$同时换元成$\frac{\omega}{T}$，再把换元后左式多余的$(\omega)$删掉，就是，就能得到最终的式子了</p>
-<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{\omega-2\pi n}{T})</script><ul>
-<li>用人话翻译一下这个句子，对一个离散信号进行DTFT，等价于对它采样前的连续信号进行周期延拓(连续傅里叶变换后的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有的无穷多个函数的叠加的$\frac{1}{T}$倍)后再把整个频谱函数沿着频率轴放大T倍</li>
-<li>或者说你也可以理解为采样前的连续信号先沿频率轴放大T倍在进行周期延拓</li>
-<li>再或者你还能理解为原连续信号的周期延拓完了之后把他沿频率轴放缩到以$2\pi$为周期(DTFT它是关于$2\pi$成周期的，你可以从这个等式里一目了然的看见，也能从DTFT的定义式中证明这个)</li>
-</ul>
-<p>那么你就可以理解DTFT诞生的原因了，本质上它也是一种近似获得连续信号的傅里叶变换的手段，只不过算出来的结果是原本连续傅里叶变换的移位之后又压缩了一下再叠加嘛。</p>
-<p>从这里你就知道什么叫混叠了，在一些比较良好的情况下，比如去DTFT一个带限信号的采样，带限信号是在频率上截止频率为$\omega_c$的信号，就是说$|\omega|\ge\omega_c$时，$X(\omega)=0$，那么，既然DTFT是原函数的周期延拓，对于带限的信号来说，根据上面的等式，你可以看到下图中一个小尖坡的影响范围是$\omega_cT$，而每$2\pi$的范围内，就有两个小尖坡在影响，要想他们不重叠，自然就要求$\omega_c T \le \frac{2 \pi}{2}$，把采样周期写成采样频率即$T=\frac{1}{\omega_s}$，代入就得到了$\omega_s \ge 2\omega_c$，这不就是奈奎斯特采样定律么，在满足这个条件的情况下，DTFT结果的$[-\pi,\pi]$的部分完全就是CTFT做了一些就简单的变换，换言之，你可以通过计算DTFT，在只存储采样后的离散的数据的情况下计算出原本信号的CTFT，这就是DTFT存在的目的，如果不满足这个条件，小尖坡就会变粗，接着叠起来，就不能从DTFT获得CTFT的信息了<br><img src="/images/离散与连续傅里叶变换之间的联系_图1.png" width="100%" height="100%"></p>
-<p>所以你现在明白了所谓奈奎斯特采样定律就是从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT的”约等于”能成立的需要的条件</p>
-<h2 id="DFT-FFT"><a href="#DFT-FFT" class="headerlink" title="DFT/FFT"></a>DFT/FFT</h2><p>FFT本质就是一个DFT的快速算法，就是另一种计算DFT的方法，和DFT完全没有区别，唯一需要注意的是要会用就行了，简单来说就是背下来那个蝶形图是怎么个画法</p>
-<p>而DFT就更有趣了，先看看它的定义式</p>
-<script type="math/tex; mode=display">\mathrm{DFT}[x[n]]=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}，0\le k\le N-1</script><p>这里没有写成$W^{-j(2\pi/N)}$也是出于这样能更加好的看出其原本的数学性质的目的</p>
-<p>它和DTFT只有一点点差别，首先它对$x[n]$有要求，它必须是一个有限长序列，长度为N，在这样的情况下，这个序列进行DTFT，其实求和号上的差别就没了，那剩下的就只有指数上的差别了，那么其实完全满足这样的式子</p>
-<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x[n]](k)&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}\\
-&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N}k)，0\le k\le N-1
-\end{aligned}</script><p>这下看懂了，对一个有限长序列进行DFT就是在对它进行DTFT后$[0,2\pi]$的部分再采样N个点呢</p>
-<p>还没完，如果你给这个长度为N的有限长序列$x[n]$后面再填M个0，让他变成长度为N+M的有限长序列$x’[n]$呢？表达式就变成了如下</p>
-<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x'[n]](k)&=\sum_{n=0}^{N+M-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
-&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
-&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N+M}k)，0\le k\le N+M-1
-\end{aligned}</script><p>好嘛，就是没添加0之前的结果采样的更加密集了一点，只要你M取特别特别大，你就可以用DFT完全逼近这个有限长序列的DTFT了，例子如下</p>
-<p><img src="/images/离散与连续傅里叶变换之间的联系_图2.gif" width="100%" height="100%"></p>
-<p>上图的matlab代码如下<br><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">pic_num = <span class="number">1</span>;   </span><br><span class="line"><span class="keyword">for</span> k=<span class="number">0</span>:<span class="number">4</span>:<span class="number">240</span></span><br><span class="line">    s=<span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line">    N=<span class="number">32</span>;</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>;</span><br><span class="line">    x=<span class="built_in">sin</span>(<span class="number">5</span>*n*<span class="built_in">pi</span>/N);<span class="comment">% 取样计算持续0到pi的sin(5t)信号</span></span><br><span class="line">    x=[x,<span class="built_in">zeros</span>(<span class="number">1</span>,k)];</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>+k;</span><br><span class="line">    w=<span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">2</span>*<span class="built_in">pi</span>,<span class="number">10000</span>);</span><br><span class="line">    y1=x*<span class="built_in">exp</span>(-<span class="built_in">j</span>*n&#x27;*w)/N*<span class="built_in">pi</span>;<span class="comment">% DFT</span></span><br><span class="line">    y2=<span class="built_in">j</span>*<span class="built_in">pi</span>*((<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>))-(<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)))/(<span class="number">2</span>*<span class="built_in">pi</span>);<span class="comment">% DTFT</span></span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>);stem(n,x,<span class="string">&#x27;.&#x27;</span>);ylabel(<span class="string">&#x27;$x(n)$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> N<span class="number">-1</span>+k]);</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y1));<span class="built_in">hold</span> on;</span><br><span class="line">    stem(n*<span class="number">2</span>*(N<span class="number">-2</span>+k)/(N<span class="number">-1</span>+k)/(N<span class="number">-1</span>+k),<span class="built_in">abs</span>(fft(x)/N*<span class="built_in">pi</span>),<span class="string">&#x27;.&#x27;</span>);xlabel(<span class="string">&#x27;$k \&amp; \omega$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|X[k]| \&amp; |X(e^&#123;j\omega&#125;)|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> <span class="number">2</span>]);<span class="built_in">hold</span> off;</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y2));xlabel(<span class="string">&#x27;$\omega/\pi$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|\mathrm&#123;FT&#125;[X]|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);</span><br><span class="line">    drawnow;F=getframe(s);I=frame2im(F);[I,map]=rgb2ind(I,<span class="number">256</span>);</span><br><span class="line">    <span class="keyword">if</span> pic_num == <span class="number">1</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;Loopcount&#x27;</span>,<span class="built_in">inf</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>,<span class="string">&#x27;WriteMode&#x27;</span>,<span class="string">&#x27;append&#x27;</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    pic_num = pic_num + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
-<p>所以，求有限长序列的DFT也是约等于求它的DTFT，这样做的优势就是，DFT还能让结果也变得离散化，方便存储的同时还有FFT这种神奇的算法能给计算加速</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>当带限信号满足奈奎斯特采样定律时，从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT</li>
-<li>对于有限长序列，计算DFT就是在逼近计算DTFT函数的一部分值<br>所以综上，我所使用的这本教材前三章的核心目的就是告诉我，可以使用某种手段(比如滤波器等等)，利用FFT就能近似计算一个连续函数的CTFT，至于其他的都是具体的计算时的分支任务。比如设计数字滤波器，本质上就是在给采样后的信号去干连续信号一样的事情</li>
-</ul>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>数字信号相关</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>移动端开发初探_1</title>
-    <url>/posts/9b96febe.html</url>
-    <content><![CDATA[<h1 id="移动端开发初探-1"><a href="#移动端开发初探-1" class="headerlink" title="移动端开发初探_1"></a>移动端开发初探_1</h1><p>因为一些巧合，现在一直接触 C++ 的我开始了移动端的学习与开发，这篇文档稍微记录一下自己的学习过程，但其实这不是一个笔记记录，算是一点小小感悟吧</p>
-<span id="more"></span>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>早就听闻 Flutter 的大名，没想到我也会有一天有理由去学习这样一个框架，其实在很久以前我也曾是从 Android 开发过来的，不过现在回头看一眼，Android 的结构还是太过复杂了，以当时我的基础，基本上完全不能够理解相关的内容</p>
-<blockquote>
-<p>免责声明：仅由于我暂时没有鸿蒙开发所使用的设备(我穷喵)，目前我不考虑鸿蒙的开发，下文就只考虑 Android 与 iOS</p>
-</blockquote>
-<h2 id="学习的-Bootstrap-时期"><a href="#学习的-Bootstrap-时期" class="headerlink" title="学习的 Bootstrap 时期"></a>学习的 Bootstrap 时期</h2><p>虽然学习移动端开发，最基本的任务就是去具体尝试一下 Android 和 iOS 上的原生开发，但我的学习路径有一些不同，我使用 Android 也有一段时间了，在大佬云集的许多群聊里听玩机，虽是当时无法理解，但潜移默化之中也知道 Android 里 activity 的概念，知道 apk 是一个压缩包。但同时我也曾玩过很多平台上的 Linux，同为 arm 的树莓派也可以使用 C/C++ 进行愉快的代码编写，那凭什么 Android 那么特殊，封装成了这样呢？</p>
-<p>不管如何，让我先来写一些简单的 hello world 吧。在环境安装上纠结了一小段时间后( gradle 坏 )，我成功安装好了 Android Studio，跑通了一些基本的 example，我发现 Android 有个特点，首先，Android 原生开发中，你没有办法在项目里找到 main 函数，而是在 <code>AndroidManifest.xml</code> 里需要注册 <code>MainActivity</code>，如下</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>接着在软件打开的时候 MainActivity 的 <code>onCreate()</code> 函数就会被运行，也许这里就是函数的入口点？只能说如今看来，我感觉背后一定有我不知道的隐藏机制，比如 UI 程序常见的事件循环在哪，Android 的 API 库的实现原理是几何，听说 Android 的内核仍然是 Linux，那么 syscall 以及 C 库都怎么样了，OpenGL 库怎么作用的，函数的入口点如何…一口气可以说好多萦绕在我心头的问题，我当然可以选择先放下他们，直接接着学习原生开发，摆弄那些常见的组件，前端的知识，但如今的我终于知道我该以什么切入点查看这个问题了：1.安卓的系统架构，在过去的时间里面我们见过 Linux 发行版的系统架构，比如 wayland 的运行机制，kde 这样的桌面环境是怎么实现的，所以我们也要由此看一眼安卓的，2.app 具体运行是怎么被启动的，那可是 Java/Kotlin 啊，虚拟机又是在什么时候启动的呢？3.安卓本身系统是怎么被启动的</p>
-<h2 id="深入一点"><a href="#深入一点" class="headerlink" title="深入一点"></a>深入一点</h2><p>我们都知道 Android 的内核就是 Linux，哪怕它对此进行了一些修改，也不会绕到哪去。那我们就先从安卓本身系统启动来看看，安卓的内核启动了一个类似 systemd 的东西，<code>init</code> 进程，这个是读取 <code>init.rc</code> 配置文件运行一些系统级进程(就是有 root 权限的进程)，比如各种硬件服务：如显示服务、音频服务、Wi-Fi服务等，各种系统守护进程：包括 zygote 和 surfaceflinger 等。其中 zygote 进程相当重要，我们知道在 Linux 上，启动一个进程其实是使用 fork + exec syscall 的，而最开始执行 fork syscall 的，在使用 systemd 的情况下就是这个进程执行的，那么其实在这里，zygote 是被 <code>init</code> fork 出来的，但 zygote 翻译过来本意是受精卵，从寓意上看，他就是负责生成一些其它进程的，事实上也确实如此，在 app 启动时，正是它 fork 出新的进程，新进程是一个 JVM，它可以加载 apk 里的 dex 字节码并开始运行。<br>zygote 会 fork 出其它 Java 的系统级服务，比如 <code>SystemServer</code>，这个进程具有高权限，那么它具体起到什么作用呢，这里先按下不表，请看下文。<br>最终通过这样的方式 launcher 也就是桌面最终会被启动，整个系统便启动完成。</p>
-<p>可以看到 zygote 负责了所有 Java 应用的启动，事实上它自己与之前的一些系统进程并非 Java，肯定是原生的代码，而它开始负责所有 Java 程序的启动，因为它直接复制自己这个虚拟机，从 app 的 <code>AndroidManifest.xml</code> 读取 MainActivity 这个类的然后启动，这里要说明的是启动的时候它直接加载 dex，这个只有一些分散的类实现的字节码。而真实的入口函数，则是被藏在系统的代码中，<code>ActivityThread.main()</code></p>
-<h2 id="细究-app-的启动"><a href="#细究-app-的启动" class="headerlink" title="细究 app 的启动"></a>细究 app 的启动</h2><p>当你安装一个 apk 文件的时候，其实做的事情并不多，首先 <code>AndroidManifest.xml</code> 会被系统解析变成系统全局的元数据，一般也会在桌面上留下图标，而当你点击这么一个图标的时候，launcher 通过 startActivity() 发送一个 Intent，包含目标应用的包名和入口 Activity 信息。ActivityManagerService (AMS) 会接受这样的信息，接着，如果应用本身并不存在，则会通过进程间通信(IPC) 告诉 zygote 让他生成应用，然后 <code>ActivityThread.main()</code> 执行：初始化主线程的 Looper 和 Handler（消息循环）,调用 attach() 向 AMS 注册当前进程。启动 <code>Looper.loop()</code> 进入消息循环，等待 AMS 的后续指令。这验证了我们的猜想，确实事件循环和入口函数是存在的</p>
-<h2 id="Binder-神秘的IPC"><a href="#Binder-神秘的IPC" class="headerlink" title="Binder - 神秘的IPC"></a>Binder - 神秘的IPC</h2><p>Android 有一个很神奇的东西，它有一个 IPC 的驱动，上文提到的 <code>SystemServer</code> 与此有关，用户的应用可以通过 syscall 调用 Binder，与 <code>SystemServer</code> 进行进程间通信，并通过反射机制获取到其中一些全局的类信息与功能，由于 <code>SystemServer</code> 本身具有比较高的权限，它作为系统应用就可以控制向其通信的用户应用的请求，以确保安全性<br>我个人学习到此处的时候觉得，这其实是把一些系统的库变成了一个运行时的东西，也就是通过客户端/服务器模型，让服务器占用高权限，强迫用户进程在低权限，以此保障安全性，而其本质，实质上和 wayland compositor 没什么区别。<br>所以 Android SDK 里的那些库，底层不出意外，除了一些 linux 自己的常用的 read/write 之类的 syscall，如比较上层的电话服务，应该是一个对 IPC 的封装罢了</p>
-<h2 id="iOS上呢"><a href="#iOS上呢" class="headerlink" title="iOS上呢"></a>iOS上呢</h2><p>iOS 相对来说比较花哨， SwiftUI 我暂时还没有细看，但是 Objective-C 稍微看了一点，与 Android 不同的是，在书写 oc 程序时，有明显的 main 函数，以及用于启动事件循环的类 <code>UIApplication</code>，其机制与 Qt 十分相似，因此我特意去看了一眼 Qt 的实现，确实 Qt 本身的事件循环只是稍稍对 <code>UIApplication</code> 进行了一层包装，而不是像别的平台真要实现一个事件循环。<br>同时，iOS 本身也有一堆系统进程，出于闭源的原因，只能根据公开的材料猜测，其应当也如同这样，是通过进程间通信来调用通话服务，UI服务等一系列有点高层，但又很底层的东西<br>iOS 没有跑一个虚拟机，oc 会被直接编译成平台代码，所以我觉得 iOS 应该确实要比 Android 快，即使 Android 引入了 aot，应当也不能完全弥补速度差距</p>
-<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>感觉将有些功能变成高权限进程，通过进程间通信来调用这种动态的”库”，而不是直接一个 glibc 静态的库只调用 syscall 实现是常见的，毕竟后者什么都可以写，但是权限要求相当之高了。似乎这与微内核的想法也是相关的，总之还挺有意思，即使是简单的 hello world 背后也有如此复杂的事情，但所有平台的客户端具体实现又具有统一性，这也许就是软件与系统分层架构之间带来的魅力吧。</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Mobile_device</category>
-      </categories>
-  </entry>
-  <entry>
     <title>深入异步通用概念</title>
     <url>/posts/9b424f3e.html</url>
     <content><![CDATA[<h1 id="深入异步通用概念"><a href="#深入异步通用概念" class="headerlink" title="深入异步通用概念"></a>深入异步通用概念</h1><p>协程是一个简单的概念，但它同时又没那么简单，因为其所代表的异步编程的思想具有一定的历史发展过程。这些东西曾经困扰了我许久，我饱读各种相关的资料却始终不得其解，因此我写下了这篇博客</p>
@@ -3137,6 +3036,107 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>离散与连续傅里叶变换之间的联系</title>
+    <url>/posts/f1193ad8.html</url>
+    <content><![CDATA[<h1 id="离散与连续傅里叶变换之间的联系"><a href="#离散与连续傅里叶变换之间的联系" class="headerlink" title="离散与连续傅里叶变换之间的联系"></a>离散与连续傅里叶变换之间的联系</h1><p>在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干</p>
+<span id="more"></span>
+<blockquote>
+<p>我用到的这本书上说，DTFT在信号与系统中有学，所以略讲，信号与系统里提都没提DTFT 而且我觉得DTFT还非常容易和DFT混，如果不是真去尝试证明真不清楚其中是什么含义</p>
+</blockquote>
+<h2 id="DTFT"><a href="#DTFT" class="headerlink" title="DTFT"></a>DTFT</h2><p>想要理解DTFT得先从实际的采样开始，采样就是每隔采样周期T取一个值，就是把一个连续的信号在时间域上离散化，或者用数学一点的说法，用这种方法把一个定义在$\mathbb{R}$(时间是实数)上的函数映射成一个数列(定义在$\mathbb{Z}$上的函数)</p>
+<blockquote>
+<p>所以这里的连续信号中的连续并不是说的数学上的函数连续，而是指定义域不是$\mathbb{R}$)</p>
+</blockquote>
+<p>其表达式为</p>
+<script type="math/tex; mode=display">x[n]=x_a(nT)</script><p>​很容易就会想知道对$x[n]$进行DTFT和对$x_a(t)$进行CTFT(连续傅里叶变换)之后的结果有什么关系</p>
+<p>我们把两个变换的定义的式子写出来</p>
+<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)]=\int_{-\infty}^{+\infty}x(t)e^{-j\omega t}dt</script><script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\sum_{n=-\infty}^{+\infty}x[n]e^{-j\omega n}</script><p>首先要说明一下我这边的符号，比如$\mathrm{DTFT}[x[n]] (\omega)$的含义是先对$x[n]$进行离散时间的傅里叶变换后的频域函数代入$\omega$，比如$\mathrm{DTFT}[x[n]] (\pi)$就是$x[n]$的频域函数代入$\pi$，这里之所以不使用$X(e^{j\omega})$这种符号是我觉得在数学上不够直观，虽然书上会说写成这种复合函数的形式有工程上的好处，但其实不方便从理论的角度去考虑，多一层不如少一层</p>
+<p>可以看出他俩其实很相似，所以我们很容易就能联想到下面这个等式</p>
+<p><strong>Lemma 1:</strong></p>
+<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\mathrm{DTFT}[x[n]](T\omega)</script><p>其中<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>，这是采样函数，画成图像就是在坐标轴上从原点出发每隔时间T就是一个冲激</p>
+<p><strong>Proof:</strong></p>
+<script type="math/tex; mode=display">\begin{aligned}
+\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
+&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
+&=\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}\delta(t-nT)e^{-j\omega t}dt\\
+&=\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)\delta(t-nT)e^{-j\omega t}dt\\
+&=\sum_{n=-\infty}^{+\infty}x(nT)e^{-j\omega nT}\\
+&=\sum_{n=-\infty}^{+\infty}x[n]e^{-jT\omega n}\\
+&=\mathrm{DTFT}[x[n]](T\omega)
+\end{aligned}</script><p>那么输入的函数关系怎么样已经找出来了，输出的频域函数两个变换又有什么关系呢?<br>首先再来算一个东西</p>
+<p><strong>Lemma 2:</strong></p>
+<script type="math/tex; mode=display">\mathrm{CTFT}[x(t)\cdot \delta_T(t)]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p><strong>Proof:</strong></p>
+<p>首先对<script type="math/tex">\delta_T(t)=\sum_{n=-\infty}^{+\infty}\delta(t-nT)</script>进行傅里叶级数展开，得到</p>
+<script type="math/tex; mode=display">\delta_T(t)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}e^{j\frac{2\pi n}{T}t}</script><p>将这个式子代入连续傅里叶变换的定义式，得到</p>
+<script type="math/tex; mode=display">\begin{aligned}
+\mathrm{CTFT}[x(t)\cdot \delta_T(t)]
+&=\int_{-\infty}^{+\infty}x(t) \delta_T(t)e^{-j\omega t}dt\\
+&=\frac{1}{T}\int_{-\infty}^{+\infty}x(t)\sum_{n=-\infty}^{+\infty}e^{jn\omega t}e^{-j\omega t}dt\\
+&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\int_{-\infty}^{+\infty}x(t)e^{j(\frac{2\pi n}{T}-\omega) t}dt\\
+&=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{2\pi n}{T}-\omega)
+\end{aligned}</script><p>可以看到，对原本的连续信号的采样进行连续傅里叶变换得到的结果是原本信号的傅里叶变换的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有函数的和的$\frac{1}{T}$倍，这就是所谓的周期延拓</p>
+<p>好了，由上面得到的两个小等式联立一下可以证明我们需要的东西了</p>
+<p><strong>Equation:</strong> </p>
+<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]](T\omega)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\omega-\frac{2\pi n}{T})</script><p>将两边的$\omega$同时换元成$\frac{\omega}{T}$，再把换元后左式多余的$(\omega)$删掉，就是，就能得到最终的式子了</p>
+<script type="math/tex; mode=display">\mathrm{DTFT}[x[n]]=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\mathrm{CTFT}[x(t)](\frac{\omega-2\pi n}{T})</script><ul>
+<li>用人话翻译一下这个句子，对一个离散信号进行DTFT，等价于对它采样前的连续信号进行周期延拓(连续傅里叶变换后的结果在频率轴上移动$\frac{2\pi}{T}$的整数倍得到的所有的无穷多个函数的叠加的$\frac{1}{T}$倍)后再把整个频谱函数沿着频率轴放大T倍</li>
+<li>或者说你也可以理解为采样前的连续信号先沿频率轴放大T倍在进行周期延拓</li>
+<li>再或者你还能理解为原连续信号的周期延拓完了之后把他沿频率轴放缩到以$2\pi$为周期(DTFT它是关于$2\pi$成周期的，你可以从这个等式里一目了然的看见，也能从DTFT的定义式中证明这个)</li>
+</ul>
+<p>那么你就可以理解DTFT诞生的原因了，本质上它也是一种近似获得连续信号的傅里叶变换的手段，只不过算出来的结果是原本连续傅里叶变换的移位之后又压缩了一下再叠加嘛。</p>
+<p>从这里你就知道什么叫混叠了，在一些比较良好的情况下，比如去DTFT一个带限信号的采样，带限信号是在频率上截止频率为$\omega_c$的信号，就是说$|\omega|\ge\omega_c$时，$X(\omega)=0$，那么，既然DTFT是原函数的周期延拓，对于带限的信号来说，根据上面的等式，你可以看到下图中一个小尖坡的影响范围是$\omega_cT$，而每$2\pi$的范围内，就有两个小尖坡在影响，要想他们不重叠，自然就要求$\omega_c T \le \frac{2 \pi}{2}$，把采样周期写成采样频率即$T=\frac{1}{\omega_s}$，代入就得到了$\omega_s \ge 2\omega_c$，这不就是奈奎斯特采样定律么，在满足这个条件的情况下，DTFT结果的$[-\pi,\pi]$的部分完全就是CTFT做了一些就简单的变换，换言之，你可以通过计算DTFT，在只存储采样后的离散的数据的情况下计算出原本信号的CTFT，这就是DTFT存在的目的，如果不满足这个条件，小尖坡就会变粗，接着叠起来，就不能从DTFT获得CTFT的信息了<br><img src="/images/离散与连续傅里叶变换之间的联系_图1.png" width="100%" height="100%"></p>
+<p>所以你现在明白了所谓奈奎斯特采样定律就是从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT的”约等于”能成立的需要的条件</p>
+<h2 id="DFT-FFT"><a href="#DFT-FFT" class="headerlink" title="DFT/FFT"></a>DFT/FFT</h2><p>FFT本质就是一个DFT的快速算法，就是另一种计算DFT的方法，和DFT完全没有区别，唯一需要注意的是要会用就行了，简单来说就是背下来那个蝶形图是怎么个画法</p>
+<p>而DFT就更有趣了，先看看它的定义式</p>
+<script type="math/tex; mode=display">\mathrm{DFT}[x[n]]=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}，0\le k\le N-1</script><p>这里没有写成$W^{-j(2\pi/N)}$也是出于这样能更加好的看出其原本的数学性质的目的</p>
+<p>它和DTFT只有一点点差别，首先它对$x[n]$有要求，它必须是一个有限长序列，长度为N，在这样的情况下，这个序列进行DTFT，其实求和号上的差别就没了，那剩下的就只有指数上的差别了，那么其实完全满足这样的式子</p>
+<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x[n]](k)&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N}kn}\\
+&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N}k)，0\le k\le N-1
+\end{aligned}</script><p>这下看懂了，对一个有限长序列进行DFT就是在对它进行DTFT后$[0,2\pi]$的部分再采样N个点呢</p>
+<p>还没完，如果你给这个长度为N的有限长序列$x[n]$后面再填M个0，让他变成长度为N+M的有限长序列$x’[n]$呢？表达式就变成了如下</p>
+<script type="math/tex; mode=display">\begin{aligned}\mathrm{DFT}[x'[n]](k)&=\sum_{n=0}^{N+M-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
+&=\sum_{n=0}^{N-1}x[n]e^{-j\frac{2\pi}{N+M}kn}\\
+&=\mathrm{DTFT}[x[n]](\frac{2\pi}{N+M}k)，0\le k\le N+M-1
+\end{aligned}</script><p>好嘛，就是没添加0之前的结果采样的更加密集了一点，只要你M取特别特别大，你就可以用DFT完全逼近这个有限长序列的DTFT了，例子如下</p>
+<p><img src="/images/离散与连续傅里叶变换之间的联系_图2.gif" width="100%" height="100%"></p>
+<p>上图的matlab代码如下<br><figure class="highlight matlab"><table><tr><td class="code"><pre><span class="line">pic_num = <span class="number">1</span>;   </span><br><span class="line"><span class="keyword">for</span> k=<span class="number">0</span>:<span class="number">4</span>:<span class="number">240</span></span><br><span class="line">    s=<span class="built_in">figure</span>(<span class="number">1</span>);</span><br><span class="line">    N=<span class="number">32</span>;</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>;</span><br><span class="line">    x=<span class="built_in">sin</span>(<span class="number">5</span>*n*<span class="built_in">pi</span>/N);<span class="comment">% 取样计算持续0到pi的sin(5t)信号</span></span><br><span class="line">    x=[x,<span class="built_in">zeros</span>(<span class="number">1</span>,k)];</span><br><span class="line">    n=<span class="number">0</span>:N<span class="number">-1</span>+k;</span><br><span class="line">    w=<span class="built_in">linspace</span>(<span class="number">0</span>,<span class="number">2</span>*<span class="built_in">pi</span>,<span class="number">10000</span>);</span><br><span class="line">    y1=x*<span class="built_in">exp</span>(-<span class="built_in">j</span>*n&#x27;*w)/N*<span class="built_in">pi</span>;<span class="comment">% DFT</span></span><br><span class="line">    y2=<span class="built_in">j</span>*<span class="built_in">pi</span>*((<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N+<span class="number">5</span>))-(<span class="number">1</span>-<span class="built_in">exp</span>(-<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)*<span class="built_in">pi</span>))./(<span class="built_in">j</span>*(w/<span class="built_in">pi</span>*N<span class="number">-5</span>)))/(<span class="number">2</span>*<span class="built_in">pi</span>);<span class="comment">% DTFT</span></span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>);stem(n,x,<span class="string">&#x27;.&#x27;</span>);ylabel(<span class="string">&#x27;$x(n)$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> N<span class="number">-1</span>+k]);</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y1));<span class="built_in">hold</span> on;</span><br><span class="line">    stem(n*<span class="number">2</span>*(N<span class="number">-2</span>+k)/(N<span class="number">-1</span>+k)/(N<span class="number">-1</span>+k),<span class="built_in">abs</span>(fft(x)/N*<span class="built_in">pi</span>),<span class="string">&#x27;.&#x27;</span>);xlabel(<span class="string">&#x27;$k \&amp; \omega$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|X[k]| \&amp; |X(e^&#123;j\omega&#125;)|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);xlim([<span class="number">0</span> <span class="number">2</span>]);<span class="built_in">hold</span> off;</span><br><span class="line">    subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>);<span class="built_in">plot</span>(w/<span class="built_in">pi</span>,<span class="built_in">abs</span>(y2));xlabel(<span class="string">&#x27;$\omega/\pi$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);ylabel(<span class="string">&#x27;$|\mathrm&#123;FT&#125;[X]|$&#x27;</span>,<span class="string">&#x27;interpreter&#x27;</span>,<span class="string">&#x27;latex&#x27;</span>,<span class="string">&#x27;fontsize&#x27;</span>,<span class="number">12</span>);</span><br><span class="line">    drawnow;F=getframe(s);I=frame2im(F);[I,map]=rgb2ind(I,<span class="number">256</span>);</span><br><span class="line">    <span class="keyword">if</span> pic_num == <span class="number">1</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>, <span class="string">&#x27;Loopcount&#x27;</span>,<span class="built_in">inf</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        imwrite(I,map,<span class="string">&#x27;test.gif&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>,<span class="string">&#x27;WriteMode&#x27;</span>,<span class="string">&#x27;append&#x27;</span>,<span class="string">&#x27;DelayTime&#x27;</span>,<span class="number">0.1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    pic_num = pic_num + <span class="number">1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<p>所以，求有限长序列的DFT也是约等于求它的DTFT，这样做的优势就是，DFT还能让结果也变得离散化，方便存储的同时还有FFT这种神奇的算法能给计算加速</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>当带限信号满足奈奎斯特采样定律时，从采样后离散信号的DTFT能约等于看作是原本连续信号的CTFT</li>
+<li>对于有限长序列，计算DFT就是在逼近计算DTFT函数的一部分值<br>所以综上，我所使用的这本教材前三章的核心目的就是告诉我，可以使用某种手段(比如滤波器等等)，利用FFT就能近似计算一个连续函数的CTFT，至于其他的都是具体的计算时的分支任务。比如设计数字滤波器，本质上就是在给采样后的信号去干连续信号一样的事情</li>
+</ul>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>数字信号相关</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>移动端开发初探_1</title>
+    <url>/posts/9b96febe.html</url>
+    <content><![CDATA[<h1 id="移动端开发初探-1"><a href="#移动端开发初探-1" class="headerlink" title="移动端开发初探_1"></a>移动端开发初探_1</h1><p>因为一些巧合，现在一直接触 C++ 的我开始了移动端的学习与开发，这篇文档稍微记录一下自己的学习过程，但其实这不是一个笔记记录，算是一点小小感悟吧</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>早就听闻 Flutter 的大名，没想到我也会有一天有理由去学习这样一个框架，其实在很久以前我也曾是从 Android 开发过来的，不过现在回头看一眼，Android 的结构还是太过复杂了，以当时我的基础，基本上完全不能够理解相关的内容</p>
+<blockquote>
+<p>免责声明：仅由于我暂时没有鸿蒙开发所使用的设备(我穷喵)，目前我不考虑鸿蒙的开发，下文就只考虑 Android 与 iOS</p>
+</blockquote>
+<h2 id="学习的-Bootstrap-时期"><a href="#学习的-Bootstrap-时期" class="headerlink" title="学习的 Bootstrap 时期"></a>学习的 Bootstrap 时期</h2><p>虽然学习移动端开发，最基本的任务就是去具体尝试一下 Android 和 iOS 上的原生开发，但我的学习路径有一些不同，我使用 Android 也有一段时间了，在大佬云集的许多群聊里听玩机，虽是当时无法理解，但潜移默化之中也知道 Android 里 activity 的概念，知道 apk 是一个压缩包。但同时我也曾玩过很多平台上的 Linux，同为 arm 的树莓派也可以使用 C/C++ 进行愉快的代码编写，那凭什么 Android 那么特殊，封装成了这样呢？</p>
+<p>不管如何，让我先来写一些简单的 hello world 吧。在环境安装上纠结了一小段时间后( gradle 坏 )，我成功安装好了 Android Studio，跑通了一些基本的 example，我发现 Android 有个特点，首先，Android 原生开发中，你没有办法在项目里找到 main 函数，而是在 <code>AndroidManifest.xml</code> 里需要注册 <code>MainActivity</code>，如下</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">&quot;.MainActivity&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.action.MAIN&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">&quot;android.intent.category.LAUNCHER&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>接着在软件打开的时候 MainActivity 的 <code>onCreate()</code> 函数就会被运行，也许这里就是函数的入口点？只能说如今看来，我感觉背后一定有我不知道的隐藏机制，比如 UI 程序常见的事件循环在哪，Android 的 API 库的实现原理是几何，听说 Android 的内核仍然是 Linux，那么 syscall 以及 C 库都怎么样了，OpenGL 库怎么作用的，函数的入口点如何…一口气可以说好多萦绕在我心头的问题，我当然可以选择先放下他们，直接接着学习原生开发，摆弄那些常见的组件，前端的知识，但如今的我终于知道我该以什么切入点查看这个问题了：1.安卓的系统架构，在过去的时间里面我们见过 Linux 发行版的系统架构，比如 wayland 的运行机制，kde 这样的桌面环境是怎么实现的，所以我们也要由此看一眼安卓的，2.app 具体运行是怎么被启动的，那可是 Java/Kotlin 啊，虚拟机又是在什么时候启动的呢？3.安卓本身系统是怎么被启动的</p>
+<h2 id="深入一点"><a href="#深入一点" class="headerlink" title="深入一点"></a>深入一点</h2><p>我们都知道 Android 的内核就是 Linux，哪怕它对此进行了一些修改，也不会绕到哪去。那我们就先从安卓本身系统启动来看看，安卓的内核启动了一个类似 systemd 的东西，<code>init</code> 进程，这个是读取 <code>init.rc</code> 配置文件运行一些系统级进程(就是有 root 权限的进程)，比如各种硬件服务：如显示服务、音频服务、Wi-Fi服务等，各种系统守护进程：包括 zygote 和 surfaceflinger 等。其中 zygote 进程相当重要，我们知道在 Linux 上，启动一个进程其实是使用 fork + exec syscall 的，而最开始执行 fork syscall 的，在使用 systemd 的情况下就是这个进程执行的，那么其实在这里，zygote 是被 <code>init</code> fork 出来的，但 zygote 翻译过来本意是受精卵，从寓意上看，他就是负责生成一些其它进程的，事实上也确实如此，在 app 启动时，正是它 fork 出新的进程，新进程是一个 JVM，它可以加载 apk 里的 dex 字节码并开始运行。<br>zygote 会 fork 出其它 Java 的系统级服务，比如 <code>SystemServer</code>，这个进程具有高权限，那么它具体起到什么作用呢，这里先按下不表，请看下文。<br>最终通过这样的方式 launcher 也就是桌面最终会被启动，整个系统便启动完成。</p>
+<p>可以看到 zygote 负责了所有 Java 应用的启动，事实上它自己与之前的一些系统进程并非 Java，肯定是原生的代码，而它开始负责所有 Java 程序的启动，因为它直接复制自己这个虚拟机，从 app 的 <code>AndroidManifest.xml</code> 读取 MainActivity 这个类的然后启动，这里要说明的是启动的时候它直接加载 dex，这个只有一些分散的类实现的字节码。而真实的入口函数，则是被藏在系统的代码中，<code>ActivityThread.main()</code></p>
+<h2 id="细究-app-的启动"><a href="#细究-app-的启动" class="headerlink" title="细究 app 的启动"></a>细究 app 的启动</h2><p>当你安装一个 apk 文件的时候，其实做的事情并不多，首先 <code>AndroidManifest.xml</code> 会被系统解析变成系统全局的元数据，一般也会在桌面上留下图标，而当你点击这么一个图标的时候，launcher 通过 startActivity() 发送一个 Intent，包含目标应用的包名和入口 Activity 信息。ActivityManagerService (AMS) 会接受这样的信息，接着，如果应用本身并不存在，则会通过进程间通信(IPC) 告诉 zygote 让他生成应用，然后 <code>ActivityThread.main()</code> 执行：初始化主线程的 Looper 和 Handler（消息循环）,调用 attach() 向 AMS 注册当前进程。启动 <code>Looper.loop()</code> 进入消息循环，等待 AMS 的后续指令。这验证了我们的猜想，确实事件循环和入口函数是存在的</p>
+<h2 id="Binder-神秘的IPC"><a href="#Binder-神秘的IPC" class="headerlink" title="Binder - 神秘的IPC"></a>Binder - 神秘的IPC</h2><p>Android 有一个很神奇的东西，它有一个 IPC 的驱动，上文提到的 <code>SystemServer</code> 与此有关，用户的应用可以通过 syscall 调用 Binder，与 <code>SystemServer</code> 进行进程间通信，并通过反射机制获取到其中一些全局的类信息与功能，由于 <code>SystemServer</code> 本身具有比较高的权限，它作为系统应用就可以控制向其通信的用户应用的请求，以确保安全性<br>我个人学习到此处的时候觉得，这其实是把一些系统的库变成了一个运行时的东西，也就是通过客户端/服务器模型，让服务器占用高权限，强迫用户进程在低权限，以此保障安全性，而其本质，实质上和 wayland compositor 没什么区别。<br>所以 Android SDK 里的那些库，底层不出意外，除了一些 linux 自己的常用的 read/write 之类的 syscall，如比较上层的电话服务，应该是一个对 IPC 的封装罢了</p>
+<h2 id="iOS上呢"><a href="#iOS上呢" class="headerlink" title="iOS上呢"></a>iOS上呢</h2><p>iOS 相对来说比较花哨， SwiftUI 我暂时还没有细看，但是 Objective-C 稍微看了一点，与 Android 不同的是，在书写 oc 程序时，有明显的 main 函数，以及用于启动事件循环的类 <code>UIApplication</code>，其机制与 Qt 十分相似，因此我特意去看了一眼 Qt 的实现，确实 Qt 本身的事件循环只是稍稍对 <code>UIApplication</code> 进行了一层包装，而不是像别的平台真要实现一个事件循环。<br>同时，iOS 本身也有一堆系统进程，出于闭源的原因，只能根据公开的材料猜测，其应当也如同这样，是通过进程间通信来调用通话服务，UI服务等一系列有点高层，但又很底层的东西<br>iOS 没有跑一个虚拟机，oc 会被直接编译成平台代码，所以我觉得 iOS 应该确实要比 Android 快，即使 Android 引入了 aot，应当也不能完全弥补速度差距</p>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>感觉将有些功能变成高权限进程，通过进程间通信来调用这种动态的”库”，而不是直接一个 glibc 静态的库只调用 syscall 实现是常见的，毕竟后者什么都可以写，但是权限要求相当之高了。似乎这与微内核的想法也是相关的，总之还挺有意思，即使是简单的 hello world 背后也有如此复杂的事情，但所有平台的客户端具体实现又具有统一性，这也许就是软件与系统分层架构之间带来的魅力吧。</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Mobile_device</category>
       </categories>
   </entry>
   <entry>
