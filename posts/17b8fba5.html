@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="仿 3b1b 朱丽娅集很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="仿3b1b朱丽娅集">
+<meta property="og:url" content="https://feipiao594.github.io/posts/17b8fba5.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="仿 3b1b 朱丽娅集很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-12-07T06:17:54.000Z">
+<meta property="article:modified_time" content="2025-12-07T06:28:30.501Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/17b8fba5.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>仿3b1b朱丽娅集 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/17b8fba5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          仿3b1b朱丽娅集
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-07 14:17:54 / 修改时间：14:28:30" itemprop="dateCreated datePublished" datetime="2025-12-07T14:17:54+08:00">2025-12-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/" itemprop="url" rel="index"><span itemprop="name">Mathematic</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mathematic/Math-modeling/" itemprop="url" rel="index"><span itemprop="name">Math_modeling</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="仿-3b1b-朱丽娅集"><a href="#仿-3b1b-朱丽娅集" class="headerlink" title="仿 3b1b 朱丽娅集"></a>仿 3b1b 朱丽娅集</h1><p>很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果</p>
+<span id="more"></span>
+<h2 id="有一些话"><a href="#有一些话" class="headerlink" title="有一些话"></a>有一些话</h2><p>下面那个效果其实是复刻了 3b1b “How a Mandelbrot set arises from Newton’s work” 这期视频中提到的一些概念</p>
+<p>关于视频，你可以在 bilibili 找到它: <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1nh411x78S/">https://www.bilibili.com/video/BV1nh411x78S/</a></p>
+<p>在 3b1b 官网上有与下面这个效果所复刻的实现 <a target="_blank" rel="noopener" href="https://www.3blue1brown.com/lessons/holomorphic-dynamics#title">https://www.3blue1brown.com/lessons/holomorphic-dynamics#title</a></p>
+<p>我个人对 3b1b 非常崇拜，可视化效果做的很好，但是当我实际上手 manim 之后我觉得，这个工具并不是非常适合制作复杂视频的视频工作者使用 </p>
+<p>在很久很久以前，久到我还没有听说过 GPU 与渲染管线时，我曾用过各种工具绘制过 mandelbort 集，但是效率相当感人。渲染 18s mandelbort 集的放大视频当时在 python 上使用 CPU 渲染，花了我 10h。现在我才发现，调用 webgl 就能相当快速的绘制出这样的效果</p>
+<p>也是感谢 @xjzsq (github)，如果不是他只是在我提了一嘴 3b1b，就帮我去稍稍逆向了一下这个网页的 js，我也许至今都不知道我也有复刻这玩意的能力了(笑)</p>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><style>
+  html, body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* 最外层容器 */
+  .scale-wrapper {
+    position: relative;
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background: black;
+    color: white;
+  }
+
+  .fullscreen-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2vw;
+    height: 2vw;
+    padding: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    border: 1px solid #666;
+    border-radius: 0 0 0 4px;
+    cursor: pointer;
+    font-size: 1.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .fullscreen-btn:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .panel {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+  }
+
+  .panel canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .middle {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .panel-container {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+  }
+
+  .panel-label {
+    color: white;
+    font-size: 1.2vw;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .mid-text {
+    color: white;
+    text-align: center;
+    font-size: 1vw;
+    user-select: none;
+    line-height: 1.3;
+  }
+
+  .mid-text span {
+    font-size: 1.2vw;
+  }
+</style>
+
+<!-- 会被 JS 动态缩放 -->
+<div id="scaleWrapper" class="scale-wrapper">
+  <button id="fullscreenBtn" class="fullscreen-btn">⛶</button>
+
+  <!-- 左侧 Mandelbrot -->
+  <div class="panel-container">
+    <div class="panel-label">c <-> Pixel<br>z0 = 0</div>
+    <div class="panel">
+      <canvas id="mandelGL"   width="600" height="600"></canvas>
+      <canvas id="mandelAxis" width="600" height="600"></canvas>
+      <canvas id="pickerCanvas" width="600" height="600"></canvas>
+    </div>
+  </div>
+
+  <!-- 中间栏 -->
+  <div class="middle">
+    <div class="mid-text" id="midText">
+      Iterate<br>
+      <span>z² + c</span>
+    </div>
+  </div>
+
+  <!-- 右侧 Julia -->
+  <div class="panel-container">
+    <div class="panel-label">c = <span id="cValue">0.43 + -0.27i</span><br>z0 <-> Pixel</div>
+    <div class="panel">
+      <canvas id="juliaGL"   width="600" height="600"></canvas>
+      <canvas id="juliaAxis" width="600" height="600"></canvas>
+    </div>
+  </div>
+
+<p>&lt;/div&gt;</p>
+<script>
+
+
+/* ------------------------------------------
+   WebGL 公共函数
+--------------------------------------------- */
+function createShader(gl, type, src){
+  let s = gl.createShader(type);
+  gl.shaderSource(s,src);
+  gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+    console.error(gl.getShaderInfoLog(s));
+  return s;
+}
+function createProgram(gl, vs, fs){
+  let p = gl.createProgram();
+  gl.attachShader(p, vs);
+  gl.attachShader(p, fs);
+  gl.linkProgram(p);
+  if(!gl.getProgramParameter(p, gl.LINK_STATUS))
+    console.error(gl.getProgramInfoLog(p));
+  return p;
+}
+
+/* ------------------------------------------
+   顶点着色器（全屏）
+---------------------------------------------*/
+const VS = `
+attribute vec2 aPosition;
+varying vec2 vPos;
+void main() {
+  vPos = aPosition;
+  gl_Position = vec4(aPosition,0.0,1.0);
+}
+`;
+
+/* ------------------------------------------
+   公共调色板
+---------------------------------------------*/
+const PALETTE = `
+vec3 palette(float t){
+  t = clamp(t,0.0,1.0);
+  vec3 deepBlue  = vec3(0.004,0.035,0.376);
+  vec3 midBlue   = vec3(0.05,0.30,0.85);
+  vec3 yellow    = vec3(1.00,0.85,0.20);
+  vec3 nearWhite = vec3(1.00,0.98,0.92);
+  if(t < 0.45) return mix(deepBlue,midBlue, t/0.45);
+  if(t < 0.8)  return mix(midBlue,yellow,(t-0.45)/0.35);
+  return mix(yellow,nearWhite,(t-0.8)/0.2);
+}
+`;
+
+/* ------------------------------------------
+   Mandelbrot Shader
+---------------------------------------------*/
+const FS_MAN = `
+precision mediump float;
+varying vec2 vPos;
+
+const int MAX_ITER = 300;
+const float ESCAPE = 4.0;
+
+${PALETTE}
+
+void main(){
+  float x0 = mix(-1.3,0.7,(vPos.x+1.0)/2.0);
+  float y0 = mix(-1.0,1.0,(vPos.y+1.0)/2.0);
+
+  float x=0.0, y=0.0;
+  int iter=MAX_ITER;
+  float r2;
+
+  for(int i=0;i<MAX_ITER;i++){
+    float nx = x*x - y*y + x0;
+    float ny = 2.0*x*y + y0;
+    x=nx; y=ny;
+    r2 = x*x+y*y;
+    if(r2>ESCAPE){ iter=i; break; }
+  }
+
+  if(iter==MAX_ITER){ gl_FragColor=vec4(0,0,0,1); return; }
+
+  float r = sqrt(r2);
+  float nu = log(log(r))/log(2.0);
+  float s = float(iter) + 1.0 - nu;
+
+  float t = s / float(MAX_ITER);
+  t = pow(t,0.4);
+  float lv=24.0;
+  t = floor(t*lv)/lv;
+
+  gl_FragColor = vec4(palette(t),1);
+}
+`;
+
+/* ------------------------------------------
+   Julia Shader
+---------------------------------------------*/
+const FS_JUL = `
+precision mediump float;
+varying vec2 vPos;
+
+uniform float cRe;
+uniform float cIm;
+
+const int MAX_ITER = 300;
+const float ESCAPE = 4.0;
+
+${PALETTE}
+
+void main(){
+  float x = mix(-1.3,1.3,(vPos.x+1.0)/2.0);
+  float y = mix(-1.3,1.3,(vPos.y+1.0)/2.0);
+
+  int iter=MAX_ITER;
+  float r2;
+
+  for(int i=0;i<MAX_ITER;i++){
+    float nx = x*x - y*y + cRe;
+    float ny = 2.0*x*y + cIm;
+    x=nx; y=ny;
+    r2 = x*x+y*y;
+    if(r2>ESCAPE){ iter=i; break; }
+  }
+
+  if(iter==MAX_ITER){ gl_FragColor=vec4(0,0,0,1); return; }
+
+  float r = sqrt(r2);
+  float nu = log(log(r))/log(2.0);
+  float s = float(iter)+1.0-nu;
+  float t = pow(s/float(MAX_ITER),0.4);
+  t = floor(t*24.0)/24.0;
+
+  gl_FragColor = vec4(palette(t),1);
+}
+`;
+
+/* ------------------------------------------
+   WebGL 初始化（Mandelbrot & Julia）
+---------------------------------------------*/
+function initGL(canvas, fragShader){
+  const gl = canvas.getContext("webgl");
+  const vs = createShader(gl, gl.VERTEX_SHADER, VS);
+  const fs = createShader(gl, gl.FRAGMENT_SHADER, fragShader);
+  const p = createProgram(gl, vs, fs);
+  gl.useProgram(p);
+
+  const quad = new Float32Array([
+    -1,-1, 1,-1, -1,1,
+    -1,1, 1,-1, 1,1
+  ]);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, quad, gl.STATIC_DRAW);
+
+  const loc = gl.getAttribLocation(p,"aPosition");
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+  return { gl, program:p };
+}
+
+const mandel = initGL(mandelGL, FS_MAN);
+const julia  = initGL(juliaGL, FS_JUL);
+
+let currentC = {re: 0.43, im: -0.27};
+
+function drawMandel(){
+  mandel.gl.viewport(0,0,600,600);
+  mandel.gl.drawArrays(mandel.gl.TRIANGLES,0,6);
+}
+function drawJulia(cRe,cIm){
+  const gl=julia.gl;
+  gl.useProgram(julia.program);
+  gl.uniform1f(gl.getUniformLocation(julia.program,"cRe"),cRe);
+  gl.uniform1f(gl.getUniformLocation(julia.program,"cIm"),cIm);
+  gl.viewport(0,0,600,600);
+  gl.drawArrays(gl.TRIANGLES,0,6);
+}
+
+drawMandel();
+drawJulia(currentC.re, currentC.im);
+
+/* ------------------------------------------
+   坐标轴（与现有的风格一致）
+---------------------------------------------*/
+function drawAxes(canvas, reMin,reMax,imMin,imMax,step){
+  const ctx = canvas.getContext("2d");
+  const W=600, H=600;
+  function toXY(re,im){
+    return {
+      x:(re-reMin)/(reMax-reMin)*W,
+      y:(imMax-im)/(imMax-imMin)*H
+    };
+  }
+  ctx.clearRect(0,0,W,H);
+  ctx.lineWidth = 1.2;
+  ctx.font = "14px sans-serif";
+  ctx.fillStyle = "white";
+
+  const origin = toXY(0,0);
+
+  for(let r=-2;r<=2;r+=step){
+    if(r>=reMin && r<=reMax){
+      let p=toXY(r,0);
+      ctx.beginPath();
+      ctx.moveTo(p.x,0); ctx.lineTo(p.x,H);
+      ctx.strokeStyle = Math.abs(r)<1e-6?"rgba(255,255,255,0.5)":"rgba(255,255,255,0.23)";
+      ctx.stroke();
+      if(Math.abs(r)>1e-6){
+        ctx.textAlign="center"; ctx.textBaseline="top";
+        ctx.fillText(r.toString(), p.x, origin.y+4);
+      }
+    }
+  }
+
+  for(let i=-2;i<=2;i+=step){
+    if(i>=imMin && i<=imMax){
+      let p=toXY(0,i);
+      ctx.beginPath();
+      ctx.moveTo(0,p.y); ctx.lineTo(W,p.y);
+      ctx.strokeStyle = Math.abs(i)<1e-6?"rgba(255,255,255,0.5)":"rgba(255,255,255,0.23)";
+      ctx.stroke();
+      if(Math.abs(i)>1e-6){
+        ctx.textAlign="left"; ctx.textBaseline="middle";
+        ctx.fillText(i+"i", origin.x+4, p.y);
+      }
+    }
+  }
+}
+
+drawAxes(mandelAxis, -1.3,0.7,-1,1,0.25);
+drawAxes(juliaAxis, -2.0,2.0,-2.0,2.0,0.5);
+
+// 初始黄点位置 (0,0)
+let currentX = 390;
+let currentY = 300;
+updateYellowPoint();
+
+function updateYellowPoint() {
+  const ctx = pickerCanvas.getContext("2d");
+  ctx.clearRect(0,0,600,600);
+  ctx.beginPath();
+  ctx.arc(currentX, currentY, 8, 0, 6.28);
+  ctx.fillStyle="yellow";
+  ctx.fill();
+  ctx.lineWidth=3;
+  ctx.strokeStyle="black";
+  ctx.stroke();
+
+  // 计算复平面坐标
+  const re = currentX/600*(0.7+1.3)-1.3;
+  const im = (1-currentY/600)*2 - 1;
+
+  // 更新 currentC
+  currentC.re = re;
+  currentC.im = im;
+
+  // 更新显示
+  document.getElementById("cValue").textContent = `${re.toFixed(2)} + ${im.toFixed(2)}i`;
+
+  // 更新 Julia
+  drawJulia(re, im);
+}
+
+/* ------------------------------------------
+   左侧拖动选择 c
+---------------------------------------------*/
+let isDragging = false;
+
+pickerCanvas.addEventListener("mousedown", e=>{
+  isDragging = true;
+  updatePosition(e);
+});
+
+pickerCanvas.addEventListener("mousemove", e=>{
+  if (isDragging) {
+    updatePosition(e);
+  }
+});
+
+pickerCanvas.addEventListener("mouseup", e=>{
+  isDragging = false;
+});
+
+function updatePosition(e) {
+  const canvas = e.target;
+  currentX = Math.max(0, Math.min(600, e.offsetX / canvas.clientWidth * 600));
+  currentY = Math.max(0, Math.min(600, e.offsetY / canvas.clientHeight * 600));
+  updateYellowPoint();
+}
+
+/* ------------------------------------------
+   全屏功能
+---------------------------------------------*/
+const fullscreenBtn = document.getElementById("fullscreenBtn");
+
+fullscreenBtn.addEventListener("click", toggleFullscreen);
+
+function toggleFullscreen() {
+  const wrapper = document.getElementById("scaleWrapper");
+  if (!document.fullscreenElement) {
+    wrapper.requestFullscreen().catch(err => console.error(err));
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+document.addEventListener("fullscreenchange", () => {
+  if (document.fullscreenElement) {
+    fullscreenBtn.textContent = "⛶";
+  } else {
+    fullscreenBtn.textContent = "⛶";
+  }
+});
+</script>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/cc2541cf.html" rel="prev" title="2048">
+      <i class="fa fa-chevron-left"></i> 2048
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BF-3b1b-%E6%9C%B1%E4%B8%BD%E5%A8%85%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">仿 3b1b 朱丽娅集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E4%B8%80%E4%BA%9B%E8%AF%9D"><span class="nav-number">1.1.</span> <span class="nav-text">有一些话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">效果</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">198k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">5:59</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : 'e16b91859656365e55f5ebc031c750d8',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

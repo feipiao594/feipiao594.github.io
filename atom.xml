@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-12-06T16:44:20.507Z</updated>
+  <updated>2025-12-07T06:28:30.501Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>仿3b1b朱丽娅集</title>
+    <link href="https://feipiao594.github.io/posts/17b8fba5.html"/>
+    <id>https://feipiao594.github.io/posts/17b8fba5.html</id>
+    <published>2025-12-07T06:17:54.000Z</published>
+    <updated>2025-12-07T06:28:30.501Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;仿-3b1b-朱丽娅集&quot;&gt;&lt;a href=&quot;#仿-3b1b-朱丽娅集&quot; class=&quot;headerlink&quot; title=&quot;仿 3b1b 朱丽娅集&quot;&gt;&lt;/a&gt;仿 3b1b 朱丽娅集&lt;/h1&gt;&lt;p&gt;很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Mathematic" scheme="https://feipiao594.github.io/categories/Mathematic/"/>
+    
+    <category term="Math_modeling" scheme="https://feipiao594.github.io/categories/Mathematic/Math-modeling/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>2048</title>
@@ -394,27 +413,6 @@
     
     
     <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>遨游在内存中的硬件启动过程</title>
-    <link href="https://feipiao594.github.io/posts/42db1e6.html"/>
-    <id>https://feipiao594.github.io/posts/42db1e6.html</id>
-    <published>2024-09-25T16:00:00.000Z</published>
-    <updated>2024-10-27T07:55:07.050Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;遨游在内存中的硬件启动过程&quot;&gt;&lt;a href=&quot;#遨游在内存中的硬件启动过程&quot; class=&quot;headerlink&quot; title=&quot;遨游在内存中的硬件启动过程&quot;&gt;&lt;/a&gt;遨游在内存中的硬件启动过程&lt;/h1&gt;&lt;p&gt;2024.9.28 &lt;code&gt;.NET Conf&lt;/code&gt; 介绍话题，话题来自我之前对硬件启动过程的好奇&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
     
     
   </entry>
