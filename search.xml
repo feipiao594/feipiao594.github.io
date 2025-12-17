@@ -2113,8 +2113,8 @@ void main(){
   if(iter==MAX_ITER){ gl_FragColor=vec4(0,0,0,1); return; }
 
   float r = sqrt(r2);
-  float nu = log(log(r))/log(2.0);
-  float s = float(iter) + 1.0 - nu/1.3;
+  float nu = log(log(r)/log(ESCAPE))/log(2.0);
+  float s = float(iter) + 1.0 - nu;
 
   float t = s / float(MAX_ITER);
   t = pow(t,0.4);
@@ -2158,8 +2158,8 @@ void main(){
   if(iter==MAX_ITER){ gl_FragColor=vec4(0,0,0,1); return; }
 
   float r = sqrt(r2);
-  float nu = log(log(r))/log(2.0);
-  float s = float(iter)+1.0-nu/1.3;
+  float nu = log(log(r)/log(ESCAPE))/log(2.0);
+  float s = float(iter)+1.0-nu;
   float t = pow(s/float(MAX_ITER),0.4);
   // t = floor(t*24.0)/24.0;
 
@@ -2548,6 +2548,18 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
     <title>初见流形上的微积分</title>
     <url>/posts/1a81a4ab.html</url>
     <content><![CDATA[<h1 id="初见流形上的微积分"><a href="#初见流形上的微积分" class="headerlink" title="初见流形上的微积分"></a>初见流形上的微积分</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>以本篇笔记记录时我大一的数理能力是无法去完全阅读流形相关的内容的，因此，我只能在此做一个<strong>科普性的导论</strong>。我们会从一个工科生的角度，从流形之前的知识到stokes公式的引出，从而拓展出一个完整的流形上的微积分的概念。<br><span id="more"></span><br>前排提示：文章内容<strong>完全不严谨</strong>，纯粹是出于个人的理解。想要系统学习，建议阅读<strong>Loring W. Tu</strong>的《An Introduction to Manifolds》一书，同时关于本篇文档的排版<strong>措辞仍需修饰</strong>，仍然是一个<strong>不完整</strong>版本</p>
@@ -2651,18 +2663,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -3020,6 +3020,33 @@ f(x)=\lim_{i\to 0}f_i(x)</script><p>如果积分内部函数为广义函数，�
       </categories>
   </entry>
   <entry>
+    <title>我的自学小计划</title>
+    <url>/posts/e97bb949.html</url>
+    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
+<span id="more"></span>
+<blockquote>
+<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
+</blockquote>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
+<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
+<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
+<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
+<p>18.024 Multivariable Calculus (Finished)</p>
+<p>18.700 Linear Algebra (Finished)</p>
+<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
+<p>18.100 Real Analysis (<strong>working</strong>)</p>
+<p><strong>Third Part</strong><br>等待中</p>
+<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
+<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
+<p>KAIST CS420: Compiler Design (Waiting)</p>
+<p>Stanford CS242: Programming Languages (Waiting)</p>
+<p>南京大学 OS (<strong>Working</strong>)</p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
     <title>微分流形公式整理</title>
     <url>/posts/7391c17b.html</url>
     <content><![CDATA[<h1 id="微分流形公式整理"><a href="#微分流形公式整理" class="headerlink" title="微分流形公式整理"></a>微分流形公式整理</h1><p>其实一开始学微分流形就是单纯认为高等数学定义的积分模型实在是有点丑，想找更统一的公式去表达，但也没想到就这么稀里糊涂的学了不少东西，不过，确实也给我窥见了<strong>大一统的美丽</strong>。<br>在这里记录下一些重要定义和重要公式吧。</p>
@@ -3090,45 +3117,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       </categories>
   </entry>
   <entry>
-    <title>排序</title>
-    <url>/posts/a444b428.html</url>
-    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
-<span id="more"></span>
-<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>DSA</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
-<p>18.024 Multivariable Calculus (Finished)</p>
-<p>18.700 Linear Algebra (Finished)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
-<p>18.100 Real Analysis (<strong>working</strong>)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-<p>南京大学 OS (<strong>Working</strong>)</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
     <title>数学实验综合练习</title>
     <url>/posts/93a8bfd0.html</url>
     <content><![CDATA[<h1 id="数学实验综合练习"><a href="#数学实验综合练习" class="headerlink" title="数学实验综合练习"></a>数学实验综合练习</h1><p>这里是我大一数学实验课的综合练习一的题解</p>
@@ -3155,6 +3143,51 @@ A = [576.7970 \quad 0.2883]</script><p>经小组共同研究，发现主要是�
       <categories>
         <category>Mathematic</category>
         <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>排序</title>
+    <url>/posts/a444b428.html</url>
+    <content><![CDATA[<h1 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h1><p>排序算法是最经典的算法知识。其实现代码短，应用广<br>如下是几种常见的排序算法：冒泡排序、选择排序、插入排序、归并排序、快速排序、希尔排序、堆排序、计数排序、桶排序、基数排序</p>
+<span id="more"></span>
+<h2 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">qsort</span><span class="params">(<span class="type">int</span> l,<span class="type">int</span> r)</span><span class="comment">//应用二分思想</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> mid=a[(l+r)/<span class="number">2</span>];<span class="comment">//中间数</span></span><br><span class="line">    <span class="type">int</span> i=l,j=r;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(a[i]&lt;mid) i++;<span class="comment">//查找左半部分比中间数大的数</span></span><br><span class="line">        <span class="keyword">while</span>(a[j]&gt;mid) j--;<span class="comment">//查找右半部分比中间数小的数</span></span><br><span class="line">        <span class="keyword">if</span>(i&lt;=j)<span class="comment">//如果有一组不满足排序条件（左小右大）的数</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">swap</span>(a[i],a[j]);<span class="comment">//交换</span></span><br><span class="line">            i++;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">while</span>(i&lt;=j);<span class="comment">//这里注意要有=</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;j) <span class="built_in">qsort</span>(l,j);<span class="comment">//递归搜索左半部分</span></span><br><span class="line">    <span class="keyword">if</span>(i&lt;r) <span class="built_in">qsort</span>(i,r);<span class="comment">//递归搜索右半部分</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>DSA</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_1</title>
+    <url>/posts/6b49fcb0.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<ul>
+<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
+<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
+<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
+<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
+<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
+<li>人和人的人际关系真是奇异</li>
+<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
+<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
+<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>日常碎碎念_2</title>
+    <url>/posts/f52d6913.html</url>
+    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
+<span id="more"></span>
+<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
+<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
@@ -3221,39 +3254,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_1</title>
-    <url>/posts/6b49fcb0.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-1"><a href="#日常碎碎念-1" class="headerlink" title="日常碎碎念_1"></a>日常碎碎念_1</h1><p>日常碎碎念_1，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<ul>
-<li>以后有什么想法全部发布在自己的Blog里啦，看到这些的大多都是很要好的朋友咯，像DaliyLife这个文件夹下的东西没有特殊原因几乎不会修改哦，发布日期就是当日的想法</li>
-<li>今天总算把多元函数微积分搞到了一个满意的程度，把整个微分流形稍微过了一遍。买的书已经到手啦，《An Introduction to Manifolds》，但是全英文确实难啃，好在之前已经看过一本中文了。以后有个小梦想就是拥有自己的书架，上面摆着自己喜欢的书，从数理化到Coding，还有一些小说之类的</li>
-<li>想要在一个下午，能透过阳光的窗边，拿着书，一杯咖啡，真好，但是有点太理想了</li>
-<li>最近啥CS，EE都没学呢，怠惰了(其实不是，在学数学啦)</li>
-<li>单片机稍微耍了耍，C51相比C语言添加的4个变量类型的语法好奇怪哦，有一种狗皮膏药的感觉(bushi)，应该是我太菜了QAQ</li>
-<li>人和人的人际关系真是奇异</li>
-<li>女生宿舍楼下不能多呆，要是除却有事之外应该走的远远的，狗粮会恰饱的，这对一个程序员(也许我还算不上)来说是莫大的打只因(楽)</li>
-<li>后天要力学测验，有点小慌，找出了藏在文件夹里的高中力学竞赛书，发现自己看太少了根本没啥用HAHA</li>
-<li>没了兴趣做不了课外的事情，因为是支线，不做也罢，但是如果主线是没兴趣的事情，那我定当Try my best</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>日常碎碎念_2</title>
-    <url>/posts/f52d6913.html</url>
-    <content><![CDATA[<h1 id="日常碎碎念-2"><a href="#日常碎碎念-2" class="headerlink" title="日常碎碎念_2"></a>日常碎碎念_2</h1><p>日常碎碎念_2，日常碎碎念，生人勿进</p>
-<span id="more"></span>
-<p>记2023.1.19，一学期过完的回家路上，由于之前一直乘大巴，所以没去过南京南站，这次感受了一波南京南站的高铁，由此开启了一段时光倒流的路途。<br>要说整个过程也没什么，只是鬼使神差的坐完高铁回到市里，又去乘了公交，恰好那一路公交会经过我的高中母校和初中母校罢了。下车转了一辆公交，是曾经小学载我回家的那一路公交，顺带再经过我的幼儿园。挺感慨的，一次回家居然足以概括我的20年，最终回到我物理意义上因为寒冬不算特别温暖的小小的家。<br>旅途的意义是在路上的人赋予它的。经过高中的时候，我听见那个熟悉的学校名字，我几乎是条件反射式的抬头看上一眼，可惜雨天的傍晚天太暗，看不清什么，我知道那时候，里面还正在上课，可惜教学楼在学校的中间，从大门口看不见哪怕一丝光亮。和我朝夕相处的那些东西终究远去了，有意气风发，有自怨自艾，有暗生情愫，有埋头苦读。看起来现在都已经不重要了。在家乡的学习路，也随着离开这里彻底迈入终点站，我现在也不过只能回头撇一眼终点站，将理想国的信念置于其他人的梦想之上，继续下去寻找我自己而已。<br>下一站是我的初中，没想到恰逢初中放学，一群初中生涌上车，嗨，这是五年前的子弹击中了自己，我看到的都是曾经的我。还有一位小友对我说到”老哥，挤一挤”，不由分说把我从靠走道的座位挤到了靠窗的座位上。唉唉，我可是大你们起码五届的学长啊喂。该说不说，在我初中那堵车堵了半小时，有我当年回家的风范(悲)，现在的初中生比我当年中二，我的评价是，比我一带学生抽象。<br>遥想曾经听过2017年江苏卷高考语文有一道关于车的作文考题，想来不管当年有多少技巧与能力，心里的答卷也只有随着年龄的增长才能交出来吧。<br>(贴一张在社团的新年小祝福代表当前的精神状态)</p>
-<p><img src="/images/日常碎碎念_2_图1.jpeg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
