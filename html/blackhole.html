@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>史瓦西黑洞</title>
+    <style>
+        #mobile-warning { display: none; }
+
+        @media screen and (max-width: 768px) {
+            #controls, #canvas { display: none !important; }
+            #mobile-warning { display: block !important; }
+            body { overflow: auto; background: #000; }
+        }
+        body { margin: 0; overflow: hidden; background: #000; cursor: grab; }
+        body:active { cursor: grabbing; }
+        canvas { width: 100vw; height: 100vh; display: block; }
+        #controls {
+            position: absolute; top: 10px; left: 10px;
+            color: #ffffff; font-family: sans-serif;
+            background: rgba(0,0,0,0.85); padding: 15px;
+            border-radius: 8px; border: 1px solid #444;
+            user-select: none; z-index: 100; min-width: 220px;
+        }
+        .control-item { margin-bottom: 12px; }
+        label { font-size: 12px; display: block; margin-bottom: 5px; color: #bbb; }
+        input[type="range"] { width: 100%; cursor: pointer; }
+        input[type="file"] { font-size: 11px; width: 100%; color: #eee; }
+        .hint { font-size: 10px; color: #666; margin-top: 5px; }
+
+        /*禁用状态的样式*/
+        input[type=checkbox]:disabled + span { color: #555; }
+    </style>
+</head>
+<body>
+    <div id="mobile-warning" style="display: none; color: white; text-align: center; padding-top: 50vh; font-family: sans-serif;">
+        <h2>移动端暂不支持</h2>
+        <p>请在电脑端浏览器访问以查看黑洞模拟</p>
+    </div>
+    <div id="controls">
+        <div style="font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #444;">控制面板</div>
+
+        <div class="control-item">
+            <label>黑洞高度 (Y轴): <span id="heightVal">3.0</span></label>
+            <input type="range" id="bhHeight" min="-5.0" max="5.0" step="0.1" value="1.0">
+        </div>
+
+        <div class="control-item" style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                 <label style="margin-bottom: 0; color: #ddd;">全景天空盒:</label>
+                 <label style="font-size: 11px; cursor: pointer; display: flex; align-items: center;">
+                    <input type="checkbox" id="useSkyboxToggle" disabled style="width: auto; margin-right: 4px;">
+                    <span>启用</span>
+                </label>
+            </div>
+            <input type="file" id="skyboxInput" accept="image/*">
+        </div>
+
+        <div class="control-item">
+            <label style="cursor: pointer;">
+                <input type="checkbox" id="showPlane" checked> 显示坐标网格 (Y=0)
+            </label>
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
+
+<script id="vs" type="x-shader/x-vertex">
+    attribute vec2 position;
+    void main() { gl_Position = vec4(position, 0.0, 1.0); }
+</script>
+
+<script id="fs" type="x-shader/x-fragment">
+    precision highp float;
+    uniform vec2 u_resolution;
+    uniform float u_time;
+    uniform vec2 u_mouse;
+    uniform float u_zoom;
+    uniform float u_bhHeight;
+    uniform bool u_showPlane;
+    uniform sampler2D u_skybox;
+    uniform bool u_useSkybox; // 这个 uniform 现在由 JS 的开关控制
+
+    #define PI 3.14159265359
+    #define RS 1.0
+    #define MAX_STEPS 220
+
+    const vec2 BH_BASE_XZ = vec2(0.0, 0.0);
+
+    float hash(vec3 p) {
+        p = fract(p * vec3(443.897, 441.423, 437.195));
+        p += dot(p, p.yzx + 19.19);
+        return fract((p.x + p.y) * p.z);
+    }
+
+    float noise3D(vec3 p) {
+        vec3 i = floor(p); vec3 f = fract(p);
+        f = f * f * (3.0 - 2.0 * f);
+        return mix(mix(mix(hash(i+vec3(0,0,0)),hash(i+vec3(1,0,0)),f.x),mix(hash(i+vec3(0,1,0)),hash(i+vec3(1,1,0)),f.x),f.y),
+                   mix(mix(hash(i+vec3(0,0,1)),hash(i+vec3(1,0,1)),f.x),mix(hash(i+vec3(0,1,1)),hash(i+vec3(1,1,1)),f.x),f.y),f.z);
+    }
+
+    float fbm(vec3 p) {
+        float v = 0.0; float amp = 0.5;
+        for (int i = 0; i < 3; i++) {
+            v += amp * noise3D(p);
+            p *= 2.5; amp *= 0.5;
+        }
+        return v;
+    }
+
+    float getSample(vec3 relP, float phaseTime, float r, float offset) {
+        float angle = atan(relP.z, relP.x);
+        float rot = angle + phaseTime * (0.8 / (r * 0.4 + 1.0));
+        vec3 p = vec3(cos(rot), sin(rot), r * 0.5 + offset);
+        return pow(fbm(p * 2.2 + phaseTime * 0.03), 2.8);
+    }
+
+    vec3 renderAccretionDisk(vec3 p, vec3 v, vec3 next_v, vec3 bh_pos) {
+        vec3 relP = p - bh_pos;
+        float r = length(relP);
+        if (r < RS * 2.1 || r > RS * 8.5) return vec3(0.0);
+        float t1 = mod(u_time, 20.0);
+        float s1 = getSample(relP, t1, r, 0.0);
+        float s2 = getSample(relP, mod(u_time + 10.0, 20.0), r, 10.0);
+        float weight = pow(sin(t1 * PI / 20.0), 2.0);
+        float detail = mix(s2, s1, weight);
+        float mask = smoothstep(RS * 8.5, RS * 4.5, r) * smoothstep(RS * 2.1, RS * 3.5, r);
+        vec3 fireCol = mix(vec3(1.6, 0.8, 0.3), vec3(0.3, 0.02, 0.005), smoothstep(0.0, 1.0, (r-2.1)/6.4));
+        float doppler = dot(normalize(next_v), normalize(vec3(-relP.z, 0.0, relP.x)));
+        return fireCol * detail * mask * (1.2 + doppler * 0.8) * 4.0;
+    }
+
+    vec3 renderWorldGrid(vec3 p) {
+        vec2 g = abs(fract(p.xz * 1.0 + 0.5) - 0.5);
+        float line = max(smoothstep(0.05, 0.0, g.x), smoothstep(0.05, 0.0, g.y));
+        return vec3(line) * smoothstep(40.0, 30.0, length(p.xz)) * 0.5;
+    }
+
+    void main() {
+        vec3 bh_pos = vec3(BH_BASE_XZ.x, u_bhHeight, BH_BASE_XZ.y);
+        vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.y, u_resolution.x);
+        vec3 ro = bh_pos + vec3(u_zoom * cos(u_mouse.y) * sin(u_mouse.x), u_zoom * sin(u_mouse.y), u_zoom * cos(u_mouse.y) * cos(u_mouse.x));
+        vec3 f = normalize(bh_pos - ro), r_axis = normalize(cross(vec3(0,1,0), f)), u_axis = cross(f, r_axis);
+        vec3 rd = normalize(f + uv.x * r_axis + uv.y * u_axis);
+
+        vec3 p = ro, v = rd, col = vec3(0.0);
+
+        float escapeDist = u_zoom + 40.0; // 稍微加大逃逸距离
+
+        for(int i = 0; i < MAX_STEPS; i++) {
+            float rRel = length(p - bh_pos);
+
+            if(rRel < RS * 1.005) break;
+
+            if(rRel > escapeDist || i == MAX_STEPS - 1) {
+                // 这里 u_useSkybox 的值现在由 JS 动态决定
+                if (u_useSkybox) {
+                    float phi = atan(v.z, v.x);
+                    float theta = asin(v.y);
+                    vec2 skyUV = vec2(phi / (2.0 * PI) + 0.5, theta / PI + 0.5);
+                    col += texture2D(u_skybox, skyUV).rgb;
+                } else {
+                    col += vec3(0.0);
+                }
+                break;
+            }
+
+            float dt = 0.15 + smoothstep(RS*2.0, RS*15.0, rRel) * 0.6;
+            vec3 next_p = p + dt * v;
+            vec3 relP = p - bh_pos;
+            vec3 acc = -1.5 * RS * dot(cross(relP, v), cross(relP, v)) * relP / (pow(rRel, 5.0));
+            vec3 next_v = normalize(v + dt * acc);
+
+            if((p.y - bh_pos.y) * (next_p.y - bh_pos.y) < 0.0) {
+                col += renderAccretionDisk(mix(p, next_p, abs((p.y-bh_pos.y)/(p.y-next_p.y))), v, next_v, bh_pos);
+            }
+            if(u_showPlane && p.y * next_p.y < 0.0) {
+                col += renderWorldGrid(mix(p, next_p, abs(p.y / (p.y - next_p.y))));
+            }
+
+            p = next_p; v = next_v;
+            if(length(col) > 4.5) break;
+        }
+        gl_FragColor = vec4(pow(col, vec3(0.85)), 1.0);
+    }
+</script>
+
+<script>
+    document.getElementById('skyboxInput').value = "";
+    const canvas = document.getElementById('canvas');
+    const gl = canvas.getContext('webgl');
+    const prog = gl.createProgram();
+    function addS(t, s) { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); gl.attachShader(prog, sh); }
+    addS(gl.VERTEX_SHADER, document.getElementById('vs').text);
+    addS(gl.FRAGMENT_SHADER, document.getElementById('fs').text);
+    gl.linkProgram(prog); gl.useProgram(prog);
+
+    const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    const pos = gl.getAttribLocation(prog, 'position');
+    gl.enableVertexAttribArray(pos);
+    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+    const uniforms = {
+        res: gl.getUniformLocation(prog, 'u_resolution'),
+        time: gl.getUniformLocation(prog, 'u_time'),
+        mouse: gl.getUniformLocation(prog, 'u_mouse'),
+        zoom: gl.getUniformLocation(prog, 'u_zoom'),
+        bhHeight: gl.getUniformLocation(prog, 'u_bhHeight'),
+        showPlane: gl.getUniformLocation(prog, 'u_showPlane'),
+        skybox: gl.getUniformLocation(prog, 'u_skybox'),
+        useSkybox: gl.getUniformLocation(prog, 'u_useSkybox')
+    };
+
+    const skyTexture = gl.createTexture();
+    // 新增：状态变量和UI元素引用
+    let isSkyboxLoaded = false;
+    const skyboxToggle = document.getElementById('useSkyboxToggle');
+    skyboxToggle.checked = false; // 初始不启用
+
+    document.getElementById('skyboxInput').onchange = e => {
+        const file = e.target.files[0];
+        if(!file) return;
+        const img = new Image();
+        img.onload = () => {
+            gl.bindTexture(gl.TEXTURE_2D, skyTexture);
+            // 使用兼容性最好的参数设定
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+
+            // 图片加载成功后的状态更新
+            isSkyboxLoaded = true;
+            skyboxToggle.disabled = false; // 启用复选框
+            skyboxToggle.checked = true;   // 默认勾选
+        };
+        img.src = URL.createObjectURL(file);
+    };
+
+    let theta = 0.8, phi = 0.4, zoom = 20.0, targetTheta = 0.8, targetPhi = 0.4, targetZoom = 20.0;
+    let dragging = false, lx, ly;
+
+    canvas.onmousedown = e => { dragging = true; lx = e.clientX; ly = e.clientY; };
+    window.onmousemove = e => { if(dragging) { targetTheta -= (e.clientX - lx) * 0.003; targetPhi += (e.clientY - ly) * 0.003; targetPhi = Math.max(-1.5, Math.min(1.5, targetPhi)); lx = e.clientX; ly = e.clientY; } };
+    window.onmouseup = () => dragging = false;
+    window.onwheel = e => { targetZoom = Math.max(5.0, Math.min(60.0, targetZoom + e.deltaY * 0.04)); e.preventDefault(); };
+
+    function render(t) {
+        if (window.innerWidth <= 768) return;
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        theta += (targetTheta - theta) * 0.1; phi += (targetPhi - phi) * 0.1; zoom += (targetZoom - zoom) * 0.1;
+
+        const hVal = parseFloat(document.getElementById('bhHeight').value);
+        document.getElementById('heightVal').innerText = hVal.toFixed(1);
+
+        // 核心逻辑：只有当图片已加载 且 复选框被勾选时，才告诉 Shader 使用天空盒
+        const shouldUseSkybox = isSkyboxLoaded && skyboxToggle.checked;
+
+        gl.uniform2f(uniforms.res, canvas.width, canvas.height);
+        gl.uniform1f(uniforms.time, t * 0.001);
+        gl.uniform2f(uniforms.mouse, theta, phi);
+        gl.uniform1f(uniforms.zoom, zoom);
+        gl.uniform1f(uniforms.bhHeight, hVal);
+        gl.uniform1i(uniforms.showPlane, document.getElementById('showPlane').checked ? 1 : 0);
+        gl.uniform1i(uniforms.useSkybox, shouldUseSkybox ? 1 : 0); // 更新 uniform 传递逻辑
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+</script>
+</body>
+</html>

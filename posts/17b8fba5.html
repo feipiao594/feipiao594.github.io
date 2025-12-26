@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="仿 3b1b 朱丽娅集很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果">
+  <meta name="description" content="史瓦西黑洞一个简单的黑洞模拟小网页">
 <meta property="og:type" content="article">
 <meta property="og:title" content="仿3b1b朱丽娅集">
 <meta property="og:url" content="https://feipiao594.github.io/posts/17b8fba5.html">
 <meta property="og:site_name" content="594飞飘的个人博客">
-<meta property="og:description" content="仿 3b1b 朱丽娅集很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果">
+<meta property="og:description" content="史瓦西黑洞一个简单的黑洞模拟小网页">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-12-07T06:17:54.000Z">
-<meta property="article:modified_time" content="2025-12-17T05:01:05.860Z">
+<meta property="article:modified_time" content="2025-12-26T11:39:01.994Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 
@@ -226,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-12-17 13:01:05" itemprop="dateModified" datetime="2025-12-17T13:01:05+08:00">2025-12-17</time>
+                <time title="修改时间：2025-12-26 19:39:01" itemprop="dateModified" datetime="2025-12-26T19:39:01+08:00">2025-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -248,14 +248,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>13k</span>
+              <span>172</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>24 分钟</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -267,563 +267,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="仿-3b1b-朱丽娅集"><a href="#仿-3b1b-朱丽娅集" class="headerlink" title="仿 3b1b 朱丽娅集"></a>仿 3b1b 朱丽娅集</h1><p>很久很久以前，我欣赏了 3b1b 关于分型的视频，当时我在高中，也尝试使用 matlab 绘制过许许多多的分形图样，今天我成功复刻出了其在网页上显示的效果</p>
+        <h1 id="史瓦西黑洞"><a href="#史瓦西黑洞" class="headerlink" title="史瓦西黑洞"></a>史瓦西黑洞</h1><p>一个简单的黑洞模拟小网页</p>
 <span id="more"></span>
-<h2 id="有一些话"><a href="#有一些话" class="headerlink" title="有一些话"></a>有一些话</h2><p>下面那个效果其实是复刻了 3b1b “How a Mandelbrot set arises from Newton’s work” 这期视频中提到的一些概念</p>
-<p>关于视频，你可以在 bilibili 找到它: <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1nh411x78S/">https://www.bilibili.com/video/BV1nh411x78S/</a></p>
-<p>在 3b1b 官网上有与下面这个效果所复刻的实现 <a target="_blank" rel="noopener" href="https://www.3blue1brown.com/lessons/holomorphic-dynamics#title">https://www.3blue1brown.com/lessons/holomorphic-dynamics#title</a></p>
-<p>我个人对 3b1b 非常崇拜，可视化效果做的很好，但是当我实际上手 manim 之后我觉得，这个工具并不是非常适合制作复杂视频的视频工作者使用 </p>
-<p>在很久很久以前，久到我还没有听说过 GPU 与渲染管线时，我曾用过各种工具绘制过 mandelbort 集，但是效率相当感人。渲染 18s mandelbort 集的放大视频当时在 python 上使用 CPU 渲染，花了我 10h。现在我才发现，调用 webgl 就能相当快速的绘制出这样的效果</p>
-<p>我还在许久之前，这个博客上做过一些其他的 <a target="_blank" rel="noopener" href="https://blog.feipiao.xyz/posts/ebf347fe.html">https://blog.feipiao.xyz/posts/ebf347fe.html</a></p>
-<p>也是感谢 @xjzsq (github)，如果不是他只是在我提了一嘴 3b1b，就帮我去稍稍逆向了一下这个网页的 js，我也许至今都不知道我也有复刻这玩意的能力了(笑)</p>
-<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><style>
-  /* 最外层容器 */
-  .scale-wrapper {
-    position: relative;
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    background: black;
-    color: white;
-    font-family: sans-serif;
-    overflow-x: hidden;
-  }
-
-  .fullscreen-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 2vw;
-    height: 2vw;
-    padding: 0;
-    background: rgba(0,0,0,0.7);
-    color: white;
-    border: 1px solid #666;
-    border-radius: 0 0 0 4px;
-    cursor: pointer;
-    font-size: 1.5vw;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
-
-  .fullscreen-btn:hover {
-    background: rgba(255,255,255,0.2);
-  }
-
-  .panel {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-  }
-
-  .panel canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .middle {
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .scale-wrapper:fullscreen {
-    margin-top: 0;
-    padding-top: 60px;
-  }
-
-  .panel-container {
-    display: flex;
-    flex-direction: column;
-    width: 48%;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .panel-label {
-    color: white;
-    font-size: 1.2vw;
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
-  .mid-text {
-    color: white;
-    text-align: center;
-    font-size: 1vw;
-    user-select: none;
-    line-height: 1.3;
-  }
-
-  .mid-text span {
-    font-size: 1.2vw;
-  }
-</style>
-
-<!-- 会被 JS 动态缩放 -->
-<div id="scaleWrapper" class="scale-wrapper">
-  <button id="fullscreenBtn" class="fullscreen-btn">⛶</button>
-
-  <!-- 左侧 Mandelbrot -->
-  <div class="panel-container">
-    <div class="panel-label">c <-> Pixel<br>z0 = 0</div>
-    <div class="panel">
-      <canvas id="mandelGL"   width="600" height="600"></canvas>
-      <canvas id="mandelAxis" width="600" height="600"></canvas>
-      <canvas id="pickerCanvas" width="600" height="600"></canvas>
-    </div>
-  </div>
-
-  <!-- 中间栏 -->
-  <div class="middle">
-    <div class="mid-text" id="midText">
-      Iterate<br>
-      <span>z² + c</span>
-    </div>
-  </div>
-
-  <!-- 右侧 Julia -->
-  <div class="panel-container">
-    <div class="panel-label">c = <span id="cValue">0.43 + -0.27i</span><br>z0 <-> Pixel</div>
-    <div class="panel">
-      <canvas id="juliaGL"   width="600" height="600"></canvas>
-      <canvas id="juliaAxis" width="600" height="600"></canvas>
-    </div>
-  </div>
-</div>
-
-<script>
-
-
-/* ------------------------------------------
-   WebGL 公共函数
---------------------------------------------- */
-function createShader(gl, type, src){
-  let s = gl.createShader(type);
-  gl.shaderSource(s,src);
-  gl.compileShader(s);
-  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS))
-    console.error(gl.getShaderInfoLog(s));
-  return s;
-}
-function createProgram(gl, vs, fs){
-  let p = gl.createProgram();
-  gl.attachShader(p, vs);
-  gl.attachShader(p, fs);
-  gl.linkProgram(p);
-  if(!gl.getProgramParameter(p, gl.LINK_STATUS))
-    console.error(gl.getProgramInfoLog(p));
-  return p;
-}
-
-/* ------------------------------------------
-   顶点着色器（全屏）
----------------------------------------------*/
-const VS = `
-attribute vec2 aPosition;
-varying vec2 vPos;
-void main() {
-  vPos = aPosition;
-  gl_Position = vec4(aPosition,0.0,1.0);
-}
-`;
-
-// Matplotlib inferno(256) -> #RRGGBB
-const INFERNO_256 = [
-  '#000004', '#010005', '#010106', '#010108', '#02010a', '#02020c', '#02020e', '#030210', '#040312', '#040314', '#050417', '#060419', '#07051b', '#08051d', '#09061f', '#0a0722',
-  '#0b0724', '#0c0826', '#0d0829', '#0e092b', '#10092d', '#110a30', '#120a32', '#140b34', '#150b37', '#160b39', '#180c3c', '#190c3e', '#1b0c41', '#1c0c43', '#1e0c45', '#1f0c48',
-  '#210c4a', '#230c4c', '#240c4f', '#260c51', '#280b53', '#290b55', '#2b0b57', '#2d0b59', '#2f0a5b', '#310a5c', '#320a5e', '#340a5f', '#360961', '#380962', '#390963', '#3b0964',
-  '#3d0965', '#3e0966', '#400a67', '#420a68', '#440a68', '#450a69', '#470b6a', '#490b6a', '#4a0c6b', '#4c0c6b', '#4d0d6c', '#4f0d6c', '#510e6c', '#520e6d', '#540f6d', '#550f6d',
-  '#57106e', '#59106e', '#5a116e', '#5c126e', '#5d126e', '#5f136e', '#61136e', '#62146e', '#64156e', '#65156e', '#67166e', '#69166e', '#6a176e', '#6c186e', '#6d186e', '#6f196e',
-  '#71196e', '#721a6e', '#741a6e', '#751b6e', '#771c6d', '#781c6d', '#7a1d6d', '#7c1d6d', '#7d1e6d', '#7f1e6c', '#801f6c', '#82206c', '#84206b', '#85216b', '#87216b', '#88226a',
-  '#8a226a', '#8c2369', '#8d2369', '#8f2469', '#902568', '#922568', '#932667', '#952667', '#972766', '#982766', '#9a2865', '#9b2964', '#9d2964', '#9f2a63', '#a02a63', '#a22b62',
-  '#a32c61', '#a52c60', '#a62d60', '#a82e5f', '#a92e5e', '#ab2f5e', '#ad305d', '#ae305c', '#b0315b', '#b1325a', '#b3325a', '#b43359', '#b63458', '#b73557', '#b93556', '#ba3655',
-  '#bc3754', '#bd3853', '#bf3952', '#c03a51', '#c13a50', '#c33b4f', '#c43c4e', '#c63d4d', '#c73e4c', '#c83f4b', '#ca404a', '#cb4149', '#cc4248', '#ce4347', '#cf4446', '#d04545',
-  '#d24644', '#d34743', '#d44842', '#d54a41', '#d74b3f', '#d84c3e', '#d94d3d', '#da4e3c', '#db503b', '#dd513a', '#de5238', '#df5337', '#e05536', '#e15635', '#e25734', '#e35933',
-  '#e45a31', '#e55c30', '#e65d2f', '#e75e2e', '#e8602d', '#e9612b', '#ea632a', '#eb6429', '#eb6628', '#ec6726', '#ed6925', '#ee6a24', '#ef6c23', '#ef6e21', '#f06f20', '#f1711f',
-  '#f1731d', '#f2741c', '#f3761b', '#f37819', '#f47918', '#f57b17', '#f57d15', '#f67e14', '#f68013', '#f78212', '#f78410', '#f8850f', '#f8870e', '#f8890c', '#f98b0b', '#f98c0a',
-  '#f98e09', '#fa9008', '#fa9207', '#fa9407', '#fb9606', '#fb9706', '#fb9906', '#fb9b06', '#fb9d07', '#fc9f07', '#fca108', '#fca309', '#fca50a', '#fca60c', '#fca80d', '#fcaa0f',
-  '#fcac11', '#fcae12', '#fcb014', '#fcb216', '#fcb418', '#fbb61a', '#fbb81d', '#fbba1f', '#fbbc21', '#fbbe23', '#fac026', '#fac228', '#fac42a', '#fac62d', '#f9c72f', '#f9c932',
-  '#f9cb35', '#f8cd37', '#f8cf3a', '#f7d13d', '#f7d340', '#f6d543', '#f6d746', '#f5d949', '#f5db4c', '#f4dd4f', '#f4df53', '#f4e156', '#f3e35a', '#f3e55d', '#f2e661', '#f2e865',
-  '#f2ea69', '#f1ec6d', '#f1ed71', '#f1ef75', '#f1f179', '#f2f27d', '#f2f482', '#f3f586', '#f3f68a', '#f4f88e', '#f5f992', '#f6fa96', '#f8fb9a', '#f9fc9d', '#fafda1', '#fcffa4'
-];
-
-// Function to convert hex to RGB
-function hexToRgb(hex) {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  return [r, g, b];
-}
-
-// Create palette texture data
-const paletteData = new Uint8Array(256 * 3);
-for (let i = 0; i < 256; i++) {
-  const [r, g, b] = hexToRgb(INFERNO_256[i]);
-  paletteData[i * 3] = Math.floor(r * 255);
-  paletteData[i * 3 + 1] = Math.floor(g * 255);
-  paletteData[i * 3 + 2] = Math.floor(b * 255);
-}
-
-/* ------------------------------------------
-   公共调色板 (纹理查找)
----------------------------------------------*/
-const PALETTE = `
-uniform sampler2D uPalette;
-float round(float x) { return floor(x + 0.5); }
-vec3 palette(float t){
-  t = clamp(t, 0.0, 1.0);
-  t = t * t;
-  float index = t * 255.0;
-  float frac = fract(index);
-  int i = int(floor(index));
-  vec3 color1 = texture2D(uPalette, vec2((float(i) + 0.5) / 256.0, 0.5)).rgb;
-  vec3 color2 = texture2D(uPalette, vec2((float(i + 1) + 0.5) / 256.0, 0.5)).rgb;
-  return mix(color1, color2, frac);
-}
-vec3 getAxisColor(vec3 color, float x0, float y0, float stepX, float stepY, float threshold){
-  float dx = abs(x0 - round(x0 / stepX) * stepX);
-  float dy = abs(y0 - round(y0 / stepY) * stepY);
-  if (dx < threshold || dy < threshold) {
-    float brightness = (color.r + color.g + color.b) / 3.0;
-    vec3 axisColor = brightness > 0.5 ? vec3(0,0,0) : vec3(1,1,1);
-    return mix(color, axisColor, 0.08); // 半透明叠加
-  }
-  return color;
-}
-`;
-
-/* ------------------------------------------
-   Mandelbrot Shader
----------------------------------------------*/
-const FS_MAN = `
-precision mediump float;
-varying vec2 vPos;
-
-const int MAX_ITER = 300;
-const float ESCAPE = 4.0;
-
-${PALETTE}
-
-void main(){
-  float x0 = mix(-1.3,0.7,(vPos.x+1.0)/2.0);
-  float y0 = mix(-1.0,1.0,(vPos.y+1.0)/2.0);
-
-  float x=0.0, y=0.0;
-  int iter=MAX_ITER;
-  float r2;
-
-  for(int i=0;i<MAX_ITER;i++){
-    float nx = x*x - y*y + x0;
-    float ny = 2.0*x*y + y0;
-    x=nx; y=ny;
-    r2 = x*x+y*y;
-    if(r2>ESCAPE){ iter=i; break; }
-  }
-
-  if(iter==MAX_ITER){ 
-    gl_FragColor=vec4(getAxisColor(vec3(0.9882,1.0,0.6431), x0, y0, 0.25, 0.25, 0.002), 1);
-    return;
-  }
-
-  float s = float(iter);
-
-  float t = s / float(MAX_ITER);
-  t = pow(t,0.4);
-
-  vec3 color = palette(t);
-  gl_FragColor = vec4(getAxisColor(color, x0, y0, 0.25, 0.25, 0.002),1);
-}
-`;
-
-/* ------------------------------------------
-   Julia Shader
----------------------------------------------*/
-const FS_JUL = `
-precision mediump float;
-varying vec2 vPos;
-uniform float cRe;
-uniform float cIm;
-const int MAX_ITER = 300;
-const float ESCAPE = 4.0;
-${PALETTE}
-void main(){
-  float x0 = mix(-2.0,2.0,(vPos.x+1.0)/2.0);
-  float y0 = mix(-2.0,2.0,(vPos.y+1.0)/2.0);
-  float x = x0;
-  float y = y0;
-  int iter=MAX_ITER;
-  float r2;
-  for(int i=0;i<MAX_ITER;i++){
-    float nx = x*x - y*y + cRe;
-    float ny = 2.0*x*y + cIm;
-    x=nx; y=ny;
-    r2 = x*x+y*y;
-    if(r2>ESCAPE){ iter=i; break; }
-  }
-  vec3 setColor = vec3(0.9882,1.0,0.6431);
-  if(iter==MAX_ITER){ 
-    gl_FragColor = vec4(getAxisColor(setColor, x0, y0, 0.5, 0.5, 0.006), 1);
-    return;
-  }
-  float t = pow(float(iter)/float(MAX_ITER), 0.4);
-  vec3 color = palette(t);
-  gl_FragColor = vec4(getAxisColor(color, x0, y0, 0.5, 0.5, 0.006),1);
-}
-`;
-
-/* ------------------------------------------
-   WebGL 初始化（Mandelbrot & Julia）
----------------------------------------------*/
-function initGL(canvas, fragShader){
-  const gl = canvas.getContext("webgl");
-  const vs = createShader(gl, gl.VERTEX_SHADER, VS);
-  const fs = createShader(gl, gl.FRAGMENT_SHADER, fragShader);
-  const p = createProgram(gl, vs, fs);
-  gl.useProgram(p);
-
-  const quad = new Float32Array([
-    -1,-1, 1,-1, -1,1,
-    -1,1, 1,-1, 1,1
-  ]);
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, quad, gl.STATIC_DRAW);
-
-  const loc = gl.getAttribLocation(p,"aPosition");
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-
-  // Create palette texture
-  const texture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, 256, 1, 0, gl.RGB, gl.UNSIGNED_BYTE, paletteData);
-
-  // Set texture uniform
-  const texLoc = gl.getUniformLocation(p, "uPalette");
-  gl.uniform1i(texLoc, 0);
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-
-  return { gl, program:p };
-}
-
-const mandel = initGL(mandelGL, FS_MAN);
-const julia  = initGL(juliaGL, FS_JUL);
-
-let currentC = {re: 0.43, im: -0.27};
-
-// 像素缓冲区
-const mandelPixels = new Uint8Array(600 * 600 * 4);
-const juliaPixels = new Uint8Array(600 * 600 * 4);
-
-function drawMandel(){
-  mandel.gl.viewport(0,0,600,600);
-  mandel.gl.drawArrays(mandel.gl.TRIANGLES,0,6);
-  mandel.gl.readPixels(0, 0, 600, 600, mandel.gl.RGBA, mandel.gl.UNSIGNED_BYTE, mandelPixels);
-}
-function drawJulia(cRe,cIm){
-  const gl=julia.gl;
-  gl.useProgram(julia.program);
-  gl.uniform1f(gl.getUniformLocation(julia.program,"cRe"),cRe);
-  gl.uniform1f(gl.getUniformLocation(julia.program,"cIm"),cIm);
-  gl.viewport(0,0,600,600);
-  gl.drawArrays(gl.TRIANGLES,0,6);
-  gl.readPixels(0, 0, 600, 600, gl.RGBA, gl.UNSIGNED_BYTE, juliaPixels);
-}
-
-drawMandel();
-drawJulia(currentC.re, currentC.im);
-drawAxes(mandelAxis, mandelPixels, -1.3,0.7,-1,1,0.25);
-drawAxes(juliaAxis, juliaPixels, -2.0,2.0,-2.0,2.0,0.5);
-
-/* ------------------------------------------
-   获取像素亮度
----------------------------------------------*/
-function getBrightness(pixels, x, y) {
-  const idx = (Math.floor(y) * 600 + Math.floor(x)) * 4;
-  const r = pixels[idx], g = pixels[idx+1], b = pixels[idx+2];
-  return (r + g + b) / 3;
-}
-
-/* ------------------------------------------
-   坐标轴文本（自适应颜色）
----------------------------------------------*/
-function drawAxes(canvas, pixels, reMin,reMax,imMin,imMax,step){
-  const ctx = canvas.getContext("2d");
-  const W=600, H=600;
-  function toXY(re,im){
-    return {
-      x:(re-reMin)/(reMax-reMin)*W,
-      y:(imMax-im)/(imMax-imMin)*H
-    };
-  }
-  ctx.clearRect(0,0,W,H);
-  ctx.font = "14px sans-serif";
-
-  const origin = toXY(0,0);
-
-  // 垂直文本
-  for(let r=-2;r<=2;r+=step){
-    if(r>=reMin && r<=reMax && Math.abs(r) > 1e-6){
-      let p=toXY(r,0);
-      // 文本颜色基于其位置
-      const textBrightness = getBrightness(pixels, p.x, origin.y+4);
-      ctx.fillStyle = textBrightness > 128 ? "black" : "white";
-      ctx.textAlign="center"; ctx.textBaseline="top";
-      ctx.fillText(r.toString(), p.x, origin.y+4);
-    }
-  }
-
-  // 水平文本
-  for(let i=-2;i<=2;i+=step){
-    if(i>=imMin && i<=imMax && Math.abs(i) > 1e-6){
-      let p=toXY(0,i);
-      // 文本颜色基于其位置
-      const textBrightness = getBrightness(pixels, origin.x+4, p.y);
-      ctx.fillStyle = textBrightness > 128 ? "black" : "white";
-      ctx.textAlign="left"; ctx.textBaseline="middle";
-      ctx.fillText(i+"i", origin.x+4, p.y);
-    }
-  }
-
-  // 原点标记
-  if(0 >= reMin && 0 <= reMax && 0 >= imMin && 0 <= imMax){
-    const textBrightness = getBrightness(pixels, origin.x+4, origin.y+4);
-    ctx.fillStyle = textBrightness > 128 ? "black" : "white";
-    ctx.textAlign="left"; ctx.textBaseline="top";
-    ctx.fillText("O", origin.x+4, origin.y+4);
-  }
-}
-
-/* 轴已在shader中绘制，无需2D绘制 */
-
-// 初始黄点位置 (0,0)
-let currentX = 390;
-let currentY = 300;
-updateYellowPoint();
-
-function updateYellowPoint() {
-  const ctx = pickerCanvas.getContext("2d");
-  ctx.clearRect(0,0,600,600);
-  ctx.beginPath();
-  ctx.arc(currentX, currentY, 8, 0, 6.28);
-  ctx.fillStyle="yellow";
-  ctx.fill();
-  ctx.lineWidth=3;
-  ctx.strokeStyle="black";
-  ctx.stroke();
-
-  // 计算复平面坐标
-  const re = currentX/600*(0.7+1.3)-1.3;
-  const im = (1-currentY/600)*2 - 1;
-
-  // 更新 currentC
-  currentC.re = re;
-  currentC.im = im;
-
-  // 更新显示
-  document.getElementById("cValue").textContent = `${re.toFixed(2)} + ${im.toFixed(2)}i`;
-
-  // 更新 Julia
-  drawJulia(re, im);
-  drawAxes(juliaAxis, juliaPixels, -2.0,2.0,-2.0,2.0,0.5);
-}
-
-/* ------------------------------------------
-   左侧拖动选择 c
----------------------------------------------*/
-let isDragging = false;
-
-pickerCanvas.addEventListener("mousedown", e=>{
-  const rect = pickerCanvas.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width * 600;
-  const y = (e.clientY - rect.top) / rect.height * 600;
-  const dist = Math.sqrt((x - currentX) ** 2 + (y - currentY) ** 2);
-  if (dist <= 15) { // 黄点半径8，阈值15
-    isDragging = true;
-  }
-});
-
-pickerCanvas.addEventListener("mousemove", e=>{
-  if (isDragging) {
-    updatePosition(e);
-  }
-});
-
-pickerCanvas.addEventListener("mouseup", e=>{
-  isDragging = false;
-});
-
-// 手机端触摸支持
-pickerCanvas.addEventListener("touchstart", e=>{
-  const rect = pickerCanvas.getBoundingClientRect();
-  const touch = e.touches[0];
-  const x = (touch.clientX - rect.left) / rect.width * 600;
-  const y = (touch.clientY - rect.top) / rect.height * 600;
-  const dist = Math.sqrt((x - currentX) ** 2 + (y - currentY) ** 2);
-  if (dist <= 15) { // 黄点半径8，阈值15
-    isDragging = true;
-  }
-});
-
-pickerCanvas.addEventListener("touchmove", e=>{
-  if (isDragging) {
-    e.preventDefault();
-    updatePosition(e.touches[0]);
-  }
-});
-
-pickerCanvas.addEventListener("touchend", e=>{
-  isDragging = false;
-});
-
-function updatePosition(e) {
-  const canvas = e.target;
-  const rect = canvas.getBoundingClientRect();
-  currentX = Math.max(0, Math.min(600, (e.clientX - rect.left) / rect.width * 600));
-  currentY = Math.max(0, Math.min(600, (e.clientY - rect.top) / rect.height * 600));
-  updateYellowPoint();
-}
-
-/* ------------------------------------------
-   全屏功能
----------------------------------------------*/
-const fullscreenBtn = document.getElementById("fullscreenBtn");
-
-fullscreenBtn.addEventListener("click", toggleFullscreen);
-
-function toggleFullscreen() {
-  const wrapper = document.getElementById("scaleWrapper");
-  if (!document.fullscreenElement) {
-    wrapper.requestFullscreen().catch(err => console.error(err));
-  } else {
-    document.exitFullscreen();
-  }
-}
-
-document.addEventListener("fullscreenchange", () => {
-  if (document.fullscreenElement) {
-    screen.orientation.lock('landscape').catch(err => console.log('Orientation lock failed:', err));
-    fullscreenBtn.textContent = "⛶";
-  } else {
-    fullscreenBtn.textContent = "⛶";
-  }
-});
-</script>
+<h2 id="功能以及注意点"><a href="#功能以及注意点" class="headerlink" title="功能以及注意点"></a>功能以及注意点</h2><p>来自本站的链接: <a href="https://feipiao594.github.io/html/blackhole.html">https://feipiao594.github.io/html/blackhole.html</a></p>
+<p>你可以用鼠标拖动转动视角，也可以用滚轮控制远近</p>
+<blockquote>
+<p><strong>WARNING</strong> 注意:<br>1、本程序只对 <strong>PC端</strong> 进行了适配<br>2、本程序需要使用 WebGL 调用 GPU，对设备有一定的要求<br>3、由于使用 GPU 有一些耗电（</p>
+</blockquote>
 
     </div>
 
@@ -842,7 +292,10 @@ document.addEventListener("fullscreenchange", () => {
     <a href="/posts/cc2541cf.html" rel="prev" title="2048">
       <i class="fa fa-chevron-left"></i> 2048
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/17b8fba5.html" rel="next" title="仿3b1b朱丽娅集">
+      仿3b1b朱丽娅集 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -902,7 +355,7 @@ document.addEventListener("fullscreenchange", () => {
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%BF-3b1b-%E6%9C%B1%E4%B8%BD%E5%A8%85%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">仿 3b1b 朱丽娅集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E4%B8%80%E4%BA%9B%E8%AF%9D"><span class="nav-number">1.1.</span> <span class="nav-text">有一些话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">效果</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%B2%E7%93%A6%E8%A5%BF%E9%BB%91%E6%B4%9E"><span class="nav-number">1.</span> <span class="nav-text">史瓦西黑洞</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E4%BB%A5%E5%8F%8A%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">1.1.</span> <span class="nav-text">功能以及注意点</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -918,7 +371,7 @@ document.addEventListener("fullscreenchange", () => {
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">71</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
