@@ -856,50 +856,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Github登陆与验证的故事</title>
     <url>/posts/5ef186e7.html</url>
     <content><![CDATA[<h1 id="Github登陆与验证的故事"><a href="#Github登陆与验证的故事" class="headerlink" title="Github登陆与验证的故事"></a>Github登陆与验证的故事</h1><p>最近一次给我的 Gentoo 滚包的时候，发现了一个很神奇的问题，特此来写一篇博客</p>
@@ -956,6 +912,114 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
+<span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>IO流</title>
+    <url>/posts/fed4c017.html</url>
+    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
+<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
+<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
+<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
+<p>要想避免这样一种情况的发生，有几种方法</p>
+<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
+<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
+<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
+<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
+<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
+<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
+<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
+<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
+<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
+<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Pytorch学习_1</title>
+    <url>/posts/6c7f2ed0.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
+<span id="more"></span>
+<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
+<ul>
+<li><code>:</code>表示一整行</li>
+<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
+<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
+<li><code>-1</code>表示最后一个元素</li>
+</ul>
+<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
+<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
+<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
+<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
+<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
+<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
+<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
+<script type="math/tex; mode=display">
+l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
+<script type="math/tex; mode=display">
+L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
+<script type="math/tex; mode=display">
+\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
+<blockquote>
+<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
+</blockquote>
+<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
+<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
+<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -1064,70 +1128,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Project_Tools</category>
         <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>IO流</title>
-    <url>/posts/fed4c017.html</url>
-    <content><![CDATA[<h1 id="IO流"><a href="#IO流" class="headerlink" title="IO流"></a>IO流</h1><p>旨在记录IO流的相关内容，更加熟悉缓冲区(<strong>但不会提及最最简单基础的东西</strong>)，以及文件的输入输出相关的内容<br>这篇文档前面的部分将会更新C语言的相关内容，后面有空会跟上CPP的IO流<br><span id="more"></span></p>
-<h2 id="最熟悉的反而是最不熟悉的"><a href="#最熟悉的反而是最不熟悉的" class="headerlink" title="最熟悉的反而是最不熟悉的"></a>最熟悉的反而是最不熟悉的</h2><p>对于任何一个cpp初学者来说，最先接触的函数一般除了<code>main()</code>之外就是<code>printf()</code>了，<code>scanf()</code>紧跟其后进入了我们的视野，但一定一直保留有很大的疑惑，首先是入门书不会教我们变长函数是怎么实现的，在参数列表里使用<code>...</code>这样的东西很有意思，在cpp里有其它的语言特性与之有关(形参包)，不过这不是我们这篇文档记录的重点。</p>
-<p>初学者一定会在<code>scanf()</code>的输入缓冲区上栽跟头，我们就先来聊聊<code>scanf()</code></p>
-<h2 id="scanf-的更多应用"><a href="#scanf-的更多应用" class="headerlink" title="scanf()的更多应用"></a>scanf()的更多应用</h2><p>要想更加仔细的探讨<code>scanf()</code>，必然要进入到源码中去咯<br>在<code>scanf()</code>其中会调用<code>_doscan()</code>这一个函数，这个函数主要的目的就是处理那些格式串<br>对于这个函数我的研究目的是确定是否对于<code>scanf(&quot;%d%c&quot;,d,c);</code>这样一条语句，c只能接收到空白字符，现在看来这个问题的答案是肯定的<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> ((kind != <span class="string">&#x27;c&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;[&#x27;</span>) &amp;&amp; (kind != <span class="string">&#x27;n&#x27;</span>))</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        ic = getc(stream);</span><br><span class="line">        nrchars++;</span><br><span class="line">    &#125; <span class="keyword">while</span> (<span class="built_in">isspace</span>(ic));</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (kind != <span class="string">&#x27;n&#x27;</span>)</span><br><span class="line">&#123;<span class="comment">/* %c or %[ */</span></span><br><span class="line">    ic = getc(stream);</span><br><span class="line">    <span class="keyword">if</span> (ic == EOF)</span><br><span class="line">        <span class="keyword">break</span>;<span class="comment">/* outer while */</span></span><br><span class="line">    nrchars++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>上面的代码说明了<code>%</code>后接的不是<code>&quot;c&quot; , &quot;[&quot; , &quot;n&quot;</code>则会在缓冲区里去掉前面的空白字符，而在执行<code>scanf(&quot;%d%c&quot;,d,c);</code>时候，当变量d接收到数值，在缓冲区中把接收到的d删掉，后面还会跟着一个未删除的空白字符，<code>%c</code>就正好接受到了那个空白字符，因而c永远都是空白字符</p>
-<p>要想避免这样一种情况的发生，有几种方法</p>
-<p>1.使用非格式串，在<code>%d</code>和<code>%c</code>中间加一个空格，这样在输入的时候你必须多输入一个空格，这样并不好，没有包括所有的空白字符，万一你用的是换行呢<br>2.使用<code>%*c</code>可以跳过一个字符，这里*代表忽略，c代表忽略的大小，如果把c换成一个d那么将会忽略掉第一个输入的整型，将第二个输入的整型存入c<br>3.使用<code>fflush()</code>清理缓冲区，这样的方法也有一定的弊端</p>
-<p>这里我倾向于<strong>使用第二种方法</strong>，当然这里也可以使用一个<code>getchar()</code>来跳过啦</p>
-<p>对于上面这段清除空白字符的代码，我们需要注意，清除空白代码只在一开始匹配才去掉开头的空白字符</p>
-<p>仔细看一看发现居然还有格式串和<code>%c</code>这样特殊，<code>%[</code>和<code>%n</code>，这是什么东西，从来没听说过嘛，仔细一查，<code>%n</code>会给变量赋值在匹配它时scanf处理的字符数量，比如<code>scanf(&quot;%d%d%n&quot;,x,y,z)</code>输入<code>10 20</code>那么x，y，z会分别匹配上10 20 5，所有对于这样一个格式串，确实不能清除空白字符</p>
-<p>而<code>%[</code>就有趣了，这样一个东西，看起来很像是一种<strong>正则</strong>，它其实是<code>%[]</code>，<code>%[]</code>主要用来输入字符串，以控制输入的字符。如：<code>%[123]</code>则只输入集合123中的字符，遇到其他字符输入就结束，<code>%[^123]</code>表示不输入字符集123中的字符,即遇到123中的某个字符就停止输入。比如我们想用<code>scanf</code>实现输入一行，而一行中可能有空格，如果用<code>scanf(&quot;%s&quot;,str)</code>;则在输入遇到空格时就停止了输入，而我们用<code>scanf(&quot;%[^\n]&quot;,str);</code>则其再遇到换行时才结束输入，遇到其他人是字符都不会停止。</p>
-<p><code>scanf()</code>是有返回值的，除了返回-1表示输入出错以外，输出多少，表示成功匹配了(<strong>前</strong>)多少个值，如果一个没匹配上，在其<strong>之后匹配的都失败</strong>。</p>
-<h2 id="缓冲区的引入"><a href="#缓冲区的引入" class="headerlink" title="缓冲区的引入"></a>缓冲区的引入</h2><p>在上面讲到<code>scanf()</code>时候的第三种方法时谈到了缓冲区，其实这是一块用于临时存放的内存。<br>我们从磁盘里取信息，我们先把读出的数据放在缓冲区，计算机再直接从缓冲区中取数据，等缓冲区的数据取完后再去磁盘中读取，这样就可以减少磁盘的读写次数，再加上计算机对缓冲区的操作大大快于对磁盘的操作，故应用缓冲区可大大提高计算机的运行速度。</p>
-<p>又比如，我们使用打印机打印文档，由于打印机的打印速度相对较慢，我们先把文档输出到打印机相应的缓冲区，打印机再自行逐步打印，这时我们的CPU可以处理别的事情。现在您基本明白了吧，缓冲区就是一块内存区，它用在输入输出设备和CPU之间，用来缓存数据。它使得低速的输入输出设备和高速的CPU能够协调工作，避免低速的输入输出设备占用CPU，解放出CPU，使其能够高效率工作。</p>
-<p>其实在linux下系统调用<code>read()</code>与<code>write()</code>函数参数列表就要给出buf<br>我们可以把stdout也看作一个文件，对于文件的IO，本质上都是调用了<code>read()</code>、<code>write()</code>，以及<code>lseek()</code>等等这样的系统调用<br>(注解：所有打开的文件都有一个当前文件偏移量（current file offset），以下简称为 cfo。cfo 通常是一个非负整数，用于表明文件开始处到文件当前位置的字节数，使用 lseek 函数可以改变文件的 cfo )<br><a href="https://blog.csdn.net/qq_44096670/article/details/121632471">关于缓冲区的具体实现请点击这里</a></p>
-<h2 id="C-IO流"><a href="#C-IO流" class="headerlink" title="C++ IO流"></a>C++ IO流</h2><p>To be continue</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_1</title>
-    <url>/posts/6c7f2ed0.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
-<span id="more"></span>
-<h2 id="Python中的切片"><a href="#Python中的切片" class="headerlink" title="Python中的切片"></a>Python中的切片</h2><p>关于numpy中n维数组的表示方法</p>
-<ul>
-<li><code>:</code>表示一整行</li>
-<li><code>a:b</code>表示<code>a&lt;=x&lt;b</code>的元素，也就是说<code>1:3</code>表示第二、三个</li>
-<li><code>0</code>表示第一个元素，这和c/c++都一样</li>
-<li><code>-1</code>表示最后一个元素</li>
-</ul>
-<h2 id="关于tensor单独维度的计算"><a href="#关于tensor单独维度的计算" class="headerlink" title="关于tensor单独维度的计算"></a>关于tensor单独维度的计算</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 单独维度求和示例程序</span></span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line">a = torch.rand(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"><span class="built_in">print</span>(torch.<span class="built_in">sum</span>(a, dim=<span class="number">2</span>))</span><br><span class="line"><span class="comment"># dim即在其余指标固定情况下，第n个数字指标求和相消</span></span><br><span class="line"><span class="comment">#体现在多维数组上即从外向内数相同的第n层，不跨越中括号的相同子tensor对应元素完全相加</span></span><br></pre></td></tr></table></figure>
-<p>该部分的某次运行结果如下<br><img src="/images/Pytorch学习_1_图1.png" width="70%" height="70%"></p>
-<h2 id="记录一些简单的函数"><a href="#记录一些简单的函数" class="headerlink" title="记录一些简单的函数"></a>记录一些简单的函数</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = torch.arrange(<span class="number">12</span>)</span><br><span class="line"><span class="comment"># 生成一维行向量，从1到11 </span></span><br><span class="line">torch.randn(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 创建⼀个形状为(3,4)的张量。每个元素都从均值为0、标准差为1的标准⾼斯分布（正态分布）中随机采样</span></span><br><span class="line">x = torch.normal(means, std, out=<span class="literal">None</span>)</span><br><span class="line"><span class="comment"># 返回一个张量，包含从给定参数means，std的离散正态分布中抽取随机数</span></span><br><span class="line"><span class="comment"># 均值means是一个张量，包含每个输出元素相关的正态分布的均值</span></span><br><span class="line"><span class="comment"># 标准差std是一个张量，包含每个输出元素相关的正态分布的标准差</span></span><br><span class="line"><span class="comment"># 均值和标准差的形状不须匹配，但每个张量的元素个数须相同</span></span><br><span class="line">x.reshape(<span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 将矩阵变成3行4列的矩阵，即重排</span></span><br><span class="line"><span class="comment"># -1代表无此列</span></span><br></pre></td></tr></table></figure>
-<h2 id="神经网络训练基础"><a href="#神经网络训练基础" class="headerlink" title="神经网络训练基础"></a>神经网络训练基础</h2><p>在介绍深度神经网络之前，我们需要了解神经网络训练的基础知识。接下来奖介绍神经网络训练的整个过程，包括：定义简单的神经网络架构、数据处理、指定损失函数和如何训练模型</p>
-<h3 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h3><p>回归是能为一个或多个自变量和因变量之间关系建模的一类方法。在自然科学和社科领域，回归经常用来表示输入和输出之间的关系</p>
-<p><strong>线性回归的基本元素</strong>如下：<br>为了开发模型，我们需要收集一个真实的数据集，在机器学习的术语中，该数据集称为<strong>训练数据集</strong>或<strong>训练集</strong><br>其中的每行数据被称为<strong>样本</strong>或<strong>数据点</strong>或<strong>数据样本</strong><br>我们把试图预测的目标称为<strong>标签</strong>或<strong>目标</strong><br>预测所依据的自变量称为<strong>特征</strong>或<strong>协变量</strong></p>
-<h3 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h3><p><strong>线性假设</strong>是指目标可以表示为特征的加权和，其中加权和的系数称为<strong>权重</strong>，后面跟和系数称为<strong>偏置</strong>、<strong>偏移量</strong>或<strong>截距</strong><br>因为观测误差，所以即使确信特征与标签的潜在关系是线性的，也会加入一个噪声项来考虑观测误差带来的影响</p>
-<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>在考虑如何用模型拟合数据之前，我们需要确定一个拟合程度的度量。损失函数能够量化目标的实际值与预测值之间的差距<br>通常会使用非负数作为损失，且数值越小表示损失越小，完美预测时的损失为0<br>回归问题中最常用的损失函数时平方误差函数<br>当样本$i$的预测值为$\hat{y}^{(i)}$，其相应的真实标签为$y^{(i)}$时，平方误差可以定义为以下公式</p>
-<script type="math/tex; mode=display">
-l^{(i)}(\mathbf{w},b)=\frac{1}{2}(\hat{y}^{(i)}-y^{(i)})^2</script><p>其中常数$\frac{1}{2}$不会造成本质的差别，只是在形式上简单一些。由于训练数据集并不受我们控制，使用经验误差只是关于模型参数的函数<br>由于平方误差函数中的二次方项，估计值和观测值之间较大的差异将导致更大的损失，为了度量模型在整个数据集上的质量，我们需要计算训练集n个样本上的损失均值(也等价于求和)</p>
-<script type="math/tex; mode=display">
-L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}\frac{1}{2}(\mathbf{w}^T\mathbf{x}^{(i)}+b-y^{(i)})^2</script><p>在训练模型时，我们希望寻找一组参数$(\mathbf{w}^<em>,b^</em>)$，这组参数能最小化在所有训练样本上的总损失。如下</p>
-<script type="math/tex; mode=display">
-\mathbf{w}^*,b^*=\sideset{}{}{\text{argmin }}_{\mathbf{w},b} L(\mathbf{w},b)</script><p>通过计算可以证明，这里使用的最小化均方误差法等价于对线性模型的极大似然估计</p>
-<blockquote>
-<p>在学到这里的时候，我想到了NFL定义(No Free Lunch Theoren，没有免费的午餐定理)，实际上关系不大，NFL定理表述的是对于特定的问题，我们比较不同模型的才有意义</p>
-</blockquote>
-<h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
-<h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
-<h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
       </categories>
   </entry>
   <entry>
@@ -2491,6 +2491,18 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
+    <title>关于三维流形上一般旋度公式</title>
+    <url>/posts/3a0f394b.html</url>
+    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
+<span id="more"></span>
+<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -2509,18 +2521,6 @@ document.addEventListener("fullscreenchange", () => {
       <categories>
         <category>EE_电子工程</category>
         <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>关于三维流形上一般旋度公式</title>
-    <url>/posts/3a0f394b.html</url>
-    <content><![CDATA[<h1 id="关于三维流形上一般旋度公式"><a href="#关于三维流形上一般旋度公式" class="headerlink" title="关于三维流形上一般旋度公式"></a>关于三维流形上一般旋度公式</h1><p>本文主要介绍Hodge星算子($\star$)下旋度定义式和在公式整理一部分中得到的旋度公式之间的<strong>等价性</strong></p>
-<span id="more"></span>
-<h2 id="推导过程"><a href="#推导过程" class="headerlink" title="推导过程"></a>推导过程</h2><p><img src="/images/关于三维流形上一般旋度公式_图1.jpg" width="100%" height="100%"></p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
       </categories>
   </entry>
   <entry>
@@ -2622,6 +2622,18 @@ document.addEventListener("fullscreenchange", () => {
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -2728,18 +2740,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
       </categories>
   </entry>
   <entry>
