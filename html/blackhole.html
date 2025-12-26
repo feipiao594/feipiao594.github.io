@@ -4,64 +4,91 @@
     <meta charset="UTF-8">
     <title>史瓦西黑洞</title>
     <style>
-        #mobile-warning { display: none; }
-
-        @media screen and (max-width: 768px) {
-            #controls, #canvas { display: none !important; }
-            #mobile-warning { display: block !important; }
-            body { overflow: auto; background: #000; }
-        }
-        body { margin: 0; overflow: hidden; background: #000; cursor: grab; }
+        body { margin: 0; overflow: hidden; background: #000; cursor: grab; font-family: sans-serif; }
         body:active { cursor: grabbing; }
         canvas { width: 100vw; height: 100vh; display: block; }
+        
+        /* 控制面板样式 */
         #controls {
             position: absolute; top: 10px; left: 10px;
-            color: #ffffff; font-family: sans-serif;
-            background: rgba(0,0,0,0.85); padding: 15px;
-            border-radius: 8px; border: 1px solid #444;
+            color: #ffffff; background: rgba(0,0,0,0.85); 
+            padding: 15px; border-radius: 8px; border: 1px solid #444;
             user-select: none; z-index: 100; min-width: 220px;
         }
         .control-item { margin-bottom: 12px; }
         label { font-size: 12px; display: block; margin-bottom: 5px; color: #bbb; }
         input[type="range"] { width: 100%; cursor: pointer; }
         input[type="file"] { font-size: 11px; width: 100%; color: #eee; }
-        .hint { font-size: 10px; color: #666; margin-top: 5px; }
+        
+        /* 移动端提示层 */
+        #mobile-notice {
+            display: none; /* 默认隐藏 */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; color: #fff; z-index: 9999;
+            flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
+        }
 
-        /*禁用状态的样式*/
-        input[type=checkbox]:disabled + span { color: #555; }
+        /* 针对移动设备或触摸屏设备的 CSS 兜底隐藏 */
+        @media screen and (max-width: 1024px), (pointer: coarse) {
+            #main-wrapper { display: none !important; }
+            #mobile-notice { display: flex !important; }
+        }
     </style>
 </head>
 <body>
-    <div id="mobile-warning" style="display: none; color: white; text-align: center; padding-top: 50vh; font-family: sans-serif;">
-        <h2>移动端暂不支持</h2>
-        <p>请在电脑端浏览器访问以查看黑洞模拟</p>
+
+    <div id="mobile-notice">
+        <div style="font-size: 50px; margin-bottom: 20px;">🔭</div>
+        <h2 style="margin: 0 20px; letter-spacing: 1px;">移动端暂不支持</h2>
+        <p style="color: #888; margin-top: 15px; line-height: 1.6;">
+            此模拟涉及高负载广义相对论光线追踪计算<br>
+            请使用电脑端浏览器访问以获取完整体验
+        </p>
     </div>
-    <div id="controls">
-        <div style="font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #444;">控制面板</div>
 
-        <div class="control-item">
-            <label>黑洞高度 (Y轴): <span id="heightVal">3.0</span></label>
-            <input type="range" id="bhHeight" min="-5.0" max="5.0" step="0.1" value="1.0">
-        </div>
-
-        <div class="control-item" style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                 <label style="margin-bottom: 0; color: #ddd;">全景天空盒:</label>
-                 <label style="font-size: 11px; cursor: pointer; display: flex; align-items: center;">
-                    <input type="checkbox" id="useSkyboxToggle" disabled style="width: auto; margin-right: 4px;">
-                    <span>启用</span>
+    <div id="main-wrapper">
+        <div id="controls">
+            <div style="font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #444; padding-bottom:5px;">控制面板</div>
+            <div class="control-item">
+                <label>黑洞高度 (Y轴): <span id="heightVal">1.0</span></label>
+                <input type="range" id="bhHeight" min="-5.0" max="5.0" step="0.1" value="1.0">
+            </div>
+            <div class="control-item" style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                     <label style="margin-bottom: 0; color: #ddd;">全景天空盒:</label>
+                     <label style="font-size: 11px; cursor: pointer; display: flex; align-items: center;">
+                        <input type="checkbox" id="useSkyboxToggle" disabled style="width: auto; margin-right: 4px;"> 
+                        <span>启用</span>
+                    </label>
+                </div>
+                <input type="file" id="skyboxInput" accept="image/*">
+            </div>
+            <div class="control-item">
+                <label style="cursor: pointer;">
+                    <input type="checkbox" id="showPlane" checked> 显示坐标网格 (Y=0)
                 </label>
             </div>
-            <input type="file" id="skyboxInput" accept="image/*">
         </div>
-
-        <div class="control-item">
-            <label style="cursor: pointer;">
-                <input type="checkbox" id="showPlane" checked> 显示坐标网格 (Y=0)
-            </label>
-        </div>
+        <canvas id="canvas"></canvas>
     </div>
-    <canvas id="canvas"></canvas>
+
+<script>
+    // --- 移动端精准识别与脚本拦截 ---
+    (function() {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                        || (window.innerWidth <= 1024) 
+                        || (navigator.maxTouchPoints > 0);
+
+        if (isMobile) {
+            document.getElementById('mobile-notice').style.display = 'flex';
+            const wrapper = document.getElementById('main-wrapper');
+            if(wrapper) wrapper.remove(); // 彻底从 DOM 中移除渲染容器
+            window.stop(); // 停止后续资源加载
+            throw new Error("Mobile device detected. GPU rendering aborted.");
+        }
+    })();
+</script>
 
 <script id="vs" type="x-shader/x-vertex">
     attribute vec2 position;
@@ -72,18 +99,18 @@
     precision highp float;
     uniform vec2 u_resolution;
     uniform float u_time;
-    uniform vec2 u_mouse;
+    uniform vec2 u_mouse; 
     uniform float u_zoom;
     uniform float u_bhHeight;
     uniform bool u_showPlane;
     uniform sampler2D u_skybox;
-    uniform bool u_useSkybox; // 这个 uniform 现在由 JS 的开关控制
+    uniform bool u_useSkybox;
 
     #define PI 3.14159265359
     #define RS 1.0
-    #define MAX_STEPS 220
+    #define MAX_STEPS 220 
 
-    const vec2 BH_BASE_XZ = vec2(0.0, 0.0);
+    const vec2 BH_BASE_XZ = vec2(0.0, 0.0); 
 
     float hash(vec3 p) {
         p = fract(p * vec3(443.897, 441.423, 437.195));
@@ -143,24 +170,18 @@
         vec3 rd = normalize(f + uv.x * r_axis + uv.y * u_axis);
 
         vec3 p = ro, v = rd, col = vec3(0.0);
-
-        float escapeDist = u_zoom + 40.0; // 稍微加大逃逸距离
+        float escapeDist = u_zoom + 40.0;
 
         for(int i = 0; i < MAX_STEPS; i++) {
             float rRel = length(p - bh_pos);
-
-            if(rRel < RS * 1.005) break;
-
-            if(rRel > escapeDist || i == MAX_STEPS - 1) {
-                // 这里 u_useSkybox 的值现在由 JS 动态决定
+            if(rRel < RS * 1.005) break; 
+            if(rRel > escapeDist || i == MAX_STEPS - 1) { 
                 if (u_useSkybox) {
                     float phi = atan(v.z, v.x);
                     float theta = asin(v.y);
                     vec2 skyUV = vec2(phi / (2.0 * PI) + 0.5, theta / PI + 0.5);
                     col += texture2D(u_skybox, skyUV).rgb;
-                } else {
-                    col += vec3(0.0);
-                }
+                } else { col += vec3(0.0); }
                 break;
             }
 
@@ -176,101 +197,95 @@
             if(u_showPlane && p.y * next_p.y < 0.0) {
                 col += renderWorldGrid(mix(p, next_p, abs(p.y / (p.y - next_p.y))));
             }
-
             p = next_p; v = next_v;
-            if(length(col) > 4.5) break;
+            if(length(col) > 4.5) break; 
         }
         gl_FragColor = vec4(pow(col, vec3(0.85)), 1.0);
     }
 </script>
 
 <script>
-    document.getElementById('skyboxInput').value = "";
+    // 渲染主程序
     const canvas = document.getElementById('canvas');
-    const gl = canvas.getContext('webgl');
-    const prog = gl.createProgram();
-    function addS(t, s) { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); gl.attachShader(prog, sh); }
-    addS(gl.VERTEX_SHADER, document.getElementById('vs').text);
-    addS(gl.FRAGMENT_SHADER, document.getElementById('fs').text);
-    gl.linkProgram(prog); gl.useProgram(prog);
+    if (canvas) {
+        const gl = canvas.getContext('webgl');
+        const prog = gl.createProgram();
+        function addS(t, s) { const sh = gl.createShader(t); gl.shaderSource(sh, s); gl.compileShader(sh); gl.attachShader(prog, sh); }
+        addS(gl.VERTEX_SHADER, document.getElementById('vs').text);
+        addS(gl.FRAGMENT_SHADER, document.getElementById('fs').text);
+        gl.linkProgram(prog); gl.useProgram(prog);
 
-    const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-    const pos = gl.getAttribLocation(prog, 'position');
-    gl.enableVertexAttribArray(pos);
-    gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+        const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        const pos = gl.getAttribLocation(prog, 'position');
+        gl.enableVertexAttribArray(pos);
+        gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
 
-    const uniforms = {
-        res: gl.getUniformLocation(prog, 'u_resolution'),
-        time: gl.getUniformLocation(prog, 'u_time'),
-        mouse: gl.getUniformLocation(prog, 'u_mouse'),
-        zoom: gl.getUniformLocation(prog, 'u_zoom'),
-        bhHeight: gl.getUniformLocation(prog, 'u_bhHeight'),
-        showPlane: gl.getUniformLocation(prog, 'u_showPlane'),
-        skybox: gl.getUniformLocation(prog, 'u_skybox'),
-        useSkybox: gl.getUniformLocation(prog, 'u_useSkybox')
-    };
-
-    const skyTexture = gl.createTexture();
-    // 新增：状态变量和UI元素引用
-    let isSkyboxLoaded = false;
-    const skyboxToggle = document.getElementById('useSkyboxToggle');
-    skyboxToggle.checked = false; // 初始不启用
-
-    document.getElementById('skyboxInput').onchange = e => {
-        const file = e.target.files[0];
-        if(!file) return;
-        const img = new Image();
-        img.onload = () => {
-            gl.bindTexture(gl.TEXTURE_2D, skyTexture);
-            // 使用兼容性最好的参数设定
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
-
-            // 图片加载成功后的状态更新
-            isSkyboxLoaded = true;
-            skyboxToggle.disabled = false; // 启用复选框
-            skyboxToggle.checked = true;   // 默认勾选
+        const uniforms = {
+            res: gl.getUniformLocation(prog, 'u_resolution'),
+            time: gl.getUniformLocation(prog, 'u_time'),
+            mouse: gl.getUniformLocation(prog, 'u_mouse'),
+            zoom: gl.getUniformLocation(prog, 'u_zoom'),
+            bhHeight: gl.getUniformLocation(prog, 'u_bhHeight'),
+            showPlane: gl.getUniformLocation(prog, 'u_showPlane'),
+            skybox: gl.getUniformLocation(prog, 'u_skybox'),
+            useSkybox: gl.getUniformLocation(prog, 'u_useSkybox')
         };
-        img.src = URL.createObjectURL(file);
-    };
 
-    let theta = 0.8, phi = 0.4, zoom = 20.0, targetTheta = 0.8, targetPhi = 0.4, targetZoom = 20.0;
-    let dragging = false, lx, ly;
+        const skyTexture = gl.createTexture();
+        let isSkyboxLoaded = false; 
+        const skyboxToggle = document.getElementById('useSkyboxToggle');
 
-    canvas.onmousedown = e => { dragging = true; lx = e.clientX; ly = e.clientY; };
-    window.onmousemove = e => { if(dragging) { targetTheta -= (e.clientX - lx) * 0.003; targetPhi += (e.clientY - ly) * 0.003; targetPhi = Math.max(-1.5, Math.min(1.5, targetPhi)); lx = e.clientX; ly = e.clientY; } };
-    window.onmouseup = () => dragging = false;
-    window.onwheel = e => { targetZoom = Math.max(5.0, Math.min(60.0, targetZoom + e.deltaY * 0.04)); e.preventDefault(); };
+        document.getElementById('skyboxInput').onchange = e => {
+            const file = e.target.files[0];
+            if(!file) return;
+            const img = new Image();
+            img.onload = () => {
+                gl.bindTexture(gl.TEXTURE_2D, skyTexture);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+                isSkyboxLoaded = true;
+                skyboxToggle.disabled = false;
+                skyboxToggle.checked = true;
+            };
+            img.src = URL.createObjectURL(file);
+        };
 
-    function render(t) {
-        if (window.innerWidth <= 768) return;
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        theta += (targetTheta - theta) * 0.1; phi += (targetPhi - phi) * 0.1; zoom += (targetZoom - zoom) * 0.1;
+        let theta = 0.8, phi = 0.4, zoom = 20.0, targetTheta = 0.8, targetPhi = 0.4, targetZoom = 20.0;
+        let dragging = false, lx, ly;
 
-        const hVal = parseFloat(document.getElementById('bhHeight').value);
-        document.getElementById('heightVal').innerText = hVal.toFixed(1);
+        canvas.onmousedown = e => { dragging = true; lx = e.clientX; ly = e.clientY; };
+        window.onmousemove = e => { if(dragging) { targetTheta -= (e.clientX - lx) * 0.003; targetPhi += (e.clientY - ly) * 0.003; targetPhi = Math.max(-1.5, Math.min(1.5, targetPhi)); lx = e.clientX; ly = e.clientY; } };
+        window.onmouseup = () => dragging = false;
+        window.onwheel = e => { targetZoom = Math.max(5.0, Math.min(60.0, targetZoom + e.deltaY * 0.04)); e.preventDefault(); };
 
-        // 核心逻辑：只有当图片已加载 且 复选框被勾选时，才告诉 Shader 使用天空盒
-        const shouldUseSkybox = isSkyboxLoaded && skyboxToggle.checked;
+        function render(t) {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            theta += (targetTheta - theta) * 0.1; phi += (targetPhi - phi) * 0.1; zoom += (targetZoom - zoom) * 0.1;
+            
+            const hVal = parseFloat(document.getElementById('bhHeight').value);
+            document.getElementById('heightVal').innerText = hVal.toFixed(1);
 
-        gl.uniform2f(uniforms.res, canvas.width, canvas.height);
-        gl.uniform1f(uniforms.time, t * 0.001);
-        gl.uniform2f(uniforms.mouse, theta, phi);
-        gl.uniform1f(uniforms.zoom, zoom);
-        gl.uniform1f(uniforms.bhHeight, hVal);
-        gl.uniform1i(uniforms.showPlane, document.getElementById('showPlane').checked ? 1 : 0);
-        gl.uniform1i(uniforms.useSkybox, shouldUseSkybox ? 1 : 0); // 更新 uniform 传递逻辑
+            const shouldUseSkybox = isSkyboxLoaded && skyboxToggle.checked;
 
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+            gl.uniform2f(uniforms.res, canvas.width, canvas.height);
+            gl.uniform1f(uniforms.time, t * 0.001);
+            gl.uniform2f(uniforms.mouse, theta, phi);
+            gl.uniform1f(uniforms.zoom, zoom);
+            gl.uniform1f(uniforms.bhHeight, hVal);
+            gl.uniform1i(uniforms.showPlane, document.getElementById('showPlane').checked ? 1 : 0);
+            gl.uniform1i(uniforms.useSkybox, shouldUseSkybox ? 1 : 0);
+            
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(render);
+        }
         requestAnimationFrame(render);
     }
-    requestAnimationFrame(render);
 </script>
 </body>
 </html>
