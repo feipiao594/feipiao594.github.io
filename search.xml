@@ -469,6 +469,38 @@ initGrid();
       </categories>
   </entry>
   <entry>
+    <title>C++模板元-欧拉函数表</title>
+    <url>/posts/acc766b1.html</url>
+    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
+<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++模板元-质数序列</title>
+    <url>/posts/3187765d.html</url>
+    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
+<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
+<p>输出上述数组的长度</p>
+<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
+<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -578,38 +610,6 @@ initGrid();
       </categories>
   </entry>
   <entry>
-    <title>C++模板元-欧拉函数表</title>
-    <url>/posts/acc766b1.html</url>
-    <content><![CDATA[<h1 id="C-模板元-欧拉函数表"><a href="#C-模板元-欧拉函数表" class="headerlink" title="C++模板元-欧拉函数表"></a>C++模板元-欧拉函数表</h1><p>SAST 2023 C++组免试题之模板元编程部分，本身是一个小玩具，不具有多少实际意义<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;type_traits&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">eulerFunction</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">int</span> ans = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">unsigned</span> <span class="type">int</span> i = <span class="number">2</span>; i * i &lt;= n; i++)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ans = ans / i * (i - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">while</span> (n % i == <span class="number">0</span>)</span><br><span class="line">                n /= i;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>)</span><br><span class="line">        ans = ans / n * (n - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">function2List</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">unsigned</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;<span class="built_in">eulerFunction</span>(pack)...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="title">log2_func</span><span class="params">(<span class="type">unsigned</span> <span class="type">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (x &gt;&gt;= <span class="number">1</span>)</span><br><span class="line">        ++ans;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="keyword">typename</span> T, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span> : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX, pack..., (pack + MAX)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span> temp, <span class="type">unsigned</span> <span class="type">int</span> MAX, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, std::<span class="type">enable_if_t</span>&lt;(N &gt;&gt; (temp - <span class="number">1</span>)) % <span class="number">2</span>, <span class="type">void</span>&gt;, temp, MAX, pack...&gt; : generatorList&lt;N, <span class="type">void</span>, temp - <span class="number">1</span>, <span class="number">2</span> * MAX + <span class="number">1</span>, <span class="number">1</span>, (pack + <span class="number">1</span>)..., (pack + MAX + <span class="number">1</span>)...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N, <span class="type">unsigned</span> <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">generatorList</span>&lt;N, <span class="type">void</span>, <span class="number">0</span>, N, pack...&gt; : function2List&lt;pack...&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">unsigned</span> <span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">EulerFunctionList</span> : generatorList&lt;N, <span class="type">void</span>, <span class="built_in">log2_func</span>(N) + <span class="number">1</span>, <span class="number">0</span>&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">unsigned</span> <span class="type">int</span> N = <span class="number">50000</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; EulerFunctionList&lt;N&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; EulerFunctionList&lt;N&gt;::value[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><p>这里<code>eulerFunction</code>函数为C++17的<code>constexpr</code>函数，可以在编译器执行并获取到输入值的欧拉函数</p>
-<p>模板递归部分利用了形参包的多次展开，做到二分法的序列生成，大大提高了自然数序列生成的效率，减少了模板迭代的次数，可以有效的在编译器默认允许的范围内打出更大的值</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>C++模板元-质数序列</title>
-    <url>/posts/3187765d.html</url>
-    <content><![CDATA[<h1 id="C-模板元-质数序列"><a href="#C-模板元-质数序列" class="headerlink" title="C++模板元-质数序列"></a>C++模板元-质数序列</h1><p>花了一点时间巩固自己的模板元编程，写了一个编译期质数数组生成器<br><span id="more"></span></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">bool</span> b&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">bool_instant</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value = b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> true_instant = bool_instant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> false_instant = bool_instant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">intArrayPack</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> length = <span class="keyword">sizeof</span>...(pack);</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="type">static</span> <span class="type">int</span> value[<span class="keyword">sizeof</span>...(pack)] = &#123;pack...&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">int</span> flag = <span class="number">0</span>&gt;</span><br><span class="line"><span class="keyword">struct</span> isPrime : isPrime&lt;N, current + <span class="number">1</span>, !!!(N % current)&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, N, <span class="number">0</span>&gt; : true_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">isPrime</span>&lt;N, current, <span class="number">1</span>&gt; : false_instant&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current = <span class="number">2</span>, <span class="type">bool</span> flag = <span class="literal">false</span>, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> primePack : primePack&lt;N, current + <span class="number">1</span>, isPrime&lt;current&gt;::value, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span> current, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, current, <span class="literal">true</span>, pack...&gt; : primePack&lt;N, current, <span class="literal">false</span>, current - <span class="number">1</span>, pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="type">int</span> N, <span class="type">int</span>... pack&gt;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">primePack</span>&lt;N, N, <span class="literal">false</span>, pack...&gt; : intArrayPack&lt;pack...&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> numlist = primePack&lt;<span class="number">220</span>&gt;::value;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> i = <span class="number">0</span>; i &lt; primePack&lt;<span class="number">220</span>&gt;::length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; numlist[i] &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="讲解"><a href="#讲解" class="headerlink" title="讲解"></a>讲解</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::value</span><br></pre></td></tr></table></figure>
-<p>输出<strong>小于</strong>输入数字的所有质数组成的数组</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">primePack&lt;<span class="number">220</span>&gt;::length</span><br></pre></td></tr></table></figure>
-<p>输出上述数组的长度</p>
-<p>重要的是<code>intArrayPack</code>这种通过形参包生成对应序列的方法，以及<code>primePack</code>这种通过<code>true</code>和<code>false</code>，利用模板特化进行<code>if</code>的模式</p>
-<p>本身代码在<code>MSVC for amd64</code>最大只能输出到227的质数，在之后就会报错，原因是<strong>模板递归超过上限</strong>，因而代码仍需要优化，但作为一个练手的，第一次写模板元编程，也挺不错的</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>C++</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++模板元编程</title>
     <url>/posts/9244e40f.html</url>
     <content><![CDATA[<h1 id="C-模板元编程"><a href="#C-模板元编程" class="headerlink" title="C++模板元编程"></a>C++模板元编程</h1><p>之前看到一个说法，说正常用模板就是模板编程，神神叨叨用模板就是模板元编程，我深以为然，但是模板这东西他提供的编译期运算太过于强大，而且STL里面的内容大量的用到了模板，我觉得我还是有必要写一写东西的。</p>
@@ -625,6 +625,48 @@ initGrid();
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>CSAPP章节二中的数学公式整理</title>
+    <url>/posts/f1f78c10.html</url>
+    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
+<span id="more"></span>
+<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
+<p><strong>整数部分:</strong></p>
+<p><em>1.二进制转反码</em></p>
+<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
+<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
+<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
+<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
+<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
+<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
+x+2^{w}, & x<0 \\
+x, & x \geqslant 0
+\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
+<p>同上，二进制（向量x）不变的直接编码转化</p>
+<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
+u, & u \leqslant \operatorname{TMax}_{w} \\
+u-2^{w}, & u>\operatorname{TMax}_{w}
+\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
+<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
+<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
+<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
+<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
+<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
+<p>相关公式</p>
+<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
+<ul>
+<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
+<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
+<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
       </categories>
   </entry>
   <entry>
@@ -721,48 +763,6 @@ initGrid();
       </categories>
   </entry>
   <entry>
-    <title>CSAPP章节二中的数学公式整理</title>
-    <url>/posts/f1f78c10.html</url>
-    <content><![CDATA[<h1 id="CSAPP章节二中的数学公式整理"><a href="#CSAPP章节二中的数学公式整理" class="headerlink" title="CSAPP章节二中的数学公式整理"></a>CSAPP章节二中的数学公式整理</h1><p>这一章偏向理论，有时候能利用编码知识大大简化计算之类的</p>
-<span id="more"></span>
-<h2 id="关于这一章的符号说明"><a href="#关于这一章的符号说明" class="headerlink" title="关于这一章的符号说明:"></a><em>关于这一章的符号说明:</em></h2><p><em>注意：当反函数难以直观写出时，将直接省略</em><br><img src="/images/CSAPP章节二中的数学公式整理_图1.png" width="100%" height="100%"></p>
-<p><strong>整数部分:</strong></p>
-<p><em>1.二进制转反码</em></p>
-<script type="math/tex; mode=display">B 2 S_{w}(\vec{x}) \doteq(-1)^{x_{w-1}} \cdot\left(\sum_{i=0}^{w-2} x_{i} 2^{i}\right)</script><p><em>2.二进制转原码</em></p>
-<script type="math/tex; mode=display">B2O_{w}(\vec{x}) \doteq-x_{w-1}\left(2^{w-1}-1\right)+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>3.二进制转补码</em></p>
-<p>补码有特殊的数学性质，形成一个自洽的体系，故如今机子几乎都用补码<br>这是一个一一到上的映射，故对应0的向量x不像原码一般对0有两种解释</p>
-<script type="math/tex; mode=display">B 2 T_{w}(\vec{x}) \doteq-x_{w-1} 2^{w-1}+\sum_{i=0}^{w-2} x_{i} 2^{i}</script><p><em>4.补码转无符号</em></p>
-<p>二进制（向量x）不变的直接编码转化，公式很简单</p>
-<script type="math/tex; mode=display">T 2 U_{w}(x) \doteq B 2 U_{w}\left(T 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">T 2 U_{w}(x)=\left\{\begin{array}{ll}
-x+2^{w}, & x<0 \\
-x, & x \geqslant 0
-\end{array}\right.</script><script type="math/tex; mode=display">B 2 U_{w}\left(T 2 B_{w}(x)\right)=T 2 U_{w}(x)=x+x_{w-1} 2^{w}</script><p><em>5.无符号转补码</em></p>
-<p>同上，二进制（向量x）不变的直接编码转化</p>
-<script type="math/tex; mode=display">U 2 T_{w}(x) \doteq B 2 T_{w}\left(U 2 B_{w}(x)\right)</script><script type="math/tex; mode=display">U 2 T_{w}(u)=\left\{\begin{array}{ll}
-u, & u \leqslant \operatorname{TMax}_{w} \\
-u-2^{w}, & u>\operatorname{TMax}_{w}
-\end{array}\right.</script><p><em>6.二进制转无符号</em></p>
-<script type="math/tex; mode=display">B 2 U_{w}(\vec{x}) \doteq \sum_{i=0}^{w-1} x_{i} 2^{i}</script><p><em>7.补码的相关性质（无符号省略）</em></p>
-<p>存在有定义域 $[TMin,TMax]$ ,其中满足<br>$\mid \text { TMin }|=| \text { TMax } \mid+1$</p>
-<script type="math/tex; mode=display">\operatorname{TMin}_{w}\doteq-2^{w-1}\operatorname\qquad{TMax}_{w} \doteq \sum_{i=0}^{w-2} 2^{i}=2^{w-1}-1</script><p><em>8.整数的扩展</em></p>
-<p>无符号零扩展，即直接在二进制下的数字前补零，在16进制下也是补0</p>
-<p>补码的符号扩展，即在二进制下补原先符号的数字，若为正数补1，负数补0，在16进制下前者补f后者补0</p>
-<p>相关公式</p>
-<script type="math/tex; mode=display">B 2 T_{w+k}\left([\underbrace{x_{w-1}, \cdots, x_{u-1}}_{k 个数}, x_{u-1}, x_{w-2}, \cdots, x_{0}]\right)=B 2 T_{w}\left(\left[x_{u-1}, x_{w-2}, \cdots, x_{0}\right]\right)</script><p><em>9.整数的截断数字</em></p>
-<ul>
-<li><p>无符号<br>这里所谓的截断数字对于二进制来说就单纯是把多出来的高位切掉而已<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right] $, 而 $ \vec{x}^{\prime}$ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right.$ , $ \left.x_{k-2}, \cdots, x_{0}\right]_{\text {。 }} $令$ x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 U_{k}\left(\vec{x}^{\prime}\right) $ 。则 $x^{\prime}=x \bmod 2^{k}$ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=x \bmod 2^{k}=x-\sum_{i=k+1}^{w}{x_i}2^{i}</script></li>
-<li><p>补码<br>这里所说的截断的定义是借由无符号数的截断，即先转化为对应的无符号数，再进行截断<br>实质上对于二进制来说也是直接的高位截断<br>令 $\vec{x}$ 等于位向量 $\left[x_{w-1}, x_{w-2}, \cdots, x_{0}\right]$ , 而 $\vec{x}^{\prime} $ 是将其截断为  k  位的结果: $\vec{x}^{\prime}=\left[x_{k-1}\right. $ , $ \left.x_{k-2}, \cdots, x_{0}\right]$ 。令 $  x=B 2 U_{w}(\vec{x}), x^{\prime}=B 2 T_{k}\left(\vec{x}^{\prime}\right) $ 。则 $  x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) $ 。</p>
-<script type="math/tex; mode=display">x^{\prime}=U 2 T_{k}\left(x \bmod 2^{k}\right) =B 2 T_{w}(x)-\sum_{i=k+1}^{w-1}{x_i}2^{i}+{x_w}2^{w}-{x_k}2^{k}</script></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
     <title>CelesteMiaoNet自建群服教程</title>
     <url>/posts/75894d10.html</url>
     <content><![CDATA[<h1 id="CelesteMiaoNet自建群服教程"><a href="#CelesteMiaoNet自建群服教程" class="headerlink" title="CelesteMiaoNet自建群服教程"></a>CelesteMiaoNet自建群服教程</h1><blockquote>
@@ -806,18 +806,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <url>/posts/a39b2865.html</url>
-    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
-<span id="more"></span>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C/C++的特别复杂的类型</title>
     <url>/posts/8fb716fa.html</url>
     <content><![CDATA[<h1 id="那些C-C-的特别复杂的类型"><a href="#那些C-C-的特别复杂的类型" class="headerlink" title="那些C/C++的特别复杂的类型"></a>那些C/C++的特别复杂的类型</h1><p>首先来看如下的一个声明<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">float</span> (*(*fp2)(<span class="type">int</span>,<span class="type">int</span>,<span class="type">float</span>))(<span class="type">int</span>);</span><br></pre></td></tr></table></figure><br><span id="more"></span><br>是不是已经看晕了，但其实这个还不够复杂，我就不举更多的例子了<br>前排提示，为了您和您的家人健康，如果不是迫不得已，请不要写出这种反人类代码<br><del>除非你想被我##%&amp;@&amp;&amp;%(数据删除)</del><br>但别说这个东西没用，有些底层的东西确实有这么复杂(但不一定复杂成这样)</p>
@@ -853,6 +841,18 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>DRI-Linux图形核心概览</title>
+    <url>/posts/a39b2865.html</url>
+    <content><![CDATA[<h1 id="DRI-Linux图形核心概览"><a href="#DRI-Linux图形核心概览" class="headerlink" title="DRI-Linux图形核心概览"></a>DRI-Linux图形核心概览</h1><p>在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备</p>
+<span id="more"></span>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Linux</category>
       </categories>
   </entry>
   <entry>
@@ -1092,6 +1092,33 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>Pytorch学习_2</title>
+    <url>/posts/f5767f6a.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
+<span id="more"></span>
+<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
+<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
+<li>矢量化使数学表达上更简洁，同时运行的更快</li>
+<li>最小化目标函数和执行极大似然估计等价</li>
+<li>线性回归模型也是一个简单的神经网络</li>
+</ul>
+<h2 id="线性回归的从零开始实现"><a href="#线性回归的从零开始实现" class="headerlink" title="线性回归的从零开始实现"></a>线性回归的从零开始实现</h2><p>先把包引入一下<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure><br>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大</p>
+<p>首先为了简单起见，我们用带有噪声的线性模型手动构造一个人造数据集。首先生成一个包含1000个样本的数据集，每个样本包含从标准正态分布<br>我们使用线性模型参数$\mathbf{w}=[2,-3.4]^T$、$b=4.2$和噪声项$\epsilon$生成数据集及其标签：</p>
+<script type="math/tex; mode=display">
+\mathbf{y}=\mathbf{Xw}+b+\epsilon</script><p>$\epsilon$可以被视作模型预测和标签时的潜在观测误差。在这里我们认为标准假设成立，即$\epsilon$服从均值为0的正态分布。为了简化问题，我们将标准差设为0.01.下面的代码生成数据集</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, num_examples</span>): <span class="comment">#@save</span></span><br><span class="line"><span class="comment"># 生成y=Xw+b噪声</span></span><br><span class="line">  X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(w)))</span><br><span class="line">  y = torch.matmul(X, w) + b</span><br><span class="line">  y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">  <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Pytorch学习_1</title>
     <url>/posts/6c7f2ed0.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
@@ -1123,33 +1150,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h3 id="解析解"><a href="#解析解" class="headerlink" title="解析解"></a>解析解</h3><p>线性回归的解可以用一个公式简单地表达表达出来，这类解被称为解析解(analytical solution)，但并不是所有的问题都存在解析解，事实上大部分问题都不会存在解析解，解析解无法广泛应用在深度学习中</p>
 <h3 id="随机梯度下降"><a href="#随机梯度下降" class="headerlink" title="随机梯度下降"></a>随机梯度下降</h3><p>利用梯度下降法可以几乎优化所有深度学习，他通过不断地在损失函数递减的方向上更新参数来降低误差，具体的内容这里不进行展开</p>
 <h3 id="用模型进行预测"><a href="#用模型进行预测" class="headerlink" title="用模型进行预测"></a>用模型进行预测</h3><p>给定已经完成学习的模型，输入特征估计目标的这一过程，在深度学习中的标准术语中被称为<strong>预测</strong>或<strong>推断</strong></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Pytorch学习_2</title>
-    <url>/posts/f5767f6a.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-2"><a href="#Pytorch学习-2" class="headerlink" title="Pytorch学习_2"></a>Pytorch学习_2</h1><p>隔了有一段时间没写东西了，前一篇主要是一些准备的工作，这次我们从线性回归开始</p>
-<span id="more"></span>
-<h2 id="概览神经网络"><a href="#概览神经网络" class="headerlink" title="概览神经网络"></a>概览神经网络</h2><ul>
-<li>机器学习模型中的关键要素是训练数据、损失函数、优化算法，还有模型本身。</li>
-<li>矢量化使数学表达上更简洁，同时运行的更快</li>
-<li>最小化目标函数和执行极大似然估计等价</li>
-<li>线性回归模型也是一个简单的神经网络</li>
-</ul>
-<h2 id="线性回归的从零开始实现"><a href="#线性回归的从零开始实现" class="headerlink" title="线性回归的从零开始实现"></a>线性回归的从零开始实现</h2><p>先把包引入一下<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br></pre></td></tr></table></figure><br>注意第一行中的<code>%matplotlib inline</code>语句被称为魔法语句。作用就是这样图像就会出现在Jupyter Notebook里面，而不是一个新窗口里。对于纯纯使用vscode的我来说用处不大</p>
-<p>首先为了简单起见，我们用带有噪声的线性模型手动构造一个人造数据集。首先生成一个包含1000个样本的数据集，每个样本包含从标准正态分布<br>我们使用线性模型参数$\mathbf{w}=[2,-3.4]^T$、$b=4.2$和噪声项$\epsilon$生成数据集及其标签：</p>
-<script type="math/tex; mode=display">
-\mathbf{y}=\mathbf{Xw}+b+\epsilon</script><p>$\epsilon$可以被视作模型预测和标签时的潜在观测误差。在这里我们认为标准假设成立，即$\epsilon$服从均值为0的正态分布。为了简化问题，我们将标准差设为0.01.下面的代码生成数据集</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">synthetic_data</span>(<span class="params">w, b, num_examples</span>): <span class="comment">#@save</span></span><br><span class="line"><span class="comment"># 生成y=Xw+b噪声</span></span><br><span class="line">  X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (num_examples, <span class="built_in">len</span>(w)))</span><br><span class="line">  y = torch.matmul(X, w) + b</span><br><span class="line">  y += torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, y.shape)</span><br><span class="line">  <span class="keyword">return</span> X, y.reshape((-<span class="number">1</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注:<code>torch.matmul</code>是<code>tensor</code>的乘法，输入可以是高维的。当输入都是二维时，就是普通的矩阵乘法，和<code>tensor.mm</code>函数用法相同。</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">true_w = torch.tensor([<span class="number">2</span>, -<span class="number">3.4</span>])</span><br><span class="line">true_b = <span class="number">4.2</span></span><br><span class="line">features, labels = synthetic_data(true_w, true_b, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1222,6 +1222,53 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_10_生命周期</title>
+    <url>/posts/11c8f25c.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><p>一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的</p>
+<span id="more"></span>
+<h2 id="悬垂指针和生命周期"><a href="#悬垂指针和生命周期" class="headerlink" title="悬垂指针和生命周期"></a>悬垂指针和生命周期</h2><p>生命周期诞生的主要目的就是为了放置悬垂指针，避免引用空悬。通过 Rust 编译器检查生命周期，从语言层面上限制程序员，基本上可以在编译期就保证内存安全</p>
+<p>像下面的这段代码</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">        r = &amp;x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译时会报下面的错误<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error[E0597]: `x` does not live long enough // `x` 活得不够久</span><br><span class="line">  --&gt; src/main.rs:7:17</span><br><span class="line">   |</span><br><span class="line">7  |             r = &amp;x;</span><br><span class="line">   |                 ^^ borrowed value does not live long enough // 被借用的 `x` 活得不够久</span><br><span class="line">8  |         &#125;</span><br><span class="line">   |         - `x` dropped here while still borrowed // `x` 在这里被丢弃，但是它依然还在被借用</span><br><span class="line">9  |</span><br><span class="line">10 |         println!(&quot;r: &#123;&#125;&quot;, r);</span><br><span class="line">   |                           - borrow later used here // 对 `x` 的借用在此处被使用</span><br></pre></td></tr></table></figure></p>
+<p>我们在别的语言里会说 x 的作用域在第二个括号末就结束了，所以这是一个典型的可能导致引用空悬的代码，我们可以用 <code>&#39;a</code>、<code>&#39;b</code> 这样的标签来标记这么一个生命周期，如下</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;                <span class="comment">// ---------+-- &#x27;a</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    &#123;                     <span class="comment">//          |</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;        <span class="comment">// -+-- &#x27;b  |</span></span><br><span class="line">        r = &amp;x;           <span class="comment">//  |       |</span></span><br><span class="line">    &#125;                     <span class="comment">// -+       |</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r); <span class="comment">//          |</span></span><br><span class="line">&#125;                         <span class="comment">// ---------+</span></span><br></pre></td></tr></table></figure>
+<p>我们说 <code>r</code> 这个变量的生命周期是 <code>&#39;a</code>，而 <code>x</code> 这个变量的生命周期是 <code>‘b</code>，从图示上可以明显看出生命周期 <code>&#39;b</code> 比 <code>&#39;a</code> 小很多。</p>
+<p>在编译期，Rust 会比较两个变量的生命周期，结果发现 <code>r</code> 明明拥有生命周期 <code>&#39;a</code>，但是却引用了一个小得多的生命周期 <code>&#39;b</code>，在这种情况下，编译器会认为我们的程序存在风险，因此拒绝运行。</p>
+<p>在这里，编译器自动就知道了生命周期，但是这不是时时刻刻都能成的：在存在多个引用时，编译器有时会无法自动推导生命周期，此时就需要我们手动去标注，通过为参数标注合适的生命周期来帮助编译器进行借用检查的分析。</p>
+<h2 id="关于-Rust-类型系统"><a href="#关于-Rust-类型系统" class="headerlink" title="关于 Rust 类型系统"></a>关于 Rust 类型系统</h2><p>在了解这些之前，我们先要介绍一下由 Rust 生命周期而来的类型系统，详细需要观看如下的一篇文章<br>[SAST.Mathematics SIG / Subtyping variance and its application] <a href="https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/">https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/</a></p>
+<p>我们有一个基本的事实，即 <code>Bot = &amp;&#39;static T &lt;: &amp;&#39;b T &lt;: &amp;&#39;a T</code> ，没那么严谨的说法是，当生命周期标签的范围越大，那这个类型就是越小的子类型</p>
+<p>而如果 S 是 T 的子类型，意思是在任何需要使用 T 类型对象的环境中，都可以安全地使用 S 类型的对象。</p>
+<p>这暗含的含义就是：变量本身内蕴的生命周期标签大的可以被借用给生命周期小的，而且一个类型为 <code>&amp;&#39;b T</code> 的变量它的类型其实也满足 <code>&amp;&#39;a T</code></p>
+<h2 id="为一些特殊的函数标注生命周期"><a href="#为一些特殊的函数标注生命周期" class="headerlink" title="为一些特殊的函数标注生命周期"></a>为一些特殊的函数标注生命周期</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">longest</span>&lt;<span class="symbol">&#x27;a</span>&gt;(x: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>, y: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>) <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> x.<span class="title function_ invoke__">len</span>() &gt; y.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        x</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到生命周期标注和泛型标注很相似，且有了上面的铺垫，我们理解了为什么在这里需要标注生命周期(实际上，如果你这个函数不标记生命周期就会收获一个编译报错)</p>
+<p>该函数签名表明对于某些生命周期 <code>&#39;a</code>，函数的两个参数都至少跟 <code>&#39;a</code> 活得一样久，同时函数的返回引用也至少跟 <code>&#39;a</code> 活得一样久。实际上，这意味着返回值的生命周期与参数生命周期中的较小值一致：虽然两个参数的生命周期都是标注了 <code>&#39;a</code>，但是实际上这两个参数的真实生命周期可能是不一样的(上面的讨论说明了生命周期 <code>&#39;a</code> 不代表生命周期等于 <code>&#39;a</code>，而是大于等于 <code>&#39;a</code>)</p>
+<h2 id="结构体中的生命周期"><a href="#结构体中的生命周期" class="headerlink" title="结构体中的生命周期"></a>结构体中的生命周期</h2><p>定义包含引用的结构体时，需要为结构体定义中的每一个引用添加生命周期注解</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImportantExcerpt</span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    part: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">novel</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Call me Ishmael. Some years ago...&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">first_sentence</span> = novel.<span class="title function_ invoke__">split</span>(<span class="string">&#x27;.&#x27;</span>).<span class="title function_ invoke__">next</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">i</span> = ImportantExcerpt &#123;</span><br><span class="line">        part: first_sentence,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="生命周期消除"><a href="#生命周期消除" class="headerlink" title="生命周期消除"></a>生命周期消除</h2><p>并非所有时候使用引用都需要标注生命周期，历史为我们提供了一些语法糖帮助我们消除生命周期</p>
+<p>消除规则不是万能的，若编译器不能确定某件事是正确时，会直接判为不正确，那么你还是需要手动标注生命周期</p>
+<p>函数或者方法中，参数的生命周期被称为<strong>输入生命周期</strong>，返回值的生命周期被称为<strong>输出生命周期</strong></p>
+<h3 id="三条消除规则"><a href="#三条消除规则" class="headerlink" title="三条消除规则"></a>三条消除规则</h3><p>编译器使用三条消除规则来确定哪些场景不需要显式地去标注生命周期。其中第一条规则应用在输入生命周期上，第二、三条应用在输出生命周期上。若编译器发现三条规则都不适用时，就会报错，提示你需要手动标注生命周期。</p>
+<ol>
+<li>每一个引用参数都会获得独自的生命周期<br> 例如一个引用参数的函数就有一个生命周期标注: <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32)</code>，两个引用参数的有两个生命周期标注:<code>fn foo&lt;&#39;a, &#39;b&gt;(x: &amp;&#39;a i32, y: &amp;&#39;b i32)</code>, 依此类推。</li>
+<li>若只有一个输入生命周期（函数参数中只有一个引用类型），那么该生命周期会被赋给所有的输出生命周期，也就是所有返回值的生命周期都等于该输入生命周期<br> 例如函数 <code>fn foo(x: &amp;i32) -&gt; &amp;i32</code>，<code>x</code> 参数的生命周期会被自动赋给返回值 <code>&amp;i32</code>，因此该函数等同于 <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32) -&gt; &amp;&#39;a i32</code></li>
+<li>若存在多个输入生命周期，且其中一个是 <code>&amp;self</code> 或 <code>&amp;mut self</code>，则 <code>&amp;self</code> 的生命周期被赋给所有的输出生命周期<br> 拥有 <code>&amp;self</code> 形式的参数，说明该函数是一个 方法，该规则让方法的使用便利度大幅提升。</li>
+</ol>
+<h2 id="方法定义中的生命周期注解"><a href="#方法定义中的生命周期注解" class="headerlink" title="方法定义中的生命周期注解"></a>方法定义中的生命周期注解</h2><p>当为带有生命周期的结构体实现方法时，其语法依然类似泛型类型参数的语法。我们在哪里声明和使用生命周期参数，取决于它们是与结构体字段相关还是与方法参数和返回值相关。</p>
+<p>(实现方法时)结构体字段的生命周期必须总是在 <code>impl</code> 关键字之后声明并在结构体名称之后被使用，因为这些生命周期是结构体类型的一部分。</p>
+<p><code>impl</code> 块里的方法签名中，引用可能与结构体字段中的引用相关联，也可能是独立的。另外，生命周期省略规则也经常让我们无需在方法签名中使用生命周期注解。</p>
+<h2 id="静态生命周期"><a href="#静态生命周期" class="headerlink" title="静态生命周期"></a>静态生命周期</h2><p>这里有一种特殊的生命周期值得讨论：<code>&#39;static</code>，其生命周期能够存活于整个程序期间。所有的字符串字面值都拥有 <code>&#39;static</code> 生命周期，我们也可以选择像下面这样标注出来：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span>: &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> = <span class="string">&quot;I have a static lifetime.&quot;</span>;</span><br></pre></td></tr></table></figure><br>这个字符串的文本被直接储存在程序的二进制文件中而这个文件总是可用的。因此所有的字符串字面值都是 <code>&#39;static</code> 的。</p>
+<h2 id="泛型中的生命周期"><a href="#泛型中的生命周期" class="headerlink" title="泛型中的生命周期"></a>泛型中的生命周期</h2><p>因为生命周期也是泛型，所以生命周期参数 <code>&#39;a</code> 和泛型类型参数 <code>T</code> 都位于函数名后的同一尖括号列表中</p>
+<blockquote>
+<p>至此，匆匆忙忙把 Rust 一些很基础的语法介绍完毕了，接下来这一个小系列也告一段落了</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
       </categories>
   </entry>
   <entry>
@@ -1328,53 +1375,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <h3 id="数组类型"><a href="#数组类型" class="headerlink" title="数组类型"></a>数组类型</h3><p>与元组类型不同，数组中的每个值只能够是<strong>相同</strong>的类型，相同的是类型在一开始必须就能推导或者显式声明，而且数组的大小也必须在一开始就确定<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span>:[<span class="type">i32</span>;<span class="number">5</span>] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//显式说明类型以及个数</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="comment">//隐式推导</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>特殊用法</strong>，如果想创建一个含有相同值的数组，可以如下简写<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">3</span>;<span class="number">5</span>];<span class="comment">//注意中括号里面是分号</span></span><br></pre></td></tr></table></figure></p>
 <p>访问数组的元素与C/C++一致，即<code>arrayname[index]</code>，如果数组越界访问，也会引起运行时的panic，程序会崩溃退出，十分的<strong>保守与安全</strong>，不像C/C++留下引发一系列的安全问题的隐患</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_10_生命周期</title>
-    <url>/posts/11c8f25c.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><p>一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的</p>
-<span id="more"></span>
-<h2 id="悬垂指针和生命周期"><a href="#悬垂指针和生命周期" class="headerlink" title="悬垂指针和生命周期"></a>悬垂指针和生命周期</h2><p>生命周期诞生的主要目的就是为了放置悬垂指针，避免引用空悬。通过 Rust 编译器检查生命周期，从语言层面上限制程序员，基本上可以在编译期就保证内存安全</p>
-<p>像下面的这段代码</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">        r = &amp;x;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编译时会报下面的错误<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">error[E0597]: `x` does not live long enough // `x` 活得不够久</span><br><span class="line">  --&gt; src/main.rs:7:17</span><br><span class="line">   |</span><br><span class="line">7  |             r = &amp;x;</span><br><span class="line">   |                 ^^ borrowed value does not live long enough // 被借用的 `x` 活得不够久</span><br><span class="line">8  |         &#125;</span><br><span class="line">   |         - `x` dropped here while still borrowed // `x` 在这里被丢弃，但是它依然还在被借用</span><br><span class="line">9  |</span><br><span class="line">10 |         println!(&quot;r: &#123;&#125;&quot;, r);</span><br><span class="line">   |                           - borrow later used here // 对 `x` 的借用在此处被使用</span><br></pre></td></tr></table></figure></p>
-<p>我们在别的语言里会说 x 的作用域在第二个括号末就结束了，所以这是一个典型的可能导致引用空悬的代码，我们可以用 <code>&#39;a</code>、<code>&#39;b</code> 这样的标签来标记这么一个生命周期，如下</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">r</span>;                <span class="comment">// ---------+-- &#x27;a</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    &#123;                     <span class="comment">//          |</span></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;        <span class="comment">// -+-- &#x27;b  |</span></span><br><span class="line">        r = &amp;x;           <span class="comment">//  |       |</span></span><br><span class="line">    &#125;                     <span class="comment">// -+       |</span></span><br><span class="line">                          <span class="comment">//          |</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;r: &#123;&#125;&quot;</span>, r); <span class="comment">//          |</span></span><br><span class="line">&#125;                         <span class="comment">// ---------+</span></span><br></pre></td></tr></table></figure>
-<p>我们说 <code>r</code> 这个变量的生命周期是 <code>&#39;a</code>，而 <code>x</code> 这个变量的生命周期是 <code>‘b</code>，从图示上可以明显看出生命周期 <code>&#39;b</code> 比 <code>&#39;a</code> 小很多。</p>
-<p>在编译期，Rust 会比较两个变量的生命周期，结果发现 <code>r</code> 明明拥有生命周期 <code>&#39;a</code>，但是却引用了一个小得多的生命周期 <code>&#39;b</code>，在这种情况下，编译器会认为我们的程序存在风险，因此拒绝运行。</p>
-<p>在这里，编译器自动就知道了生命周期，但是这不是时时刻刻都能成的：在存在多个引用时，编译器有时会无法自动推导生命周期，此时就需要我们手动去标注，通过为参数标注合适的生命周期来帮助编译器进行借用检查的分析。</p>
-<h2 id="关于-Rust-类型系统"><a href="#关于-Rust-类型系统" class="headerlink" title="关于 Rust 类型系统"></a>关于 Rust 类型系统</h2><p>在了解这些之前，我们先要介绍一下由 Rust 生命周期而来的类型系统，详细需要观看如下的一篇文章<br>[SAST.Mathematics SIG / Subtyping variance and its application] <a href="https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/">https://sast-mathematics-sig.github.io/posts/subtyping_variance_and_its_application/</a></p>
-<p>我们有一个基本的事实，即 <code>Bot = &amp;&#39;static T &lt;: &amp;&#39;b T &lt;: &amp;&#39;a T</code> ，没那么严谨的说法是，当生命周期标签的范围越大，那这个类型就是越小的子类型</p>
-<p>而如果 S 是 T 的子类型，意思是在任何需要使用 T 类型对象的环境中，都可以安全地使用 S 类型的对象。</p>
-<p>这暗含的含义就是：变量本身内蕴的生命周期标签大的可以被借用给生命周期小的，而且一个类型为 <code>&amp;&#39;b T</code> 的变量它的类型其实也满足 <code>&amp;&#39;a T</code></p>
-<h2 id="为一些特殊的函数标注生命周期"><a href="#为一些特殊的函数标注生命周期" class="headerlink" title="为一些特殊的函数标注生命周期"></a>为一些特殊的函数标注生命周期</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">longest</span>&lt;<span class="symbol">&#x27;a</span>&gt;(x: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>, y: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>) <span class="punctuation">-&gt;</span> &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> x.<span class="title function_ invoke__">len</span>() &gt; y.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        x</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到生命周期标注和泛型标注很相似，且有了上面的铺垫，我们理解了为什么在这里需要标注生命周期(实际上，如果你这个函数不标记生命周期就会收获一个编译报错)</p>
-<p>该函数签名表明对于某些生命周期 <code>&#39;a</code>，函数的两个参数都至少跟 <code>&#39;a</code> 活得一样久，同时函数的返回引用也至少跟 <code>&#39;a</code> 活得一样久。实际上，这意味着返回值的生命周期与参数生命周期中的较小值一致：虽然两个参数的生命周期都是标注了 <code>&#39;a</code>，但是实际上这两个参数的真实生命周期可能是不一样的(上面的讨论说明了生命周期 <code>&#39;a</code> 不代表生命周期等于 <code>&#39;a</code>，而是大于等于 <code>&#39;a</code>)</p>
-<h2 id="结构体中的生命周期"><a href="#结构体中的生命周期" class="headerlink" title="结构体中的生命周期"></a>结构体中的生命周期</h2><p>定义包含引用的结构体时，需要为结构体定义中的每一个引用添加生命周期注解</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ImportantExcerpt</span>&lt;<span class="symbol">&#x27;a</span>&gt; &#123;</span><br><span class="line">    part: &amp;<span class="symbol">&#x27;a</span> <span class="type">str</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">novel</span> = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;Call me Ishmael. Some years ago...&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">first_sentence</span> = novel.<span class="title function_ invoke__">split</span>(<span class="string">&#x27;.&#x27;</span>).<span class="title function_ invoke__">next</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">i</span> = ImportantExcerpt &#123;</span><br><span class="line">        part: first_sentence,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="生命周期消除"><a href="#生命周期消除" class="headerlink" title="生命周期消除"></a>生命周期消除</h2><p>并非所有时候使用引用都需要标注生命周期，历史为我们提供了一些语法糖帮助我们消除生命周期</p>
-<p>消除规则不是万能的，若编译器不能确定某件事是正确时，会直接判为不正确，那么你还是需要手动标注生命周期</p>
-<p>函数或者方法中，参数的生命周期被称为<strong>输入生命周期</strong>，返回值的生命周期被称为<strong>输出生命周期</strong></p>
-<h3 id="三条消除规则"><a href="#三条消除规则" class="headerlink" title="三条消除规则"></a>三条消除规则</h3><p>编译器使用三条消除规则来确定哪些场景不需要显式地去标注生命周期。其中第一条规则应用在输入生命周期上，第二、三条应用在输出生命周期上。若编译器发现三条规则都不适用时，就会报错，提示你需要手动标注生命周期。</p>
-<ol>
-<li>每一个引用参数都会获得独自的生命周期<br> 例如一个引用参数的函数就有一个生命周期标注: <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32)</code>，两个引用参数的有两个生命周期标注:<code>fn foo&lt;&#39;a, &#39;b&gt;(x: &amp;&#39;a i32, y: &amp;&#39;b i32)</code>, 依此类推。</li>
-<li>若只有一个输入生命周期（函数参数中只有一个引用类型），那么该生命周期会被赋给所有的输出生命周期，也就是所有返回值的生命周期都等于该输入生命周期<br> 例如函数 <code>fn foo(x: &amp;i32) -&gt; &amp;i32</code>，<code>x</code> 参数的生命周期会被自动赋给返回值 <code>&amp;i32</code>，因此该函数等同于 <code>fn foo&lt;&#39;a&gt;(x: &amp;&#39;a i32) -&gt; &amp;&#39;a i32</code></li>
-<li>若存在多个输入生命周期，且其中一个是 <code>&amp;self</code> 或 <code>&amp;mut self</code>，则 <code>&amp;self</code> 的生命周期被赋给所有的输出生命周期<br> 拥有 <code>&amp;self</code> 形式的参数，说明该函数是一个 方法，该规则让方法的使用便利度大幅提升。</li>
-</ol>
-<h2 id="方法定义中的生命周期注解"><a href="#方法定义中的生命周期注解" class="headerlink" title="方法定义中的生命周期注解"></a>方法定义中的生命周期注解</h2><p>当为带有生命周期的结构体实现方法时，其语法依然类似泛型类型参数的语法。我们在哪里声明和使用生命周期参数，取决于它们是与结构体字段相关还是与方法参数和返回值相关。</p>
-<p>(实现方法时)结构体字段的生命周期必须总是在 <code>impl</code> 关键字之后声明并在结构体名称之后被使用，因为这些生命周期是结构体类型的一部分。</p>
-<p><code>impl</code> 块里的方法签名中，引用可能与结构体字段中的引用相关联，也可能是独立的。另外，生命周期省略规则也经常让我们无需在方法签名中使用生命周期注解。</p>
-<h2 id="静态生命周期"><a href="#静态生命周期" class="headerlink" title="静态生命周期"></a>静态生命周期</h2><p>这里有一种特殊的生命周期值得讨论：<code>&#39;static</code>，其生命周期能够存活于整个程序期间。所有的字符串字面值都拥有 <code>&#39;static</code> 生命周期，我们也可以选择像下面这样标注出来：<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">s</span>: &amp;<span class="symbol">&#x27;static</span> <span class="type">str</span> = <span class="string">&quot;I have a static lifetime.&quot;</span>;</span><br></pre></td></tr></table></figure><br>这个字符串的文本被直接储存在程序的二进制文件中而这个文件总是可用的。因此所有的字符串字面值都是 <code>&#39;static</code> 的。</p>
-<h2 id="泛型中的生命周期"><a href="#泛型中的生命周期" class="headerlink" title="泛型中的生命周期"></a>泛型中的生命周期</h2><p>因为生命周期也是泛型，所以生命周期参数 <code>&#39;a</code> 和泛型类型参数 <code>T</code> 都位于函数名后的同一尖括号列表中</p>
-<blockquote>
-<p>至此，匆匆忙忙把 Rust 一些很基础的语法介绍完毕了，接下来这一个小系列也告一段落了</p>
-</blockquote>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1653,6 +1653,24 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>CMake的使用</title>
+    <url>/posts/3c5e47f1.html</url>
+    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
+<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
+<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
+<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
+<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
+<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
+<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Rust_Chapter_9_Trait</title>
     <url>/posts/fa0fbc5d.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-9-Trait"><a href="#Rust-Chapter-9-Trait" class="headerlink" title="Rust_Chapter_9_Trait"></a>Rust_Chapter_9_Trait</h1><p>Trait 是我认为 Rust 中最好用最有特色的特性之一，它和 C++20 的 Concept 很像，trait 也类似于其他语言中的常被称为<strong>接口</strong>(interfaces)的功能，虽然有一些不同。</p>
@@ -1687,24 +1705,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>CMake的使用</title>
-    <url>/posts/3c5e47f1.html</url>
-    <content><![CDATA[<h1 id="CMake的使用"><a href="#CMake的使用" class="headerlink" title="CMake的使用"></a>CMake的使用</h1><p><strong>Feipiao</strong>前段时间在做csapp的lab使用到了linux，最近把linux虚拟机换成了wsl，在vscode下进行 <strong>code &amp; study</strong><br>对于在vscode上，或者直接就是在linux内进行开发，使用make这种编译配置工具就跑不了了。<br>在这样的情况下，使用cmake进行<strong>跨平台</strong>的高级编译配置也就免不了了。<br><span id="more"></span></p>
-<h2 id="HelloWorld"><a href="#HelloWorld" class="headerlink" title="HelloWorld"></a>HelloWorld</h2><p>我们先用单文件的helloworld练练手，首先创建一个文件为main.cpp<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    std::cout&lt;&lt;<span class="string">&quot;Hello world&quot;</span>&lt;&lt;std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>再创建一个CMakeLists.txt的文本文件注意这个文本文件的名字大小写是<strong>敏感</strong>的，在这个文本文件当中，我们就会进行cmake的书写与使用<br>CMakeLists.txt 的语法比较简单，由<strong>命令、注释和空格</strong>组成，其中命令是<strong>不区分</strong>大小写的</p>
-<p>在这个文件中输入几个重要的，每个CMakeLists.txt都不可或缺的指令：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目名称信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 指定生成目标的名字</span><br><span class="line">add_executable(main main.cpp)</span><br></pre></td></tr></table></figure></p>
-<p>以“#”开头的为<strong>注释</strong><br>运行cmake需要输入<code>cmake .</code>这里的<code>.</code>是指在当前文件夹内进行搜索CMakeLists.txt，执行完成后，会生成Makefile文件，再运行make就可以进行编译了。</p>
-<h2 id="更深一步，对于多个源文件"><a href="#更深一步，对于多个源文件" class="headerlink" title="更深一步，对于多个源文件"></a>更深一步，对于多个源文件</h2><p>如果在当前文件夹下再创建一个cpp文件和头文件<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*---myfun.cpp---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*---myfun.h---*/</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfun</span><span class="params">(<span class="type">int</span>,<span class="type">int</span>)</span></span>;</span><br></pre></td></tr></table></figure><br>我们可以在原来的CMakeList.txt中的<code>add_executable</code>命令后面加上一个文件名，改为<code>add_executable(main main.cpp myfun.cpp)</code>，但显然这样一个一个加东西也不是个事，所以更省事的方法是使用<code>aux_source_directory</code>命令，该命令会查找指定目录下的所有源文件，然后将结果存进指定变量名。其语法如下：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">aux_source_directory(&lt;dir&gt; &lt;variable&gt;)</span><br></pre></td></tr></table></figure><br>这个命令会把dir下所有源文件统合，把名称存进variable这个位置的变量中，如下例：<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># CMake 最低版本号要求</span><br><span class="line">cmake_minimum_required (VERSION 2.8)</span><br><span class="line"># 项目信息</span><br><span class="line">project (Helloworld)</span><br><span class="line"># 查找当前目录下的所有源文件</span><br><span class="line"># 并将名称保存到 DIR_SRCS 变量</span><br><span class="line">aux_source_directory(. DIR_SRCS)</span><br><span class="line"># 指定生成目标</span><br><span class="line">add_executable(main $&#123;DIR_SRCS&#125;)</span><br></pre></td></tr></table></figure></p>
-<p>对于复杂的文件结构，有如下俩条指令<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 添加 dir 子目录</span><br><span class="line">add_subdirectory(dir)</span><br><span class="line"># 添加链接库</span><br><span class="line">target_link_libraries(main myfun)</span><br></pre></td></tr></table></figure><br>前者会使得dir子目录下的CMakeList.txt会一并处理，后者将指出main需要myfun的链接库</p>
-<p>而在子目录中可以使用<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#生成myfun链接库</span><br><span class="line">add_library (myfun &lt;choice&gt; &lt;filename&gt;)</span><br></pre></td></tr></table></figure><br>其中<code>&lt;choice&gt;</code>为<code>STATIC</code>则为静态链接库，<code>SHARDED</code>则为动态链接库</p>
-<h2 id="更多的重要指令"><a href="#更多的重要指令" class="headerlink" title="更多的重要指令"></a>更多的重要指令</h2><p>对于<strong>Feipiao</strong>来说，暂时只要能编译运行就行了，所以我们并不需要完成非常多的事情，因此这就到这里就可以结束了<br>有些指令还需要进行补充<br><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 支持cpp14</span><br><span class="line">set(CMAKE_CXX_STANDARD 14)</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>n重积分转n次积分问题</title>
     <url>/posts/622309a6.html</url>
     <content><![CDATA[<h1 id="n重积分转n次积分问题"><a href="#n重积分转n次积分问题" class="headerlink" title="n重积分转n次积分问题"></a>n重积分转n次积分问题</h1><p>我们在进行n重积分转n次积分时，会遇见积分上下限的问题，我们需要对此进行更为好算的转化。<br><span id="more"></span></p>
@@ -1727,6 +1727,76 @@ F(x)=\int_{\mathbb{R}}f(x,y)\mathrm{d}y</script><p>对于几乎每个$x\in\mathb
 G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathbb{R}$成立，最后</p>
 <script type="math/tex; mode=display">
 \int_{\mathbb{R}}F(x)\mathrm{d}x=\int_{\mathbb{R}^{2}}f=\int_{\mathbb{R}}G(y)\mathrm{d}y</script>]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Analysis_theory</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>stokes公式</title>
+    <url>/posts/7fc7eed7.html</url>
+    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
+<span id="more"></span>
+<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
+<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
+<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
+</blockquote>
+<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
+<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
+<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
+<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
+<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
+<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
+<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
+</ul>
+<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
+<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
+<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
+<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
+<blockquote>
+<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
+</blockquote>
+<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
+<ul>
+<li>恰当形式<strong>一定是</strong>闭形式</li>
+<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
+<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
+</blockquote>
+</li>
+</ul>
+<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
+<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
+<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
+<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
+<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
+<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
+<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
+<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
+<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
+<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
+<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
+<ul>
+<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
+<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
+</ul>
+<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
+<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
+<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
+<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
+<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
+<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
+<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
+<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
+<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
+<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
+<li>下一步即得到stokes公式</li>
+</ul>
+<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
+]]></content>
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
@@ -1821,107 +1891,6 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>stokes公式</title>
-    <url>/posts/7fc7eed7.html</url>
-    <content><![CDATA[<h1 id="stokes公式"><a href="#stokes公式" class="headerlink" title="stokes公式"></a>stokes公式</h1><p>我先前对stokes公式了解不够深入，导致使用时出现了一定的问题，就把它单独列出来吧</p>
-<span id="more"></span>
-<h2 id="stokes定理表述"><a href="#stokes定理表述" class="headerlink" title="stokes定理表述"></a>stokes定理表述</h2><p>For any <strong>smooth</strong> (n-1)-form $\omega$ with <strong>compact support</strong> on the <strong>oriented</strong> n-dimensional manifold $M$</p>
-<script type="math/tex; mode=display">\int_{\partial \Omega}\omega=\int_{\Omega}d\omega</script><h2 id="之前遇到的问题"><a href="#之前遇到的问题" class="headerlink" title="之前遇到的问题"></a>之前遇到的问题</h2><blockquote>
-<p>之前我将stokes公式用于降低微分n形式的n，我解释它需要求解一个PDE，但我遇到了一些问题，关于三重积分变为闭曲面二重积分，再将闭曲面分离开，再用斯托克斯公式继续降为曲线积分，但发现最后结果变成0了，这是什么原因？</p>
-</blockquote>
-<h2 id="分析一下"><a href="#分析一下" class="headerlink" title="分析一下"></a>分析一下</h2><p>其实已知的所有定理，包括可加性包括stokes都是正确的，但微分n形式不一定能对应一个微分n-1形式的积分，这里降级的过程不一定成功，自然也就不存在对应关系，不存在对应关系stokes定理绝对是用不了的</p>
-<p>事实上我发现有一个降级的<strong>必要条件</strong>，如下图<br><img src="/images/微分流形公式整理_图1.jpg" width="50%" height="50%"></p>
-<p>上图即证明，如果能降两级，除非最顶上函数恒为0，不然函数肯定是不存在的，也就无法降级了</p>
-<p>而这样一个结论其实就是曲面积分只与边界曲线有关</p>
-<h2 id="整理一下"><a href="#整理一下" class="headerlink" title="整理一下"></a>整理一下</h2><ul>
-<li>一个曲面积分若能用stokes公式转化为曲线积分，那么把它补齐，在转化为三重积分，微分形式为0($x - x = 0$)(后面的$-x$就是补的面)</li>
-<li>一个曲面积分若$d\omega$不为0，不能化到曲线积分($d^2\omega$=0所导致的限制)，若补全并转化为三重积分不为0，也就是说不满足曲面积分只取决于边界曲线，不再是$x-x=0$，而是$x-y\ne0$了</li>
-</ul>
-<p>stokes公式给出的前提条件是用来把低一级转化为高一级的，其中自然没有障碍，但是要想反推出把高一级转化为低一级的stokes公式，式子当然是没有变化，但是前提条件自然是会发生变化的</p>
-<h2 id="进一步"><a href="#进一步" class="headerlink" title="进一步"></a>进一步</h2><p><strong>整理如下表</strong><br><img src="/images/微分流形公式整理_图2.jpg" width="100%" height="100%"></p>
-<p>补充一点，这里还有一个<strong>积分区域维度不高于整体维度的约束条件</strong>，即当$\omega$为n维流形的微分n形式时，无法向更高一级转化</p>
-<p>直观感受就是一个低一级的积分能被高一级的积分所囊括，但是高一级的积分不一定之和它的边界条件有关，要满足一定的更加苛刻的条件(对于$\int_{\Omega}\omega$想要向低一级转化必须满足$d\omega = 0$)，这是符合直觉的(高维能包含低维，低维包含高维需要制约条件的直觉)</p>
-<blockquote>
-<p><strong>关键点就是只有$d\omega$等于0时候才能做到“以偏概全”，其它时候只能“高维表达低维”</strong></p>
-</blockquote>
-<h2 id="闭形式与恰当形式"><a href="#闭形式与恰当形式" class="headerlink" title="闭形式与恰当形式"></a>闭形式与恰当形式</h2><p>引用wiki上<strong>闭形式与恰当形式</strong><br>在数学，特别是向量分析与微分拓扑中，一个<strong>闭形式</strong>$\alpha$是微分算子$d$的核，即$d\alpha=0$(注意这里是<strong>恒成立</strong>，如果是某些项出现除以0导致的不存在，那也不算)的微分形式；而<strong>恰当形式</strong>(恰当微分形式)$\alpha$是微分算子$d$的像，即存在某个微分形式$\beta$使得$\alpha=d\beta$，$\beta$称为关于$\alpha$的一个“本原”。<br>有如下两个<strong>结论</strong>：</p>
-<ul>
-<li>恰当形式<strong>一定是</strong>闭形式</li>
-<li>闭形式<strong>不一定</strong>是恰当形式<blockquote>
-<p>展开来说，依据<strong>庞加莱引理</strong>，如果整体的流形$\omega$是单联通的(可以连续的缩为一个点)则闭形式为恰当形式<br>但如果整体的流形$\omega$不是单连通的，那么闭形式就<strong>不一定</strong>是了(而且甚至要用stokes定理<strong>反证</strong>它不是，就是证明如果存在和stokes计算结果不一致)，当然，我们也无需考虑这一种情况了(需要利用deRham定理，还需要计算流形的Betti数)，相关内容 陈维恒《微分流形初步》P195</p>
-</blockquote>
-</li>
-</ul>
-<p>如此，$d\omega=0$不能说明它是恰当形式，只有上述情况已被证明闭形式是恰当形式，这些情况也不覆盖所有的可能，因而还得具体问题具体分析<br>对于这些已经被证明的情况之外的情况，$d\omega=0$仍然得<strong>找到一个在规定区域上均有定义</strong>的”原微分形式”才能说明一切</p>
-<p>即使是deRham定理也只是叙述了光滑紧致流形上的情况。不过根据庞加莱引理，在任意球状邻域内闭微分式都是恰当的，那么证明一般来说都可以解，只不过解出来的是否都是覆盖到整体，就不一定了</p>
-<p>证明不成立，可以用闭合$(p+1)$维曲面的环路积分为$0$，这个stokes推论去反证</p>
-<p>总之判断一个闭形式是否是恰当形式非常困难，DeRham定理也只是判断是否闭形式就是恰当形式，而在上述命题时也不能确定一个闭形式是否就是恰当形式</p>
-<p>可以利用子流形上的积分是把微分形式限制在一个子流形上的区域，再在区域的微分流形上利用子流形相对于原流形的制约方程，可以对子流形的微分形式进行更换，再匹配到更大的微分流形上，通过联系stokes，实现更大范围的运算。这里用到了流形之间的光滑映射诱导的形式场的映射用来转化，更专业一点的术语叫拉回</p>
-<h2 id="边界的小问题"><a href="#边界的小问题" class="headerlink" title="边界的小问题"></a>边界的小问题</h2><p>Stokes公式在需要微分形式有<strong>紧致支撑集</strong>，这就相当于在紧致流形上进行计算。</p>
-<p>我们思考一个流形是哪个流形的边界时，<strong>应该去凑谁的边界是它，或者是它的一部分，而不是看它围成的区域</strong>，因为我们的这个计算的流形，不能超过整个流形</p>
-<p>如果说人为规定流形为$\{(x,y)|x^2+y^2\le 2\}-\{0,0\}$，上面定义了微分形式，要求一个$\{(x,y)|x^2+y^2= 1\}$的积分，如果微分形式在上面<strong>没有紧支撑</strong>(整个流形的闭包还是整个流形，因为拓扑空间$X$即是开集也是闭集)，stokes不能使用，有紧支撑的话，能使用(计算方法同下一段)。因而stokes还是有相当的限制在其中的，不是全部都能计算的</p>
-<p>stokes没有规定流形一定要有边界，但是一定要有<strong>紧致支撑集</strong>，当然要是纯纯的开集，还有紧致支撑集的话，使用stokes肯定是0(开的部分是不算边界的)</p>
-<script type="math/tex; mode=display">\int_{(0,1)}\omega=\int_{\partial (0,1)\omega}=0</script><p>这很好理解，因为有紧致支撑集说明函数导数在0，1处为0了，根据微积分基本定理肯定为0<br>同理半开半闭区间，就是只能算一边，另一边为0的情况</p>
-<p>但是显然正常来说，嵌入在$\mathbb{R}^n$中的stokes定理的推论<strong>无需关注</strong>这点，因为一般来说函数覆盖整个$\mathbb{R}^n$或者其中很大的区域，题目也从不对其设置限制</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>首先复盘一下流形上的积分定义，要求微分形式必须拥有紧致支撑集，所以流形上的积分其实是不考虑在$\mathbb{R}^1$上的广义积分的，那一种情况是根据微积分基本定理的延拓，显然我们这里不需要考虑这种问题。<br>仔细阅读一下stokes公式，可以看到其相当重要的限制有如下的两条</p>
-<ul>
-<li>$\partial \omega$与$\omega$均需要是在整个流形上的<strong>光滑</strong>张量场，这是来自于微分形式的定义</li>
-<li>在上一条成立后，$\partial \omega$与$\omega$必须在整个流形上有一个<strong>紧致支撑集</strong></li>
-</ul>
-<p>注意这里没有要求流形的紧致性与连通性，因为微分形式有<strong>紧致支撑集</strong>可以规避这个问题，积分必然有意义<br>我们可以根据这两条去观察是否正确的使用stokes，并以此可以去<strong>凑</strong>出一个带着微分形式的流形可以达到我们的目的，格林公式，高斯公式，斯托克斯公式都是在$\mathbb{R}^n$帮你找出了一种<strong>凑</strong>好的格式罢了</p>
-<h4 id="如果要把微分形式阶数降下来"><a href="#如果要把微分形式阶数降下来" class="headerlink" title="如果要把微分形式阶数降下来"></a>如果要把微分形式阶数降下来</h4><ul>
-<li>首先$d\omega$必须恒为0，不然绝对不存在</li>
-<li>降下来需要求解一个PDE，但PDE解完之后结果必须满足张量场是定义在<strong>整个被积分的流形</strong>上的光滑张量场 <strong>(而不是边界，这点需要看公式)</strong></li>
-<li>有可能因为闭形式不是恰当形式而导致解不出，这时候要想证伪就可以使用stokes推论闭合超曲面积分为0反证证伪</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<h4 id="如果要把微分形式阶数升上去"><a href="#如果要把微分形式阶数升上去" class="headerlink" title="如果要把微分形式阶数升上去"></a>如果要把微分形式阶数升上去</h4><ul>
-<li>选定以自己这个流形$\partial \Omega$作为边界或者边界的一部分的“母”流形，抑或是再通过和其它区域相加补全后寻找(因为要升一阶微分形式)</li>
-<li>由于$\omega$是光滑张量场，那么$d\omega$也是在原边界的流形上的光滑的张量场(这点由外微分算子的定义来保证)，不需要考虑光滑的问题</li>
-<li>根据<strong>外微分算子的局部性</strong>与<strong>子流形上的积分定义</strong>，需要选择一个合理的微分形式，使得这个选择的微分形式$\beta$满足$f^{\ast}\beta=f^{\ast}\omega$(既是使用子流形在“母”流形上的约束方程与之联立，得到相关的微分形式组，以达到换微分形式，使得方便运算的结果)</li>
-<li>(关于这个子流形上的微分形式，必须要微分形式和约束方程同时出现，并且<strong>消去才算</strong>作真正子流形上的微分形式，最次也得留着后面跟个括号，约束方程就是用来消去子流形和“母”流形之间的维度差数的，所以，不同的微分形式加以相同的约束方程，可能不一样的微分形式能计算出相同的结果，自然就可以得到一个原微分形式的集合，即求解$i^\ast\omega = i^\ast\alpha$，好比求解限制函数在应该定义域内的相等)，并且使得这个微分形式也要满足最基本的在$\Omega$上的<strong>光滑</strong>(stokes里暗含一个<strong>包含映射</strong>，来自于子流形用“母”流形的微分形式积分的定义)</li>
-<li>进一步，要考虑$\beta$是否在<strong>选定的母流形内</strong>存在<strong>紧致支撑集</strong>，像格林公式，高斯公式，斯托克斯公式都已经帮你选好了函数处处有定义的闭集了，就不需要考虑这个问题了</li>
-<li>下一步即得到stokes公式</li>
-</ul>
-<p>总之最主要是判断stokes定理是否使用正确<br>以上这俩一个低一阶微分形式难取，一个“母”流形难取，倒是对称了，这也许就是数学的<strong>对称美感</strong>吧</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -2491,6 +2460,37 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -2548,6 +2548,20 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
+    <title>关于编译原理的一些哲学想法</title>
+    <url>/posts/604cfd1a.html</url>
+    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Basic_principles</category>
+        <category>Computer_composition</category>
+      </categories>
+  </entry>
+  <entry>
     <title>关于思考第一类曲面积分时的发现</title>
     <url>/posts/951a7cd2.html</url>
     <content><![CDATA[<h1 id="关于思考第一类曲面积分时的发现"><a href="#关于思考第一类曲面积分时的发现" class="headerlink" title="关于思考第一类曲面积分时的发现"></a>关于思考第一类曲面积分时的发现</h1><p>声明:本文是对<strong>知乎答主@李治林</strong>的回答的个人总结，原链接如下，侵权删<br><a href="https://www.zhihu.com/question/48421749/answer/134203246">https://www.zhihu.com/question/48421749/answer/134203246</a><br><span id="more"></span></p>
@@ -2590,20 +2604,6 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
-    <title>关于编译原理的一些哲学想法</title>
-    <url>/posts/604cfd1a.html</url>
-    <content><![CDATA[<h1 id="关于编译原理的一些哲学想法"><a href="#关于编译原理的一些哲学想法" class="headerlink" title="关于编译原理的一些哲学想法"></a>关于编译原理的一些哲学想法</h1><p>自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>一直以来，编译原理最让我感到困惑的并不是前端的那些个有限自动机，上下文无关文法的数学原理，也不是后端千变万化的算法，已然由历史固化下来的精髓，学习起来却也并不会具有很大的难度。但其中有一个环节，代码生成：将 IR 转换为目标机器的代码，这一个部分困扰我许久<br>在 <code>Engineering a Compiler</code> 这本书里，代码生成的一章节，只阐述了两个算法，分别是树匹配算法和窥孔优化，主要起作用的算法是树匹配算法，这个算法会预设一个子树(可能是一个节点)能被一组目标机器代码所替代，然后通过组合将一个 BasicBlock 转化为目标机器代码，这个算法本身没问题，问题在于，上面的这个预设是否成立？</p>
-<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>TODO</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Basic_principles</category>
-        <category>Computer_composition</category>
-      </categories>
-  </entry>
-  <entry>
     <title>初入Linux的一些感想</title>
     <url>/posts/13c32592.html</url>
     <content><![CDATA[<h1 id="初入Linux的一些感想"><a href="#初入Linux的一些感想" class="headerlink" title="初入Linux的一些感想"></a>初入Linux的一些感想</h1><p>这半年来没怎么更新东西，原因是这一个学期都在折腾Linux，想着在博客里交代一下自己最近干的事情，以及即将要在博客里写的一些东西</p>
@@ -2622,18 +2622,6 @@ document.addEventListener("fullscreenchange", () => {
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -2743,6 +2731,18 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
     <title>初识量子计算</title>
     <url>/posts/fe2da916.html</url>
     <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
@@ -2808,7 +2808,7 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>仿3b1b朱丽娅集</title>
+    <title>史瓦西黑洞</title>
     <url>/posts/17b8fba5.html</url>
     <content><![CDATA[<h1 id="史瓦西黑洞"><a href="#史瓦西黑洞" class="headerlink" title="史瓦西黑洞"></a>史瓦西黑洞</h1><p>一个简单的黑洞模拟小网页</p>
 <span id="more"></span>
@@ -3646,6 +3646,43 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       </categories>
   </entry>
   <entry>
+    <title>行列式</title>
+    <url>/posts/336095f8.html</url>
+    <content><![CDATA[<h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
+<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
+<script type="math/tex; mode=display">
+\begin{vmatrix}  
+  a_{11}& a_{12}& \cdots  & a_{1n} \\  
+  a_{21}& a_{22}& \cdots  & a_{2n} \\  
+  \vdots & \vdots & \ddots & \vdots \\  
+  a_{m1}& a_{m2}& \cdots  & a_{mn}  
+\end{vmatrix}  
+=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
+<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
+<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
+<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
+<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
+<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
+<ul>
+<li>转置最后结果不变</li>
+<li>行列交换一次，加一个负号</li>
+<li>数乘只算在一行(列)上</li>
+<li>如果有两行(列)整体成比例，则值为0</li>
+<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
+</ul>
+<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
+<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
+<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
+<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
+<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
+<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Linear_algebra</category>
+      </categories>
+  </entry>
+  <entry>
     <title>离散与连续傅里叶变换之间的联系</title>
     <url>/posts/f1193ad8.html</url>
     <content><![CDATA[<h1 id="离散与连续傅里叶变换之间的联系"><a href="#离散与连续傅里叶变换之间的联系" class="headerlink" title="离散与连续傅里叶变换之间的联系"></a>离散与连续傅里叶变换之间的联系</h1><p>在复习这学期的数字信号处理的时候，发现我的数字信号处理书对此的解释我完全看不懂啊，所以就花了几天时间自己推了一点公式，通过了解这些离散啊，连续啊什么的傅里叶变换的数学性质能比较直观的帮助我理解这科目到底在干什么，具体为什么要这么干</p>
@@ -3719,43 +3756,6 @@ dr_i=\sum_{l=1}^{n}(\sum_{k=1}^{n}\Gamma_{il}^{k}r_{k})du^l</script><h2 id="总�
       <categories>
         <category>EE_电子工程</category>
         <category>数字信号相关</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>行列式</title>
-    <url>/posts/336095f8.html</url>
-    <content><![CDATA[<h1 id="行列式"><a href="#行列式" class="headerlink" title="行列式"></a>行列式</h1><h2 id="1-1-行列式的定义"><a href="#1-1-行列式的定义" class="headerlink" title="1.1 行列式的定义"></a>1.1 行列式的定义</h2><p>我并不是很喜欢我们教材的知识点分布，因为上来就讲行列式是一个很尴尬的事情<br><span id="more"></span></p>
-<p>这里的行列式是直接作为一种计算出现在此的，前面用克莱姆法则引入的有些牵强，最关键的定义就是那个公式(那个写成两个逆序数合的我就不写了，本质上就是同一个东西)</p>
-<script type="math/tex; mode=display">
-\begin{vmatrix}  
-  a_{11}& a_{12}& \cdots  & a_{1n} \\  
-  a_{21}& a_{22}& \cdots  & a_{2n} \\  
-  \vdots & \vdots & \ddots & \vdots \\  
-  a_{m1}& a_{m2}& \cdots  & a_{mn}  
-\end{vmatrix}  
-=\sum_{j_1j_2\cdots jn} (-1)^{\tau(j_1j_2\cdots jn)}a_{1j_1}a_{2j_2}\cdots a_{nj_n}</script><p>这公式很有意思，原因在于其实它是一个加权和，权是一个-1的逆序数的幂次，每个元素则是<strong>每一行(列)取一个数字的所有排序之乘积</strong>，后面有好一些简便运算的结论其实都来自于一个所有排序的和这一个观点。比如通过初等行列变换变为三角形行列式的时候，正是利用了这一观点，你会发现每一行取一个，要想不为0，唯一一个可能就是对角线乘起来</p>
-<p>其实系数才是不好求的东西，原定义逆序数是：在一个排序中，如果一个较大的数排在了较小的数的前面，就称这两个数构成一个逆序。一个排列逆序的总数称为该排列的逆序数<br>判定一个排列是奇(偶)排列，这边我找到了一种很好的方法</p>
-<h3 id="快速判定排序的奇偶性"><a href="#快速判定排序的奇偶性" class="headerlink" title="快速判定排序的奇偶性"></a>快速判定排序的奇偶性</h3><p>具体查看这种<a href="https://max.book118.com/html/2017/0606/111985347.shtm">神奇的方法</a></p>
-<p>在解题之前我们约定：划去两个<strong>连续逆序</strong>的数码或<strong>作一次对换</strong>都记做“-1”，划去两个连续顺序的数码记做“+1”也可以省略不记；<strong>→(i,j)→</strong>表示对换i，j数码一次，数码下加下划线表示要划去的数码。<br>(1)4267351-→42 <u>67</u>351→4 <u>23</u>51-→<u>45</u>1→(+1)→偶排列<br>(2)213486795→<u>21</u> <u>34</u> 8 <u>67</u> 95-→(-1)<u>8 9</u> 5→(-1)→奇排列<br>(3) 513792684 <strong>→(3,6)→</strong> (-1)51<u>67</u>9 <u>23</u>84→(-1)51 <u>98</u>4 <strong>→(1,4)→</strong> (-1)(-1)(-1)<u>54</u>1→&gt;(-1)(-1)(-1)(-1)→+1→偶排列</p>
-<p>以此，通过将数字对换，把连续的数字移到一起，以消去剩下常数的方法，最后剩下很小的<strong>原定义</strong>的计算量，在人工手算当中将会大大降低计算量，就是这个其实也不常用罢了。</p>
-<h2 id="1-2-行列式的性质"><a href="#1-2-行列式的性质" class="headerlink" title="1.2 行列式的性质"></a>1.2 行列式的性质</h2><p>行列式的计算定理利用它的定义易得，在此不多赘述。几个计算的定理关键点如下：</p>
-<ul>
-<li>转置最后结果不变</li>
-<li>行列交换一次，加一个负号</li>
-<li>数乘只算在一行(列)上</li>
-<li>如果有两行(列)整体成比例，则值为0</li>
-<li>单个行列式的某行可以拆成加法，分别分配到两个其它部分相同的行列式中</li>
-</ul>
-<p>由此可以推导出最关键的，对<strong>行列式进行初等变换，行列式的值不变。</strong></p>
-<p>我这边的习题这一章的技巧很多都是把<em>所有的行加到同一行</em>诶。当然<em>拆成多个行列式相加</em>也是一种化简的手段。</p>
-<p>我自己的易错计算点：<br>1.注意把行列式计算，初等行变换结束后，系数要拿出来，于此同时，这个性质矩阵也有相当的不同，因为矩阵的数乘式相对<br>2…</p>
-<h2 id="1-3-行列式依行-列-展开"><a href="#1-3-行列式依行-列-展开" class="headerlink" title="1.3 行列式依行(列)展开"></a>1.3 行列式依行(列)展开</h2><p>这里介绍了余子式和代数余子式是什么东西，划去元素 $a_{ij}$ 所在的行与列，剩下的元素按原来的顺序构成的 $n-1$阶行列式，称为元素 $a_{ij}$ 的余子式。</p>
-<p>而代数余子式的定义就说明了自己<strong>易错</strong>的特性<br>记 $A_{ij}:=(-1)^{i+j}M_{ij}$ ，元素 $A_{ij}$ 称为元素 $a_{ij}$ 的<strong>代数</strong>余子式。需要很仔细的注意符号的问题</p>
-<p>余子项展开的公式没什么好说的，证明也就是纯纯计算而已，很trival。</p>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Linear_algebra</category>
       </categories>
   </entry>
   <entry>
