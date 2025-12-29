@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"feipiao594.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="RopUI开发_第1弹RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RopUI开发_第1弹">
+<meta property="og:url" content="https://feipiao594.github.io/posts/4de565e4.html">
+<meta property="og:site_name" content="594飞飘的个人博客">
+<meta property="og:description" content="RopUI开发_第1弹RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://feipiao594.github.io/images/RopUI%E5%BC%80%E5%8F%91_%E7%AC%AC1%E5%BC%B9_%E5%9B%BE1.png">
+<meta property="og:image" content="https://feipiao594.github.io/images/RopUI%E5%BC%80%E5%8F%91_%E7%AC%AC1%E5%BC%B9_%E5%9B%BE2.png">
+<meta property="og:image" content="https://feipiao594.github.io/images/RopUI%E5%BC%80%E5%8F%91_%E7%AC%AC1%E5%BC%B9_%E5%9B%BE3.png">
+<meta property="article:published_time" content="2025-12-29T17:24:39.000Z">
+<meta property="article:modified_time" content="2025-12-29T18:51:38.514Z">
+<meta property="article:author" content="594飞飘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://feipiao594.github.io/images/RopUI%E5%BC%80%E5%8F%91_%E7%AC%AC1%E5%BC%B9_%E5%9B%BE1.png">
+
+<link rel="canonical" href="https://feipiao594.github.io/posts/4de565e4.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>RopUI开发_第1弹 | 594飞飘的个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="594飞飘的个人博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">594飞飘的个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学习笔记与生活记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页 | Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于 | About</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类 | Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>时轴 | Timeline</a>
+
+  </li>
+        <li class="menu-item menu-item-links">
+
+    <a href="/links/" rel="section"><i class="fa fa-link fa-fw"></i>友链 | Links</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>订阅 | Rss</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索 | Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://feipiao594.github.io/posts/4de565e4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/feipiao.gif">
+      <meta itemprop="name" content="594飞飘">
+      <meta itemprop="description" content="Pray to take back the sunflower that was given out from the bottom of my heart.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="594飞飘的个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RopUI开发_第1弹
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-12-30 01:24:39 / 修改时间：02:51:38" itemprop="dateCreated datePublished" datetime="2025-12-30T01:24:39+08:00">2025-12-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">CS_计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/ropui-blog/" itemprop="url" rel="index"><span itemprop="name">ropui_blog</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="RopUI开发-第1弹"><a href="#RopUI开发-第1弹" class="headerlink" title="RopUI开发_第1弹"></a>RopUI开发_第1弹</h1><p>RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在刚刚进入大学之时，其实就有未来走客户端开发的一个倾向，当时加入我校社团，参加 C++ 组的相关的活动，也是凭借自己很久之前就有 Qt 的一些相关经验，自然后来也就走上了客户端开发的一条道路</p>
+<p>写 Qt 的过程当中，一开始编写项目的时候，由于缺乏计算机网络的相关知识，我第一个遇到的问题就是网络相关的问题，当时是做一个最最简单的象棋的客户端，我们用到了 Qt 的 <code>QNetworkAccessManager</code>，这东西用起来还是很方便的。只要绑定一下信号槽，post 完接受到服务器返回的信息，回调自然而然的就会被启动。在这个过程当中并不会阻碍 UI 的运行，一切都好像完全没有关系，就像魔法一样。</p>
+<p>在这个时候，我还对此并不好奇，也并不明白为什么在编程语言的世界会有”事件”这个概念，好像计算机诞生的时候就有了这样的行为，默认它是存在的，我只是非常高兴的写下 Qt 的信号槽，或者是像 Android 那样调用了系统的库，拼一下拼图，很好啊，这个世界上的应用都是这么写出来的吧，我心里想着</p>
+<p>稍过一段时间，我了解到了多线程多进程，我慢慢开始察觉，这件事情没有那么简单，计算机如此简单的一个模型，在操作系统的调度下，程序只能一路走到黑，汇编/二进制代码才不会管你什么 OOP，在他们的世界里没有什么对象不对象的，对于单线程来说，只有指令流，一个时间就是只能有一条指令被送到 CPU 里被执行(我们不考虑流水线，分支预测，乱序执行等乱七八糟的硬件行为，单纯只是说顺序执行)，这些执行的指令排列组合，赋予了这个二进制的世界色彩和美丽。但他们唯独不能在单线程的情况下突破界限：我不可能即在管我显示器上显示的图样，又管网络有没有收到，我必须分步骤去做</p>
+<p>看过我此前<a target="_blank" rel="noopener" href="https://blog.feipiao.xyz/posts/9b424f3e.html">深入异步通用概念</a>这片博客的朋友应该知道，我现在已经明了这样的事情究竟是怎么发生的。因此我有一个执念，我想要在 UI 线程里也同样能够调度网络请求。</p>
+<p>是的，我希望我这个 UI 框架不依赖 glfw 这样的库，同时由于绝大部分比较裸的事件库其实是网络库，并不太支持自己添加事件源。我决定亲自完成关于窗口，关于图像绘制，关于底层事件调度器的工作</p>
+<p>这将是一个完完全全直接接入底层的 UI 框架。</p>
+<p>其实我看网上关于这方面的描述并不是很多，客户端，或者说泛前端，在今年早就已经开始退化。可我并不希望这些知识逐渐遗失，我希望我的努力能为社区做出一点点贡献。为大家了解所谓我们这帮 UI 仔，所做的一切也没有那么的简单</p>
+<h2 id="前期调研"><a href="#前期调研" class="headerlink" title="前期调研"></a>前期调研</h2><p>当确定了目标之后，我就开始了前期调研，距离我毕业还有大概半年多一点的时间，我其实并没有很充分的机会去完成这样的一个事情，但我会尽力。<br>我当下仍然在使用 Gentoo Linux 作为我的主力机，其上和图形有关的一些环境是 Wayland 以及渲染库使用的是 Mesa3D。Linux 在这一个方面有一个非常大的优势，在 2025 年的二月份，我曾了解过 drm 的工作原理，并且成功让一个程序在 tty 下切换图形状态为 graphic，显示一张直接所谓 CPU 绘制的图像，其实核心原理就是调用 libdrm 库上的一些函数，初始化，创建 framebuffer，然后 mmap 映射到内存空间，这种方式创建的 framebuffer 就是一个内存里的二维数组，在上面写入 rgba 信息提交即可</p>
+<p><img src="/images/RopUI开发_第1弹_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p>这是天依蓝 #66ccff UwU</p>
+</blockquote>
+<p>我还让它成功作为我树莓派的启动程序顶掉了桌面环境(笑)</p>
+<p>在此以后，我还在暑假实习的空余时间学习了计算机图形学的相关知识。了解了一些关于渲染的原理<br>总之，各种原因叠加下来，我决定先为 Linux wayland 做我的一个支持，现在看来这个选择也挺正确的。</p>
+<p>那么我们第一步就是要实现一个可靠的 Async Runtime</p>
+<h2 id="EventLoopCore-EventLoopBackend-EventSource"><a href="#EventLoopCore-EventLoopBackend-EventSource" class="headerlink" title="EventLoopCore/EventLoopBackend/EventSource"></a>EventLoopCore/EventLoopBackend/EventSource</h2><p>作为异步实现的核心，任何一个 UI 框架都必须有所谓的 IO syscall，他们有的是 IO 多路复用，有的是真正的异步 IO,这并不重要，但是他们必然在每一个线程都会存在，而这些处理 IO 的线程就必然会进入到一个状态：他们只能做 IO 密集型任务，不能承担计算密集型任务，换而言之，这种状态让他们和同步执行的逻辑再也不会关联起来了</p>
+<p>一开始我是打算直接设计 EventLoop 的，但后来改名叫 <code>EventLoopCore</code> 了，原因很简单，事实上按照现在的设计，每一个 IO syscall/系统 API 都将对应一个 <code>EventLoopCore</code>，这些 <code>EventLoopCore</code> 继承自 <code>IEventLoopCore</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IEventLoopCore</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">IEventLoopCore</span>() = <span class="keyword">default</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">applyInitialChanges</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">applyPendingChanges</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">runOnce</span><span class="params">(<span class="type">int</span> timeout = <span class="number">-1</span>)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">addSource</span><span class="params">(IEventSource* source)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">removeSource</span><span class="params">(IEventSource* source)</span></span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">IEventLoopCore</span><span class="params">(std::unique_ptr&lt;IEventCoreBackend&gt; backend)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">dispatchRawEvents</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">applyPendingChanges</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    std::unique_ptr&lt;IEventCoreBackend&gt; backend_;</span><br><span class="line"></span><br><span class="line">    std::vector&lt;IEventSource*&gt; sources_;</span><br><span class="line">    std::vector&lt;IEventSource*&gt; pending_add_;</span><br><span class="line">    std::vector&lt;IEventSource*&gt; pending_remove_;</span><br><span class="line"></span><br><span class="line">    <span class="type">bool</span> in_dispatch_ = <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个实现并不复杂，主要是对 IO syscall/系统 API 的一个封装，你可以简单调用 <code>runOnce</code> 运行等待</p>
+<p>但其实 <code>EventLoopCore</code> 也只是一个代理者，核心的处理逻辑在相对应的 Backend，<code>EventLoopCore</code> 提供了统一上传事件的接口 <code>addSource</code> 与 <code>removeSource</code>，递交一个 <code>IEventSource</code>，会加入缓冲区，等待一个合适的时机真正加入 backend 的 Source 里</p>
+<p>这里的 <code>EventLoopBackend</code> 和 <code>EventSource</code> 是真正处理事件的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">IEventCoreBackend</span> &#123;</span><br><span class="line">    BackendType type_;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">IEventCoreBackend</span>(BackendType type) : <span class="built_in">type_</span>(type) &#123;&#125;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">IEventCoreBackend</span>() = <span class="keyword">default</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">addSource</span><span class="params">(IEventSource* source)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 添加事件源</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">removeSource</span><span class="params">(IEventSource* source)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 移除事件源</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">wait</span><span class="params">(<span class="type">int</span> timeout)</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> RawEventSpan <span class="title">rawEvents</span><span class="params">()</span> <span class="type">const</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">BackendType <span class="title">getType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> type_;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">IEventSource</span> &#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    BackendType type_;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">IEventSource</span>(BackendType type) : <span class="built_in">type_</span>(type) &#123;&#125;;</span><br><span class="line">    <span class="keyword">virtual</span> ~<span class="built_in">IEventSource</span>() = <span class="keyword">default</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">arm</span><span class="params">(IEventCoreBackend&amp; backend)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 绑定到 backend</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">disarm</span><span class="params">(IEventCoreBackend&amp; backend)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 从 backend 解绑</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">bool</span> <span class="title">matches</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* raw_event)</span> <span class="type">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 判断某个原始回调是否属于自己</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">dispatch</span><span class="params">(<span class="type">const</span> <span class="type">void</span>* raw_event)</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 调用回调</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">isSourceMatchBackend</span><span class="params">(IEventCoreBackend* backend)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> type_ == backend-&gt;<span class="built_in">getType</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在 Linux 下 <code>EventSource</code> 需要你传入一个 fd 作为其监听的文件描述符，把 <code>EventSource</code> 传入 <code>EventLoopCore</code> 的 <code>addSource</code> 方法中，会透穿给 <code>Backend</code>，Backend 会在分发收到的任务时，主动调用注册进来的 <code>EventSource</code> 的 <code>Dispatch</code> 方法以此实现一个原始事件分发的一个功能</p>
+<p>设计完了这些原始的事件源和事件循环核心，就要来实现一个真的 EventLoop 了</p>
+<h2 id="EventLoop"><a href="#EventLoop" class="headerlink" title="EventLoop"></a>EventLoop</h2><p>我前面说 <code>EventLoopCore</code> 只是 IO syscall 的代理层，它的职责是“收事件”，而不是“安排工作”。<br>真正面向 UI 线程的事件循环，必须还要干三件事：<br>1) 能从别的线程安全地投递任务；<br>2) 能有定时器，按时间触发任务；<br>3) 能随时唤醒正在阻塞的 IO syscall。<br>于是我在 <code>EventLoopCore</code> 外面包了一层 <code>EventLoop</code>，它就是 UI 线程真正跑的那一层。</p>
+<p>如果只看接口，它其实非常朴素：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EventLoop</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">EventLoop</span>(BackendType backend_type);</span><br><span class="line">    ~<span class="built_in">EventLoop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">post</span><span class="params">(Task task)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">postDelayed</span><span class="params">(Task task, Duration delay)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">requestExit</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">attachSource</span><span class="params">(IEventSource* source)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">detachSource</span><span class="params">(IEventSource* source)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="先说构造：选-backend-安排唤醒源"><a href="#先说构造：选-backend-安排唤醒源" class="headerlink" title="先说构造：选 backend + 安排唤醒源"></a>先说构造：选 backend + 安排唤醒源</h3><p>构造函数里干了两件事：</p>
+<ul>
+<li>调用 <code>createEventLoopCore(backend_type)</code> 创建核心 <code>EventLoopCore</code>。</li>
+<li>根据 backend 创建一个 <code>WakeUpWatcher</code>，把它作为一个事件源注册进去。</li>
+</ul>
+<p>为什么需要唤醒源？因为 <code>post()</code> 和 <code>postDelayed()</code> 是线程安全的，我允许别的线程投任务。  但是 UI 线程很可能正卡在 <code>epoll_wait/poll</code> 里，如果没人唤醒它，它永远看不到新的任务。  所以“唤醒源”其实就是一个可被触发的 fd（Linux 下可以用 eventfd 或 pipe），它一旦写入，就会让 IO syscall 立刻返回。</p>
+<p>这就是 <code>post()</code> 的核心逻辑：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">EventLoop::post</span><span class="params">(Task task)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!task) <span class="keyword">return</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mu_)</span></span>;</span><br><span class="line">        tasks_.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(task));</span><br><span class="line">    &#125;</span><br><span class="line">    wakeup_-&gt;<span class="built_in">notify</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它不直接跑任务，只是把任务丢进队列，然后用唤醒源把阻塞的 IO 拉起来。事实上按照设计，<code>EventSource</code> 的回调函数就可以选择将事件 post 入队列中，等待处理。实际使用的时候可以灵活选择</p>
+<h3 id="任务队列-定时器"><a href="#任务队列-定时器" class="headerlink" title="任务队列 + 定时器"></a>任务队列 + 定时器</h3><p><code>EventLoop</code> 里有两个“任务容器”：</p>
+<ul>
+<li><code>tasks_</code>：一个简单的 <code>deque</code>，存放即时任务。</li>
+<li><code>timers_</code>：一个小顶堆（优先队列），按照 deadline 排序的延迟任务。</li>
+</ul>
+<p>延迟任务的投递是这样的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">EventLoop::postDelayed</span><span class="params">(Task task, Duration delay)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!task) <span class="keyword">return</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">std::lock_guard&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mu_)</span></span>;</span><br><span class="line">        timers_.<span class="built_in">push</span>(TimerTask&#123;Clock::<span class="built_in">now</span>() + delay, std::<span class="built_in">move</span>(task)&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    wakeup_-&gt;<span class="built_in">notify</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>依然是先入队，再唤醒，保证 UI 线程不会错过。</p>
+<h3 id="计算-timeout：决定-IO-等多久"><a href="#计算-timeout：决定-IO-等多久" class="headerlink" title="计算 timeout：决定 IO 等多久"></a>计算 timeout：决定 IO 等多久</h3><p>这一步是整个 loop 的“节拍器”。<br><code>computeTimeoutMs()</code> 负责告诉 <code>EventLoopCore::runOnce()</code>：你最多等多久。</p>
+<p>规则也很直觉：</p>
+<ul>
+<li>有即时任务：<code>timeout = 0</code>，不要阻塞，直接跑。</li>
+<li>没有定时器：<code>timeout = -1</code>，可以无限等 IO。</li>
+<li>有定时器：计算最近 deadline 到现在的差值，作为等待上限。</li>
+</ul>
+<p>而且我还加了一个“上限保护”，避免超时值溢出 <code>int</code>。</p>
+<h3 id="主循环：IO-定时器-任务队列"><a href="#主循环：IO-定时器-任务队列" class="headerlink" title="主循环：IO + 定时器 + 任务队列"></a>主循环：IO + 定时器 + 任务队列</h3><p>真正的 <code>run()</code> 就是一个非常直白的 while：</p>
+<ol>
+<li>先 <code>applyInitialChanges()</code>，把初始事件源都注册好（包括唤醒源）。</li>
+<li>计算 timeout，调用 <code>core_-&gt;runOnce(timeout)</code> 处理 IO。</li>
+<li>执行到期的定时器任务。</li>
+<li>执行即时任务队列。</li>
+<li>循环直到 <code>requestExit()</code> 被调用。</li>
+</ol>
+<p><code>runExpiredTimers()</code> 的实现我也刻意做成“先收集后执行”的模式：<br>先在锁内把到期任务全部搬出来，再在锁外执行。这样避免回调里再 <code>post()</code> 造成死锁，也减少锁的持有时间。</p>
+<h3 id="退出机制"><a href="#退出机制" class="headerlink" title="退出机制"></a>退出机制</h3><p><code>requestExit()</code> 只是把一个 <code>atomic&lt;bool&gt;</code> 置为 true，然后唤醒一次 loop。<br>这是为了保证即使 UI 线程正在阻塞，也能被拉起来看见“退出请求”。</p>
+<p>到这里为止，<code>EventLoop</code> 已经完成了一个 UI 线程所需的“基本调度器”：<br>它能收 IO，能收任务，能有定时器，能安全唤醒和退出。<br>后面我只需要把“窗口事件”、“渲染时机”、“输入设备”都包装成 <code>IEventSource</code>，就可以自然接入这套体系。</p>
+<p>于是乘热打铁我还写了几个 example</p>
+<p><img src="/images/RopUI开发_第1弹_图2.png" width="100%" height="100%"><br>可以创建一个 TCP client</p>
+<p><img src="/images/RopUI开发_第1弹_图3.png" width="100%" height="100%"><br>看看回调地狱</p>
+<h2 id="EventLoop-的后续"><a href="#EventLoop-的后续" class="headerlink" title="EventLoop 的后续"></a>EventLoop 的后续</h2><p>事实上这套做法在 linux 上实现的很顺利，在 Windows 和 MacOS 上却出现了问题。Linux 内核本身是不具有图形环境的，所以接口相对统一，但是对于其他两个平台，他们的 UI 线程往往非常具有平台特色，而且独立</p>
+<p>Windows 平台的 WinMain 函数支持 UI，但是与此同时又只支持同时监听 64 个句柄，要想使用 IOCP 必须单独开一个线程，这体验并不好，所以 EventLoop 有可能在后续的版本被废弃，转而使用更复杂的多线程调度器，请等待我的后续信息叭</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/fe5450c6.html" rel="prev" title="史瓦西黑洞">
+      <i class="fa fa-chevron-left"></i> 史瓦西黑洞
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RopUI%E5%BC%80%E5%8F%91-%E7%AC%AC1%E5%BC%B9"><span class="nav-number">1.</span> <span class="nav-text">RopUI开发_第1弹</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%9C%9F%E8%B0%83%E7%A0%94"><span class="nav-number">1.2.</span> <span class="nav-text">前期调研</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventLoopCore-EventLoopBackend-EventSource"><span class="nav-number">1.3.</span> <span class="nav-text">EventLoopCore&#x2F;EventLoopBackend&#x2F;EventSource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventLoop"><span class="nav-number">1.4.</span> <span class="nav-text">EventLoop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E8%AF%B4%E6%9E%84%E9%80%A0%EF%BC%9A%E9%80%89-backend-%E5%AE%89%E6%8E%92%E5%94%A4%E9%86%92%E6%BA%90"><span class="nav-number">1.4.1.</span> <span class="nav-text">先说构造：选 backend + 安排唤醒源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97-%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">1.4.2.</span> <span class="nav-text">任务队列 + 定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97-timeout%EF%BC%9A%E5%86%B3%E5%AE%9A-IO-%E7%AD%89%E5%A4%9A%E4%B9%85"><span class="nav-number">1.4.3.</span> <span class="nav-text">计算 timeout：决定 IO 等多久</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%BE%AA%E7%8E%AF%EF%BC%9AIO-%E5%AE%9A%E6%97%B6%E5%99%A8-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97"><span class="nav-number">1.4.4.</span> <span class="nav-text">主循环：IO + 定时器 + 任务队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%80%E5%87%BA%E6%9C%BA%E5%88%B6"><span class="nav-number">1.4.5.</span> <span class="nav-text">退出机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventLoop-%E7%9A%84%E5%90%8E%E7%BB%AD"><span class="nav-number">1.5.</span> <span class="nav-text">EventLoop 的后续</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="594飞飘"
+      src="/images/feipiao.gif">
+  <p class="site-author-name" itemprop="name">594飞飘</p>
+  <div class="site-description" itemprop="description">Pray to take back the sunflower that was given out from the bottom of my heart.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feipiao594" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feipiao594" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://space.bilibili.com/95951563" title="BiliBili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;95951563" rel="noopener" target="_blank"><i class="fab bilibili fa-fw"></i>BiliBili</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">594飞飘</span>
+</div>
+  <div class="symbols_count_time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-chart-area"></i>
+      </span>
+      站点总字数：<span title="站点总字数">206k</span>
+
+    <span class="post-meta-divider">|</span>
+      <span class="post-meta-item-icon">
+        <i class="fa fa-coffee"></i>
+      </span>
+      站点阅读时长：<span title="站点阅读时长">6:14</span>
+</div>
+
+
+<script async src="https://umami.love98.net/script.js" data-website-id="6b8acd05-1687-459d-b789-220ab3d934d6"></script>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='' opacity='' zIndex='' count='' src="/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f5e8376ff81aa630f399',
+      clientSecret: '222629233c179d38e453587fdc8828ac5ae8d831',
+      repo        : 'feipiao594.github.io',
+      owner       : 'feipiao594',
+      admin       : ['feipiao594'],
+      id          : 'ab07159329a57bb716fd1e07fe427959',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/category.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300,"hOffset":50,"vOffset":-15},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

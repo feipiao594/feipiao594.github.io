@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-12-27T06:00:10.763Z</updated>
+  <updated>2025-12-29T18:51:38.514Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>RopUI开发_第1弹</title>
+    <link href="https://feipiao594.github.io/posts/4de565e4.html"/>
+    <id>https://feipiao594.github.io/posts/4de565e4.html</id>
+    <published>2025-12-29T17:24:39.000Z</published>
+    <updated>2025-12-29T18:51:38.514Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;RopUI开发-第1弹&quot;&gt;&lt;a href=&quot;#RopUI开发-第1弹&quot; class=&quot;headerlink&quot; title=&quot;RopUI开发_第1弹&quot;&gt;&lt;/a&gt;RopUI开发_第1弹&lt;/h1&gt;&lt;p&gt;RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="ropui_blog" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/ropui-blog/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>史瓦西黑洞</title>
@@ -114,27 +133,6 @@
   </entry>
   
   <entry>
-    <title>关于编译原理的一些哲学想法</title>
-    <link href="https://feipiao594.github.io/posts/604cfd1a.html"/>
-    <id>https://feipiao594.github.io/posts/604cfd1a.html</id>
-    <published>2025-07-06T14:47:22.000Z</published>
-    <updated>2025-07-29T17:17:39.611Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;a href=&quot;#关于编译原理的一些哲学想法&quot; class=&quot;headerlink&quot; title=&quot;关于编译原理的一些哲学想法&quot;&gt;&lt;/a&gt;关于编译原理的一些哲学想法&lt;/h1&gt;&lt;p&gt;自我学习编译原理遇到了一些挫折以来，阴霾一直都萦绕在我心头，终于我也想到了一些能够说服自己的东西，特此写一篇博客。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
-    
-    
-  </entry>
-  
-  <entry>
     <title>移动端开发初探_1</title>
     <link href="https://feipiao594.github.io/posts/9b96febe.html"/>
     <id>https://feipiao594.github.io/posts/9b96febe.html</id>
@@ -208,27 +206,6 @@
     <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
     
     <category term="Python" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Python/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>DRI-Linux图形核心概览</title>
-    <link href="https://feipiao594.github.io/posts/a39b2865.html"/>
-    <id>https://feipiao594.github.io/posts/a39b2865.html</id>
-    <published>2025-04-12T13:22:27.000Z</published>
-    <updated>2025-05-02T03:54:59.833Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;a href=&quot;#DRI-Linux图形核心概览&quot; class=&quot;headerlink&quot; title=&quot;DRI-Linux图形核心概览&quot;&gt;&lt;/a&gt;DRI-Linux图形核心概览&lt;/h1&gt;&lt;p&gt;在此记录一下对 Linux 图形栈的一部分理解与猜测(?)，同时为 SAST: Linux User Group 分享会做准备&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
-    
-    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
-    
-    <category term="Linux" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Linux/"/>
     
     
   </entry>
@@ -415,6 +392,23 @@
     <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
     
     <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>日常碎碎念_3</title>
+    <link href="https://feipiao594.github.io/posts/85479d9c.html"/>
+    <id>https://feipiao594.github.io/posts/85479d9c.html</id>
+    <published>2024-10-27T16:00:00.000Z</published>
+    <updated>2024-11-08T09:41:48.212Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;日常碎碎念-3&quot;&gt;&lt;a href=&quot;#日常碎碎念-3&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_3&quot;&gt;&lt;/a&gt;日常碎碎念_3&lt;/h1&gt;&lt;p&gt;日常碎碎念_3，日常碎碎念，生人勿进&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
