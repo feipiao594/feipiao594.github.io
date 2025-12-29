@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2025-12-29T18:51:38.514Z</updated>
+  <updated>2025-12-29T18:52:36.041Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/4de565e4.html"/>
     <id>https://feipiao594.github.io/posts/4de565e4.html</id>
     <published>2025-12-29T17:24:39.000Z</published>
-    <updated>2025-12-29T18:51:38.514Z</updated>
+    <updated>2025-12-29T18:52:36.041Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;RopUI开发-第1弹&quot;&gt;&lt;a href=&quot;#RopUI开发-第1弹&quot; class=&quot;headerlink&quot; title=&quot;RopUI开发_第1弹&quot;&gt;&lt;/a&gt;RopUI开发_第1弹&lt;/h1&gt;&lt;p&gt;RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。&lt;/p&gt;</summary>
@@ -359,23 +359,6 @@
   </entry>
   
   <entry>
-    <title>我的自学小计划</title>
-    <link href="https://feipiao594.github.io/posts/e97bb949.html"/>
-    <id>https://feipiao594.github.io/posts/e97bb949.html</id>
-    <published>2024-11-10T15:22:09.000Z</published>
-    <updated>2025-02-20T13:45:08.962Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;我的自学小计划&quot;&gt;&lt;a href=&quot;#我的自学小计划&quot; class=&quot;headerlink&quot; title=&quot;我的自学小计划&quot;&gt;&lt;/a&gt;我的自学小计划&lt;/h1&gt;&lt;p&gt;这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
-    
-    
-  </entry>
-  
-  <entry>
     <title>Rust_Chapter_7_错误处理</title>
     <link href="https://feipiao594.github.io/posts/d7b468f6.html"/>
     <id>https://feipiao594.github.io/posts/d7b468f6.html</id>
@@ -409,6 +392,27 @@
     
     
     <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>遨游在内存中的硬件启动过程</title>
+    <link href="https://feipiao594.github.io/posts/42db1e6.html"/>
+    <id>https://feipiao594.github.io/posts/42db1e6.html</id>
+    <published>2024-09-25T16:00:00.000Z</published>
+    <updated>2024-10-27T07:55:07.050Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;遨游在内存中的硬件启动过程&quot;&gt;&lt;a href=&quot;#遨游在内存中的硬件启动过程&quot; class=&quot;headerlink&quot; title=&quot;遨游在内存中的硬件启动过程&quot;&gt;&lt;/a&gt;遨游在内存中的硬件启动过程&lt;/h1&gt;&lt;p&gt;2024.9.28 &lt;code&gt;.NET Conf&lt;/code&gt; 介绍话题，话题来自我之前对硬件启动过程的好奇&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
+    
+    <category term="Basic_principles" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/"/>
+    
+    <category term="Computer_composition" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Basic-principles/Computer-composition/"/>
     
     
   </entry>

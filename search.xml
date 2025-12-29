@@ -451,24 +451,6 @@ initGrid();
       </categories>
   </entry>
   <entry>
-    <title>51单片机初步印象</title>
-    <url>/posts/69d698d4.html</url>
-    <content><![CDATA[<h1 id="51单片机初步印象"><a href="#51单片机初步印象" class="headerlink" title="51单片机初步印象"></a>51单片机初步印象</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少<br>51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点<br><span id="more"></span></p>
-<h2 id="关于51单片机的中断向量表"><a href="#关于51单片机的中断向量表" class="headerlink" title="关于51单片机的中断向量表"></a>关于51单片机的中断向量表</h2><p>对于51单片机来说，中断向量表的映射已经写死在了内置的ROM中，直接<code>org &lt;address&gt;</code>写入中断函数跳转地址就可以使用中断，而stm32则可以支持用户修改中断向量表</p>
-<h2 id="关于C51的语法障碍"><a href="#关于C51的语法障碍" class="headerlink" title="关于C51的语法障碍"></a>关于C51的语法障碍</h2><p>C51编程语言相比于C语言新添加了四种数据类型，<code>bit</code>，<code>sbit</code>等等，其中有些引脚对应的名称<code>P2^1</code>(P2.1管脚)，一开始我只是以为C51中把<code>^</code>当做名称的一部分，但vscode会把它当做异或运算符，所以vscode会爆红</p>
-<p>后来发现问题没有那么简单</p>
-<p><code>sft</code>，<code>sbit</code>这种东西的语法似乎是<strong>特殊的</strong>，<strong>不符合语义</strong>的。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P1 = <span class="number">0x90</span>;</span><br></pre></td></tr></table></figure><br>在这句语句之后，是把<code>P1</code>看作<code>0x90</code>处的8位寄存器，要想修改这个寄存器里的值<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">P1 =<span class="number">0xff</span>;</span><br></pre></td></tr></table></figure><br>此刻<code>P1</code>在声明时是<strong>地址</strong>，但修改时又赋值为<strong>数值</strong><br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>这一句话就更加显得奇怪，为什么这里<code>P1</code>为<strong>地址</strong>而不是<strong>数值</strong>呢，就感觉是狗皮膏药打了个补丁，不过既然它已经被广泛应用了，就直接当做一个特殊情况好了。即<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>类似这样的<strong>特殊声明</strong>会自动修改等号后^的意义，此时不应该再是异或，而是特殊的引脚号的记号，在声明时候的<strong>特殊定义</strong>下，这些P1也是被特殊化为地址。</p>
-<p>只能这样解释这种行为了，这个语义问题也是引起vscode报错的根本原因吧，所以不管怎么改，怎么样把它看成<strong>typedef的嵌套</strong>都会爆红(悲)</p>
-<p>也许这就是为什么周围的人入门都选择的是stm32的原因吧，一来可以使用更优秀的文本编辑器，又不会引起语法上的误解，还能有更强大的功能</p>
-<h2 id="关于VCC、GND的符号"><a href="#关于VCC、GND的符号" class="headerlink" title="关于VCC、GND的符号"></a>关于VCC、GND的符号</h2><p>在电路里，VCC代表电源正极，而GND是逻辑上的接地，其实不一定接地，它是电源负极,直观感受，看上去VCC和GND其实是唯一的？VCC只在中间起供能和”比较”的作用，或者一切的开头起功能作用，端口有一系列的保护措施使得最后电平不易被改写？<br>除了VCC，GND另外的似乎也就是可以<strong>看作</strong>特殊情况下的VCC和GND？现在也只能够这样粗浅的理解了</p>
-<h2 id="关于51单片机的GPIO"><a href="#关于51单片机的GPIO" class="headerlink" title="关于51单片机的GPIO"></a>关于51单片机的GPIO</h2><p>GPIO，对于上图所示的准标准输入输出，和51单片机是一致的，其输出时候是利用了锁存器的功能，锁死了电位，而对于输入的时候，是不写入锁存器的，将锁存器写入1，才能读取，这里用的上拉电阻是默认它那个点位是高电位，但是如果直接连接地的话就可以是低电位了</p>
-]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++引用</title>
     <url>/posts/101de459.html</url>
     <content><![CDATA[<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>本篇介绍C++相比于C语言特有的引用语法，包含c++11特性。<br><span id="more"></span></p>
@@ -575,6 +557,24 @@ initGrid();
         <category>CS_计算机</category>
         <category>Programming_Language</category>
         <category>C++</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>51单片机初步印象</title>
+    <url>/posts/69d698d4.html</url>
+    <content><![CDATA[<h1 id="51单片机初步印象"><a href="#51单片机初步印象" class="headerlink" title="51单片机初步印象"></a>51单片机初步印象</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为前段时间都在搞CS相关的，说实话已经开始有有点后悔了，早知道电子相关的东西也要同步进行的，现在感觉有些事情就因为当时的一步走错拖累了整体的进程，说实话今年上半年的计划被打乱了不少<br>51单片机买的时间很早，但是整体用的并不多，拖到现在才开始写这篇文档。而且以下均是一些零碎的知识点<br><span id="more"></span></p>
+<h2 id="关于51单片机的中断向量表"><a href="#关于51单片机的中断向量表" class="headerlink" title="关于51单片机的中断向量表"></a>关于51单片机的中断向量表</h2><p>对于51单片机来说，中断向量表的映射已经写死在了内置的ROM中，直接<code>org &lt;address&gt;</code>写入中断函数跳转地址就可以使用中断，而stm32则可以支持用户修改中断向量表</p>
+<h2 id="关于C51的语法障碍"><a href="#关于C51的语法障碍" class="headerlink" title="关于C51的语法障碍"></a>关于C51的语法障碍</h2><p>C51编程语言相比于C语言新添加了四种数据类型，<code>bit</code>，<code>sbit</code>等等，其中有些引脚对应的名称<code>P2^1</code>(P2.1管脚)，一开始我只是以为C51中把<code>^</code>当做名称的一部分，但vscode会把它当做异或运算符，所以vscode会爆红</p>
+<p>后来发现问题没有那么简单</p>
+<p><code>sft</code>，<code>sbit</code>这种东西的语法似乎是<strong>特殊的</strong>，<strong>不符合语义</strong>的。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sfr P1 = <span class="number">0x90</span>;</span><br></pre></td></tr></table></figure><br>在这句语句之后，是把<code>P1</code>看作<code>0x90</code>处的8位寄存器，要想修改这个寄存器里的值<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">P1 =<span class="number">0xff</span>;</span><br></pre></td></tr></table></figure><br>此刻<code>P1</code>在声明时是<strong>地址</strong>，但修改时又赋值为<strong>数值</strong><br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>这一句话就更加显得奇怪，为什么这里<code>P1</code>为<strong>地址</strong>而不是<strong>数值</strong>呢，就感觉是狗皮膏药打了个补丁，不过既然它已经被广泛应用了，就直接当做一个特殊情况好了。即<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line">sbit P1_1 = P1^<span class="number">1</span>;</span><br></pre></td></tr></table></figure><br>类似这样的<strong>特殊声明</strong>会自动修改等号后^的意义，此时不应该再是异或，而是特殊的引脚号的记号，在声明时候的<strong>特殊定义</strong>下，这些P1也是被特殊化为地址。</p>
+<p>只能这样解释这种行为了，这个语义问题也是引起vscode报错的根本原因吧，所以不管怎么改，怎么样把它看成<strong>typedef的嵌套</strong>都会爆红(悲)</p>
+<p>也许这就是为什么周围的人入门都选择的是stm32的原因吧，一来可以使用更优秀的文本编辑器，又不会引起语法上的误解，还能有更强大的功能</p>
+<h2 id="关于VCC、GND的符号"><a href="#关于VCC、GND的符号" class="headerlink" title="关于VCC、GND的符号"></a>关于VCC、GND的符号</h2><p>在电路里，VCC代表电源正极，而GND是逻辑上的接地，其实不一定接地，它是电源负极,直观感受，看上去VCC和GND其实是唯一的？VCC只在中间起供能和”比较”的作用，或者一切的开头起功能作用，端口有一系列的保护措施使得最后电平不易被改写？<br>除了VCC，GND另外的似乎也就是可以<strong>看作</strong>特殊情况下的VCC和GND？现在也只能够这样粗浅的理解了</p>
+<h2 id="关于51单片机的GPIO"><a href="#关于51单片机的GPIO" class="headerlink" title="关于51单片机的GPIO"></a>关于51单片机的GPIO</h2><p>GPIO，对于上图所示的准标准输入输出，和51单片机是一致的，其输出时候是利用了锁存器的功能，锁死了电位，而对于输入的时候，是不写入锁存器的，将锁存器写入1，才能读取，这里用的上拉电阻是默认它那个点位是高电位，但是如果直接连接地的话就可以是低电位了</p>
+]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
       </categories>
   </entry>
   <entry>
@@ -903,50 +903,6 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
-    <title>Git使用_第1弹</title>
-    <url>/posts/392f5636.html</url>
-    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
-<span id="more"></span>
-<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
-<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
-<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
-<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
-<blockquote>
-<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
-</blockquote>
-<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
-<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
-<ul>
-<li>已修改表示修改了文件，但还没保存到数据库中。</li>
-<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
-<li>已提交表示数据已经安全地保存在本地数据库中。</li>
-</ul>
-<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
-<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
-<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
-<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
-<p><strong>基本的Git工作流程如下</strong>：</p>
-<ol>
-<li>在工作区中修改文件。</li>
-<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
-<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
-</ol>
-<blockquote>
-<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
-</blockquote>
-<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
-<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Git</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Git使用_第2弹</title>
     <url>/posts/2b9af9d8.html</url>
     <content><![CDATA[<h1 id="Git使用-第2弹"><a href="#Git使用-第2弹" class="headerlink" title="Git使用_第2弹"></a>Git使用_第2弹</h1><p>接下来正式进入Git的使用部分，这一弹从 <code>&quot;Pro Git&quot;</code>的第二章开始</p>
@@ -1080,6 +1036,50 @@ u-2^{w}, & u>\operatorname{TMax}_{w}
       </categories>
   </entry>
   <entry>
+    <title>Git使用_第1弹</title>
+    <url>/posts/392f5636.html</url>
+    <content><![CDATA[<h1 id="Git使用-第1弹"><a href="#Git使用-第1弹" class="headerlink" title="Git使用_第1弹"></a>Git使用_第1弹</h1><p><strong>前言</strong>:<br>在写Sast-Evento的时候深刻意识到了自己Git使用相关知识的匮乏，Git作为版本控制功能强大，我却只会删仓库(悲)。痛定思痛，决定好好学一学Git。<br>本系列为<code>&quot;Pro Git&quot;</code>这本书的学习笔记，感谢编写这本书的贡献者们</p>
+<span id="more"></span>
+<h1 id="分布式版本控制系统"><a href="#分布式版本控制系统" class="headerlink" title="分布式版本控制系统"></a>分布式版本控制系统</h1><p>分布式版本控制系(Distributed Version Control System，简称DVCS) 在这类系统中,客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的clone操作，实际上都是一次对代码仓库的完整备份。<br>Git就是一种分布式的版本控制系统</p>
+<h1 id="Git的一些特点"><a href="#Git的一些特点" class="headerlink" title="Git的一些特点"></a>Git的一些特点</h1><h2 id="直接记录快照，而非差异比较"><a href="#直接记录快照，而非差异比较" class="headerlink" title="直接记录快照，而非差异比较"></a>直接记录快照，而非差异比较</h2><p>Git和其它版本控制系统的主要差别在于 Git 对待数据的方式。从概念上来说，其它大部分系统以文件变更列表的方式存储信息，这类系将它们存储的信息看作是一组基本文件和每个文件随时间逐步累积的差异，它们通常称作<strong>基于差异</strong>的版本控制。如下图<br><img src="/images/Git使用_第一弹_图1.png" width="100%" height="100%"><br>而Git不按照以上方式对待或保存数据。反之，Git更像是把数据看作是对小型文件系统的一系列快照。在Git中，每当你提交更新或保存项目状态时，它基本上就会对当时的全部文件<strong>创建一个快照并保存这个快照的索引</strong>。为了效率，如果文件没有修改，Git<strong>不再重新存储</strong>该文件，而是只保留一个链接指向之前存储的文件。Git对待<br>数据更像是一个快照流。如下图<br><img src="/images/Git使用_第一弹_图2.png" width="100%" height="100%"></p>
+<h2 id="近乎所有操作都是本地执行"><a href="#近乎所有操作都是本地执行" class="headerlink" title="近乎所有操作都是本地执行"></a>近乎所有操作都是本地执行</h2><p>在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<h2 id="Git保证完整性"><a href="#Git保证完整性" class="headerlink" title="Git保证完整性"></a>Git保证完整性</h2><p>Git中所有的数据在存储前都计算校验和，然后以校验和来引用。这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。若你在传送过程中丢失信息或损坏文件，Git 就能发现。Git用以计算校验和的机制叫做 SHA-1 散列。</p>
+<blockquote>
+<p>事实上，校验和在数学上仍然有两个文件不同但校验和相同的情况，但是几乎只要不是恶意设计，碰撞的概率小到可以忽略不计，使用更复杂的方法还可以使得概率进一步降低</p>
+</blockquote>
+<h2 id="Git一般只添加数据"><a href="#Git一般只添加数据" class="headerlink" title="Git一般只添加数据"></a>Git一般只添加数据</h2><p>你执行的Git操作，几乎只往Git数据库中 添加 数据。你很难使用Git从数据库中删除数据，也就是说Git几乎不会执行任何可能导致文件不可恢复的操作</p>
+<h1 id="文件的三种状态"><a href="#文件的三种状态" class="headerlink" title="文件的三种状态"></a>文件的三种状态</h1><p>Git有三种状态，你的文件可能处于其中之一: 已提交(committed)、已修改(modified)和已暂存(staged)。</p>
+<ul>
+<li>已修改表示修改了文件，但还没保存到数据库中。</li>
+<li>已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。</li>
+<li>已提交表示数据已经安全地保存在本地数据库中。</li>
+</ul>
+<p>这会让我们的Git项目拥有三个阶段: <strong>工作区</strong>、<strong>暂存区</strong>以及<strong>Git目录</strong>。</p>
+<p><strong>工作区</strong>是对项目的某个版本独立提取出来的内容。这些从Git仓库的压缩数据库中提取出来的文件，放在磁盘上供你使用或修改。</p>
+<p><strong>暂存区</strong>是一个文件，保存了下次将要提交的文件列表信息，一般在Git仓库目录中。按照 Git 的术语叫做“索引”，不过一般说法还是叫“暂存区”。</p>
+<p><strong>Git仓库目录</strong>是Git用来保存项目的元数据和对象数据库的地方。这是Git中最重要的部分，从其它计算机克隆仓库时，复制的就是这里的数据。</p>
+<p><strong>基本的Git工作流程如下</strong>：</p>
+<ol>
+<li>在工作区中修改文件。</li>
+<li>将你想要下次提交的更改选择性地暂存，这样只会将更改的部分添加到暂存区。</li>
+<li>提交更新，找到暂存区的文件，将快照永久性存储到Git目录。</li>
+</ol>
+<blockquote>
+<p>如果Git目录中保存着特定版本的文件，就属于<strong>已提交</strong>状态。如果文件已修改并放入暂存区，就属于<strong>已暂存</strong>状态。如果自上次检出后，作了修改但还没有放到暂存区域，就是<strong>已修改</strong>状态。</p>
+</blockquote>
+<h1 id="Git配置文件"><a href="#Git配置文件" class="headerlink" title="Git配置文件"></a>Git配置文件</h1><p>在Windows操作系统下通过下面这条指令获得配置文件的位置<br><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --list --show-origin</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="用户信息"><a href="#用户信息" class="headerlink" title="用户信息"></a>用户信息</h2><p>安装完Git之后，要做的第一件事就是设置你的用户名和邮件地址。这一点很重要，因为每一个Git提交都会使用这些信息，它们会写入到你的每一次提交中，不可更改：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;John Doe&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email johndoe@example.com</span></span><br></pre></td></tr></table></figure>
+<p>再次强调，如果使用了<code>--global</code>选项，那么该命令只需要运行一次，因为之后无论你在该系统上做任何事情，Git都会使用那些信息。当你想针对特定项目使用不同的用户名称与邮件地址时，可以在那个项目目录下运行没有<code>--global</code>选项的命令来配置。很多GUI工具都会在第一次运行时帮助你配置这些信息。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>我认为配置Git环境这个事情，应当在安装时顺带查查帮助文档，而不是写在笔记里，反正每次都要找个地方查，还不如留给时刻更新的强大的互联网(乐)<br>上面都是一些前言，具体需要完成的部分需要来iu给下一份blog</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Git</category>
+      </categories>
+  </entry>
+  <entry>
     <title>Pytorch学习_1</title>
     <url>/posts/6c7f2ed0.html</url>
     <content><![CDATA[<h1 id="Pytorch学习-1"><a href="#Pytorch学习-1" class="headerlink" title="Pytorch学习_1"></a>Pytorch学习_1</h1><p>也是正式的开始学pytorch了，准备充分，炼丹去，前面的部分主要就是写一些基础的东西</p>
@@ -1195,6 +1195,24 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
+    <title>Pytorch学习_4</title>
+    <url>/posts/1c15da5f.html</url>
+    <content><![CDATA[<h1 id="Pytorch学习-4"><a href="#Pytorch学习-4" class="headerlink" title="Pytorch学习_4"></a>Pytorch学习_4</h1><p>在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装</p>
+<span id="more"></span>
+<h2 id="相关的概念"><a href="#相关的概念" class="headerlink" title="相关的概念"></a>相关的概念</h2><p><code>nn.Parameter</code>，<code>nn.forward</code>，<code>nn.Module</code><br>我一开始学的时候觉得这些东西好复杂，一点都没有章法，我自己学习的时候时常会想，如果使用 Rust 里的 Trait 概念或者 Haskell 的 TypeClass 是不是能把它描述的更清楚一些，但是初学者友好的文档并不会告诉我这些。<br>在看完 Pytorch 的官方文档后我终于看明白了<br>关于看完 Pytorch 官方文档后一个上午写出来的一个手写数字识别 HelloWorld ：<a href="https://github.com/feipiao594/mnist_numrecg">https://github.com/feipiao594/mnist_numrecg</a></p>
+<h2 id="nn-Module"><a href="#nn-Module" class="headerlink" title="nn.Module"></a><code>nn.Module</code></h2><p>这是一个对 Tensor 的封装与管理函数，你需要实现的函数有两个 <code>__init__</code> 与 <code>forward</code> 函数，继承自 <code>nn.Module</code> 的层或者网络，有一个内秉的 parameter 集合，在 <code>__init__</code> 里面使用 <code>nn.Parameter</code> 就会把这个变量的引用交给这个 parameter 集合，如果你使用 <code>nn.Linear()</code> 里面也有 <code>nn.Parameter</code> 也会自动注册进去，这个函数就是起到这样的一个作用，同时因为他指定的是要被学习的参数，所以他也会把你输入进去的 Tensor 的 <code>require_grad</code> 变成 false。<br><code>forward</code> 函数就是数值前向传播，就把在 <code>__init__</code> 定义的计算方法拿出来对输入的值运算一下 </p>
+<h2 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h2><p>举个例子<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure><br><code>model.parameters()</code> 就是我们刚刚说到的 <code>nn.Module</code> 的子类有一个内秉的 parameter 集合，你可以通过这个方法传给优化器进行注册</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> batch, (X, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">        <span class="comment"># Compute prediction and loss</span></span><br><span class="line">        X, y = X.to(device), y.to(device)</span><br><span class="line">        pred = model(X)</span><br><span class="line">        loss = loss_fn(pred, y)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Backpropagation</span></span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
+<p>具体使用时格式非常固定，loss 函数计算误差最后输出的就还是一个 Tensor ，其实里面还是保留计算图的，<code>loss.backward()</code> 就是用 Tensor 的 backward 把所有要学习的参数的梯度算出来并且存储在那些参数的成员变量里(毕竟参数也是 Tensor 嘛，它有 grad 成员变量作为他的梯度值很正常)，接着调用 <code>optimizer.step()</code> 来读取注册的这些变量的 grad 并执行优化，所以优化器和网络就完全解离，其实核心仍然在 Tensor 的梯度运算上</p>
+<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>听说 pytorch 已经很少有人像这样写网络了，大家都用 lightning ，后面有空我也会尝试一下的</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Python</category>
+      </categories>
+  </entry>
+  <entry>
     <title>RopUI开发_第1弹</title>
     <url>/posts/4de565e4.html</url>
     <content><![CDATA[<h1 id="RopUI开发-第1弹"><a href="#RopUI开发-第1弹" class="headerlink" title="RopUI开发_第1弹"></a>RopUI开发_第1弹</h1><p>RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。</p>
@@ -1203,7 +1221,7 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <p>写 Qt 的过程当中，一开始编写项目的时候，由于缺乏计算机网络的相关知识，我第一个遇到的问题就是网络相关的问题，当时是做一个最最简单的象棋的客户端，我们用到了 Qt 的 <code>QNetworkAccessManager</code>，这东西用起来还是很方便的。只要绑定一下信号槽，post 完接受到服务器返回的信息，回调自然而然的就会被启动。在这个过程当中并不会阻碍 UI 的运行，一切都好像完全没有关系，就像魔法一样。</p>
 <p>在这个时候，我还对此并不好奇，也并不明白为什么在编程语言的世界会有”事件”这个概念，好像计算机诞生的时候就有了这样的行为，默认它是存在的，我只是非常高兴的写下 Qt 的信号槽，或者是像 Android 那样调用了系统的库，拼一下拼图，很好啊，这个世界上的应用都是这么写出来的吧，我心里想着</p>
 <p>稍过一段时间，我了解到了多线程多进程，我慢慢开始察觉，这件事情没有那么简单，计算机如此简单的一个模型，在操作系统的调度下，程序只能一路走到黑，汇编/二进制代码才不会管你什么 OOP，在他们的世界里没有什么对象不对象的，对于单线程来说，只有指令流，一个时间就是只能有一条指令被送到 CPU 里被执行(我们不考虑流水线，分支预测，乱序执行等乱七八糟的硬件行为，单纯只是说顺序执行)，这些执行的指令排列组合，赋予了这个二进制的世界色彩和美丽。但他们唯独不能在单线程的情况下突破界限：我不可能即在管我显示器上显示的图样，又管网络有没有收到，我必须分步骤去做</p>
-<p>看过我此前<a href="https://blog.feipiao.xyz/posts/9b424f3e.html">深入异步通用概念</a>这片博客的朋友应该知道，我现在已经明了这样的事情究竟是怎么发生的。因此我有一个执念，我想要在 UI 线程里也同样能够调度网络请求。</p>
+<p>看过我此前<a href="https://feipiao594.github.io/posts/9b424f3e.html">深入异步通用概念</a>这片博客的朋友应该知道，我现在已经明了这样的事情究竟是怎么发生的。因此我有一个执念，我想要在 UI 线程里也同样能够调度网络请求。</p>
 <p>是的，我希望我这个 UI 框架不依赖 glfw 这样的库，同时由于绝大部分比较裸的事件库其实是网络库，并不太支持自己添加事件源。我决定亲自完成关于窗口，关于图像绘制，关于底层事件调度器的工作</p>
 <p>这将是一个完完全全直接接入底层的 UI 框架。</p>
 <p>其实我看网上关于这方面的描述并不是很多，客户端，或者说泛前端，在今年早就已经开始退化。可我并不希望这些知识逐渐遗失，我希望我的努力能为社区做出一点点贡献。为大家了解所谓我们这帮 UI 仔，所做的一切也没有那么的简单</p>
@@ -1275,24 +1293,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Pytorch学习_4</title>
-    <url>/posts/1c15da5f.html</url>
-    <content><![CDATA[<h1 id="Pytorch学习-4"><a href="#Pytorch学习-4" class="headerlink" title="Pytorch学习_4"></a>Pytorch学习_4</h1><p>在上一章我们知道了 pytorch 的核心机制 Tensor 的计算图与梯度运算，接下来一切都是对它的封装</p>
-<span id="more"></span>
-<h2 id="相关的概念"><a href="#相关的概念" class="headerlink" title="相关的概念"></a>相关的概念</h2><p><code>nn.Parameter</code>，<code>nn.forward</code>，<code>nn.Module</code><br>我一开始学的时候觉得这些东西好复杂，一点都没有章法，我自己学习的时候时常会想，如果使用 Rust 里的 Trait 概念或者 Haskell 的 TypeClass 是不是能把它描述的更清楚一些，但是初学者友好的文档并不会告诉我这些。<br>在看完 Pytorch 的官方文档后我终于看明白了<br>关于看完 Pytorch 官方文档后一个上午写出来的一个手写数字识别 HelloWorld ：<a href="https://github.com/feipiao594/mnist_numrecg">https://github.com/feipiao594/mnist_numrecg</a></p>
-<h2 id="nn-Module"><a href="#nn-Module" class="headerlink" title="nn.Module"></a><code>nn.Module</code></h2><p>这是一个对 Tensor 的封装与管理函数，你需要实现的函数有两个 <code>__init__</code> 与 <code>forward</code> 函数，继承自 <code>nn.Module</code> 的层或者网络，有一个内秉的 parameter 集合，在 <code>__init__</code> 里面使用 <code>nn.Parameter</code> 就会把这个变量的引用交给这个 parameter 集合，如果你使用 <code>nn.Linear()</code> 里面也有 <code>nn.Parameter</code> 也会自动注册进去，这个函数就是起到这样的一个作用，同时因为他指定的是要被学习的参数，所以他也会把你输入进去的 Tensor 的 <code>require_grad</code> 变成 false。<br><code>forward</code> 函数就是数值前向传播，就把在 <code>__init__</code> 定义的计算方法拿出来对输入的值运算一下 </p>
-<h2 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h2><p>举个例子<br><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)</span><br></pre></td></tr></table></figure><br><code>model.parameters()</code> 就是我们刚刚说到的 <code>nn.Module</code> 的子类有一个内秉的 parameter 集合，你可以通过这个方法传给优化器进行注册</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> batch, (X, y) <span class="keyword">in</span> <span class="built_in">enumerate</span>(dataloader):</span><br><span class="line">        <span class="comment"># Compute prediction and loss</span></span><br><span class="line">        X, y = X.to(device), y.to(device)</span><br><span class="line">        pred = model(X)</span><br><span class="line">        loss = loss_fn(pred, y)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Backpropagation</span></span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line">        optimizer.zero_grad()</span><br></pre></td></tr></table></figure>
-<p>具体使用时格式非常固定，loss 函数计算误差最后输出的就还是一个 Tensor ，其实里面还是保留计算图的，<code>loss.backward()</code> 就是用 Tensor 的 backward 把所有要学习的参数的梯度算出来并且存储在那些参数的成员变量里(毕竟参数也是 Tensor 嘛，它有 grad 成员变量作为他的梯度值很正常)，接着调用 <code>optimizer.step()</code> 来读取注册的这些变量的 grad 并执行优化，所以优化器和网络就完全解离，其实核心仍然在 Tensor 的梯度运算上</p>
-<h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>听说 pytorch 已经很少有人像这样写网络了，大家都用 lightning ，后面有空我也会尝试一下的</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Python</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_10_生命周期</title>
     <url>/posts/11c8f25c.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-10-生命周期"><a href="#Rust-Chapter-10-生命周期" class="headerlink" title="Rust_Chapter_10_生命周期"></a>Rust_Chapter_10_生命周期</h1><p>一开始学习 Rust 时，生命周期(Lifetime)是一个过不去的坎，它看起来和其他语言常说的生命周期类似，但因为它其实实际上也是 Rust 类型系统的一部分，并不是那么易读的</p>
@@ -1332,6 +1332,51 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <blockquote>
 <p>至此，匆匆忙忙把 Rust 一些很基础的语法介绍完毕了，接下来这一个小系列也告一段落了</p>
 </blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_2_通用编程概念</title>
+    <url>/posts/896c357a.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
+<span id="more"></span>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
+<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
+<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
+<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
+</ul>
+<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>与C/C++类似，但有几个不同或需要注意的地方</p>
+<ul>
+<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
+<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
+<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
+<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
+</ul>
+<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
+<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
+<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
+<ul>
+<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
+<li>表达式：主要用于计算求值。</li>
+</ul>
+<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
+<ul>
+<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
+<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
+</ul>
+<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
+<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1451,51 +1496,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
       </categories>
   </entry>
   <entry>
-    <title>Rust_Chapter_2_通用编程概念</title>
-    <url>/posts/896c357a.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-2-通用编程概念"><a href="#Rust-Chapter-2-通用编程概念" class="headerlink" title="Rust_Chapter_2_通用编程概念"></a>Rust_Chapter_2_通用编程概念</h1><p>你可能会好奇什么是通用编程概念，其实在我看的这一本经典书中这一章节内容主要是Rust的变量、函数、注释、if表达式及循环。而变量由于其特性十分有趣，我就在上一章节单独拿了出来为一章了。</p>
-<span id="more"></span>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>在Rust中，函数定义以<code>fn</code>关键字开始并紧随函数名称与一对圆括号，另外还有一对花括号用于标识函数体开始和结尾的地方。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>()&#123;</span><br><span class="line">    <span class="title function_ invoke__">sayhello</span>();<span class="comment">//可以用这样的方式来调用函数，这很容易</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">sayhello</span>()&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Rust不关心你在何处定义函数，函数定义在<code>main()</code>前后都行，只要这些定义对于<strong>使用区域是可见的</strong>即可</p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>你也可以在函数声明中定义参数，它们是一种特殊的变量，并被视作函数签名的一部分。当函数存在参数时，你需要在调用函数时为这些变量提供具体的值。参数变量和传入的具体参数值有自己分别对应的名称<strong>parameter</strong>和<strong>argument</strong>，但我们通常会混用两者并将它们统一地称为参数而不加以区别。<br>很简单，和众多语言的例子一样，直接看代码<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="title function_ invoke__">another_function</span>(<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">another_function</span>(x: <span class="type">i32</span>) &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出The value of x is: 5</span></span><br></pre></td></tr></table></figure><br>出于严谨的考虑，在Rust的函数签名中，你必须<strong>显式</strong>地声明<strong>每个参数的类型</strong>。</p>
-<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><p>函数可以向调用它的代码返回值。虽然你不用为这个返回值命名，但需要在箭头符号<code>-&gt;</code>的后面<strong>声明它的类型</strong>，类型在函数定义时时确定的。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">five</span>() <span class="punctuation">-&gt;</span> <span class="type">i32</span> &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="title function_ invoke__">five</span>();</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of x is: &#123;&#125;&quot;</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意上面的5不是语句而是<strong>表达式</strong>，Rust中的函数会返回最后一个表达式，但你也可以使用<code>return</code><strong>语句</strong>来返回值<br>注意如果<strong>函数最后还是分号结尾的语句而非表达式</strong>的话，实际上返回的是<code>()</code>，会和函数声明的类型相悖，由于不允许隐式转化，也无法转化的规则存在，这样会引起编译器错误</p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><ul>
-<li>普通注释，其内容将被编译器忽略掉：<br>  <code>//</code> 单行注释，注释内容直到行尾。<br>  <code>/*</code> 块注释，注释内容一直到结束分隔符。 <code>*/</code></li>
-<li>文档注释，其内容将被解析成 HTML 帮助文档：<br>  <code>///</code> 为接下来的项生成帮助文档。<br>  <code>//!</code> 为注释所属于的项（译注：如 crate、模块或函数）生成帮助文档。</li>
-</ul>
-<h2 id="if表达式"><a href="#if表达式" class="headerlink" title="if表达式"></a>if表达式</h2><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> n &lt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is negative&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> n &gt; <span class="number">0</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is positive&quot;</span>, n);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">print!</span>(<span class="string">&quot;&#123;&#125; is zero&quot;</span>, n);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>与C/C++类似，但有几个不同或需要注意的地方</p>
-<ul>
-<li>分支条件<strong>无需</strong>写括号，但不是说不能写</li>
-<li>if不支持C/C++那样的单行写法，大括号必须要有</li>
-<li>Rust期望在条件表达式中获得一个bool值，而不是一个整数。Rust<strong>不会</strong>自动尝试将非布尔类型的值<strong>转换</strong>为布尔类型。你必须<strong>显式</strong>地在if表式中提供一个布尔类型作为条件</li>
-<li>Rust会且仅会执行第一个条件为真的代码块，一旦发现满足的条件，它便不会再继续检查剩余的那些条件分支了。</li>
-</ul>
-<p>注意我们这一节说<code>if表达式</code>，而不是语句是有原因的，比如在<code>let</code>中是可以使用表达式的<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="number">6</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出结果 The value of number is: 5</span></span><br></pre></td></tr></table></figure><br>这也意味着，所有if分支可能返回的值都必须是一种类型的；if分支与else分支的结果都是i32类型的整数。而如下运行这段代码会导致<strong>编译时错误</strong>，因为if与else分支产生了不同类型的值。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">condition</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">number</span> = <span class="keyword">if</span> condition &#123;</span><br><span class="line">        <span class="number">5</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="string">&quot;six&quot;</span><span class="comment">//ERROR!!!</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The value of number is: &#123;&#125;&quot;</span>, number);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>为了对其他使用number变量的代码进行编译时类型检查，Rust需要在<strong>编译时</strong>确定number的具体类型。如果Rust能够使用运行时确定的number类型，那么它就不得不记录变量所有可能出现的类型，这会使得编译器的实现更加复杂，并丧失许多代码安全保障</p>
-<h2 id="循环表达式"><a href="#循环表达式" class="headerlink" title="循环表达式"></a>循环表达式</h2><p>Rust提供了3种循环：<code>loop</code>、<code>while</code>和<code>for</code>。</p>
-<h3 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h3><p>我们可以使用loop关键字来指示Rust反复执行某一块代码，直到我们显式地声明退出为止。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">loop</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;again!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><code>loop</code>相当于<code>while(true)</code>，需要<code>break</code>来弹出，否则就会<strong>无限循环</strong><br>在break后面跟着返回的值，就可以设置<strong>loop表达式返回的值</strong>了<br>注意所有循环中都有<code>break</code>，但<strong>只有</strong><code>loop</code>的<code>break</code>才能跟返回值，如下例子<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">counter</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = <span class="keyword">loop</span> &#123;</span><br><span class="line">        counter += <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> counter == <span class="number">10</span> &#123;</span><br><span class="line">            <span class="keyword">break</span> counter * <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;The result is &#123;&#125;&quot;</span>, result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="while"><a href="#while" class="headerlink" title="while"></a>while</h3><p><code>while</code>会在条件为真时重复执行代码，<code>while</code>也不需要一定需要加括号<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">n</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> n &lt; <span class="number">101</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;&quot;</span>,n);</span><br><span class="line">        n += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//输出1到100</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>用for循环来遍历集合中的每一个元素。<code>for in</code>结构可以遍历一个<code>Iterator</code>(迭代器)。创建迭代器的一个最简单的方法是使用区间标记<code>a..b</code>。这会生成从<code>a</code>(包含此值)到<code>b</code>(不含此值)的，步长为1的一系列值，如果使用<code>a..=b</code>表示<strong>两端都包含在内</strong>的范围<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> <span class="number">1</span>..=<span class="number">4</span> &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4!</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> (<span class="number">1</span>..<span class="number">4</span>).<span class="title function_ invoke__">rev</span>() &#123;</span><br><span class="line">        <span class="comment">//rev()是迭代器的方法，可以翻转序列</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出3! 2! 1!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>而迭代器显然的也可以用于一个数组，太典了<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">number</span> <span class="keyword">in</span> a.<span class="title function_ invoke__">iter</span>() &#123;</span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">&quot;&#123;&#125;!&quot;</span>, number);</span><br><span class="line">    &#125;<span class="comment">//输出1! 2! 3! 4! 5!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="语句和表达式语义的区分"><a href="#语句和表达式语义的区分" class="headerlink" title="语句和表达式语义的区分"></a>语句和表达式语义的区分</h2><p>由于Rust是一门基于表达式的语言，所以它将<strong>语句/statement</strong>与<strong>表达式/expression</strong>区别为两个不同的概念，这与其他某些语言不同，因此区分他俩就显得十分重要了</p>
-<ul>
-<li>语句：指的是要执行的一些操作和产生副作用的表达式。</li>
-<li>表达式：主要用于计算求值。</li>
-</ul>
-<p>而语句又可以分为两类，<strong>声明语句</strong>与<strong>表达式语句</strong></p>
-<ul>
-<li>声明语句：用于声明各种语言项，包括变量、静态变量、常量、结构体、函数等，以及通过extern和use关键字引入包和模块</li>
-<li>表达式语句：特指以分号结尾的表达式。此类表达式求值结果将会被舍弃，并总是返回单元类型()</li>
-</ul>
-<p>当遇到函数的时候，会将函数体的花括号识别为块表达式。块表达式是由<strong>一对花括号和一系列表达式</strong>组成的，它总是返回块中最后一个表达式的值。</p>
-<p>Rust编译器在解析代码的时候，如果碰到分号，就会继续往后面执行；如果碰到语句，则执行语句；如果碰到表达式，则会对表达式求值，如果分号后面什么都没有，就会补上单元值<code>()</code></p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust_Chapter_3_所有权</title>
     <url>/posts/f75e4487.html</url>
     <content><![CDATA[<h1 id="Rust-Chapter-3-所有权"><a href="#Rust-Chapter-3-所有权" class="headerlink" title="Rust_Chapter_3_所有权"></a>Rust_Chapter_3_所有权</h1><p>所有权是Rust的一个关键概念，我时常会想这个东西我会不会叙述不清楚，截至今天我已经把Chapter_7读完了，也没有来写这一份所有权的md，就是如此。</p>
@@ -1556,6 +1556,46 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">user1</span> = User &#123;</span><br><span class="line">  email: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someone@example.com&quot;</span>),</span><br><span class="line">  username: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;someusername123&quot;</span>),</span><br><span class="line">  active: <span class="literal">true</span>,</span><br><span class="line">  sign_in_count: <span class="number">1</span>,</span><br><span class="line">&#125;;</span><br><span class="line">user1.email = <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;anotheremail@example.com&quot;</span>);</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，一旦实例可变，那么实例中的所有字段都将是可变的。<strong>Rust不允许我们单独声明某一部分字段的可变性</strong>。如同其他表达式一样，我们可以在函数体的最后一个表达式中构造结构体实例，来隐式地将这个实例作为结果返回。</p>
 <p>下面这个例子中的<code>build_user</code>函数会使用传入的邮箱和用户名参数构造并返回<code>User</code>实例。另外两个字段<code>active</code>和<code>sign_in_count</code>则分别被赋予了值true和1。<br><figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">build_user</span>(email: <span class="type">String</span>, username: <span class="type">String</span>) <span class="punctuation">-&gt;</span> User &#123;</span><br><span class="line">  User &#123;</span><br><span class="line">    email: email,</span><br><span class="line">    username: username,</span><br><span class="line">    active: <span class="literal">true</span>,</span><br><span class="line">    sign_in_count: <span class="number">1</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Programming_Language</category>
+        <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust_Chapter_5_枚举与模式匹配</title>
+    <url>/posts/28bcc6be.html</url>
+    <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
+<span id="more"></span>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>关于枚举，书上给出的一个例子是这样的</p>
+<blockquote>
+<p>假设我们要处理 IP 地址。目前被广泛使用的两个主要 IP 标准：IPv4(version four)和 IPv6(version six)。这是我们的程序可能会遇到的所有可能的 IP 地址类型：所以可以 <strong>枚举</strong> 出所有可能的值，这也正是此枚举名字的由来</p>
+</blockquote>
+<p>例子和代码都很简单，正如和常见语言都是一致的</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddrKind</span> &#123;</span><br><span class="line">    V4,</span><br><span class="line">    V6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><p>可以像下面这样创建<code>IpAddrKind</code>两个不同成员的实例</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">four</span> = IpAddrKind::V4;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">six</span> = IpAddrKind::V6;</span><br></pre></td></tr></table></figure>
+<p>也可以像C++那样作为函数参数传递给函数</p>
+<h3 id="枚举值绑定变量"><a href="#枚举值绑定变量" class="headerlink" title="枚举值绑定变量"></a>枚举值绑定变量</h3><p>这是Rust enum强于C++的地方，其允许枚举值去绑定一个变量，能够有效减少一些事情，比如像我最近写的一个<a href="https://github.com/feipiao594/telegram_rust_charge_bot">telegram_bot</a>，如果一个command需要传递，我们通常不仅仅需要command的类型，还有更多的信息需要被传递。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddr</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">V4</span>(<span class="type">String</span>),</span><br><span class="line">    <span class="title function_ invoke__">V6</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">home</span> = IpAddr::<span class="title function_ invoke__">V4</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;127.0.0.1&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">loopback</span> = IpAddr::<span class="title function_ invoke__">V6</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;::1&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>我们直接将数据附加到枚举的每个成员上，这样就不需要一个额外的结构体了。这里也很容易看出枚举工作的另一个细节：每一个我们定义的枚举成员的名字也变成了一个构建枚举的实例的函数。也就是说，<code>IpAddr::V4()</code> 是一个获取<code>String</code>参数并返回<code>IpAddr</code>类型实例的函数调用。作为定义枚举的结果，这些构造函数会<strong>自动被定义</strong>。</p>
+<p><strong>让我们分析这样做的好处</strong>，对于C++ enum来说，从数学上看，一个类型我们可以声明为一个集合里的元素，称这个集合为一个类型，集合内的元素是一个具体的值，比如int类型就是一个有限长的集合，而枚举类就相当于设定一个新类型，或者说叫新集合，其中的元素或者说叫做枚举值是固定的</p>
+<p>但是Rust高明之处就是将枚举值绑定了一个变量，它可以扩展其中的概念，让枚举的名称与枚举所带的变量构成的笛卡尔积内的元素成为了枚举的元素，大大提高了灵活度</p>
+<p>从这点看来union其实是一个非安全的enum，它没有标签，读取时也容易发生错误</p>
+<h3 id="Option"><a href="#Option" class="headerlink" title="Option\"></a>Option\<T\></h3><p><code>Option&lt;T&gt;</code>是那么有用以至于它其实被很多语言内嵌在语言当中，其表示一个值可以为空，这其实是一个很常见的东西</p>
+<p>在对<code>Option&lt;T&gt;</code>进行运算之前必须将其转换为T。通常这能帮助我们捕获到空值最常见的问题之一：假设某值不为空但实际上为空的情况。</p>
+<p>消除了错误地假设一个非空值的风险，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的<code>Option&lt;T&gt;</code>中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是<code>Option&lt;T&gt;</code>类型，你就可以安全的认定它的值不为空。这是Rust的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加Rust代码的安全性。</p>
+<h2 id="match控制流结构"><a href="#match控制流结构" class="headerlink" title="match控制流结构"></a>match控制流结构</h2><p>只要一个例子便可以解释这个东西，模式匹配我个人认为就是更为强大的switch case</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug)]</span> <span class="comment">// 这样可以立刻看到州的名称</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">UsState</span> &#123;</span><br><span class="line">    Alabama,</span><br><span class="line">    Alaska,</span><br><span class="line">    <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Coin</span> &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    <span class="title function_ invoke__">Quarter</span>(state),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">value_in_cents</span>(coin: Coin) <span class="punctuation">-&gt;</span> <span class="type">u8</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> coin &#123;</span><br><span class="line">        Coin::Penny =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Lucky penny!&quot;</span>);</span><br><span class="line">            <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Coin::Nickel =&gt; <span class="number">5</span>,</span><br><span class="line">        Coin::Dime =&gt; <span class="number">10</span>,</span><br><span class="line">        Coin::<span class="title function_ invoke__">Quarter</span>(state) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;State quarter from &#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">            <span class="number">25</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>语法结构就是<code>match</code>关键字后写要进行匹配的那个变量，当<code>match</code>表达式执行时，它将这个变量按从上到下的顺序与每一个分支的模式相比较。如果模式匹配了这个值，这个模式相关联的代码将被执行，也就是说<code>=&gt;</code>后面跟着的不一定非要是一个数字，也可以是一个<code>&#123;&#125;</code>里的一串语句，最后整个表达式输出一个值，这意味着你可以在模式匹配时做一些事情</p>
+<p>模式匹配也能拆解一个复杂的类型，比如获取到上面提到的enum内部的<code>state</code>类型</p>
+<p>注意，匹配表达式匹配结果将通过匹配到的<code>=&gt;</code>返回，整个<code>match</code>是一个表达式，它有具体的值与其对应的数据</p>
+<h3 id="通配模式与-占位符"><a href="#通配模式与-占位符" class="headerlink" title="通配模式与_占位符"></a>通配模式与<code>_</code>占位符</h3><p>我们可以在match表达式匹配无法被穷尽的时候，加入一个类似switch case里default的东西，比如在上面的例子里添加一个<code>_ =&gt; 594</code>，当当你仍然要用这个无法被匹配到的值做一些事情(比如你确信它实现了display traits，打算匹配不到就输出其中的内容)，那么你就可以使用</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">other =&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">do_someting</span>();</span><br><span class="line">    return_value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很合理对吧</p>
+<h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1647,46 +1687,6 @@ L(\mathbf{w},b)=\frac{1}{n}\sum^{n}_{i=1}l^{(i)}(\mathbf{w},b)=\frac{1}{n}\sum^{
 <li>? 运算符只能被用于返回值与 ? 作用的值相兼容的函数。</li>
 <li>? 运算符也可用于 <code>Option&lt;T&gt;</code> 值。</li>
 </ul>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Programming_Language</category>
-        <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust_Chapter_5_枚举与模式匹配</title>
-    <url>/posts/28bcc6be.html</url>
-    <content><![CDATA[<h1 id="Rust-Chapter-5-枚举与模式匹配"><a href="#Rust-Chapter-5-枚举与模式匹配" class="headerlink" title="Rust_Chapter_5_枚举与模式匹配"></a>Rust_Chapter_5_枚举与模式匹配</h1><p><code>enums</code>，一个很有用的东西，使用枚举可以简化很多东西</p>
-<span id="more"></span>
-<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>关于枚举，书上给出的一个例子是这样的</p>
-<blockquote>
-<p>假设我们要处理 IP 地址。目前被广泛使用的两个主要 IP 标准：IPv4(version four)和 IPv6(version six)。这是我们的程序可能会遇到的所有可能的 IP 地址类型：所以可以 <strong>枚举</strong> 出所有可能的值，这也正是此枚举名字的由来</p>
-</blockquote>
-<p>例子和代码都很简单，正如和常见语言都是一致的</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddrKind</span> &#123;</span><br><span class="line">    V4,</span><br><span class="line">    V6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><p>可以像下面这样创建<code>IpAddrKind</code>两个不同成员的实例</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">four</span> = IpAddrKind::V4;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">six</span> = IpAddrKind::V6;</span><br></pre></td></tr></table></figure>
-<p>也可以像C++那样作为函数参数传递给函数</p>
-<h3 id="枚举值绑定变量"><a href="#枚举值绑定变量" class="headerlink" title="枚举值绑定变量"></a>枚举值绑定变量</h3><p>这是Rust enum强于C++的地方，其允许枚举值去绑定一个变量，能够有效减少一些事情，比如像我最近写的一个<a href="https://github.com/feipiao594/telegram_rust_charge_bot">telegram_bot</a>，如果一个command需要传递，我们通常不仅仅需要command的类型，还有更多的信息需要被传递。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">IpAddr</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">V4</span>(<span class="type">String</span>),</span><br><span class="line">    <span class="title function_ invoke__">V6</span>(<span class="type">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="variable">home</span> = IpAddr::<span class="title function_ invoke__">V4</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;127.0.0.1&quot;</span>));</span><br><span class="line"><span class="keyword">let</span> <span class="variable">loopback</span> = IpAddr::<span class="title function_ invoke__">V6</span>(<span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;::1&quot;</span>));</span><br></pre></td></tr></table></figure>
-<p>我们直接将数据附加到枚举的每个成员上，这样就不需要一个额外的结构体了。这里也很容易看出枚举工作的另一个细节：每一个我们定义的枚举成员的名字也变成了一个构建枚举的实例的函数。也就是说，<code>IpAddr::V4()</code> 是一个获取<code>String</code>参数并返回<code>IpAddr</code>类型实例的函数调用。作为定义枚举的结果，这些构造函数会<strong>自动被定义</strong>。</p>
-<p><strong>让我们分析这样做的好处</strong>，对于C++ enum来说，从数学上看，一个类型我们可以声明为一个集合里的元素，称这个集合为一个类型，集合内的元素是一个具体的值，比如int类型就是一个有限长的集合，而枚举类就相当于设定一个新类型，或者说叫新集合，其中的元素或者说叫做枚举值是固定的</p>
-<p>但是Rust高明之处就是将枚举值绑定了一个变量，它可以扩展其中的概念，让枚举的名称与枚举所带的变量构成的笛卡尔积内的元素成为了枚举的元素，大大提高了灵活度</p>
-<p>从这点看来union其实是一个非安全的enum，它没有标签，读取时也容易发生错误</p>
-<h3 id="Option"><a href="#Option" class="headerlink" title="Option\"></a>Option\<T\></h3><p><code>Option&lt;T&gt;</code>是那么有用以至于它其实被很多语言内嵌在语言当中，其表示一个值可以为空，这其实是一个很常见的东西</p>
-<p>在对<code>Option&lt;T&gt;</code>进行运算之前必须将其转换为T。通常这能帮助我们捕获到空值最常见的问题之一：假设某值不为空但实际上为空的情况。</p>
-<p>消除了错误地假设一个非空值的风险，会让你对代码更加有信心。为了拥有一个可能为空的值，你必须要显式的将其放入对应类型的<code>Option&lt;T&gt;</code>中。接着，当使用这个值时，必须明确的处理值为空的情况。只要一个值不是<code>Option&lt;T&gt;</code>类型，你就可以安全的认定它的值不为空。这是Rust的一个经过深思熟虑的设计决策，来限制空值的泛滥以增加Rust代码的安全性。</p>
-<h2 id="match控制流结构"><a href="#match控制流结构" class="headerlink" title="match控制流结构"></a>match控制流结构</h2><p>只要一个例子便可以解释这个东西，模式匹配我个人认为就是更为强大的switch case</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Debug)]</span> <span class="comment">// 这样可以立刻看到州的名称</span></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">UsState</span> &#123;</span><br><span class="line">    Alabama,</span><br><span class="line">    Alaska,</span><br><span class="line">    <span class="comment">// --snip--</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Coin</span> &#123;</span><br><span class="line">    Penny,</span><br><span class="line">    Nickel,</span><br><span class="line">    Dime,</span><br><span class="line">    <span class="title function_ invoke__">Quarter</span>(state),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">value_in_cents</span>(coin: Coin) <span class="punctuation">-&gt;</span> <span class="type">u8</span> &#123;</span><br><span class="line">    <span class="keyword">match</span> coin &#123;</span><br><span class="line">        Coin::Penny =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;Lucky penny!&quot;</span>);</span><br><span class="line">            <span class="number">1</span></span><br><span class="line">        &#125;,</span><br><span class="line">        Coin::Nickel =&gt; <span class="number">5</span>,</span><br><span class="line">        Coin::Dime =&gt; <span class="number">10</span>,</span><br><span class="line">        Coin::<span class="title function_ invoke__">Quarter</span>(state) =&gt; &#123;</span><br><span class="line">            <span class="built_in">println!</span>(<span class="string">&quot;State quarter from &#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">            <span class="number">25</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>语法结构就是<code>match</code>关键字后写要进行匹配的那个变量，当<code>match</code>表达式执行时，它将这个变量按从上到下的顺序与每一个分支的模式相比较。如果模式匹配了这个值，这个模式相关联的代码将被执行，也就是说<code>=&gt;</code>后面跟着的不一定非要是一个数字，也可以是一个<code>&#123;&#125;</code>里的一串语句，最后整个表达式输出一个值，这意味着你可以在模式匹配时做一些事情</p>
-<p>模式匹配也能拆解一个复杂的类型，比如获取到上面提到的enum内部的<code>state</code>类型</p>
-<p>注意，匹配表达式匹配结果将通过匹配到的<code>=&gt;</code>返回，整个<code>match</code>是一个表达式，它有具体的值与其对应的数据</p>
-<h3 id="通配模式与-占位符"><a href="#通配模式与-占位符" class="headerlink" title="通配模式与_占位符"></a>通配模式与<code>_</code>占位符</h3><p>我们可以在match表达式匹配无法被穷尽的时候，加入一个类似switch case里default的东西，比如在上面的例子里添加一个<code>_ =&gt; 594</code>，当当你仍然要用这个无法被匹配到的值做一些事情(比如你确信它实现了display traits，打算匹配不到就输出其中的内容)，那么你就可以使用</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">other =&gt; &#123;</span><br><span class="line">    <span class="title function_ invoke__">do_someting</span>();</span><br><span class="line">    return_value</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>很合理对吧</p>
-<h2 id="if-let简洁控制流"><a href="#if-let简洁控制流" class="headerlink" title="if let简洁控制流"></a><code>if let</code>简洁控制流</h2><p>可以用下面的例子仅仅匹配一个单独的模式，<code>if let</code>既是<code>match</code>的一个简单使用时的简化版本</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">count</span> = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> <span class="variable">Coin</span>::<span class="title function_ invoke__">Quarter</span>(state) =coin &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;State quarter from&#123;:?&#125;!&quot;</span>, state);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    count += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>CS_计算机</category>
@@ -1959,6 +1959,37 @@ G(y)=\int_{\mathbb{R}}f(x,y)\mathrm{d}x</script><p>对于几乎每个$y\in\mathb
         <category>CS_计算机</category>
         <category>Basic_principles</category>
         <category>Linux</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>使用说明之qblog批处理</title>
+    <url>/posts/64b84f95.html</url>
+    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
+<span id="more"></span>
+<blockquote>
+<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
+</blockquote>
+<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
+<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
+<ol>
+<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
+<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
+<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
+<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
+<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
+<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
+<li><code>qblog -p</code><br> 将当前文件夹git push</li>
+<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
+<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
+</ol>
+<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -2528,37 +2559,6 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
-    <title>使用说明之qblog批处理</title>
-    <url>/posts/64b84f95.html</url>
-    <content><![CDATA[<h1 id="使用说明之qblog批处理"><a href="#使用说明之qblog批处理" class="headerlink" title="使用说明之qblog批处理"></a>使用说明之qblog批处理</h1><p>在整个博客构建中，我使用了批处理以方便在保留文件目录的情况下上传文件，这篇文档在仓库里是以<code>README.md</code>显示的，在这里再发一遍，写成一篇blog</p>
-<span id="more"></span>
-<blockquote>
-<p>注意：该批处理文件已处于<strong>DEPRECATED</strong>状态，新的python脚本已在使用</p>
-</blockquote>
-<h2 id="放置并修改批处理文件"><a href="#放置并修改批处理文件" class="headerlink" title="放置并修改批处理文件"></a>放置并修改批处理文件</h2><p>将<code>qblog.bat</code>置于note文件夹下<br>请根据实际你note根目录与博客的文件(注意是要source文件夹的位置)<strong>绝对地址</strong>修改两个bat的变量设置<br>note文件夹中不会读取README.md，除此以外均会与blog位置判断是否修改，并覆盖，如果删除note文件夹下内容，对应的blog内也会删除，防止直接误操作blog导致崩坏(笑)<br>注意note文件夹下的images文件夹名字<strong>必须是images</strong>，该文件夹将直接与hexo中的images文件夹对应</p>
-<h2 id="批处理命令使用方法"><a href="#批处理命令使用方法" class="headerlink" title="批处理命令使用方法"></a>批处理命令使用方法</h2><p>qblog使用方法如下</p>
-<ol>
-<li><code>qblog -n &lt;相对路径&gt;</code><br> 在相对路径下生成example.md新markdown文件，并在example.md中写好样例头<br> 注意这里的相对路径开头不包含<code>.\</code><br> 相对路径样例<code>Mathematic\Calculus_on_manifolds</code><br> 在vscode里可以通过对资源管理器中的文件夹右键，选择“复制相对路径”获得 </li>
-<li><code>qblog -s</code><br> 快速将文件搬运，生成博客，并检查，并打开本地服务器</li>
-<li><code>qblog -d</code><br> 快速将文件搬运，生成博客，并检查，并推送到github服务器</li>
-<li><code>qblog -sd</code><br> 单独推送当前已经移动的博客到github服务器</li>
-<li><code>qblog -ss</code><br> 单独推送当前已经移动的博客并打开本地服务器</li>
-<li><code>qblog -c</code><br> 将当前文件夹git commit，附带信息为上传时间</li>
-<li><code>qblog -p</code><br> 将当前文件夹git push</li>
-<li><code>qblog -r</code><br> 更新当前文件夹里的内容和博客文件夹同步，只同步同名文件，<strong>如果存在文件未被同步将会报waring</strong>，主要用于递归调用检查，<strong>不推荐使用者直接使用该参数</strong></li>
-<li><code>qblog -m</code><br> 只进行移动生成博客与检查，不进行打开服务器等操作，即<code>qblog -s</code>或<code>qblog -d</code>去掉<code>hexo s</code>或者<code>hexo d</code>这一步操作</li>
-</ol>
-<h2 id="样例头"><a href="#样例头" class="headerlink" title="样例头"></a>样例头</h2><p>这里是md文件需要加入的样例头</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: NoteName</span><br><span class="line">mathjax: false</span><br><span class="line">categories:</span><br><span class="line">- First-level catalog</span><br><span class="line">- Second-level catalog</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p>顺带一提，<code>.gitignore</code>中存放了未提交的本地加密博客文件夹名字，对于这个文件夹，其中新建文件需要在原来的文件夹下创建，并且手动搬运到这个未提交的文件夹中</p>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
-      </categories>
-  </entry>
-  <entry>
     <title>关于51单片机移植u8g2失败经历</title>
     <url>/posts/572ad35a.html</url>
     <content><![CDATA[<h1 id="关于51单片机移植u8g2失败经历"><a href="#关于51单片机移植u8g2失败经历" class="headerlink" title="关于51单片机移植u8g2失败经历"></a>关于51单片机移植u8g2失败经历</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为没买stm32的单片机，但是用了SSD1306的OLED显示屏，想着既然移植u8g2库到stm32很简单，那自然也能移植到51单片机吧，看来还是我太年轻了</p>
@@ -2679,18 +2679,6 @@ document.addEventListener("fullscreenchange", () => {
       </categories>
   </entry>
   <entry>
-    <title>初识stm32</title>
-    <url>/posts/fc4ef914.html</url>
-    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
-<span id="more"></span>
-<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
-<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
-      <categories>
-        <category>EE_电子工程</category>
-        <category>单片机</category>
-      </categories>
-  </entry>
-  <entry>
     <title>初见流形上的微积分</title>
     <url>/posts/1a81a4ab.html</url>
     <content><![CDATA[<h1 id="初见流形上的微积分"><a href="#初见流形上的微积分" class="headerlink" title="初见流形上的微积分"></a>初见流形上的微积分</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>以本篇笔记记录时我大一的数理能力是无法去完全阅读流形相关的内容的，因此，我只能在此做一个<strong>科普性的导论</strong>。我们会从一个工科生的角度，从流形之前的知识到stokes公式的引出，从而拓展出一个完整的流形上的微积分的概念。<br><span id="more"></span><br>前排提示：文章内容<strong>完全不严谨</strong>，纯粹是出于个人的理解。想要系统学习，建议阅读<strong>Loring W. Tu</strong>的《An Introduction to Manifolds》一书，同时关于本篇文档的排版<strong>措辞仍需修饰</strong>，仍然是一个<strong>不完整</strong>版本</p>
@@ -2797,6 +2785,18 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
+    <title>初识stm32</title>
+    <url>/posts/fc4ef914.html</url>
+    <content><![CDATA[<h1 id="初识stm32"><a href="#初识stm32" class="headerlink" title="初识stm32"></a>初识stm32</h1><p>其实本人是通信工程专业的学生，应该一早就开始学习单片机的，奈何我在大一的时候其实只接触过一点点的编程，所以走偏了，而且51单片机的c语言是真的用着很难受啊</p>
+<span id="more"></span>
+<h2 id="板子已到"><a href="#板子已到" class="headerlink" title="板子已到"></a>板子已到</h2><p>我买的实验板是意法半导体的<code>STM32F411RET6</code>，它太颜值太高了啊啊啊</p>
+<h2 id="施工中"><a href="#施工中" class="headerlink" title="施工中"></a>施工中</h2>]]></content>
+      <categories>
+        <category>EE_电子工程</category>
+        <category>单片机</category>
+      </categories>
+  </entry>
+  <entry>
     <title>初识量子计算</title>
     <url>/posts/fe2da916.html</url>
     <content><![CDATA[<h1 id="初识量子计算"><a href="#初识量子计算" class="headerlink" title="初识量子计算"></a>初识量子计算</h1><p>考试周瞎学，写一份初见的文档，量子计算确实很有意思<br><span id="more"></span></p>
@@ -2837,24 +2837,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       </categories>
   </entry>
   <entry>
-    <title>史瓦西黑洞</title>
-    <url>/posts/fe5450c6.html</url>
-    <content><![CDATA[<h1 id="史瓦西黑洞"><a href="#史瓦西黑洞" class="headerlink" title="史瓦西黑洞"></a>史瓦西黑洞</h1><p>一个简单的黑洞模拟小网页</p>
-<span id="more"></span>
-<h2 id="功能以及注意点"><a href="#功能以及注意点" class="headerlink" title="功能以及注意点"></a>功能以及注意点</h2><p>模拟链接: <a href="https://feipiao594.github.io/html/blackhole.html">https://feipiao594.github.io/html/blackhole.html</a></p>
-<p>你可以用鼠标拖动转动视角，也可以用滚轮控制远近</p>
-<p>你可以在 nasa 的官网上拿到一张高清的天空盒照片(通常分辨率比例为2：1)，导入，会有不错的效果<br>官网如下，你可能需要使用使用一些格式转换工具转成 jpg<br><a href="https://svs.gsfc.nasa.gov/4851">https://svs.gsfc.nasa.gov/4851</a></p>
-<p><img src="/images/史瓦西黑洞_图1.png" width="100%" height="100%"></p>
-<blockquote>
-<p><strong>WARNING</strong> 注意:<br>1、本程序只对 <strong>PC端</strong> 进行了适配<br>2、本程序需要使用 WebGL 调用 GPU，对设备有一定的要求<br>3、由于使用 GPU 有一些耗电（</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Mathematic</category>
-        <category>Math_modeling</category>
-      </categories>
-  </entry>
-  <entry>
     <title>南京邮电大学交换技术与通信网实验自动执行脚本</title>
     <url>/posts/57f25e7f.html</url>
     <content><![CDATA[<h1 id="南京邮电大学交换技术与通信网实验自动执行脚本"><a href="#南京邮电大学交换技术与通信网实验自动执行脚本" class="headerlink" title="南京邮电大学交换技术与通信网实验自动执行脚本"></a>南京邮电大学交换技术与通信网实验自动执行脚本</h1><p>这个作业要一行一行输入 GNS3 的 Solar-PuTTy，挺麻烦的，于是就写了一个脚本用来一键执行，当然这个脚本并不能帮你解决你的作业，只是可以很方便执行指令，让你专注于具体内容罢了</p>
@@ -2877,6 +2859,38 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>CS_计算机</category>
         <category>Computer_network</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>史瓦西黑洞</title>
+    <url>/posts/fe5450c6.html</url>
+    <content><![CDATA[<h1 id="史瓦西黑洞"><a href="#史瓦西黑洞" class="headerlink" title="史瓦西黑洞"></a>史瓦西黑洞</h1><p>一个简单的黑洞模拟小网页</p>
+<span id="more"></span>
+<h2 id="功能以及注意点"><a href="#功能以及注意点" class="headerlink" title="功能以及注意点"></a>功能以及注意点</h2><p>模拟链接: <a href="https://feipiao594.github.io/html/blackhole.html">https://feipiao594.github.io/html/blackhole.html</a></p>
+<p>你可以用鼠标拖动转动视角，也可以用滚轮控制远近</p>
+<p>你可以在 nasa 的官网上拿到一张高清的天空盒照片(通常分辨率比例为2：1)，导入，会有不错的效果<br>官网如下，你可能需要使用使用一些格式转换工具转成 jpg<br><a href="https://svs.gsfc.nasa.gov/4851">https://svs.gsfc.nasa.gov/4851</a></p>
+<p><img src="/images/史瓦西黑洞_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p><strong>WARNING</strong> 注意:<br>1、本程序只对 <strong>PC端</strong> 进行了适配<br>2、本程序需要使用 WebGL 调用 GPU，对设备有一定的要求<br>3、由于使用 GPU 有一些耗电（</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Mathematic</category>
+        <category>Math_modeling</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>含水滚筒的水平面</title>
+    <url>/posts/6b2e6898.html</url>
+    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
+<span id="more"></span>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
+<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
+<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
+]]></content>
+      <categories>
+        <category>Physics</category>
+        <category>Mechanics</category>
       </categories>
   </entry>
   <entry>
@@ -2907,62 +2921,6 @@ d\omega = \sum_Ida_I\wedge dx^I =\sum_I(\sum_j\frac{\partial a_I}{\partial x_j}d
       <categories>
         <category>Physics</category>
         <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>含水滚筒的水平面</title>
-    <url>/posts/6b2e6898.html</url>
-    <content><![CDATA[<h1 id="含水滚筒的水平面"><a href="#含水滚筒的水平面" class="headerlink" title="含水滚筒的水平面"></a>含水滚筒的水平面</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近看到一道我个人感觉挺感兴趣的一题，让我开始注意了物理当中微分相关的性质.</p>
-<span id="more"></span>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>如果有一个装满水的滚筒，假设它以$ \omega $为角速度沿着它的中轴旋转，若其水不会被甩出，那么求证，水面为抛物面<br>其实这个题本身并没有什么大难度，而是要以曲面的思维去考虑，对于曲面上一小团水，数学里喜欢说<strong>xx元素</strong>，这里也可以被称为水元素，那这团水元素会受重力，其它水元素对它的力，总体合成出来可以提供向心力，如图。<br><img src="/images/含水滚筒的水平面_图1.jpg" width="30%" height="30%"><br>换作高中的我大抵是想不到下一步的，我会以为是知识不足，但是若我能注意到，模糊的那个力，也就是<strong>其它水元素对它的力</strong>，这个力的方向其实是由曲面切向来决定的，那问题就很好解决了</p>
-<script type="math/tex; mode=display">y'(r) = \frac{mg}{m \frac{v^2}{r} } =\frac{g}{v^2}r</script><p>显然，这就是抛物面咯</p>
-<h2 id="延申"><a href="#延申" class="headerlink" title="延申"></a>延申</h2><p>其实我也不是第一次见这种方法了，当时第一次接触悬链线的时候我就见过它，角度往往能和切线搭上关系，可是这究竟是为什么呢？<br>这也许就是微分学和物理能巧妙结合的原因吧。<br>(又水了一篇，感觉最近状态不太好，就想写水文，不过好在这里可以自由发挥，也无关紧要啦 ^_^ )</p>
-]]></content>
-      <categories>
-        <category>Physics</category>
-        <category>Mechanics</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>在Gentoo上用KVM玩Mac</title>
-    <url>/posts/ebefb94c.html</url>
-    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
-<span id="more"></span>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
-<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
-<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
-<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
-<blockquote>
-<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
-</blockquote>
-<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
-<p>使用它的 python 脚本下载 Mac 官方镜像</p>
-<blockquote>
-<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
-<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
-<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
-<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
-<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
-<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
-<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
-<blockquote>
-<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
-</blockquote>
-<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
-<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
-<blockquote>
-<p>注意该项目实测可以安装较新版本的 MacOS</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>CS_计算机</category>
-        <category>Project_Tools</category>
-        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -3013,6 +2971,48 @@ f(z)=g(x,y)=u(x,y)+iv(x,y)</script><p>这个式子即把复变函数退化为二
       <categories>
         <category>Mathematic</category>
         <category>Complex_function</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>在Gentoo上用KVM玩Mac</title>
+    <url>/posts/ebefb94c.html</url>
+    <content><![CDATA[<h1 id="在Gentoo上用KVM玩Mac"><a href="#在Gentoo上用KVM玩Mac" class="headerlink" title="在Gentoo上用KVM玩Mac"></a>在Gentoo上用KVM玩Mac</h1><p>看起来大家都很喜欢 Mac，于是乎我也搞了一个虚拟机装 Mac，在这里记录一下安装过程希望能帮到大家</p>
+<span id="more"></span>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>发现有些学弟学妹们买了 Mac，有些学长也全换了 Mac 搞开发，而我们的项目却常常由于缺少 Mac 导致适配不了这些设备，最后我还是启动了一个黑苹果</p>
+<p>说起来这次装过 Mac 虚拟机之后，我基本上什么系统都装的七七八八了。之前因为学校学习用的各种专有软件也使用了很多虚拟机，最后让我在同学之中多了“虚拟机大神”的称号，这下是真的能算是对装虚拟机有不少经验了。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>我们使用到的项目是 OSX-KVM (<a href="https://github.com/kholia/OSX-KVM">https://github.com/kholia/OSX-KVM</a>)<br>官方的仓库只写了对 Ubuntu 的支持，但基本上只要变动一下第一步安装的各种包就能解决问题<br>安装你所需的软件，此处略去了对 kernel 的要求，详情请自行查询 Gentoo Wiki</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo emerge --ask --verbose </span><br><span class="line">        net-analyzer/openbsd-netcat \ </span><br><span class="line">        app-emulation/libguestfs \</span><br><span class="line">        app-emulation/virt-manager \</span><br><span class="line">        app-text/tesseract \</span><br><span class="line">        app-emulation/qemu \</span><br><span class="line">        app-misc/screen \</span><br><span class="line">        sys-apps/net-tools \</span><br><span class="line">        app-arch/p7zip</span><br></pre></td></tr></table></figure>
+<p>注意上述没有包含 <code>vim</code> <code>git</code> <code>wget</code> 这种极其常用的软件包，以及一些软件需要 unmask 操作</p>
+<p>对于 <code>qemu</code> 需要注意加上 <code>usbredir</code> 和 <code>spice</code> USE flags</p>
+<blockquote>
+<p><strong>NOTE</strong>: net-analyzer/openbsd-netcat 该包需要解决一些依赖问题，因为其和原有的 netcat 包不能共存，方法是 unemerge 原来的 netcat，参考 emerge 的报错即可</p>
+</blockquote>
+<p>顺带一提，关于 ArchLinux 在被关闭的 pr 中有需要安装包的相关说明 (<a href="https://github.com/kholia/OSX-KVM/pull/232/files">https://github.com/kholia/OSX-KVM/pull/232/files</a>)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> --depth 1 --recursive https://github.com/kholia/OSX-KVM.git</span><br><span class="line"><span class="built_in">cd</span> OSX-KVM</span><br><span class="line"></span><br><span class="line">sudo modprobe kvm; <span class="built_in">echo</span> 1 | sudo <span class="built_in">tee</span> /sys/module/kvm/parameters/ignore_msrs</span><br><span class="line"></span><br><span class="line">sudo <span class="built_in">cp</span> kvm.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for intel boxes only</span></span><br><span class="line">sudo <span class="built_in">cp</span> kvm_amd.conf /etc/modprobe.d/kvm.conf  <span class="comment"># for amd boxes only</span></span><br><span class="line"></span><br><span class="line">sudo usermod -aG kvm $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG libvirt $(<span class="built_in">whoami</span>)</span><br><span class="line">sudo usermod -aG input $(<span class="built_in">whoami</span>) <span class="comment"># these 3 commands need reboot</span></span><br></pre></td></tr></table></figure>
+<p>使用它的 python 脚本下载 Mac 官方镜像</p>
+<blockquote>
+<p><strong>WARNING</strong>: 经过实际测试 MacOS 13 官方推荐的版本是可用的，但 MacOS 14 15 不可用，即使在 python 文件中有标出能下载</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
+<p>输入以下两条指令创建 MacOS 所使用的虚拟磁盘<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 256G</span><br><span class="line"></span><br><span class="line">qemu-img convert BaseSystem.dmg -O raw BaseSystem.img</span><br><span class="line"></span><br><span class="line"><span class="comment"># for distribution with `dmg2img`, you can use command below</span></span><br><span class="line"><span class="comment"># dmg2img -i BaseSystem.dmg BaseSystem.img</span></span><br></pre></td></tr></table></figure></p>
+<p>是时候启动了<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure></p>
+<h2 id="进入系统"><a href="#进入系统" class="headerlink" title="进入系统"></a>进入系统</h2><p>首先启动 Install 的盘，将 256GB 大小的盘格式化为 APLS 文件系统，并安装，安装过程中涉及好几次重启，请注意别把自动重启当成出错了</p>
+<h2 id="添加到-virt-manager-中"><a href="#添加到-virt-manager-中" class="headerlink" title="添加到 virt-manager 中"></a>添加到 <code>virt-manager</code> 中</h2><p>在做完了上面的这些操作之后我们要把虚拟机加入到 virt-manager 中进行管理<br><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sed <span class="string">&quot;s/CHANGEME/<span class="variable">$USER</span>/g&quot;</span> macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line">virt-xml-validate macOS.xml</span><br><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure></p>
+<p>注意这里有一个很坑的地方，你需要手动删除配置文件中的两个东西才能正常启动，如下图，一个是此处的串口，一个是 <code>qemu-ga</code></p>
+<p><img src="/images/在Gentoo上用KVM玩Mac_图1.png" width="100%" height="100%"></p>
+<blockquote>
+<p><strong>NOTE</strong>: 由于我的独立显卡属于N卡，显卡直通缺少驱动，无法进行，所以这边我们就此略过</p>
+</blockquote>
+<p><strong>这是我已经安装完成的 Mac</strong><br><img src="/images/在Gentoo上用KVM玩Mac_图2.png" width="100%" height="100%"></p>
+<h2 id="一键安装"><a href="#一键安装" class="headerlink" title="一键安装"></a>一键安装</h2><p>参考项目 ultimate-macOS-KVM: <a href="https://github.com/Coopydood/ultimate-macOS-KVM">https://github.com/Coopydood/ultimate-macOS-KVM</a></p>
+<blockquote>
+<p>注意该项目实测可以安装较新版本的 MacOS</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>CS_计算机</category>
+        <category>Project_Tools</category>
+        <category>Another</category>
       </categories>
   </entry>
   <entry>
@@ -3236,33 +3236,6 @@ g_{ij}=g(\frac{\partial}{\partial x^i},\frac{\partial}{\partial x^j})</script><p
       <categories>
         <category>Mathematic</category>
         <category>Analysis_theory</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>我的自学小计划</title>
-    <url>/posts/e97bb949.html</url>
-    <content><![CDATA[<h1 id="我的自学小计划"><a href="#我的自学小计划" class="headerlink" title="我的自学小计划"></a>我的自学小计划</h1><p>这篇文档会起到一个 Plan 的作用，目的是作为指导我未来几年的学习计划</p>
-<span id="more"></span>
-<blockquote>
-<p>不出意外该文档将会保持更新，用以记录我学习的过程</p>
-</blockquote>
-<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将自己的专业文献阅读习惯从中文转向英文文献，并尽可能在缺少中文环境的领域使用一手资料来替代原本已学习的但几乎完全不牢固的基础</p>
-<p>主要体现为 Math 和 CS 的部分，我会开一个仓库去记录我学习的过程，包括自己做的作业之类的东西</p>
-<h3 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h3><p>目前状态: MIT OCW learning</p>
-<p><strong>First part</strong><br>18.014 Calculus with Theory (Finished)</p>
-<p>18.024 Multivariable Calculus (Finished)</p>
-<p>18.700 Linear Algebra (Finished)</p>
-<p><strong>Second Part</strong><br>18.034 Differential Equations (<strong>working</strong>)</p>
-<p>18.100 Real Analysis (<strong>working</strong>)</p>
-<p><strong>Third Part</strong><br>等待中</p>
-<h3 id="CS"><a href="#CS" class="headerlink" title="CS"></a>CS</h3><p>CS 相对来说是有一点基础在的，我会自己挑选课程进行学习，大致的顺序如下</p>
-<p>Stanford CS144: Computer Network (<strong>Working</strong>)</p>
-<p>KAIST CS420: Compiler Design (Waiting)</p>
-<p>Stanford CS242: Programming Languages (Waiting)</p>
-<p>南京大学 OS (<strong>Working</strong>)</p>
-]]></content>
-      <categories>
-        <category>Life_生活</category>
       </categories>
   </entry>
   <entry>
