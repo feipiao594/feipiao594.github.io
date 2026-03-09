@@ -27,10 +27,13 @@
 <meta property="og:site_name" content="594飞飘的个人博客">
 <meta property="og:description" content="客户端与Linux图形栈计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://feipiao594.github.io/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88_%E5%9B%BE1.png">
+<meta property="og:image" content="https://feipiao594.github.io/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88_%E5%9B%BE2.png">
 <meta property="article:published_time" content="2026-02-19T17:52:48.000Z">
-<meta property="article:modified_time" content="2026-03-01T04:42:46.472Z">
+<meta property="article:modified_time" content="2026-03-09T17:03:42.941Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://feipiao594.github.io/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88_%E5%9B%BE1.png">
 
 <link rel="canonical" href="https://feipiao594.github.io/posts/387e933d.html">
 
@@ -226,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-03-01 12:42:46" itemprop="dateModified" datetime="2026-03-01T12:42:46+08:00">2026-03-01</time>
+                <time title="修改时间：2026-03-10 01:03:42" itemprop="dateModified" datetime="2026-03-10T01:03:42+08:00">2026-03-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,14 +255,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>339</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -271,9 +274,132 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="客户端与Linux图形栈"><a href="#客户端与Linux图形栈" class="headerlink" title="客户端与Linux图形栈"></a>客户端与Linux图形栈</h1><p>计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙痒。中间忽略了非常多的过程，成为我们的禁区。这篇文章，我将试图完全阐明这其中大致的关系。希望能帮到读者</p>
-<p>(to be continue)<br><span id="more"></span></p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>GPU -&gt; Linux Kernel -&gt; DRM -&gt; libdrm -&gt; mesa3D -&gt; UI framework -&gt; client</p>
+        <h1 id="客户端与Linux图形栈"><a href="#客户端与Linux图形栈" class="headerlink" title="客户端与Linux图形栈"></a>客户端与Linux图形栈</h1><p>计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙痒。中间忽略了非常多的过程，成为我们的禁区。这篇文章，我将试图完全阐明这其中大致的关系，<strong>并不一定精确</strong>。希望能帮到读者</p>
+<span id="more"></span>
+<blockquote>
+<p>主要脉络: GPU -&gt; DRM &amp; libdrm -&gt; Mesa3D(ok) -&gt; UI framework -&gt; Application</p>
+</blockquote>
+<hr>
+<h2 id="图形接口-OpenGL"><a href="#图形接口-OpenGL" class="headerlink" title="图形接口 OpenGL"></a>图形接口 OpenGL</h2><p>作为一个广为人知的图形 API，OpenGL 在众多地方都拥有教程，但几乎较新的教程都采用的是 GLFW。GLFW 封装了平台行为，打开 GLFW 关于 linux + wayland 的源代码，你就可以清晰地看见其使用 poll syscall 监听了 4 个 fd，其中有一个是 wayland 的文件描述符。GLFW 他另一个功能就是创建 OpenGL 的上下文，提供最基础的窗口包行为，但是，对于一个 UI 框架开发者来说，其事件注册与回调机制显得过于简单，功能也相对直接手搓来说太简单了，所以一般不会使用它作为窗口层，但作为最小化窗口与输入管理库，它显然是一个非常优秀的参考实现。也正是因为如此，大伙学习 OpenGL 的时候也经常使用它。关于事件循环的部分我就不提了，此前几篇讲异步的博客讲了许多了，但是关于上下文创建的有关知识，被 GLFW 藏起来的那些东西，是时候来看看了。</p>
+<blockquote>
+<p>对于 vulkan 大致的套路类似，我不多赘述</p>
+</blockquote>
+<p>首先，OpenGL 这里有好多的名词，如刚刚说到的 GLFW，还有一些名称经常听说</p>
+<h3 id="表一、基于-OpenGL-系列-API-的外部库"><a href="#表一、基于-OpenGL-系列-API-的外部库" class="headerlink" title="表一、基于 OpenGL 系列 API 的外部库"></a>表一、基于 OpenGL 系列 API 的外部库</h3><blockquote>
+<p>首先是一些基于 OpenGL 系列 API 的外部库</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">GLFW</td>
+<td style="text-align:center">最小化窗口与输入管理库</td>
+</tr>
+<tr>
+<td style="text-align:center">GLUT/freeglut</td>
+<td style="text-align:center">早期的窗口处理库，已不再维护，GLFW 的前任</td>
+</tr>
+<tr>
+<td style="text-align:center">GLAD</td>
+<td style="text-align:center">跨平台扩展加载库</td>
+</tr>
+<tr>
+<td style="text-align:center">GLEW</td>
+<td style="text-align:center">跨平台扩展加载库，和 GLAD 同生态位</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<h3 id="表二、真正的-OpenGL-规范"><a href="#表二、真正的-OpenGL-规范" class="headerlink" title="表二、真正的 OpenGL 规范"></a>表二、真正的 OpenGL 规范</h3><blockquote>
+<p>其次是一些真正的规范，表中<strong>没有包含所有</strong>制定者 khronos 制定的规范，但我们这次要讨论的东西都在里面了</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">WGL</td>
+<td style="text-align:center">Windows 专供。它是 OpenGL 与 Windows GDI 之间的桥梁。</td>
+</tr>
+<tr>
+<td style="text-align:center">GLX</td>
+<td style="text-align:center">Linux (X11) 专供。它是 X Window 系统的扩展。</td>
+</tr>
+<tr>
+<td style="text-align:center">EGL</td>
+<td style="text-align:center">全平台“万能胶”。它是 Khronos 定义的现代接口，不依赖特定操作系统。旨在替代上述两个</td>
+</tr>
+<tr>
+<td style="text-align:center">OpenGL</td>
+<td style="text-align:center">桌面级标准。功能最全、历史最悠久的 API。支持从简单的 2D 到复杂的 3D 渲染，拥有极其丰富的特性集，主要运行在 PC 和工作站（Windows, Linux）上。</td>
+</tr>
+<tr>
+<td style="text-align:center">GLES</td>
+<td style="text-align:center">移动级/嵌入式标准 (OpenGL for Embedded Systems)。它是 OpenGL 的精简版。去掉了大量过时且沉重的旧特性，专为手机（Android/iOS）、游戏机和车载系统优化，追求高性能和低功耗。</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<p><strong>重要</strong>: 对于<strong>显卡厂商</strong>而言，要实现的只有<strong>表二</strong>，OpenGL 规范制定之下，显卡厂商需要实现一个<strong>动态链接库</strong>，应用程序通过链接这个动态链接库来使用其中的函数，而这个动态链接库里提供的符号的规范，正是 OpenGL 系列，而这个动态链接库，就是显卡厂商为显卡实现的<strong>用户态驱动</strong></p>
+<p>而链接完毕之后，由于这些用户态在实现上的一些特殊性，OpenGL 的函数地址在编译期是不确定的，你必须需要 GLAD，GLEW 这样的库来从在运行时动态获取，否则就要通过一些</p>
+<p>而 GLFW 这类库，只不过是在 GLEW 完活后，调用了一些 OpenGL 的接口完成了初始化，并且实现了事件循环而已</p>
+<hr>
+<h2 id="用户态驱动视角下的-OpenGL"><a href="#用户态驱动视角下的-OpenGL" class="headerlink" title="用户态驱动视角下的 OpenGL"></a>用户态驱动视角下的 OpenGL</h2><p>考虑 OpenGL ES，它提供了一组工具，其中主要包含着色器的提交与编译，资源对象传输与管理的接口，渲染调用接口等等。其中着色器，对于 OpenGL 全系列，都是要使用 <code>glCreateShader</code>，<code>glCompileShader</code> 这样的 API 提交一个字符串(glsl)并编译才能使用的。实际上是传入了用户态驱动中进行编译。因此实际上厂商携带的用户态驱动里面一定会有一个 glsl 的相对于 CPU 的异构编译器，还有很多别的乱七八糟的管理工具。</p>
+<h3 id="libglvnd"><a href="#libglvnd" class="headerlink" title="libglvnd"></a>libglvnd</h3><p>很多时候，你的电脑上并不只有一个用户态驱动，比如我的电脑就是核显(r7-6800h)和独显(3060 laptop)混合输出。在这样的 Linux 的多显卡或多驱动环境下，如果多个厂商都提供了名为 libGL.so 的动态链接库，系统就会陷入冲突。为了解决这个问题，NVIDIA 牵头并与社区共同开发了 <strong>libglvnd</strong></p>
+<p>作为<strong>通用显卡驱动分发层</strong>。libglvnd 不实现具体的 OpenGL 逻辑，而是根据当前的上下文决定将 API 调用转发给哪一个具体的厂商驱动。</p>
+<p>libglvnd 的引入彻底改变了 Linux 图形库的链接方式：</p>
+<ol>
+<li>统一入口：应用程序不再直接链接到 Mesa 或 NVIDIA 的私有库，而是链接到 libglvnd 提供的公共入口（如 <code>libGL.so.1</code> 或 <code>libOpenGL.so.0</code>）。</li>
+<li>动态分发：当你调用 <code>glDrawArrays</code> 时，libglvnd 会在内部查询当前的渲染上下文（Context），并将其重定向到实际的后端实现。</li>
+</ol>
+<h3 id="Mesa3D"><a href="#Mesa3D" class="headerlink" title="Mesa3D"></a>Mesa3D</h3><p>如果每个厂商都要实现这么多东西，显然工作量太大了，Linux 后期社区孵化了一个叫做 mesa3d 的项目，mesa3d 提供了一套通用的状态跟踪器(State Trackers)和驱动框架(Gallium3D)，极大地简化了硬件厂商的适配工作。</p>
+<p>Mesa3D 对应用程序来说提供了 OpenGL 接口的动态链接库。Mesa3D 实现了一个中间层，很多厂商在这个中间层之下接入了自家的后端，Mesa3D 因此能够将应用程序调用 Mesa3D 的动态链接库里的函数时转发给实际的后端。</p>
+<p>在 Mesa3D 的架构下，<strong>厂商不再需要从零开始编写整个图形</strong> API 的逻辑。具体来说，Mesa3D 提供了以下三个核心层面的支持：</p>
+<p>1、统一的硬件抽象层：<strong>Gallium3D</strong></p>
+<p>Mesa 引入了 Gallium3D 架构，它将图形驱动拆分为两个部分：</p>
+<ul>
+<li><p>前端（Frontend）：负责处理复杂的 OpenGL、OpenCL 或 VDPAU 状态机。这部分代码是全硬件通用的。</p>
+</li>
+<li><p>后端（Backend）：厂商只需要编写一个极简的“硬插件”，负责将 Gallium 的中间表示（TGSI 或 NIR）翻译成自家显卡的机器码。</p>
+</li>
+</ul>
+<p>结果： 厂商只需要完成自家的硬件相关代码，剩下的通用逻辑全部由 Mesa 社区维护。</p>
+<p>2、强大的着色器编译器：<strong>NIR</strong></p>
+<p>现代图形渲染的核心是着色器编译。Mesa 提供了一个高性能的中间表示层 NIR。<br>它包含了大量的优化算法。无论是 Intel、AMD 还是高通的 Adreno，都可以直接利用这些现成的优化逻辑，而不需要各自去研究复杂的编译器架构。</p>
+<p>3、跨平台的系统集成接口</p>
+<p>Mesa 统一处理了图形缓冲区的分配与共享。通过：</p>
+<ul>
+<li><p>EGL/GLX：解决了窗口系统（Wayland/X11）与图形 API 之间的衔接。</p>
+</li>
+<li><p>gbm (Generic Buffer Management)：提供了统一的内存管理接口。</p>
+</li>
+<li><p>dma_buf：实现了 GPU 与 CPU、甚至不同硬件单元（如视频解码器与显示控制器）之间的零拷贝数据交换。</p>
+</li>
+</ul>
+<p>总的来说，Mesa3D 提供了一套方便厂商编写用户态驱动的开发套件，只要接入 Mesa3D，适配 Gallium 接口并提供基础的内核 DRM 驱动，就能立刻获得成熟、稳定且高性能的 OpenGL 和 Vulkan 支持。</p>
+<blockquote>
+<p>是的，nvidia 就是没有接入 Mesa3D，自己实现了用户态驱动。值得一提的是 nvidia 的社区版，逆向出来的驱动 nouveau 也是接入的 Mesa3D，nouveau 这个项目的内容就是 Mesa3D 的一个文件夹以及其内核态驱动</p>
+</blockquote>
+<p>顺带一提，对于某些需要特殊符号的任务，Mesa3D 也能如 nvidia 一样有一套超越 OpenGL 的私人接口，这些接口的实现和不再有像 libglvnd 那样通用的、跨平台的 Loader 了。</p>
+<p><img src="/images/客户端与Linux图形栈_图1.png" width="100%" height="100%"></p>
+<p><img src="/images/客户端与Linux图形栈_图2.png" width="100%" height="100%"></p>
+<p>mesa3d 架构图，对外暴露动态链接库</p>
+<hr>
+<h2 id="EGL"><a href="#EGL" class="headerlink" title="EGL"></a>EGL</h2><p>TODO</p>
+<h2 id="图形-API-之下之-DRM"><a href="#图形-API-之下之-DRM" class="headerlink" title="图形 API 之下之 DRM"></a>图形 API 之下之 DRM</h2><p>TODO</p>
+<h2 id="AMDGPU"><a href="#AMDGPU" class="headerlink" title="AMDGPU"></a>AMDGPU</h2><p>TODO</p>
+<h2 id="图形-API-之上"><a href="#图形-API-之上" class="headerlink" title="图形 API 之上"></a>图形 API 之上</h2><p>TODO</p>
 
     </div>
 
@@ -352,7 +478,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88"><span class="nav-number">1.</span> <span class="nav-text">客户端与Linux图形栈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88"><span class="nav-number">1.</span> <span class="nav-text">客户端与Linux图形栈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E6%8E%A5%E5%8F%A3-OpenGL"><span class="nav-number">1.1.</span> <span class="nav-text">图形接口 OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E4%B8%80%E3%80%81%E5%9F%BA%E4%BA%8E-OpenGL-%E7%B3%BB%E5%88%97-API-%E7%9A%84%E5%A4%96%E9%83%A8%E5%BA%93"><span class="nav-number">1.1.1.</span> <span class="nav-text">表一、基于 OpenGL 系列 API 的外部库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E4%BA%8C%E3%80%81%E7%9C%9F%E6%AD%A3%E7%9A%84-OpenGL-%E8%A7%84%E8%8C%83"><span class="nav-number">1.1.2.</span> <span class="nav-text">表二、真正的 OpenGL 规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E9%A9%B1%E5%8A%A8%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84-OpenGL"><span class="nav-number">1.2.</span> <span class="nav-text">用户态驱动视角下的 OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#libglvnd"><span class="nav-number">1.2.1.</span> <span class="nav-text">libglvnd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mesa3D"><span class="nav-number">1.2.2.</span> <span class="nav-text">Mesa3D</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EGL"><span class="nav-number">1.3.</span> <span class="nav-text">EGL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2-API-%E4%B9%8B%E4%B8%8B%E4%B9%8B-DRM"><span class="nav-number">1.4.</span> <span class="nav-text">图形 API 之下之 DRM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMDGPU"><span class="nav-number">1.5.</span> <span class="nav-text">AMDGPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2-API-%E4%B9%8B%E4%B8%8A"><span class="nav-number">1.6.</span> <span class="nav-text">图形 API 之上</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -424,13 +550,13 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">206k</span>
+      站点总字数：<span title="站点总字数">209k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
         <i class="fa fa-coffee"></i>
       </span>
-      站点阅读时长：<span title="站点阅读时长">6:14</span>
+      站点阅读时长：<span title="站点阅读时长">6:19</span>
 </div>
 
 
