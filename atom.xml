@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2026-03-10T04:46:32.853Z</updated>
+  <updated>2026-03-11T11:35:41.040Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -17,11 +17,28 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>AI,工作,好奇心 - 毕业与新的生活</title>
+    <link href="https://feipiao594.github.io/posts/a5d9579d.html"/>
+    <id>https://feipiao594.github.io/posts/a5d9579d.html</id>
+    <published>2026-03-11T09:18:05.000Z</published>
+    <updated>2026-03-11T11:35:41.040Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;AI-工作-好奇心-毕业与新的生活&quot;&gt;&lt;a href=&quot;#AI-工作-好奇心-毕业与新的生活&quot; class=&quot;headerlink&quot; title=&quot;AI,工作,好奇心 - 毕业与新的生活&quot;&gt;&lt;/a&gt;AI,工作,好奇心 - 毕业与新的生活&lt;/h1&gt;&lt;p&gt;不知不觉，大学四年的生活已然过去。还记得大一刚刚入学没多久的时候，学校曾有大我一届同学应该是做一些学校布置的任务吧，他们问我，在大学里觉得怎么样。我当时刚毕业年轻气盛，说我觉得大学里要比高中好的多，我可以自学很多之前无法自学的东西。现在想来确是有些过度吹嘘自己了，如果换做是现在的我，我可能就会说”大学可以不用像高中那样紧绷，像停下来休息一下总是有机会”这样的话吧。但是，我认为我确实践行了我所说的话，我在大学完全通过自学学到了很多…&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>客户端与Linux图形栈</title>
     <link href="https://feipiao594.github.io/posts/387e933d.html"/>
     <id>https://feipiao594.github.io/posts/387e933d.html</id>
     <published>2026-02-19T17:52:48.000Z</published>
-    <updated>2026-03-10T04:46:32.853Z</updated>
+    <updated>2026-03-11T11:35:51.123Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;客户端与Linux图形栈&quot;&gt;&lt;a href=&quot;#客户端与Linux图形栈&quot; class=&quot;headerlink&quot; title=&quot;客户端与Linux图形栈&quot;&gt;&lt;/a&gt;客户端与Linux图形栈&lt;/h1&gt;&lt;p&gt;计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙痒。中间忽略了非常多的过程，成为我们的禁区。这篇文章，我将试图表达这其中大致的关系，希望能帮到读者&lt;/p&gt;</summary>
@@ -396,23 +413,6 @@
     <category term="Programming_Language" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/"/>
     
     <category term="Rust" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Programming-Language/Rust/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>日常碎碎念_3</title>
-    <link href="https://feipiao594.github.io/posts/85479d9c.html"/>
-    <id>https://feipiao594.github.io/posts/85479d9c.html</id>
-    <published>2024-10-27T16:00:00.000Z</published>
-    <updated>2024-11-08T09:41:48.212Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;日常碎碎念-3&quot;&gt;&lt;a href=&quot;#日常碎碎念-3&quot; class=&quot;headerlink&quot; title=&quot;日常碎碎念_3&quot;&gt;&lt;/a&gt;日常碎碎念_3&lt;/h1&gt;&lt;p&gt;日常碎碎念_3，日常碎碎念，生人勿进&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="Life_生活" scheme="https://feipiao594.github.io/categories/Life-%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
