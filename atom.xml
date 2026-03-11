@@ -6,7 +6,7 @@
   <link href="https://feipiao594.github.io/atom.xml" rel="self"/>
   
   <link href="https://feipiao594.github.io/"/>
-  <updated>2026-03-11T11:57:29.679Z</updated>
+  <updated>2026-03-11T12:03:06.334Z</updated>
   <id>https://feipiao594.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://feipiao594.github.io/posts/a5d9579d.html"/>
     <id>https://feipiao594.github.io/posts/a5d9579d.html</id>
     <published>2026-03-11T09:18:05.000Z</published>
-    <updated>2026-03-11T11:57:29.679Z</updated>
+    <updated>2026-03-11T12:03:06.334Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;AI-工作-好奇心-毕业与新的生活&quot;&gt;&lt;a href=&quot;#AI-工作-好奇心-毕业与新的生活&quot; class=&quot;headerlink&quot; title=&quot;AI,工作,好奇心 - 毕业与新的生活&quot;&gt;&lt;/a&gt;AI,工作,好奇心 - 毕业与新的生活&lt;/h1&gt;&lt;p&gt;不知不觉，大学四年的生活已然过去。还记得大一刚刚入学没多久的时候，学校曾有大我一届同学应该是做一些学校布置的任务吧，他们问我，在大学里觉得怎么样。我当时刚毕业年轻气盛，说我觉得大学里要比高中好的多，我可以自学很多之前无法自学的东西。现在想来确是有些过度吹嘘自己了，如果换做是现在的我，我可能就会说”大学可以不用像高中那样紧绷，像停下来休息一下总是有机会”这样的话吧。但是，我认为我确实践行了我所说的话，我在大学完全通过自学学到了很多…&lt;/p&gt;</summary>
@@ -38,7 +38,7 @@
     <link href="https://feipiao594.github.io/posts/387e933d.html"/>
     <id>https://feipiao594.github.io/posts/387e933d.html</id>
     <published>2026-02-19T17:52:48.000Z</published>
-    <updated>2026-03-11T11:35:51.123Z</updated>
+    <updated>2026-03-11T17:42:58.513Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;客户端与Linux图形栈&quot;&gt;&lt;a href=&quot;#客户端与Linux图形栈&quot; class=&quot;headerlink&quot; title=&quot;客户端与Linux图形栈&quot;&gt;&lt;/a&gt;客户端与Linux图形栈&lt;/h1&gt;&lt;p&gt;计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙痒。中间忽略了非常多的过程，成为我们的禁区。这篇文章，我将试图表达这其中大致的关系，希望能帮到读者&lt;/p&gt;</summary>
@@ -59,7 +59,7 @@
     <link href="https://feipiao594.github.io/posts/4de565e4.html"/>
     <id>https://feipiao594.github.io/posts/4de565e4.html</id>
     <published>2025-12-29T17:24:39.000Z</published>
-    <updated>2025-12-29T18:52:36.041Z</updated>
+    <updated>2026-03-11T16:23:23.204Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;RopUI开发-第1弹&quot;&gt;&lt;a href=&quot;#RopUI开发-第1弹&quot; class=&quot;headerlink&quot; title=&quot;RopUI开发_第1弹&quot;&gt;&lt;/a&gt;RopUI开发_第1弹&lt;/h1&gt;&lt;p&gt;RopUI，是我目前正在制作的一个项目，我的目的是开发一个跨平台的一个 UI 框架。制作这个东西的目的其实相当的明确，我就是为了写博客，做视频，以及作为一个我的求职所用的一个项目。如今我的设计进入的一个开头的阶段，便有了这样的一篇博客。虽然我有一个短期的目标，但这个项目本身作为一个超长线的项目，我想关于开发时候的博客也会有不少吧。&lt;/p&gt;</summary>
@@ -68,7 +68,7 @@
     
     <category term="CS_计算机" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/"/>
     
-    <category term="ropui_blog" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/ropui-blog/"/>
+    <category term="Ropui_record" scheme="https://feipiao594.github.io/categories/CS-%E8%AE%A1%E7%AE%97%E6%9C%BA/Ropui-record/"/>
     
     
   </entry>
