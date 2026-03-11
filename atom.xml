@@ -38,7 +38,7 @@
     <link href="https://feipiao594.github.io/posts/387e933d.html"/>
     <id>https://feipiao594.github.io/posts/387e933d.html</id>
     <published>2026-02-19T17:52:48.000Z</published>
-    <updated>2026-03-11T17:49:39.130Z</updated>
+    <updated>2026-03-11T18:00:17.009Z</updated>
     
     
     <summary type="html">&lt;h1 id=&quot;客户端与Linux图形栈&quot;&gt;&lt;a href=&quot;#客户端与Linux图形栈&quot; class=&quot;headerlink&quot; title=&quot;客户端与Linux图形栈&quot;&gt;&lt;/a&gt;客户端与Linux图形栈&lt;/h1&gt;&lt;p&gt;计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙痒。中间忽略了非常多的过程，成为我们的禁区。这篇文章，我将试图表达这其中大致的关系，希望能帮到读者&lt;/p&gt;</summary>
