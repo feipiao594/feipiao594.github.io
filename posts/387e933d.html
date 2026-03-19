@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://feipiao594.github.io/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88_%E5%9B%BE7.png">
 <meta property="og:image" content="https://feipiao594.github.io/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88_%E5%9B%BE8.png">
 <meta property="article:published_time" content="2026-02-19T17:52:48.000Z">
-<meta property="article:modified_time" content="2026-03-12T03:56:55.988Z">
+<meta property="article:modified_time" content="2026-03-19T16:39:37.819Z">
 <meta property="article:author" content="594飞飘">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://feipiao594.github.io/images/%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88_%E5%9B%BE1.png">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-03-12 11:56:55" itemprop="dateModified" datetime="2026-03-12T11:56:55+08:00">2026-03-12</time>
+                <time title="修改时间：2026-03-20 00:39:37" itemprop="dateModified" datetime="2026-03-20T00:39:37+08:00">2026-03-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -261,14 +261,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>23k</span>
+              <span>24k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>42 分钟</span>
+              <span>44 分钟</span>
             </span>
 
         </div>
@@ -283,7 +283,7 @@
         <h1 id="客户端与Linux图形栈"><a href="#客户端与Linux图形栈" class="headerlink" title="客户端与Linux图形栈"></a>客户端与Linux图形栈</h1><p>计算机在我们这代人出生并接触起，就具有一个不可或缺的组成部分，即显示屏。很多并非计算机专业的用户甚至会认为显示屏就是电脑，即使他们使用的其实并非是一个老旧的一体机。但从这个例子当中我们认识到，显示，已经成为了非常重要的组成部分。但我们，真的明白了显示的原理么，对于开发者来说，UI 框架能够直接操作组件，或者再底层一些，有什么 OpenGL 和 Vulkan，但这仍然是隔靴瘙痒。中间忽略了非常多的过程，成为我们的禁区。这篇文章，我将试图表达这其中大致的关系，希望能帮到读者建立起自上而下的，对单一设备上的应用开发的相对泛化的认识</p>
 <span id="more"></span>
 <blockquote>
-<p><strong>WARNING!!!</strong>: 叠甲，接下来的知识并不一定准确，由于有些知识的获取实在是过于困难了，因此只是简单的描摹一下我所理解的大概，为了方便理解，也用了很口语化的表达，仅供参考。在使用本文的知识时，请一定要有一定判断能力，查询相关的资料，尊重真实的事实。</p>
+<p><strong>WARNING!!!</strong>: 叠甲，接下来的知识<strong>并不一定准确</strong>，由于有些知识的获取实在是过于困难了，因此只是简单的描摹一下我所理解的大概，为了方便理解，也用了很口语化的表达，仅供参考。在使用本文的知识时，请一定要有一定判断能力，查询相关的资料，尊重真实的事实。<strong>接受批评与指正</strong>。</p>
 </blockquote>
 <hr>
 <h2 id="图形接口-OpenGL"><a href="#图形接口-OpenGL" class="headerlink" title="图形接口 OpenGL"></a>图形接口 OpenGL</h2><p>作为一个广为人知的图形 API，OpenGL 在众多地方都拥有教程，但几乎较新的教程都采用的是 GLFW。GLFW 封装了平台行为，打开 GLFW 关于 linux + wayland 的源代码，你就可以清晰地看见其使用 poll syscall 监听了 4 个 fd，其中有一个是 wayland 的文件描述符。GLFW 他另一个功能就是创建 OpenGL 的上下文，提供最基础的窗口包行为，但是，对于一个 UI 框架开发者来说，其事件注册与回调机制显得过于简单，功能也相对直接手搓来说太简单了，所以一般不会使用它作为窗口层，但作为最小化窗口与输入管理库，它显然是一个非常优秀的参考实现。也正是因为如此，大伙学习 OpenGL 的时候也经常使用它。关于事件循环的部分我就不提了，此前几篇讲异步的博客讲了许多了，但是关于上下文创建的有关知识，被 GLFW 藏起来的那些东西，是时候来看看了。</p>
@@ -515,6 +515,7 @@
 <li>在上面这张总体图上左侧有一个 libinput，那是一个事件处理的库，主要的用途是解释来自内核发送的输入设备事件，他可以很好的与我此前异步所讲的事件循环系统，和 ropui 里真实的调度器兼容</li>
 <li>可以看到 mesa 里还有 vaapi 这种音视频方面的用户态驱动实现，vaapi 和 opengl 一样是个协议，也有类似 libglvnd 的存在(libva)和对应的硬件驱动后端，虽然实际感觉他们在实现上还是有些不同。</li>
 </ul>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>[1] 野火电子. 屏幕显示(DRM)介绍[EB/OL]. [2026-03-20]. <a target="_blank" rel="noopener" href="https://doc.embedfire.com/linux/rk356x/linux_base/zh/latest/linux_app/drm/drm.html">https://doc.embedfire.com/linux/rk356x/linux_base/zh/latest/linux_app/drm/drm.html</a>.<br>[2] NVIDIA. libglvnd[EB/OL]. [2026‑03‑20]. <a target="_blank" rel="noopener" href="https://github.com/NVIDIA/libglvnd">https://github.com/NVIDIA/libglvnd</a>. (<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/libglvnd">GitHub</a>)<br>[3] 刘京洋. 深入Linux GPU：AMD GPU渲染与AI技术实践[M]. 北京: 电子工业出版社, 2025.<br>[4] 线·飘零. 〖原创〗Linux环境下的图形系统和AMD R600显卡编程(1)——Linux环境下的图形系统简介[EB/OL]. 2014‑11‑28[2026‑03‑20]. <a target="_blank" rel="noopener" href="https://www.cnblogs.com/shoemaker/p/linux_graphics01.html">https://www.cnblogs.com/shoemaker/p/linux_graphics01.html</a>. :contentReference[oaicite:2]{index=2}<br>[5] Advanced Micro Devices, Inc. Radeon R6xx/R7xx Acceleration[EB/OL]. 2009-04-29[2026-03-20]. <a target="_blank" rel="noopener" href="https://docs.amd.com/v/u/en-US/R6xx_R7xx_3D">https://docs.amd.com/v/u/en-US/R6xx_R7xx_3D</a>.<br>[6] Advanced Micro Devices, Inc. RDNA 2 Instruction Set Architecture: Reference Guide[EB/OL]. 2020‑11‑30[2026‑03‑20]. <a target="_blank" rel="noopener" href="https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture">https://docs.amd.com/v/u/en-US/rdna2-shader-instruction-set-architecture</a>.<br>[7] Flutter[EB/OL]. [2026-03-20]. <a target="_blank" rel="noopener" href="https://flutter.dev/">https://flutter.dev/</a>.<br>[8] Wayland[EB/OL]. [2026-03-20]. <a target="_blank" rel="noopener" href="https://wayland.freedesktop.org/">https://wayland.freedesktop.org/</a>.<br>[9] The Mesa 3D Graphics Library[EB/OL]. (2026-02-25)[2026-03-20]. <a target="_blank" rel="noopener" href="https://mesa3d.org/">https://mesa3d.org/</a>.<br>[10] Bootlin. An Overview of the Linux and Userspace Graphics Stack , Paul Kocialkowski[EB/OL]. YouTube, 2020-12-03. (2020-12-03)[2026-03-20]. <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=wjAJmqwg47k">https://www.youtube.com/watch?v=wjAJmqwg47k</a>.<br>[11] sphaerophoria. Raw dogging linux graphics (DRM)[EB/OL]. YouTube, 2024-09-17. (2024-09-17)[2026-03-20]. <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=B8xHWwCuxKA&amp;t=159s">https://www.youtube.com/watch?v=B8xHWwCuxKA&amp;t=159s</a>.</p>
 
     </div>
 
@@ -596,7 +597,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88"><span class="nav-number">1.</span> <span class="nav-text">客户端与Linux图形栈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E6%8E%A5%E5%8F%A3-OpenGL"><span class="nav-number">1.1.</span> <span class="nav-text">图形接口 OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E4%B8%80%E3%80%81%E5%9F%BA%E4%BA%8E-OpenGL-%E7%B3%BB%E5%88%97-API-%E7%9A%84%E5%A4%96%E9%83%A8%E5%BA%93"><span class="nav-number">1.1.1.</span> <span class="nav-text">表一、基于 OpenGL 系列 API 的外部库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E4%BA%8C%E3%80%81%E7%9C%9F%E6%AD%A3%E7%9A%84-OpenGL-%E8%A7%84%E8%8C%83"><span class="nav-number">1.1.2.</span> <span class="nav-text">表二、真正的 OpenGL 规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E9%A9%B1%E5%8A%A8%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84-OpenGL"><span class="nav-number">1.2.</span> <span class="nav-text">用户态驱动视角下的 OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#libglvnd"><span class="nav-number">1.2.1.</span> <span class="nav-text">libglvnd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mesa3D"><span class="nav-number">1.2.2.</span> <span class="nav-text">Mesa3D</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EGL"><span class="nav-number">1.3.</span> <span class="nav-text">EGL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2-API-%E4%B9%8B%E4%B8%8B%E4%B9%8B-DRM"><span class="nav-number">1.4.</span> <span class="nav-text">图形 API 之下之 DRM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMDGPU"><span class="nav-number">1.5.</span> <span class="nav-text">AMDGPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2-API-%E4%B9%8B%E4%B8%8A"><span class="nav-number">1.6.</span> <span class="nav-text">图形 API 之上</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E4%BB%B6%E6%A0%91"><span class="nav-number">1.6.1.</span> <span class="nav-text">控件树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.6.2.</span> <span class="nav-text">布局系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E-Diff-%E7%AE%97%E6%B3%95"><span class="nav-number">1.6.3.</span> <span class="nav-text">渲染流水线与 Diff 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%B8%AD%E6%B5%8B%E8%AF%95%E4%B8%8E%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92"><span class="nav-number">1.6.4.</span> <span class="nav-text">命中测试与事件传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E6%97%A0%E6%B3%95%E7%AE%80%E5%8D%95%E5%9C%B0%E2%80%9D%E5%85%BC%E5%AE%B9%E2%80%9D%E5%8E%9F%E7%94%9F%E6%A1%86%E6%9E%B6"><span class="nav-number">1.6.5.</span> <span class="nav-text">为什么你无法简单地”兼容”原生框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-%E4%B8%96%E7%95%8C%E6%80%BB%E6%98%AF%E5%A4%8D%E6%9D%82%E7%9A%84"><span class="nav-number">1.7.</span> <span class="nav-text">总结: 世界总是复杂的</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8ELinux%E5%9B%BE%E5%BD%A2%E6%A0%88"><span class="nav-number">1.</span> <span class="nav-text">客户端与Linux图形栈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2%E6%8E%A5%E5%8F%A3-OpenGL"><span class="nav-number">1.1.</span> <span class="nav-text">图形接口 OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E4%B8%80%E3%80%81%E5%9F%BA%E4%BA%8E-OpenGL-%E7%B3%BB%E5%88%97-API-%E7%9A%84%E5%A4%96%E9%83%A8%E5%BA%93"><span class="nav-number">1.1.1.</span> <span class="nav-text">表一、基于 OpenGL 系列 API 的外部库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E4%BA%8C%E3%80%81%E7%9C%9F%E6%AD%A3%E7%9A%84-OpenGL-%E8%A7%84%E8%8C%83"><span class="nav-number">1.1.2.</span> <span class="nav-text">表二、真正的 OpenGL 规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%80%81%E9%A9%B1%E5%8A%A8%E8%A7%86%E8%A7%92%E4%B8%8B%E7%9A%84-OpenGL"><span class="nav-number">1.2.</span> <span class="nav-text">用户态驱动视角下的 OpenGL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#libglvnd"><span class="nav-number">1.2.1.</span> <span class="nav-text">libglvnd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mesa3D"><span class="nav-number">1.2.2.</span> <span class="nav-text">Mesa3D</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EGL"><span class="nav-number">1.3.</span> <span class="nav-text">EGL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2-API-%E4%B9%8B%E4%B8%8B%E4%B9%8B-DRM"><span class="nav-number">1.4.</span> <span class="nav-text">图形 API 之下之 DRM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AMDGPU"><span class="nav-number">1.5.</span> <span class="nav-text">AMDGPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E5%BD%A2-API-%E4%B9%8B%E4%B8%8A"><span class="nav-number">1.6.</span> <span class="nav-text">图形 API 之上</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E4%BB%B6%E6%A0%91"><span class="nav-number">1.6.1.</span> <span class="nav-text">控件树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%83%E5%B1%80%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.6.2.</span> <span class="nav-text">布局系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E4%B8%8E-Diff-%E7%AE%97%E6%B3%95"><span class="nav-number">1.6.3.</span> <span class="nav-text">渲染流水线与 Diff 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%B8%AD%E6%B5%8B%E8%AF%95%E4%B8%8E%E4%BA%8B%E4%BB%B6%E4%BC%A0%E9%80%92"><span class="nav-number">1.6.4.</span> <span class="nav-text">命中测试与事件传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E6%97%A0%E6%B3%95%E7%AE%80%E5%8D%95%E5%9C%B0%E2%80%9D%E5%85%BC%E5%AE%B9%E2%80%9D%E5%8E%9F%E7%94%9F%E6%A1%86%E6%9E%B6"><span class="nav-number">1.6.5.</span> <span class="nav-text">为什么你无法简单地”兼容”原生框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-%E4%B8%96%E7%95%8C%E6%80%BB%E6%98%AF%E5%A4%8D%E6%9D%82%E7%9A%84"><span class="nav-number">1.7.</span> <span class="nav-text">总结: 世界总是复杂的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.8.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -668,13 +669,13 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-chart-area"></i>
       </span>
-      站点总字数：<span title="站点总字数">233k</span>
+      站点总字数：<span title="站点总字数">234k</span>
 
     <span class="post-meta-divider">|</span>
       <span class="post-meta-item-icon">
         <i class="fa fa-coffee"></i>
       </span>
-      站点阅读时长：<span title="站点阅读时长">7:04</span>
+      站点阅读时长：<span title="站点阅读时长">7:06</span>
 </div>
 
 
